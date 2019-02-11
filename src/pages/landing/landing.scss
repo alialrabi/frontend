@@ -1,0 +1,26 @@
+page-landing {
+
+    .bg-image {
+        background-image: url('../../assets/img/landingpage.jpg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+    }
+    .wrapper {
+        text-align: center;
+    }
+    .btn-style {
+        background-color: darkorange;
+        
+    }
+    .image{
+        position: absolute;
+        align-self: center;
+    }
+    .vertical-align-content > *
+{
+     display: flex!important;
+     align-content: center!important;
+     align-items: center!important;
+}
+}

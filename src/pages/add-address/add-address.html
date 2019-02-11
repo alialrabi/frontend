@@ -1,0 +1,93 @@
+<!--
+  Generated template for the AddAddressPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title *ngIf="!openMap">{{ 'SIGNUP_TITLE' | translate }}</ion-title>
+    <ion-title *ngIf="openMap">MAP</ion-title>
+  </ion-navbar>
+
+  <!-- <ion-buttons end *ngIf="openMap">
+    <button ion-button (click)="chooseLocation()">
+      <ion-icon name="add"></ion-icon> Choose Location </button>
+  </ion-buttons> -->
+
+</ion-header>
+
+<!-- -->
+<ion-content class="auth-page">
+  <div class="login-content" *ngIf="!openMap">
+
+    <div padding text-center>
+      <div class="logo"></div>
+      <h2 ion-text class="text-primary">
+        Talabatk
+      </h2>
+    </div>
+
+
+    <form class="list-form">
+      <ion-item>
+        <ion-label floating>
+          <ion-icon name="home" item-start class="text-primary"></ion-icon>
+          {{ 'COUNTRY' | translate }}
+        </ion-label>
+        <ion-input type="text" [(ngModel)]="address.country" name="country"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>
+          <ion-icon name="home" item-start class="text-primary"></ion-icon>
+          {{ 'CITY' | translate }}
+        </ion-label>
+        <ion-input type="text" [(ngModel)]="address.city" name="city"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>
+          <ion-icon name="home" item-start class="text-primary"></ion-icon>
+          {{ 'STREET' | translate }}
+        </ion-label>
+        <ion-input type="text" [(ngModel)]="address.street" name="street"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>
+          <ion-icon name="mail" item-start class="text-primary"></ion-icon>
+          {{ 'POSTAL_CODE' | translate }}
+        </ion-label>
+        <ion-input type="email" [(ngModel)]="address.postalCode" name="postalcode"></ion-input>
+      </ion-item>
+
+
+    </form>
+
+    <div margin-top>
+      <button ion-button block color="dark" tappable (click)="save()">
+        {{ 'ADD-ADDRESS' | translate }}
+      </button>
+    </div>
+  </div>
+  <div [ngStyle]="mapStyle">
+    <ion-grid [ngStyle]="mapStyle">
+      <ion-row [ngStyle]="mapStyle">
+        <ion-col [ngStyle]="mapStyle">
+          <div #map id="map" [ngStyle]="mapStyle"></div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <div margin-top *ngIf="openMap">
+            <button ion-button block color="dark" tappable (click)="chooseLocation()">
+              Choose Location
+            </button>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>
