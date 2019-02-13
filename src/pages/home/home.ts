@@ -3,6 +3,7 @@ import { App, IonicPage, NavController } from 'ionic-angular';
 import { Principal } from '../../providers/auth/principal.service';
 import { FirstRunPage } from '../pages';
 import { LoginService } from '../../providers/login/login.service';
+import { CaptainsPage } from '../captains/captains';
 
 @IonicPage()
 @Component({
@@ -37,4 +38,9 @@ export class HomePage implements OnInit {
     this.loginService.logout();
     this.app.getRootNavs()[0].setRoot(FirstRunPage);
   }
+
+  openCaptains() {
+    this.navCtrl.push(CaptainsPage);
+  }
+
 }

@@ -11,8 +11,48 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <p>{{ 'WELCOME_INTRO' | translate }}</p>
+<ion-content text-center class="auth-page">
 
-  <span class="hipster"></span>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div margin-top>
+          <button ion-button round color="dark" tappable (click)="openCaptains()">
+            {{ 'CAPTAIN' | translate }}
+          </button>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <div margin-top>
+          <button ion-button round color="dark" tappable (click)="save()">
+            {{ 'ONLINE_SHIPPING' | translate }}
+          </button>
+        </div>
+
+
+      </ion-col>
+      <ion-col>
+        <div margin-top>
+          <button ion-button round color="dark" tappable (click)="save()">
+            {{ 'PARTNER' | translate }}
+          </button>
+        </div>
+
+
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <div margin-top>
+          <button ion-button round color="dark" tappable (click)="save()">
+            {{ 'CUSTOMER' | translate }}
+          </button>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
 </ion-content>

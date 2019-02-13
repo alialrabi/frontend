@@ -21,6 +21,12 @@ import { LandingPageModule } from '../pages/landing/landing.module';
 import { SignupPageModule } from '../pages/signup/signup.module';
 import { AddAddressPageModule } from '../pages/add-address/add-address.module';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { ImagePicker } from '@ionic-native/image-picker';
+import { AddCaptainPageModule } from '../pages/add-captain/add-captain.module';
+import { HomePageModule } from '../pages/home/home.module';
+import { CaptainsPage } from '../pages/captains/captains';
+import { CaptainsPageModule } from '../pages/captains/captains.module';
+import { CaptainsMapPageModule } from '../pages/captains-map/captains-map.module';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -62,7 +68,11 @@ export function provideSettings(storage: Storage) {
     EntityPageModule , 
     LandingPageModule ,
     SignupPageModule ,
-    AddAddressPageModule
+    AddAddressPageModule ,
+    AddCaptainPageModule ,
+    HomePageModule ,
+    CaptainsPageModule , 
+    CaptainsMapPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -82,6 +92,7 @@ export function provideSettings(storage: Storage) {
     SplashScreen,
     StatusBar,
     Geolocation, 
+    ImagePicker,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler },
