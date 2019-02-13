@@ -1,0 +1,68 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ 'ADD_CAPTAIN' | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<!-- -->
+<ion-content class="auth-page">
+  <div class="login-content">
+    <div class="circle-pic-div">
+     
+  <ion-grid class="grid-image">
+      <ion-row class="grid-image">
+        <ion-col class="grid-image" class="btn-col">
+
+    <img class="circle-pic" *ngIf="!captain.image" src="../../assets/img/person.png"  />
+    <img class="circle-pic"  *ngIf="captain.image" [src]="['data:image/jpg;base64',captain.image]" />
+    </ion-col>
+    
+    <ion-col class="btn-col">
+    <button ion-button icon-only clear class="icon-btn" float-left (click)="showDialog()"> <ion-icon name="camera"></ion-icon> </button>
+  </ion-col>
+  </ion-row>
+  </ion-grid>
+        </div>
+
+    <!-- Login form -->
+    <form class="list-form">
+      <ion-item>
+        <ion-label floating>
+          <ion-icon name="flag" item-start class="text-primary"></ion-icon>
+          {{ 'CODE' | translate }}
+        </ion-label>
+        <ion-input type="text" [(ngModel)]="captain.code" name="code"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>
+          <ion-icon name="person" item-start class="text-primary"></ion-icon>
+          {{ 'NAME' | translate }}
+        </ion-label>
+        <ion-input type="text" [(ngModel)]="captain.name" name="name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>
+          <ion-icon name="call" item-start class="text-primary"></ion-icon>
+          {{ 'PHONE' | translate }}
+        </ion-label>
+        <ion-input type="text" [(ngModel)]="captain.phone" name="phone"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>
+          <ion-icon name="bookmarks" item-start class="text-primary"></ion-icon>
+          {{ 'EVALUATION' | translate }}
+        </ion-label>
+        <ion-input type="text" [(ngModel)]="captain.evaluation" name="evaluation"></ion-input>
+      </ion-item>
+    </form>
+
+    <div margin-top>
+      <button ion-button block color="dark" tappable (click)="addCaptain()">
+        {{ 'ADD_CAPTAIN_BUTTON' | translate }}
+      </button>
+    </div>
+  </div>
+</ion-content>

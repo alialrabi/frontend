@@ -1,0 +1,66 @@
+<!--
+  Generated template for the CaptainsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>captains</ion-title>
+    <ion-buttons end class="btn-style">
+        <button ion-button (click)="openMap()">
+          <ion-icon name="map"></ion-icon>
+        </button>
+      </ion-buttons>
+    <ion-buttons end class="btn-style">
+      <button ion-button (click)="add()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="auth-page-captain">
+
+
+  <ion-list style="padding-top: 15px;">
+
+
+      <ion-item class="item-background" *ngFor="let captain of captainsList.slice().reverse()">
+        <ion-grid>
+          <ion-row >
+            <ion-col  class="img-col">
+              <img class="circle-pic" *ngIf="!captain.image"src="../../assets/img/person.png"
+              />
+              <img class="circle-pic" *ngIf="captain.image" [src]="['data:image/jpg;base64,',captain.image]" />
+            </ion-col>
+
+            <ion-col  class="btn-col">
+
+              <div class="account-info info-div">
+                <p>
+                  {{captain.name}}
+                </p>
+
+                <p>
+                  Code : {{captain.code}}
+                </p>
+
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+      </ion-item>
+
+
+
+  </ion-list>
+
+
+
+
+</ion-content>

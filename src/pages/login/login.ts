@@ -6,6 +6,8 @@ import { LoginService } from '../../providers/login/login.service';
 import { Api } from '../../providers/api/api';
 import { SignupPage } from '../signup/signup';
 import { AddAddressPage } from '../add-address/add-address';
+import { AddCaptainPage } from '../add-captain/add-captain';
+import { HomePage } from '../home/home';
 
 @IonicPage()
 @Component({
@@ -38,7 +40,7 @@ export class LoginPage {
   // Attempt to login in through our User service
   doLogin() {
     this.loginService.login(this.account).then((response) => {
-      this.navCtrl.push(MainPage);
+      this.navCtrl.push(HomePage);
     }, (err) => {
       // Unable to log in
       this.account.password = '';

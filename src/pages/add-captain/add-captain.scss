@@ -1,0 +1,57 @@
+page-add-captain {
+
+    .image {
+        height: 5vw; 
+        width: 5vw; 
+       border: 2px solid #fff;
+       border-radius: 50%;
+       box-shadow: 0 0 5px gray;
+       display: inline-block;
+       margin-left: auto;
+       margin-right: auto;
+   }
+   
+   .circle-pic{
+       width:200px;
+       height:100px;
+       -webkit-border-radius: 50%;
+       border-radius: 50%;
+      
+       
+   }
+   .circle-pic-div{
+    width:200px;
+    height:100px;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    margin-left: 35%;
+    position: relative;
+    
+}
+.btn-col{
+    padding: 0px;
+position: relative;
+width: 100%;
+margin: 0;
+min-height: 1px;
+-webkit-flex-basis: 0;
+-ms-flex-preferred-size: 0;
+flex-basis: 0;
+-webkit-box-flex: 1;
+-webkit-flex-grow: 1;
+-ms-flex-positive: 1;
+flex-grow: 1;
+max-width: 100%;
+}
+.icon-btn{
+    bottom: 0;
+    left: 0;
+position: absolute;
+padding: 0px;
+}
+.grid-image{
+    width:100%;
+    height:100%;
+}
+
+}
