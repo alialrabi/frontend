@@ -295,6 +295,7 @@ ion-navbar.no-border {
   }
 }
 
+
 // style for auth pages
 .auth-page {
   background-color: #fff;
@@ -312,7 +313,7 @@ ion-navbar.no-border {
 
   .scroll-content {
     display: flex;
-    align-items: center;
+    //align-items: center;
     justify-content: center;
     //background: rgba(50, 10, 92, .4);
 
@@ -508,6 +509,23 @@ ion-icon[ng-reflect-disabled="true"] {
 .animated.hinge {
   animation-duration: 2s;
 }
+.validationHint{
+  color: #ca2222;
+  margin-left: 20px;
+  margin-bottom: 0;
+  font-size: 15px;
+
+  position: absolute;
+  background: #fff6d3;
+  margin: -11px 15px;
+  padding: 0 10px;
+  padding-bottom: 10p;
+  z-index: 99;
+  //  width: 91%; 
+  font-size: 14px;
+  
+}
+
 
 .animated.flipOutX,
 .animated.flipOutY,

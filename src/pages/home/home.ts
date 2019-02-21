@@ -4,6 +4,8 @@ import { Principal } from '../../providers/auth/principal.service';
 import { FirstRunPage } from '../pages';
 import { LoginService } from '../../providers/login/login.service';
 import { CaptainsPage } from '../captains/captains';
+import { CaptainOrdersPage } from '../captain-orders/captain-orders';
+import { OrdersPage } from '../orders/orders';
 
 @IonicPage()
 @Component({
@@ -23,9 +25,20 @@ export class HomePage implements OnInit {
       console.log(account);
       
       if (account === null) {
-        // this.app.getRootNavs()[0].setRoot(FirstRunPage);
+         this.app.getRootNavs()[0].setRoot(FirstRunPage);
       } else {
         this.account = account;
+
+        console.log(this.account , '555555555555');
+
+
+          if(account.authorities[0] === 'ROLE_CAPTAIN') {
+            
+            this.app.getRootNavs()[0].setRoot(CaptainOrdersPage);
+            
+          }
+        
+
       }
     });
   }
@@ -41,6 +54,9 @@ export class HomePage implements OnInit {
 
   openCaptains() {
     this.navCtrl.push(CaptainsPage);
+  }
+  openCustomer(){
+    this.navCtrl.push(OrdersPage);
   }
 
 }

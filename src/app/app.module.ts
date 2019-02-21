@@ -27,7 +27,13 @@ import { HomePageModule } from '../pages/home/home.module';
 import { CaptainsPage } from '../pages/captains/captains';
 import { CaptainsPageModule } from '../pages/captains/captains.module';
 import { CaptainsMapPageModule } from '../pages/captains-map/captains-map.module';
-
+import { Keyboard } from '@ionic-native/keyboard';
+import { AddOrderPage } from '../pages/add-order/add-order';
+import { AddOrderPageModule } from '../pages/add-order/add-order.module';
+import { OrdersPageModule } from '../pages/orders/orders.module';
+import { AssignOrderPageModule } from '../pages/assign-order/assign-order.module';
+import { CaptainOrdersPage } from '../pages/captain-orders/captain-orders';
+import { CaptainOrdersPageModule } from '../pages/captain-orders/captain-orders.module';
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
 export function createTranslateLoader(http: HttpClient) {
@@ -72,7 +78,11 @@ export function provideSettings(storage: Storage) {
     AddCaptainPageModule ,
     HomePageModule ,
     CaptainsPageModule , 
-    CaptainsMapPageModule
+    CaptainsMapPageModule , 
+    AddOrderPageModule,
+    OrdersPageModule,
+    AssignOrderPageModule ,
+    CaptainOrdersPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -91,8 +101,9 @@ export function provideSettings(storage: Storage) {
     Camera,
     SplashScreen,
     StatusBar,
-    Geolocation, 
+    Geolocation,
     ImagePicker,
+    Keyboard,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler },

@@ -19,42 +19,54 @@
       </div>
   
       <!-- Login form -->
-      <form class="list-form">
+      <form class="list-form" [formGroup]="myForm">
         <ion-item>
           <ion-label floating>
             <ion-icon name="person" item-start class="text-primary"></ion-icon>
             {{ 'FIRST_NAME' | translate }}
           </ion-label>
-          <ion-input type="text" [(ngModel)]="account.firstName" name="firstName"></ion-input>
+          <ion-input type="text" [(ngModel)]="account.firstName" name="firstName" formControlName="firstName"></ion-input>
         </ion-item>
+
+        <p class="validationHint" *ngIf="hasError('firstName', 'required')"> {{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('firstName', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
 
         <ion-item>
             <ion-label floating>
-              <ion-icon name="person" item-start class="text-primary"></ion-icon>
+              <ion-icon name="person" item-start class="text-primary" ></ion-icon>
               {{ 'LAST_NAME' | translate }}
             </ion-label>
-            <ion-input type="text" [(ngModel)]="account.lastName" name="firstName"></ion-input>
+            <ion-input type="text" [(ngModel)]="account.lastName" name="lastName" formControlName="lastName"></ion-input>
           </ion-item>
+
+          <p class="validationHint" *ngIf="hasError('lastName', 'required')"> {{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('lastName', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
   
         <ion-item>
           <ion-label floating>
             <ion-icon name="mail" item-start class="text-primary"></ion-icon>
             {{ 'EMAIL' | translate }}
           </ion-label>
-          <ion-input type="email" [(ngModel)]="account.email" name="email"></ion-input>
+          <ion-input type="email" [(ngModel)]="account.email" name="email" formControlName="email"></ion-input>
         </ion-item>
+
+        <p class="validationHint" *ngIf="hasError('email', 'required')"> {{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('email', 'email')">{{ 'EMAIL_VALID' | translate }} </p>
   
         <ion-item>
           <ion-label floating>
             <ion-icon name="lock" item-start class="text-primary"></ion-icon>
             {{ 'PASSWORD' | translate }}
           </ion-label>
-          <ion-input type="password" [(ngModel)]="account.password" name="password"></ion-input>
+          <ion-input type="password" [(ngModel)]="account.password" name="password" formControlName="password"></ion-input>
         </ion-item>
+
+        <p class="validationHint" *ngIf="hasError('password', 'required')"> {{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('password', 'minlength')">{{ 'MIN_LENGTH' | translate }} </p>
       </form>
   
       <div margin-top>
-        <button ion-button block color="dark" tappable (click)="doSignup()">
+        <button ion-button block color="dark" tappable (click)="doSignup()" [disabled]="!myForm.valid">
             {{ 'SIGNUP_BUTTON' | translate }}
         </button>
   

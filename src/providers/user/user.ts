@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 import { Api } from '../api/api';
 import { LoginService } from '../login/login.service';
 import { Observable } from 'rxjs/Observable';
+import { AuthServerProvider } from '../auth/auth-jwt.service';
 
 /**
  * Most apps have the concept of a User. This is a simple provider
@@ -29,7 +30,7 @@ import { Observable } from 'rxjs/Observable';
 export class User {
   _user: any;
 
-  constructor(public api: Api, public loginService: LoginService) { }
+  constructor(public api: Api, public loginService: LoginService , private authservice : AuthServerProvider) { }
 
   /**
    * Send a POST request to our login endpoint with the data
@@ -46,7 +47,8 @@ export class User {
   }
 
   findAll(): Observable<any> {
-    return this.api.get('users');
+    
+    return this.api.get('api/users?access_token=' +this.authservice.getToken());
   }
 
   /**
@@ -55,6 +57,11 @@ export class User {
    */
   signup(accountInfo: any) {
     return this.api.post('api/register', accountInfo, { responseType: 'text' as 'text' }).share();
+  }
+  registerCaptain(accountInfo: any){
+    
+    return this.api.post('api/registerCaptain?access_token=' +this.authservice.getToken() , accountInfo, { responseType: 'text' as 'text' }).share();
+
   }
 
   /**

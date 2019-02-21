@@ -17,28 +17,33 @@
       </div>
   
       <!-- Login form -->
-      <form class="list-form">
+      <form class="list-form" [formGroup]="myForm">
         <ion-item>
           <ion-label floating>
             <ion-icon name="mail" item-start class="text-primary"></ion-icon>
             {{ 'USERNAME' | translate }}
           </ion-label>
-          <ion-input type="email" [(ngModel)]="account.username" name="username"></ion-input>
+          <ion-input type="email" [(ngModel)]="account.username" name="username" formControlName="username"></ion-input>
         </ion-item>
+
+        <p class="validationHint" *ngIf="hasError('username', 'required')"> {{ 'REQURIED' | translate }}  </p>
   
         <ion-item>
           <ion-label floating>
             <ion-icon name="lock" item-start class="text-primary"></ion-icon>
             {{ 'PASSWORD' | translate }}
           </ion-label>
-          <ion-input type="password" [(ngModel)]="account.password" name="password"></ion-input>
+          <ion-input type="password" [(ngModel)]="account.password" name="password" formControlName="password"></ion-input>
         </ion-item>
+
+        <p class="validationHint" *ngIf="hasError('password', 'required')"> {{ 'REQURIED' | translate }}  </p>
+
       </form>
   
       <p text-right ion-text color="secondary" tappable (click)="forgotPass()"><strong>Forgot Password?</strong></p>
   
       <div>
-        <button ion-button icon-start block color="dark" tappable (click)="doLogin()">
+        <button ion-button icon-start block color="dark" tappable (click)="doLogin()"  [disabled]="!myForm.valid">
           <ion-icon name="log-in"></ion-icon>
           {{ 'LOGIN_BUTTON' | translate }}
         </button>

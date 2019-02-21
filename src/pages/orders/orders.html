@@ -1,0 +1,63 @@
+<!--
+  Generated template for the CaptainsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Orders</ion-title>
+    <ion-buttons end class="btn-style">
+      <button ion-button (click)="add()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="auth-page-captain">
+
+
+  <ion-list style="padding-top: 15px;">
+
+
+    <ion-item class="item-background" *ngFor="let order of ordersList.slice().reverse()">
+      <ion-grid>
+        <ion-row>
+          <ion-col class="img-col">
+            <img class="circle-pic" src="../../assets/img/person.png" />
+          </ion-col>
+
+          <ion-col >
+
+            <div class="account-info info-div">
+              <p>
+                {{order.name}}
+              </p>
+              <p>
+                {{order.address}}
+              </p>
+
+              <div *ngFor="let item of viewOrder(order.orders)">
+                <p style="margin-left: 15px;">
+                  {{item}}
+                </p>
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+    </ion-item>
+
+
+
+  </ion-list>
+
+
+
+
+</ion-content>
