@@ -17,4 +17,9 @@ export class CaptainService  {
         return this.http.get(Api.API_URL_login + '/tlabatac/api/captains?access_token=' +this.authservice.getToken());
     }
 
+    getByUserId(userId:any) : Observable<any>{
+
+        return this.http.get(Api.API_URL_login + '/tlabatac/api/captainsByUserId/'+userId+'?access_token=' +this.authservice.getToken());
+    }
+
 }

@@ -3,6 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { IonicPageModule } from 'ionic-angular';
 
 import { LoginPage } from './login';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -10,6 +11,7 @@ import { LoginPage } from './login';
   ],
   imports: [
     IonicPageModule.forChild(LoginPage),
+    FormsModule,
     TranslateModule.forChild()
   ],
   exports: [

@@ -27,40 +27,77 @@
         </div>
 
     <!-- Login form -->
-    <form class="list-form">
+    <form class="list-form" [formGroup]="myForm">
       <ion-item>
         <ion-label floating>
           <ion-icon name="flag" item-start class="text-primary"></ion-icon>
           {{ 'CODE' | translate }}
         </ion-label>
-        <ion-input type="text" [(ngModel)]="captain.code" name="code"></ion-input>
+        <ion-input type="number" [(ngModel)]="captain.code" formControlName="code" name="code"></ion-input>
       </ion-item>
+
+      <p class="validationHint" *ngIf="hasError('code', 'required')"> {{ 'REQURIED' | translate }}  </p>
+
+
       <ion-item>
         <ion-label floating>
           <ion-icon name="person" item-start class="text-primary"></ion-icon>
           {{ 'NAME' | translate }}
         </ion-label>
-        <ion-input type="text" [(ngModel)]="captain.name" name="name"></ion-input>
+        <ion-input type="text" [(ngModel)]="captain.name" formControlName="name" name="name"></ion-input>
       </ion-item>
+
+      <p class="validationHint" *ngIf="hasError('name', 'required')"> {{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('name', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
+
+
       <ion-item>
         <ion-label floating>
           <ion-icon name="call" item-start class="text-primary"></ion-icon>
           {{ 'PHONE' | translate }}
         </ion-label>
-        <ion-input type="text" [(ngModel)]="captain.phone" name="phone"></ion-input>
+        <ion-input type="number" [(ngModel)]="captain.phone" formControlName="phone" name="phone"></ion-input>
       </ion-item>
 
+      <p class="validationHint" *ngIf="hasError('phone', 'required')"> {{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('phone', 'pattern')">{{ 'PHONE_NUMBER' | translate }} </p>
+
+
       <ion-item>
+        <ion-label floating>
+          <ion-icon name="mail" item-start class="text-primary"></ion-icon>
+          {{ 'EMAIL' | translate }}
+        </ion-label>
+        <ion-input type="email" [(ngModel)]="account.email" name="email" formControlName="email"></ion-input>
+      </ion-item>
+
+      <p class="validationHint" *ngIf="hasError('email', 'required')"> {{ 'REQURIED' | translate }}  </p>
+    <p class="validationHint" *ngIf="hasError('email', 'email')">{{ 'EMAIL_VALID' | translate }} </p>
+
+      <ion-item>
+        <ion-label floating>
+          <ion-icon name="lock" item-start class="text-primary"></ion-icon>
+          {{ 'PASSWORD' | translate }}
+        </ion-label>
+        <ion-input type="password" [(ngModel)]="account.password" name="password" formControlName="password"></ion-input>
+      </ion-item>
+
+      <p class="validationHint" *ngIf="hasError('password', 'required')"> {{ 'REQURIED' | translate }}  </p>
+    <p class="validationHint" *ngIf="hasError('password', 'minlength')">{{ 'MIN_LENGTH' | translate }} </p>
+    
+
+
+      <!-- <ion-item>
         <ion-label floating>
           <ion-icon name="bookmarks" item-start class="text-primary"></ion-icon>
           {{ 'EVALUATION' | translate }}
         </ion-label>
         <ion-input type="text" [(ngModel)]="captain.evaluation" name="evaluation"></ion-input>
-      </ion-item>
+      </ion-item> -->
     </form>
 
-    <div margin-top>
-      <button ion-button block color="dark" tappable (click)="addCaptain()">
+    <div margin-top style="margin-bottom: 40px;">
+      <button ion-button block color="dark" tappable (click)="addCaptain()" [disabled]="!myForm.valid">
         {{ 'ADD_CAPTAIN_BUTTON' | translate }}
       </button>
     </div>

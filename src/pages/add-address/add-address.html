@@ -30,44 +30,56 @@
     </div>
 
 
-    <form class="list-form">
+    <form class="list-form" [formGroup]="myForm">
       <ion-item>
         <ion-label floating>
           <ion-icon name="home" item-start class="text-primary"></ion-icon>
           {{ 'COUNTRY' | translate }}
         </ion-label>
-        <ion-input type="text" [(ngModel)]="address.country" name="country"></ion-input>
+        <ion-input type="text" [(ngModel)]="address.country" formControlName="country" name="country"></ion-input>
       </ion-item>
+
+      <p class="validationHint" *ngIf="hasError('country', 'required')"> {{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('country', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
 
       <ion-item>
         <ion-label floating>
           <ion-icon name="home" item-start class="text-primary"></ion-icon>
           {{ 'CITY' | translate }}
         </ion-label>
-        <ion-input type="text" [(ngModel)]="address.city" name="city"></ion-input>
+        <ion-input type="text" [(ngModel)]="address.city" formControlName="city" name="city"></ion-input>
       </ion-item>
+
+      <p class="validationHint" *ngIf="hasError('city', 'required')">{{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('city', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
 
       <ion-item>
         <ion-label floating>
           <ion-icon name="home" item-start class="text-primary"></ion-icon>
           {{ 'STREET' | translate }}
         </ion-label>
-        <ion-input type="text" [(ngModel)]="address.street" name="street"></ion-input>
+        <ion-input type="text" [(ngModel)]="address.street" formControlName="street" name="street"></ion-input>
       </ion-item>
+
+      <p class="validationHint" *ngIf="hasError('street', 'required')">{{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('street', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
 
       <ion-item>
         <ion-label floating>
           <ion-icon name="mail" item-start class="text-primary"></ion-icon>
           {{ 'POSTAL_CODE' | translate }}
         </ion-label>
-        <ion-input type="email" [(ngModel)]="address.postalCode" name="postalcode"></ion-input>
+        <ion-input type="email" [(ngModel)]="address.postalCode" formControlName="postalCode" name="postalcode"></ion-input>
       </ion-item>
+
+      <p class="validationHint" *ngIf="hasError('postalCode', 'required')">{{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('postalCode', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
 
 
     </form>
 
-    <div margin-top>
-      <button ion-button block color="dark" tappable (click)="save()">
+    <div margin-top style="margin-bottom: 40px;">
+      <button ion-button block color="dark" tappable (click)="save()" [disabled]="!myForm.valid" >
         {{ 'ADD-ADDRESS' | translate }}
       </button>
     </div>

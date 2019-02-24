@@ -3,6 +3,8 @@ import { IonicPageModule } from 'ionic-angular';
 import { AddAddressPage } from './add-address';
 import { TranslateModule } from '@ngx-translate/core';
 import { AddressService } from '../../providers/auth/address.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -11,6 +13,7 @@ import { AddressService } from '../../providers/auth/address.service';
   ],
   imports: [
     IonicPageModule.forChild(AddAddressPage),
+    FormsModule ,
     TranslateModule.forChild()
   ],
   exports:[

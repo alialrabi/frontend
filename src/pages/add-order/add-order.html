@@ -1,0 +1,114 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ 'ADD_ORDER' | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<!-- -->
+<ion-content class="auth-page">
+  <div class="login-content">
+
+    <!-- Logo -->
+    <div padding text-center>
+      <div class="logo"></div>
+      <h2 ion-text class="text-primary">
+        Talabatk
+      </h2>
+    </div>
+
+    <!-- Login form -->
+    <form class="list-form" [formGroup]="myForm">
+      <!-- <ion-item>
+        <ion-label floating>
+          <ion-icon name="person" item-start class="text-primary"></ion-icon>
+          {{ 'USER' | translate }}
+        </ion-label>
+        <ion-select formControlName="userId">
+          <ion-option *ngFor="let item of userList" [selected]="item.firstName ==item.firstName && item.lastName ==item.lastName" [value]="item.id">{{item.firstName}} {{item.lastName}} </ion-option>
+
+        </ion-select>
+      </ion-item> -->
+
+      <!-- <p class="validationHint" *ngIf="hasError('userId', 'required' , myForm )"> {{ 'REQURIED' | translate }} </p> -->
+
+
+      <ion-item>
+        <ion-label floating>
+          <ion-icon name="person" item-start class="text-primary"></ion-icon>
+          {{ 'NAME' | translate }}
+        </ion-label>
+        <ion-input type="text" formControlName="name" name="name"></ion-input>
+      </ion-item>
+
+      <p class="validationHint" *ngIf="hasError('name', 'required' , myForm)"> {{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('name', 'maxlength' , myForm)">{{ 'MAX_LENGTH' | translate }} </p>
+
+
+      <ion-item>
+        <ion-label floating>
+          <ion-icon name="call" item-start class="text-primary"></ion-icon>
+          {{ 'PHONE' | translate }}
+        </ion-label>
+        <ion-input type="number" formControlName="phone" name="phone"></ion-input>
+      </ion-item>
+
+      <p class="validationHint" *ngIf="hasError('phone', 'required' , myForm)"> {{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('phone', 'pattern' , myForm)">{{ 'PHONE_NUMBER' | translate }} </p>
+
+      <ion-item>
+        <ion-label floating>
+          <ion-icon name="call" item-start class="text-primary"></ion-icon>
+          {{ 'SECOND_PHONE' | translate }}
+        </ion-label>
+        <ion-input type="number" formControlName="secondPhone" name="secondPhone"></ion-input>
+      </ion-item>
+
+      <p class="validationHint" *ngIf="hasError('secondPhone', 'pattern' , myForm)">{{ 'PHONE_NUMBER' | translate }} </p>
+
+      <ion-item>
+        <ion-label floating>
+          <ion-icon name="pin" item-start class="text-primary"></ion-icon>
+          {{ 'FULL_ADDRESS' | translate }}
+        </ion-label>
+        <ion-input type="text" formControlName="address" name="address"></ion-input>
+      </ion-item>
+
+      <p class="validationHint" *ngIf="hasError('address', 'required' , myForm)"> {{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('address', 'maxlength' , myForm)">{{ 'MAX_LENGTH' | translate }} </p>
+
+      <div *ngFor="let item of ordersArray">
+        <p style="margin-left: 15px;">
+          {{item}}
+        </p>
+      </div>
+
+      <!-- <form class="list-form" *ngFor="let item of order.orders;let count = index" [formGroup]="forms[count]"> -->
+      <ion-item >
+        <ion-label floating>
+          <ion-icon name="reorder" item-start class="text-primary"></ion-icon>
+          {{ 'ORDER' | translate }}
+        </ion-label>
+        <ion-input type="text" name="item+count" (input)="change()" formControlName="order"></ion-input>
+      </ion-item>
+      <p class="validationHint" *ngIf="hasError('order', 'required' , myForm)"> {{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('order', 'maxlength' , myForm)">{{ 'MAX_LENGTH' | translate }} </p>
+
+    <!-- </form>    -->
+      
+    </form>
+    <ion-buttons end class="btn-style" >
+      <button ion-button (click)="add()" [disabled] = "!myForm.get('order').valid">
+        <ion-icon name="add"></ion-icon>
+      </button>
+      </ion-buttons>
+
+      <div margin-top style="margin-bottom: 40px;">
+        <button ion-button block color="dark" tappable (click)="addOrder()" [disabled]  = "!myForm.valid" >
+          {{ 'ADD_ORDER_BUTTON' | translate }}
+        </button>
+      </div>
+  </div>
+
+</ion-content>

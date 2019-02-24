@@ -7,6 +7,7 @@ import { MainPage } from '../pages';
 import { LoginPage } from '../login/login';
 import { AddAddressPage } from '../add-address/add-address';
 import { LoginService } from "../../providers/login/login.service"
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @IonicPage()
 @Component({
@@ -31,11 +32,14 @@ export class SignupPage {
   private existingUserError: string;
   private invalidPasswordError: string;
 
+  myForm: FormGroup;
+
   constructor(public navCtrl: NavController,
     public user: User,
     public toastCtrl: ToastController,
     public translateService: TranslateService ,
-  public loginService:LoginService ) {
+  public loginService:LoginService ,
+  private builder: FormBuilder) {
 
     this.translateService.get(['SIGNUP_ERROR', 'SIGNUP_SUCCESS',
       'EXISTING_USER_ERROR', 'INVALID_PASSWORD_ERROR']).subscribe((values) => {
@@ -44,6 +48,14 @@ export class SignupPage {
       this.existingUserError = values.EXISTING_USER_ERROR;
       this.invalidPasswordError = values.INVALID_PASSWORD_ERROR;
     })
+
+    this.myForm = builder.group({
+      'firstName':['', [Validators.required  , Validators.maxLength(45)]],
+      'lastName': ['', [Validators.required , Validators.maxLength(45) ]],
+      'email':['', [Validators.required  , Validators.email]],
+      'password': ['', [Validators.required , Validators.minLength(6) ]],
+    });
+
   }
 
   doSignup() {
@@ -53,7 +65,7 @@ export class SignupPage {
     // Attempt to login in through our User service
     this.user.signup(this.account).subscribe((res) => {
       console.log(res);
-      var id = res;
+     // var id = res;
 
       let loginAccount = {
         username: this.account.email,
@@ -61,7 +73,7 @@ export class SignupPage {
         rememberMe: false,
       }
 
-      localStorage.setItem("userId" , id+"");
+      //localStorage.setItem("userId" , id+"");
         this.loginService.login(loginAccount).then((response) => {
           let toast = this.toastCtrl.create({
             message: this.signupSuccessString,
@@ -74,6 +86,8 @@ export class SignupPage {
 
     }, (err) => {
       // Unable to sign up
+      console.log(err);
+      
       const error = JSON.parse(err.error);
       let displayError = this.signupErrorString;
       if (err.status === 400 && error.type.includes('already-used')) {
@@ -85,7 +99,7 @@ export class SignupPage {
       let toast = this.toastCtrl.create({
           message: displayError,
           duration: 3000,
-          position: 'middle'
+          position: 'top'
       });
       toast.present();
     });
@@ -93,4 +107,10 @@ export class SignupPage {
   login() {
     this.navCtrl.setRoot(LoginPage);
   }
+
+  hasError(field: string, error: string) {
+    const ctrl = this.myForm.get(field);
+    return ctrl.dirty && ctrl.hasError(error);
+  }
+
 }

@@ -3,6 +3,8 @@ import { IonicPageModule } from 'ionic-angular';
 import { AddCaptainPage } from './add-captain';
 import { TranslateModule } from '@ngx-translate/core';
 import { CaptainService } from '../../providers/auth/captain.service';
+import { FormsModule } from '@angular/forms';
+import { AccountService } from '../../providers/auth/account.service';
 
 @NgModule({
   declarations: [
@@ -10,6 +12,7 @@ import { CaptainService } from '../../providers/auth/captain.service';
   ],
   imports: [
     IonicPageModule.forChild(AddCaptainPage),
+    FormsModule,
   TranslateModule.forChild()
 ],
 exports:[
@@ -20,7 +23,7 @@ entryComponents:[
 ],
 providers:[
 
-  CaptainService
+  CaptainService , AccountService
   
 ]
 })
