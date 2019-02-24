@@ -17,18 +17,22 @@ import { OrderService } from '../../providers/auth/order.service';
 })
 export class OrdersPage {
 
+  public myVar = '';
+
   public ordersList = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public orderService: OrderService) {
-    this.getAllOrders();
+    this.myVar = 'assigned';
+    this.getAllOrders(this.myVar);
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad OrdersPage');
   }
-  getAllOrders() {
+  getAllOrders(status) {
+    this.myVar = status;
     this.ordersList = [];
-    this.orderService.getAll().subscribe(res => {
+    this.orderService.getAllByStatus(status).subscribe(res => {
       console.log(res);
 
 

@@ -1,4 +1,7 @@
 {
+  "DELIVERED":"Delivered",
+  "ASSIGNED":"Assigned",
+  "NOT_ASSIGNED":"Not Assigned",
   "DELIVER_ORDER_SUCCESS":"Finish Order Successfully",
   "DELIVER_ORDER_ERROR":"Error in Finish Order",
   "ASSIGN_ORDER_TO_FREE_BUTTON":"Choose Free Captain",

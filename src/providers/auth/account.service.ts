@@ -11,8 +11,8 @@ export class AccountService  {
     userId
 
     get(): Observable<any> {
-        return this.http.get(Api.API_URL +'/api/account?access_token=' +this.authservice.getToken());
-        //return this.http.get(Api.API_URL_login + '/uaa/api/account?access_token=' +this.authservice.getToken());
+        //return this.http.get(Api.API_URL +'/api/account?access_token=' +this.authservice.getToken());
+        return this.http.get(Api.API_URL_login + '/uaa/api/account?access_token=' +this.authservice.getToken());
     }
     
 
@@ -21,8 +21,8 @@ export class AccountService  {
     }
     registerCaptain(accountInfo: any) : Observable<any>{
 
-        return  this.http.post(Api.API_URL +'/api/registerCaptainUser' , accountInfo );       
-        //return this.http.post(Api.API_URL_login + '/uaa/api/registerCaptainUser?access_token=' +this.authservice.getToken(), accountInfo);
+        //return  this.http.post(Api.API_URL +'/api/registerCaptainUser' , accountInfo );       
+        return this.http.post(Api.API_URL_login + '/uaa/api/registerCaptainUser?access_token=' +this.authservice.getToken(), accountInfo);
  
     
 

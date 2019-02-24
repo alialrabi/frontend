@@ -1,4 +1,7 @@
 {
+  "DELIVERED":"تم التسليم",
+  "ASSIGNED":"قيد التوصيل",
+  "NOT_ASSIGNED":"قيد التنفيذ",
   "DELIVER_ORDER_SUCCESS":"تم انهاء الطلب",
   "DELIVER_ORDER_ERROR":"خطأ فى انهاء الطلب",
   "ASSIGN_ORDER_TO_FREE_BUTTON":"اختر طيار متاح",
