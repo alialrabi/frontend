@@ -39,7 +39,7 @@ export class Api {
   }
 
   post(endpoint: string, body: any, reqOpts?: any) {
-    return this.http.post(Api.API_URL + '/' + endpoint, body, reqOpts);
+    return this.http.post(Api.API_URL_login + '/' + endpoint, body, reqOpts);
   }
 
   put(endpoint: string, body: any, reqOpts?: any) {

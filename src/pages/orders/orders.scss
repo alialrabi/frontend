@@ -44,9 +44,12 @@ page-orders {
     }
 
     .tap-selected {
-        background: #4cc2f9
+        background: #4cc2f9;
+        color: white;
+        
     }
     .tap-notselected {
-        background: #4cc2f9
-    }
+        background: initial;
+        color: black;
+}
 }

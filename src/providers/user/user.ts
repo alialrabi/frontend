@@ -56,7 +56,7 @@ export class User {
    * the user entered on the form.
    */
   signup(accountInfo: any) {
-    return this.api.post('api/register', accountInfo, { responseType: 'text' as 'text' }).share();
+    return this.api.post('uaa/api/register', accountInfo, { responseType: 'text' as 'text' }).share();
   }
   registerCaptain(accountInfo: any){
     
