@@ -1,12 +1,13 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, Platform, App } from 'ionic-angular';
 import { AddressService } from '../../providers/auth/address.service';
-import { MainPage } from '../pages';
+import { MainPage, FirstRunPage } from '../pages';
 import { TranslateService } from '@ngx-translate/core';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { elementDef } from '@angular/core/src/view';
 import { HomePage } from '../home/home';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { Principal } from '../../providers/auth/principal.service';
 /**
  * Generated class for the AddAddressPage page.
  *
@@ -29,6 +30,7 @@ export class AddAddressPage {
   map: any;
   openMap = false;
   mainMarker = null;
+  public user ;
 
   address: { country: string, city: string, street: string, userId: Number, postalCode: String, latitude: Number, longitude: Number } = {
     country: '',
@@ -46,7 +48,7 @@ export class AddAddressPage {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public addressService: AddressService, public toastCtrl: ToastController,
-    public translateService: TranslateService, public geolocation: Geolocation, private builder: FormBuilder, public plaform: Platform
+    public translateService: TranslateService, private app: App, private principal: Principal, public geolocation: Geolocation, private builder: FormBuilder, public plaform: Platform
   ) {
 
     this.translateService.get(['ADD_ADDRESS_ERROR', 'ADD_ADDRESS_SUCCESS']).subscribe((values) => {
@@ -62,6 +64,20 @@ export class AddAddressPage {
     });
 
   }
+
+  ngOnInit() {
+    this.principal.identity().then((account) => {
+      console.log(account);
+      
+      if (account === null) {
+         this.app.getRootNavs()[0].setRoot(FirstRunPage);
+      } else {
+        this.user = account;
+
+      }
+    });
+  }
+
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AddAddressPage');
@@ -137,7 +153,8 @@ export class AddAddressPage {
   
   chooseLocation() {
 
-    this.address.userId = Number.parseInt(localStorage.getItem("userId"));
+   // this.address.userId = Number.parseInt(localStorage.getItem("userId"));
+   this.address.userId = this.user.id;
     console.log(this.address, 'sssssssssssssssss');
 
     this.addressService.save(this.address).subscribe((res) => {
@@ -149,7 +166,7 @@ export class AddAddressPage {
         position: 'top'
       });
       toast.present();
-      this.navCtrl.push(HomePage);
+      this.navCtrl.setRoot(HomePage);
     }, (err) => {
       console.log('error', err);
 

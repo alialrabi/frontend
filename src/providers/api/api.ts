@@ -13,9 +13,9 @@ export class Api {
   // public static API_URL_Talabatk: string = 'http://localhost:6062';
 
   //online 
-  public static API_URL: string = 'http://ec2-52-8-60-188.us-west-1.compute.amazonaws.com:6060';
-  public static API_URL_login: string = 'http://ec2-52-8-60-188.us-west-1.compute.amazonaws.com:6061';
-  public static API_URL_Talabatk: string = 'http://ec2-52-8-60-188.us-west-1.compute.amazonaws.com:6062';
+  public static API_URL: string =       'http://ec2-13-52-153-206.us-west-1.compute.amazonaws.com:6060';
+  public static API_URL_login: string = 'http://ec2-13-52-153-206.us-west-1.compute.amazonaws.com:6061';
+  public static API_URL_Talabatk: string = 'http://ec2-13-52-153-206.us-west-1.compute.amazonaws.com:6062';
 
   constructor(public http: HttpClient) {
   }

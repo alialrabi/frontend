@@ -65,7 +65,7 @@ export class SignupPage {
     // Attempt to login in through our User service
     this.user.signup(this.account).subscribe((res) => {
       console.log(res);
-      var id = res;
+     // var id = res;
 
       let loginAccount = {
         username: this.account.email,
@@ -73,7 +73,7 @@ export class SignupPage {
         rememberMe: false,
       }
 
-      localStorage.setItem("userId" , id+"");
+      //localStorage.setItem("userId" , id+"");
         this.loginService.login(loginAccount).then((response) => {
           let toast = this.toastCtrl.create({
             message: this.signupSuccessString,
