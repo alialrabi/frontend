@@ -6,10 +6,17 @@ import { Injectable } from '@angular/core';
  */
 @Injectable()
 export class Api {
-  public static API_URL: string = 'http://localhost:9999';
-  public static API_URL_login: string = 'http://localhost:8888';
-  public static API_URL_Talabatk: string = 'http://localhost:9129';
+  
+  //public static API_URL: string = 'http://localhost:9999';
+  //public static API_URL_login: string = 'http://localhost:8888';
+  //public static API_URL_Talabatk: string = 'http://localhost:9129';
 
+  public static API_URL: string = 'http://ec2-13-52-153-206.us-west-1.compute.amazonaws.com:6060';
+  public static API_URL_login: string = 'http://ec2-13-52-153-206.us-west-1.compute.amazonaws.com:6061';
+  public static API_URL_Talabatk: string = 'http://ec2-13-52-153-206.us-west-1.compute.amazonaws.com:6062';
+  
+  
+  
   constructor(public http: HttpClient) {
   }
 
