@@ -38,7 +38,7 @@ export class AddCaptainPage {
   };
 
 
-  captain : {code:number , name:string , phone:string , evaluation : string , image : any , imageContentType:string , latitude:number , longitude:number , busy:boolean  , userId:any } = {
+  captain : {code:number , name:string , phone:string , evaluation : string , image : any , imageContentType:string , latitude:number , longitude:number , busy:boolean  , userId:any , agencyId:number } = {
     code: null,
     name: '',
     phone: '',
@@ -48,7 +48,8 @@ export class AddCaptainPage {
     latitude:26.565155512,
    longitude:12.05827521259 ,
    busy:false ,
-   userId:0
+   userId:0 ,
+   agencyId:0
   }
   myForm: FormGroup;
   private addAddressError: string;

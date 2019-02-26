@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, List, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, List, ToastController, App } from 'ionic-angular';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { User } from '../../providers/providers';
 import { TranslateService } from '@ngx-translate/core';
 import { CaptainsPage } from '../captains/captains';
 import { OrderService } from '../../providers/auth/order.service';
 import { OrdersPage } from '../orders/orders';
+import { FirstRunPage } from '../pages';
+import { Principal } from '../../providers/auth/principal.service';
 
 /**
  * Generated class for the AddOrderPage page.
@@ -20,6 +22,8 @@ import { OrdersPage } from '../orders/orders';
   templateUrl: 'add-order.html',
 })
 export class AddOrderPage {
+
+  public account = null;
 
   public formsValid = false;
 
@@ -38,7 +42,7 @@ export class AddOrderPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController
       ,  public translateService: TranslateService , 
-       private builder: FormBuilder , public user:User , public orderService : OrderService) {
+       private builder: FormBuilder , public user:User ,  private app: App, private principal: Principal , public orderService : OrderService) {
 
     this.translateService.get(['ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS']).subscribe((values) => {
       this.addORDERError = values.SIGNUP_ERROR;
@@ -62,6 +66,23 @@ export class AddOrderPage {
 
     //this.getAllUsers();
   }
+
+
+  ngOnInit() {
+    this.principal.identity().then((account) => {
+      console.log(account);
+      
+      if (account === null || account.authorities[0] != 'ROLE_AGENCY') {
+         this.app.getRootNavs()[0].setRoot(FirstRunPage);
+      } else {
+
+        this.account = account;
+        
+      }
+    });
+  }
+
+
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AddOrderPage');
@@ -119,7 +140,8 @@ export class AddOrderPage {
       secondPhone : this.myForm.get("secondPhone").value,
       address : this.myForm.get("address").value,
       status : 'not assigned',
-      captainId : 0
+      captainId : 0 ,
+      agencyId : this.account.id
 
     }
 

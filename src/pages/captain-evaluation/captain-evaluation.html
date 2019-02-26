@@ -1,0 +1,89 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ 'Edit_EVALUATION' | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<!-- -->
+<ion-content class="auth-page">
+  <div class="login-content">
+
+    <!-- Logo -->
+    <div padding text-center>
+      <div class="logo"></div>
+      <h2 ion-text class="text-primary">
+        Tlabatac
+      </h2>
+    </div>
+
+    <!-- Login form -->
+    <form class="list-form" [formGroup]="myForm">
+
+      <ion-item>
+        <ion-label floating>
+          <ion-icon name="thumbs-up" item-start class="text-primary"></ion-icon>
+          {{ 'MORAL' | translate }}
+        </ion-label>
+        <ion-input type="number" min="1" max="5" formControlName="moral" name="moral"></ion-input>
+      </ion-item>
+
+      <p class="validationHint" *ngIf="hasError('moral', 'required')"> {{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('moral', 'pattern' )">{{ 'EVALUATION_VALID' | translate }} </p>
+
+
+      <ion-item>
+        <ion-label floating>
+          <ion-icon name="man" item-start class="text-primary"></ion-icon>
+          {{ 'APPEARANCE' | translate }}
+        </ion-label>
+        <ion-input type="number" min="1" max="5" formControlName="appearnce" name="appearnce"></ion-input>
+      </ion-item>
+
+      <p class="validationHint" *ngIf="hasError('appearnce', 'required' )"> {{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('appearnce', 'pattern' )">{{ 'EVALUATION_VALID' | translate }} </p>
+
+      <ion-item>
+        <ion-label floating>
+          <ion-icon name="speedometer" item-start class="text-primary"></ion-icon>
+          {{ 'SPEED' | translate }}
+        </ion-label>
+        <ion-input type="number" min="1" max="5" formControlName="speed" name="speed"></ion-input>
+      </ion-item>
+
+      <p class="validationHint" *ngIf="hasError('speed', 'required')"> {{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('speed', 'pattern' )">{{ 'EVALUATION_VALID' | translate }} </p>
+
+      <ion-item>
+        <ion-label floating>
+          <ion-icon name="clock" item-start class="text-primary"></ion-icon>
+          {{ 'COMMITMENT' | translate }}
+        </ion-label>
+        <ion-input type="number" min="1" max="5" formControlName="commitment" name="commitment"></ion-input>
+      </ion-item>
+
+      <p class="validationHint" *ngIf="hasError('commitment', 'required' )"> {{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('commitment', 'pattern' )">{{ 'EVALUATION_VALID' | translate }} </p>
+
+      <ion-item>
+        <ion-label floating>
+          <ion-icon name="done-all" item-start class="text-primary"></ion-icon>
+          {{ 'EXCELLENCE' | translate }}
+        </ion-label>
+        <ion-input type="number" min="1" max="5" formControlName="excellence" name="excellence"></ion-input>
+      </ion-item>
+
+      <p class="validationHint" *ngIf="hasError('excellence', 'required')"> {{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('excellence', 'pattern')">{{ 'EVALUATION_VALID' | translate }} </p>
+
+    </form>
+
+    <div margin-top style="margin-bottom: 40px;">
+      <button ion-button block color="dark" tappable (click)="editEvaluation()" [disabled]="!myForm.valid">
+        {{ 'EDIT_EVALUATION_BUTTON' | translate }}
+      </button>
+    </div>
+  </div>
+
+</ion-content>

@@ -16,14 +16,14 @@ export class OrderService  {
 
         return this.http.get(Api.API_URL_login + '/tlabatac/api/orders?access_token=' +this.authservice.getToken());
     }
-    getAllByStatus(status) : Observable<any>{
+    getAllByStatus(status , agencyId) : Observable<any>{
 
-        return this.http.get(Api.API_URL_login + '/tlabatac/api/ordersByStatus/'+status+'?access_token=' +this.authservice.getToken());
+        return this.http.get(Api.API_URL_login + '/tlabatac/api/ordersByStatus/'+status+'/'+agencyId+'?access_token=' +this.authservice.getToken());
     }
-    getCaptainOrders(captainId:any) : Observable<any>{
+    getCaptainOrders(captainId:any , status:any) : Observable<any>{
         console.log(captainId , 'ssssssssssssssss');
         
-        return this.http.get(Api.API_URL_login + '/tlabatac/api/ordersToCaptain/'+captainId+'?access_token=' +this.authservice.getToken());
+        return this.http.get(Api.API_URL_login + '/tlabatac/api/ordersToCaptain/'+captainId+'/'+status+'?access_token=' +this.authservice.getToken());
     }
     assign(captainId: number , orderId:number): Observable<Object> {
 

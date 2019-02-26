@@ -1,5 +1,5 @@
 <!--
-  Generated template for the CaptainsPage page.
+  Generated template for the AgencyCaptainsPage page.
 
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
@@ -7,17 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>captains</ion-title>
-    <ion-buttons end class="btn-style">
-        <button ion-button (click)="openMap()">
-          <ion-icon name="map"></ion-icon>
-        </button>
-      </ion-buttons>
-    <ion-buttons end class="btn-style" *ngIf="userType == 'admin'">
-      <button ion-button (click)="add()">
-        <ion-icon name="add"></ion-icon>
-      </button>
-    </ion-buttons>
+    <ion-title>Agency captains</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -53,6 +43,13 @@
             </ion-col>
           </ion-row>
         </ion-grid>
+
+        <ion-buttons end class="btn-style">
+          <button ion-button (click)="unAssingCaptain(captain)">
+            {{ 'UN_ASSIGN_CAPTAIN' | translate }}
+            </button>
+        </ion-buttons>
+
 
       </ion-item>
 
