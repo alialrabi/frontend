@@ -76,6 +76,11 @@
           </ion-col>
         </ion-row>
       </ion-grid>
+      <ion-buttons end class="btn-style" *ngIf="myVar != 'delivered'">
+        <button ion-button (click)="assingCaptain(order)">
+          {{ 'ASSIGN_CAPTAIN' | translate }}
+          </button>
+      </ion-buttons>
 
     </ion-item>
 

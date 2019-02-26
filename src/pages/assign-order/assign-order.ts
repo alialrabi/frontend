@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, App } from 'ionic-angular';
 import { CaptainService } from '../../providers/auth/captain.service';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { OrderService } from '../../providers/auth/order.service';
 import { OrdersPage } from '../orders/orders';
+import { FirstRunPage } from '../pages';
+import { Principal } from '../../providers/auth/principal.service';
 
 /**
  * Generated class for the AssignOrderPage page.
@@ -28,8 +30,10 @@ export class AssignOrderPage {
 
   public order;
 
+  public account = null;
+
   constructor(public navCtrl: NavController, public navParams: NavParams ,
-    private builder: FormBuilder , public captainService:CaptainService , public toastCtrl: ToastController , public translateService: TranslateService , public orderService:OrderService ) {
+    private builder: FormBuilder , public captainService:CaptainService  , private app: App, private principal: Principal, public toastCtrl: ToastController , public translateService: TranslateService , public orderService:OrderService ) {
 
       this.order = this.navParams.get("item");
 
@@ -45,15 +49,32 @@ export class AssignOrderPage {
       
     });
 
-    this.getAllCaptains();
+    //this.getAllCaptains();
   }
+
+  ngOnInit() {
+    this.principal.identity().then((account) => {
+      console.log(account);
+      this.account = account;
+      
+      if (account === null ) {
+         this.app.getRootNavs()[0].setRoot(FirstRunPage);
+      }else {
+        this.getAllCaptains();
+      }
+       
+        
+      
+    });
+  }
+  
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AssignOrderPage');
   }
 
   getAllCaptains(){
-    this.captainService.getAll().subscribe(
+    this.captainService.getByAgencyId(this.account.id).subscribe(
       res =>{
 
         console.log(res , "res");
@@ -130,5 +151,9 @@ export class AssignOrderPage {
   hasError(field: string, error: string) {
     const ctrl = this.myForm.get(field);
     return ctrl.dirty && ctrl.hasError(error);
+  }
+  
+  skip(){
+    this.navCtrl.push(OrdersPage);
   }
 }

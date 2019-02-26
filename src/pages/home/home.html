@@ -24,7 +24,7 @@
         </div>
       </ion-col>
     </ion-row>
-    <ion-row>
+    <ion-row *ngIf = "userType == 'admin'">
       <ion-col>
         <div margin-top>
           <button ion-button round color="dark" tappable (click)="save()">
@@ -44,11 +44,21 @@
 
       </ion-col>
     </ion-row>
-    <ion-row>
+    <ion-row *ngIf="userType == 'agency'">
       <ion-col>
         <div margin-top>
           <button ion-button round color="dark" tappable (click)="openCustomer()">
-            {{ 'CUSTOMER' | translate }}
+            Orders
+          </button>
+        </div>
+      </ion-col>
+    </ion-row>
+  
+  <ion-row *ngIf="userType == 'admin'">
+      <ion-col>
+        <div margin-top>
+          <button ion-button round color="dark" tappable (click)="openAgency()">
+            Agency
           </button>
         </div>
       </ion-col>

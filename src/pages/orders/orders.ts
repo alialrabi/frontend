@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, App } from 'ionic-angular';
 import { AddOrderPage } from '../add-order/add-order';
 import { OrderService } from '../../providers/auth/order.service';
+import { Principal } from '../../providers/auth/principal.service';
+import { FirstRunPage } from '../pages';
 
 /**
  * Generated class for the OrdersPage page.
@@ -17,14 +19,31 @@ import { OrderService } from '../../providers/auth/order.service';
 })
 export class OrdersPage {
 
+  public account = null;
   public myVar = '';
 
   public ordersList = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public orderService: OrderService) {
-    this.myVar = 'assigned';
-    this.getAllOrders(this.myVar);
+  constructor(public navCtrl: NavController, public navParams: NavParams,  private app: App, private principal: Principal, public orderService: OrderService) {
+    
   }
+
+  ngOnInit() {
+    this.principal.identity().then((account) => {
+      console.log(account);
+      
+      if (account === null || account.authorities[0] != 'ROLE_AGENCY') {
+         this.app.getRootNavs()[0].setRoot(FirstRunPage);
+      } else {
+
+        this.account = account;    
+        this.myVar = 'assigned';
+        this.getAllOrders(this.myVar);   
+        
+      }
+    });
+  }
+
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad OrdersPage');
@@ -32,7 +51,7 @@ export class OrdersPage {
   getAllOrders(status) {
     this.myVar = status;
     this.ordersList = [];
-    this.orderService.getAllByStatus(status).subscribe(res => {
+    this.orderService.getAllByStatus(status , this.account.id).subscribe(res => {
       console.log(res);
 
 
@@ -85,5 +104,8 @@ export class OrdersPage {
     return items;
   }
 
+  assingCaptain(order){
+    this.navCtrl.push('AssignOrderPage',{item:order})
+  }
 
 }

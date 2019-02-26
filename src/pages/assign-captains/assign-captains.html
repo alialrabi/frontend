@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{ 'ADD_ORDER' | translate }}</ion-title>
+    <ion-title>{{ 'ASSIGN-CAPTAINS' | translate }}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -25,18 +25,18 @@
           <ion-icon name="person" item-start class="text-primary"></ion-icon>
           {{ 'CAPTAIN' | translate }}
         </ion-label>
-        <ion-select formControlName="captainId">
-          <ion-option *ngFor="let item of captainList" [selected]="item.name ==item.name" [value]="item.id"  >{{item.name}}   {{ item.busy == true ? 'Busy' : 'Free' }} </ion-option>
+        <ion-select formControlName="captainIds" multiple>
+          <ion-option *ngFor="let item of captainList" [selected]="item.name ==item.name" [value]="item.id"  >{{item.name}} </ion-option>
 
         </ion-select>
       </ion-item>
 
-      <p class="validationHint" *ngIf="hasError('captainId', 'required')"> {{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('captainIds', 'required')"> {{ 'REQURIED' | translate }} </p>
       
     </form>
 
       <div margin-top>
-        <button ion-button block color="dark" tappable (click)="assignOrder()" [disabled]  = "!myForm.valid" >
+        <button ion-button block color="dark" tappable (click)="assignCaptain()" [disabled]  = "!myForm.valid" >
           {{ 'ASSIGN_ORDER_BUTTON' | translate }}
         </button>
       </div>
@@ -46,11 +46,6 @@
         </button>
       </div> -->
 
-      <div margin-top>
-        <button ion-button block color="dark" tappable (click)="skip()"  >
-          {{ 'SKIP' | translate }}
-        </button>
-      </div>
   </div>
 
 </ion-content>

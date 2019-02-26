@@ -34,6 +34,11 @@ import { OrdersPageModule } from '../pages/orders/orders.module';
 import { AssignOrderPageModule } from '../pages/assign-order/assign-order.module';
 import { CaptainOrdersPage } from '../pages/captain-orders/captain-orders';
 import { CaptainOrdersPageModule } from '../pages/captain-orders/captain-orders.module';
+import { CaptainEvaluationPageModule } from '../pages/captain-evaluation/captain-evaluation.module';
+import { AddAgencyPageModule } from '../pages/add-agency/add-agency.module';
+import { AgenciesPageModule } from '../pages/agencies/agencies.module';
+import { AssignCaptainsPageModule } from '../pages/assign-captains/assign-captains.module';
+import { AgencyCaptainsPageModule } from '../pages/agency-captains/agency-captains.module';
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
 export function createTranslateLoader(http: HttpClient) {
@@ -82,7 +87,12 @@ export function provideSettings(storage: Storage) {
     AddOrderPageModule,
     OrdersPageModule,
     AssignOrderPageModule ,
-    CaptainOrdersPageModule
+    CaptainOrdersPageModule ,
+    CaptainEvaluationPageModule ,
+    AddAgencyPageModule ,
+    AgenciesPageModule ,
+    AssignCaptainsPageModule ,
+    AgencyCaptainsPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
