@@ -14,7 +14,7 @@
     <div padding text-center>
       <div class="logo"></div>
       <h2 ion-text class="text-primary">
-        Talabatk
+        Tlabatac
       </h2>
     </div>
 
@@ -69,18 +69,47 @@
 
       <ion-item>
         <ion-label floating>
-          <ion-icon name="pin" item-start class="text-primary"></ion-icon>
-          {{ 'FULL_ADDRESS' | translate }}
+          <ion-icon name="person" item-start class="text-primary"></ion-icon>
+          {{ 'CAPTAIN' | translate }}
         </ion-label>
-        <ion-input type="text" formControlName="address" name="address"></ion-input>
+        <ion-select formControlName="city" [(ngModel)] = "alex">
+          <ion-option [selected]="alex == item" [value]="'Alexandria'"  >{{'ALEX' | translate}} </ion-option>
+          <ion-option [selected]="alex == item" [value]="'Cairo'"  >{{'CAIRO' | translate}} </ion-option>
+          <ion-option [selected]="alex == item" [value]="'Tanta'"  >{{'TANTA' | translate}} </ion-option>
+          <ion-option [selected]="alex == item" [value]="'Damnhor'"  >{{'DAMNHOR' | translate}} </ion-option>
+          <ion-option [selected]="alex == item" [value]="'Shibin Elkom'"  >{{'SHIPIN_ELKOM' | translate}} </ion-option>
+          <ion-option [selected]="alex == item" [value]="'Banha'"  >{{'BANHA' | translate}} </ion-option>
+
+        </ion-select>
+      </ion-item>
+      <p class="validationHint" *ngIf="hasError('city', 'required' , myForm)"> {{ 'REQURIED' | translate }}  </p>
+
+      <ion-item>
+        <ion-label floating>
+          <ion-icon name="pin" item-start class="text-primary"></ion-icon>
+          {{ 'FULL_ADDRESS' | translate }} 1
+        </ion-label>
+        <ion-input type="text" formControlName="address1" name="address1"></ion-input>
       </ion-item>
 
-      <p class="validationHint" *ngIf="hasError('address', 'required' , myForm)"> {{ 'REQURIED' | translate }}  </p>
-      <p class="validationHint" *ngIf="hasError('address', 'maxlength' , myForm)">{{ 'MAX_LENGTH' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('address1', 'required' , myForm)"> {{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('address1', 'maxlength' , myForm)">{{ 'MAX_LENGTH' | translate }} </p>
+
+      <ion-item>
+        <ion-label floating>
+          <ion-icon name="pin" item-start class="text-primary"></ion-icon>
+          {{ 'FULL_ADDRESS' | translate }} 2
+        </ion-label>
+        <ion-input type="text" formControlName="address2" name="address2"></ion-input>
+      </ion-item>
+
+      <p class="validationHint" *ngIf="hasError('address2', 'required' , myForm)"> {{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('address2', 'maxlength' , myForm)">{{ 'MAX_LENGTH' | translate }} </p>
+
 
       <div *ngFor="let item of ordersArray">
         <p style="margin-left: 15px;">
-          {{item}}
+          {{item.index}}. {{item.name}}
         </p>
       </div>
 
@@ -99,7 +128,7 @@
       
     </form>
     <ion-buttons end class="btn-style" >
-      <button ion-button (click)="add()" [disabled] = "!myForm.get('order').valid">
+      <button ion-button (click)="add()" [disabled] = "!this.myForm.get('order').value.length>0">
         <ion-icon name="add"></ion-icon>
       </button>
       </ion-buttons>

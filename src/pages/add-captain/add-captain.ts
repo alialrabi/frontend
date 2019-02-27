@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ToastController, App } from 'ionic-angular';
 import { ImagePicker } from '@ionic-native/image-picker';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { JhiDataUtils } from 'ng-jhipster';
@@ -64,7 +64,7 @@ export class AddCaptainPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public _alert: AlertController
     , public imagePicker: ImagePicker, public camera: Camera, public toastCtrl: ToastController, 
     public captainService:CaptainService ,
-     public translateService: TranslateService , private builder: FormBuilder , public user: User , private accountService: AccountService) {
+     public translateService: TranslateService , private app:App , private builder: FormBuilder , public user: User , private accountService: AccountService) {
 
       this.translateService.get(['ADD_CAPTAIN_ERROR', 'ADD_CAPTAIN_SUCCESS']).subscribe((values) => {
         this.addAddressError = values.SIGNUP_ERROR;
@@ -189,7 +189,8 @@ export class AddCaptainPage {
           position: 'top'
         });
         toast.present();
-        this.navCtrl.push(CaptainsPage);
+        //this.navCtrl.push(CaptainsPage);
+        this.app.getRootNavs()[0].setRoot(CaptainsPage);
       }, (err1) => {
         console.log('error' , err1);
         

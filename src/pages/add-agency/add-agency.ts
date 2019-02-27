@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, App } from 'ionic-angular';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { User } from '../../providers/user/user';
 import { TranslateService } from '@ngx-translate/core';
@@ -44,6 +44,7 @@ export class AddAgencyPage {
     public toastCtrl: ToastController,
     public translateService: TranslateService,
     public loginService: LoginService,
+    public app:App,
     public accountService: AccountService,
     private builder: FormBuilder) {
 
@@ -81,8 +82,8 @@ export class AddAgencyPage {
         position: 'top'
       });
       toast.present();
-       this.navCtrl.push(AgenciesPage);
-
+       //this.navCtrl.push(AgenciesPage);
+       this.app.getRootNavs()[0].setRoot(AgenciesPage);
 
     }, (err) => {
       // Unable to sign up

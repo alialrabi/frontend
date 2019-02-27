@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, App } from 'ionic-angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { CaptainService } from '../../providers/auth/captain.service';
@@ -27,7 +27,7 @@ export class AssignCaptainsPage {
 
   public agency = null;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private builder: FormBuilder, public captainService: CaptainService, public toastCtrl: ToastController, public translateService: TranslateService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private app:App  ,private builder: FormBuilder, public captainService: CaptainService, public toastCtrl: ToastController, public translateService: TranslateService) {
 
     this.agency = this.navParams.get("item");
 
@@ -87,7 +87,8 @@ export class AssignCaptainsPage {
           position: 'top'
         });
         toast.present();
-        this.navCtrl.push(AgenciesPage);
+        //this.navCtrl.push(AgenciesPage);
+        this.app.getRootNavs()[0].setRoot(AgenciesPage);
 
       }, err => {
 

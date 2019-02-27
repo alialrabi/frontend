@@ -33,20 +33,35 @@ export class AddOrderPage {
   public orderString = '';
   public ordersArray = [];
 
+  // public cities = [
+  //   {
+  //     name:"dddd",
+  //     id:1
+  //   },
+  //   {
+  //     name:"hhh",
+  //     id:2
+  //   }
+  // ]
+
   public order : {userId : number , orders : Array<string> } = {
     userId:null,
     orders:['']
   }
   public addORDERError;
   public addORDERSuccessString;
+  public alex ='';
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController
       ,  public translateService: TranslateService , 
        private builder: FormBuilder , public user:User ,  private app: App, private principal: Principal , public orderService : OrderService) {
 
-    this.translateService.get(['ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS']).subscribe((values) => {
-      this.addORDERError = values.SIGNUP_ERROR;
-      this.addORDERSuccessString = values.SIGNUP_SUCCESS;
+    this.translateService.get(['ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS' , 'ALEX']).subscribe((values) => {
+      console.log(values);
+      
+      this.addORDERError = values.ADD_ORDER_ERROR;
+      this.addORDERSuccessString = values.ADD_ORDER_SUCCESS;
+      //this.alex = values.ALEX;
     })
 
 
@@ -55,9 +70,15 @@ export class AddOrderPage {
       'name': ['', [Validators.required , Validators.maxLength(45)]],
       'phone':['', [Validators.required , Validators.pattern("(01)[0-9]{9}")]],
       'secondPhone':['', [ Validators.pattern("(01)[0-9]{9}")]],
-      'address': ['', [Validators.required , Validators.maxLength(100)]],
+      'address1': ['', [Validators.required , Validators.maxLength(100)]],
+      'address2': ['', [Validators.required , Validators.maxLength(100)]],
+      'city': ['', [Validators.required]],
       "order":['',[Validators.required , Validators.maxLength(45)]]
     });
+
+    
+
+    
 
     // let form = builder.group({
     //   "order":['',[Validators.required , Validators.maxLength(45)]]
@@ -114,9 +135,16 @@ export class AddOrderPage {
 
     this.orderString += this.myForm.get('order').value;
     this.orderString += ' - ';
-    this.ordersArray.push(this.myForm.get('order').value);
+    let subOrder = {
+      name : this.myForm.get('order').value,
+      index : this.ordersArray.length + 1
+    }
+    this.ordersArray.push(subOrder);
     this.myForm.get('order').setValue('');
-
+    this.myForm.get('order').clearValidators();
+    this.myForm.get('order').clearAsyncValidators();
+    this.myForm.get('order').updateValueAndValidity();
+    
   }
   addOrder(){
 
@@ -138,11 +166,12 @@ export class AddOrderPage {
       name : this.myForm.get("name").value,
       firstPhone :  this.myForm.get("phone").value,
       secondPhone : this.myForm.get("secondPhone").value,
-      address : this.myForm.get("address").value,
+      city : this.myForm.get("city").value,
+      address : this.myForm.get("address1").value,
+      secondAddress : this.myForm.get("address2").value,
       status : 'not assigned',
       captainId : 0 ,
       agencyId : this.account.id
-
     }
 
     console.log(orderObject , 'ssssssssssss');
@@ -196,6 +225,24 @@ export class AddOrderPage {
     const ctrl = form.get(field);
     return ctrl.dirty && ctrl.hasError(error);
 
+  }
+  check(item){
+    console.log(item , this.myForm.get("city").value , 'ssssssss');
+
+    let flag = false;
+    
+    if(item == this.myForm.get("city").value){
+      console.log('************');
+      
+      flag =  true;
+    }
+    console.log(flag);
+    
+    return flag;
+  }
+
+  compareFn(e1: any  , e2: any): boolean {
+    return e1 && e2 ? e1.id === e2.id : e1 === e2;
   }
  
 
