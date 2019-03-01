@@ -36,7 +36,11 @@ export class AccountService  {
         //return  this.http.post(Api.API_URL +'/api/registerCaptainUser' , accountInfo );       
         return this.http.post(Api.API_URL_login + '/uaa/api/registerAgency?access_token=' +this.authservice.getToken(), accountInfo);
  
-    
+      }
+      updateAutoAssign(accountInfo: any) : Observable<any>{
 
+        //return  this.http.post(Api.API_URL +'/api/registerCaptainUser' , accountInfo );       
+        return this.http.put(Api.API_URL_login + '/uaa/api/updateAutoAssign?access_token=' +this.authservice.getToken(), accountInfo);
+ 
       }
 }

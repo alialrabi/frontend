@@ -100,7 +100,8 @@ export class AssignOrderPage {
           position: 'top'
         });
         toast.present();
-        this.navCtrl.push(OrdersPage);
+        //this.navCtrl.push(OrdersPage);
+        this.app.getRootNavs()[0].setRoot(OrdersPage);
 
       }, err =>{
         console.log(err);
@@ -129,7 +130,8 @@ export class AssignOrderPage {
           position: 'top'
         });
         toast.present();
-        this.navCtrl.push(OrdersPage);
+       // this.navCtrl.push(OrdersPage);
+        this.app.getRootNavs()[0].setRoot(OrdersPage);
 
       }, err =>{
         console.log(err);
@@ -154,6 +156,7 @@ export class AssignOrderPage {
   }
   
   skip(){
-    this.navCtrl.push(OrdersPage);
+    //this.navCtrl.push(OrdersPage);
+    this.app.getRootNavs()[0].setRoot(OrdersPage);
   }
 }

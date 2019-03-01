@@ -13,6 +13,9 @@ import { AccountService } from '../../providers/auth/account.service';
 import { CaptainOrdersPage } from '../captain-orders/captain-orders';
 import { CaptainService } from '../../providers/auth/captain.service';
 import { Principal } from '../../providers/auth/principal.service';
+import { OrdersPage } from '../orders/orders';
+import { AgenciesPage } from '../agencies/agencies';
+import { MyApp } from '../../app/app.component';
 
 @IonicPage()
 @Component({
@@ -41,11 +44,12 @@ export class LoginPage {
     public translateService: TranslateService,
     private builder: FormBuilder,
     private principal: Principal,
-    private accountService: AccountService, private captainService: CaptainService) {
+    private accountService: AccountService, private captainService: CaptainService , public myApp:MyApp) {
 
     this.translateService.get('LOGIN_ERROR').subscribe((value) => {
       this.loginErrorString = value;
     })
+    this.validateUser();
 
     this.myForm = builder.group({
       'username': ['', [Validators.required]],
@@ -58,30 +62,9 @@ export class LoginPage {
   doLogin() {
     this.loginService.login(this.account).then((response) => {
 
+      this.myApp.checkAccess();
 
-      this.principal.identity().then((account) => {
-        console.log(account);
-
-        if (account === null) {
-          this.app.getRootNavs()[0].setRoot(FirstRunPage);
-        } else {
-          this.account = account;
-
-          console.log(this.account, '555555555555');
-
-
-          if (account.authorities[0] === 'ROLE_CAPTAIN') {
-
-            this.app.getRootNavs()[0].setRoot(CaptainOrdersPage);
-
-          } else {
-            this.app.getRootNavs()[0].setRoot(HomePage);
-          }
-
-
-        }
-      });
-
+      this.validateUser();
 
 
 
@@ -96,6 +79,37 @@ export class LoginPage {
       });
       toast.present();
     });
+  }
+  validateUser(){
+    this.principal.identity().then((account) => {
+
+        
+
+      console.log(account);
+
+      if (account === null) {
+        //this.app.getRootNavs()[0].setRoot(FirstRunPage);
+      } else {
+        this.account = account;
+
+        console.log(this.account, '555555555555');
+
+
+        if (account.authorities[0] === 'ROLE_CAPTAIN') {
+
+          this.app.getRootNavs()[0].setRoot(CaptainOrdersPage);
+
+        } else if(account.authorities[0] == 'ROLE_AGENCY') {
+          this.app.getRootNavs()[0].setRoot(OrdersPage);
+        }
+        else {
+          this.app.getRootNavs()[0].setRoot(AgenciesPage);
+        }
+
+
+      }
+    });
+
   }
 
   register() {

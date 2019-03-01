@@ -32,9 +32,9 @@ export class OrdersPage {
     this.principal.identity().then((account) => {
       console.log(account);
       
-      if (account === null || account.authorities[0] != 'ROLE_AGENCY') {
+      if (account === null  ) {
          this.app.getRootNavs()[0].setRoot(FirstRunPage);
-      } else {
+      } else if(account.authorities[0] == 'ROLE_AGENCY'){
 
         this.account = account;    
         this.myVar = 'assigned';
@@ -87,7 +87,11 @@ export class OrdersPage {
 
         console.log(orders.charAt(index));
         if (orders.charAt(index) === '-' && orders.charAt(index - 1) === ' ' && orders.charAt(index + 1) === ' ') {
-          items.push(orders.substring(0, index - 1));
+          let subOrder = {
+            name : orders.substring(0, index - 1),
+            index : orders.length + 1
+          }
+          items.push(subOrder);
           orders = orders.substring(index+1 , orders.length)
         }
 

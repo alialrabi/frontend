@@ -100,7 +100,7 @@ export class CaptainsMapPage {
 
     let mapOptions = {
       center: latLng,
-      zoom: 15
+      zoom:10
     }
 
     this.map = new google.maps.Map(this.elementRef.nativeElement, mapOptions);
