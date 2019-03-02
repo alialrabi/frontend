@@ -7,13 +7,19 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Agancies</ion-title>
-
-    <ion-buttons end class="btn-style">
-      <button ion-button (click)="add()">
-        <ion-icon name="add"></ion-icon>
+    
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
       </button>
-    </ion-buttons>
+
+
+      <ion-title>Agancies</ion-title>
+
+      <ion-buttons end class="btn-style">
+        <button ion-button (click)="add()">
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-buttons>
   </ion-navbar>
 
 </ion-header>
@@ -48,7 +54,7 @@
         </ion-row>
         <ion-row>
           <ion-col>
-            <ion-buttons end class="btn-style" style="width: 100%;" >
+            <ion-buttons end class="btn-style" style="width: 100%;">
               <button ion-button (click)="assingCaptains(agency)" style="width: 100%;">
                 {{ 'ASSIGN_CAPTAIN' | translate }}
               </button>

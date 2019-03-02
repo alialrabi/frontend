@@ -1,14 +1,17 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{ pageTitle }}</ion-title>
+      <button ion-button menuToggle>
+          <ion-icon name="menu"></ion-icon>
+        </button>
+    <ion-title>{{ 'SETTING'| translate}}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
-<ion-content>
+<ion-content class="auth-page">
 
-  <form [formGroup]="form" *ngIf="settingsReady">
+  <!-- <form [formGroup]="form" *ngIf="settingsReady">
     <ion-list *ngIf="page == 'main'">
       <ion-item>
         <ion-label>{{ 'SETTINGS_OPTION1' | translate }}</ion-label>
@@ -40,6 +43,15 @@
         <ion-input formControlName="option4"></ion-input>
       </ion-item>
     </ion-list>
-  </form>
+  </form> -->
+
+  <form [formGroup]="myForm"  class="list-form" style="width: 100%">
+
+  <ion-item>
+    <ion-label>{{'AUTO_ASSIGN_MESSAGE1' | translate}} <br> {{'AUTO_ASSIGN_MESSAGE2' | translate}}  </ion-label>
+    <ion-toggle formControlName="autoAssign" (ionChange)= "changeAssign()"></ion-toggle>
+  </ion-item>
+
+</form>
 
 </ion-content>

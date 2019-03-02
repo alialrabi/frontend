@@ -14,6 +14,7 @@ import { OrdersPage } from '../pages/orders/orders';
 import { CaptainsPage } from '../pages/captains/captains';
 import { AgenciesPage } from '../pages/agencies/agencies';
 import { LoginService } from '../providers/login/login.service';
+import { SettingsPage } from '../pages/settings/settings';
 
 export interface MenuItem {
   title: string;
@@ -37,7 +38,7 @@ export class MyApp {
   public userType = '';
 
 
-  constructor(private translate: TranslateService, public menu: MenuController ,platform: Platform, settings: Settings, private config: Config,
+  constructor(private translate: TranslateService, public menu: MenuController , platform: Platform, settings: Settings, private config: Config,
               private statusBar: StatusBar , private loginService:LoginService , private app: App, private principal: Principal , private splashScreen: SplashScreen , private keyboard: Keyboard ) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -72,24 +73,27 @@ export class MyApp {
 
       } else if(account.authorities[0] == 'ROLE_AGENCY') {
         this.isLogOut = false;
-        this.userType = 'agency'
+        this.userType = 'Agency'
         this.account = account;
         this.appMenuItems = [
            {title: 'Orders', component: OrdersPage, icon: 'basket'},
-           {title: 'Captains', component: CaptainsPage, icon: 'bicycle'}
-        ];       
+           {title: 'Captains', component: CaptainsPage, icon: 'bicycle'},
+           {title: 'Setting', component: SettingsPage, icon: 'construct'}
+        ];
+        this.nav.setRoot("OrdersPage")       
       } else if(account.authorities[0] == 'ROLE_CAPTAIN') {
         this.isLogOut = false;
-        this.userType = 'captain'
+        this.userType = 'Captain'
         this.account = account;
       }     else {
         this.isLogOut = false;
-        this.userType = 'admin'
+        this.userType = 'Admin'
         this.account = account;
         this.appMenuItems = [
            {title: 'Agencies', component: AgenciesPage, icon: 'home'},
            {title: 'Captains', component: CaptainsPage, icon: 'bicycle'}
-        ]; 
+        ];
+        this.nav.setRoot("AgenciesPage")   
       }
       console.log(this.userType , 'user');
       
@@ -117,15 +121,29 @@ export class MyApp {
     console.log(page);
     
     this.app.getRootNavs()[0].setRoot(page.component);
+    //this.menu.close("authenticated");
   }
   logout() {
-    this.loginService.logout();
+    this.menu.close().then(
+      res => {
+
+        this.loginService.logout();
     //this.userType = '';
     //this.account = null;
-    this.menu.close();
-    this.checkAccess();
-    this.isLogOut = true;
+    
+    
+      this.checkAccess();
+      this.isLogOut = true;
     // this.app.getRootNavs()[0].setRoot(FirstRunPage);
+
+      }
+    );   
+    
+    
+  }
+
+  openMenu(){
+    this.menu.open();
   }
   
 }

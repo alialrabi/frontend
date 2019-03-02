@@ -14,6 +14,10 @@ import { SettingsPage } from './settings';
   ],
   exports: [
     SettingsPage
+  ],entryComponents :[
+    SettingsPage
+  ],providers:[
+
   ]
 })
 export class SettingsPageModule { }

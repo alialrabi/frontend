@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, MenuController } from 'ionic-angular';
 import { AccountService } from '../../providers/auth/account.service';
 import { AddAgencyPage } from '../add-agency/add-agency';
 import { AssignCaptainsPage } from '../assign-captains/assign-captains';
 import { AgencyCaptainsPage } from '../agency-captains/agency-captains';
+import { MyApp } from '../../app/app.component';
 
 /**
  * Generated class for the AgenciesPage page.
@@ -21,7 +22,8 @@ export class AgenciesPage {
 
   public  agenciesList = [] ;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams ,public accountService:AccountService) {
+  constructor(public navCtrl: NavController,public navParams: NavParams 
+     ,public accountService:AccountService) {
 
     this.getAllCaptains();
 
@@ -57,4 +59,9 @@ export class AgenciesPage {
    viewCaptains(agency){
     this.navCtrl.push(AgencyCaptainsPage , {item:agency});
    }
+
+
+  //  openMenu(){
+  //   this.myApp.openMenu();
+  //  }
 }
