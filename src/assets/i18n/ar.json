@@ -1,4 +1,10 @@
 {
+  "AUTO_ASSIGN_MESSAGE2":"الطلبات الى انفسهم",
+  "AUTO_ASSIGN_MESSAGE1":"تمكين الطيارين من الحاق ",
+  "SETTING":"الظبط",
+  "AUTO_ASSIGN_CONFIRM_MESSAGE":"هل تريد تعديل الاحاق الالكترونى",
+  "AUTO_ASSIGN_ERROR":"خطأ فى تعديل الالحاق التلقائى",
+  "AUTO_ASSIGN_SUCCESS":"تم تعديل الالحاق التلقائى",
   "BANHA":"بنها",
   "SHIPIN_ELKOM":"شبين الكوم",
   "DAMNHOR":"دمنهور",

@@ -40,6 +40,8 @@ import { AgenciesPageModule } from '../pages/agencies/agencies.module';
 import { AssignCaptainsPageModule } from '../pages/assign-captains/assign-captains.module';
 import { AgencyCaptainsPageModule } from '../pages/agency-captains/agency-captains.module';
 import { LoginPageModule } from '../pages/login/login.module';
+//import { settings } from 'cluster';
+import { SettingsPageModule } from '../pages/settings/settings.module';
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
 export function createTranslateLoader(http: HttpClient) {
@@ -93,7 +95,8 @@ export function provideSettings(storage: Storage) {
     AddAgencyPageModule ,
     AgenciesPageModule ,
     AssignCaptainsPageModule ,
-    AgencyCaptainsPageModule 
+    AgencyCaptainsPageModule ,
+    SettingsPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

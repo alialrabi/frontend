@@ -100,10 +100,10 @@ export class LoginPage {
           this.app.getRootNavs()[0].setRoot(CaptainOrdersPage);
 
         } else if(account.authorities[0] == 'ROLE_AGENCY') {
-          this.app.getRootNavs()[0].setRoot(OrdersPage);
+         // this.app.getRootNavs()[0].setRoot(OrdersPage);
         }
         else {
-          this.app.getRootNavs()[0].setRoot(AgenciesPage);
+          //this.app.getRootNavs()[0].setRoot(AgenciesPage);
         }
 
 

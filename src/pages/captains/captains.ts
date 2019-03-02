@@ -24,7 +24,7 @@ export class CaptainsPage {
  userType='';
  public account = null;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams  ,private app: App, private principal: Principal, public captainService:CaptainService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams ,private app: App, private principal: Principal, public captainService:CaptainService) {
     //this.getAllCaptains();
   }
 
@@ -91,5 +91,9 @@ export class CaptainsPage {
  openMap(){
    this.navCtrl.push(CaptainsMapPage)
  }
+
+//  openMenu(){
+//   this.menu.open("authenticated");
+//  }
 
 }

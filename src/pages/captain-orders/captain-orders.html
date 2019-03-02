@@ -22,7 +22,7 @@
 
     <ion-grid style="width: 100%">
         <ion-row>
-          <ion-col style="padding: 0px">
+          <ion-col style="padding: 0px" *ngIf = "autoAssign" >
             <button ion-button block tappable [ngClass] ="{'tap-selected': myVar == 'not assigned', 'tap-notselected': myVar != 'not assigned'}" (click)="getNotAssigned('not assigned')">
               <!-- <ion-icon name="close" item-start></ion-icon> -->
               {{ 'NOT_ASSIGNED' | translate }}

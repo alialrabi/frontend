@@ -1,9 +1,9 @@
-<ion-menu side="left" id="authenticated" [content]="content" *ngIf = "account != null && (userType == 'admin' || userType == 'agency')">
+<ion-menu side="left" id="authenticated" [content]="content" *ngIf = "account != null && (userType == 'Admin' || userType == 'Agency')">
   <ion-header *ngIf = "!isLogOut" >
     <ion-toolbar class="user-profile">
 
       <ion-grid>
-        <ion-row>
+        <ion-row> 
           <ion-col col-4>
               <div class="user-avatar">
                 <img src="../assets/img/person.png">
@@ -13,7 +13,7 @@
             <h2 ion-text class="no-margin bold text-white">
               {{account?.firstName}} {{account?.lastName}}
             </h2>
-            <span ion-text color="light">Customer</span>
+            <span ion-text color="light">{{userType}}</span>
           </ion-col>
         </ion-row>
 
@@ -25,7 +25,7 @@
             </button>
           </ion-col> -->
           <ion-col no-padding class="column">
-            <button ion-button icon-left small full color="light" menuClose (click)="logout()">
+            <button ion-button icon-left small full color="light"  (click)="logout()">
               <ion-icon name="log-out"></ion-icon>
               Log Out
             </button>

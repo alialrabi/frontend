@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, App } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, App, MenuController } from 'ionic-angular';
 import { AddOrderPage } from '../add-order/add-order';
 import { OrderService } from '../../providers/auth/order.service';
 import { Principal } from '../../providers/auth/principal.service';
@@ -111,5 +111,9 @@ export class OrdersPage {
   assingCaptain(order){
     this.navCtrl.push('AssignOrderPage',{item:order})
   }
+
+  // openMenu(){
+  //   this.menu.open("authenticated");
+  //  }
 
 }

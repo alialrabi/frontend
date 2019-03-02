@@ -6,6 +6,7 @@ import { Principal } from '../../providers/auth/principal.service';
 import { FirstRunPage } from '../pages';
 import { CaptainService } from '../../providers/auth/captain.service';
 import { LoginService } from '../../providers/login/login.service';
+import { AccountService } from '../../providers/auth/account.service';
 
 
 /**
@@ -28,6 +29,9 @@ export class CaptainOrdersPage {
   deliverOrderError = null;
 
   public captain;
+  public agency;
+
+  public autoAssign = false;
 
   public myVar = null;
 
@@ -35,7 +39,7 @@ export class CaptainOrdersPage {
   assignOrderError = null;
 
 
-  constructor(public navCtrl: NavController, private loginService: LoginService, private captainService: CaptainService, private app: App, private principal: Principal, public navParams: NavParams, public orderService: OrderService, public translateService: TranslateService, public toastCtrl: ToastController) {
+  constructor(public navCtrl: NavController, private loginService: LoginService, public accountService:AccountService , private captainService: CaptainService, private app: App, private principal: Principal, public navParams: NavParams, public orderService: OrderService, public translateService: TranslateService, public toastCtrl: ToastController) {
 
     // this.captain = this.navParams.get("item");
 
@@ -108,6 +112,9 @@ export class CaptainOrdersPage {
             console.log("**********");
             
             this.getAllOrders(this.myVar);
+            if(this.captain.agencyId != 0){
+            this.getCaptainAgency();
+            }
             console.log("********************");
             
             classIn.updateLocation(classIn);
@@ -125,6 +132,24 @@ export class CaptainOrdersPage {
 
 
   }
+
+  getCaptainAgency(){
+    this.accountService.getById(this.captain.agencyId).subscribe(
+      res =>{
+        console.log(res , 'nnnnnnnnnnnnn');
+        this.agency = res;
+        this.autoAssign = res.autoAssign
+        
+
+      }, err =>{
+
+        console.log(err , 'errrrrrrror');
+        
+
+      }
+    )
+  }
+
 
   getNotAssigned(status) {
     this.ordersList = [];

@@ -1,4 +1,10 @@
 {
+  "AUTO_ASSIGN_MESSAGE2":" orders to them selves",
+  "AUTO_ASSIGN_MESSAGE1":"Enable Captians to assign",
+  "SETTING":"Setting",
+  "AUTO_ASSIGN_CONFIRM_MESSAGE":"Do you want to change the Auto assign technology",
+  "AUTO_ASSIGN_ERROR":"Error in chenge Auto assign",
+  "AUTO_ASSIGN_SUCCESS":"Change Auto Assign Successfully",
   "BANHA":"Banha",
   "SHIPIN_ELKOM":"Shibin Elkom",
   "DAMNHOR":"Damnhor",

@@ -13,6 +13,10 @@ export class AccountService  {
         //return this.http.get(Api.API_URL +'/api/account?access_token=' +this.authservice.getToken());
         return this.http.get(Api.API_URL_login + '/uaa/api/account?access_token=' +this.authservice.getToken());
     }
+    getById(userId): Observable<any> {
+        //return this.http.get(Api.API_URL +'/api/account?access_token=' +this.authservice.getToken());
+        return this.http.get(Api.API_URL_login + '/uaa/api/account/'+userId+'?access_token=' +this.authservice.getToken());
+    }
     getAllAgency(): Observable<any> {
         //return this.http.get(Api.API_URL +'/api/account?access_token=' +this.authservice.getToken());
         return this.http.get(Api.API_URL_login + '/uaa/api/users/getAllAgency?access_token=' +this.authservice.getToken());
