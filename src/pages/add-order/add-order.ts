@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, List, ToastController, App } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, List, ToastController, App, LoadingController } from 'ionic-angular';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { User } from '../../providers/providers';
 import { TranslateService } from '@ngx-translate/core';
@@ -29,7 +29,7 @@ export class AddOrderPage {
 
   myForm: FormGroup;
   userList = [];
- // public forms = [];
+  // public forms = [];
   public orderString = '';
   public ordersArray = [];
 
@@ -44,41 +44,46 @@ export class AddOrderPage {
   //   }
   // ]
 
-  public order : {userId : number , orders : Array<string> } = {
-    userId:null,
-    orders:['']
+  public order: { userId: number, orders: Array<string> } = {
+    userId: null,
+    orders: ['']
   }
   public addORDERError;
   public addORDERSuccessString;
-  public alex ='';
+  public alex = 'Alexandria';
+  public pleaseWait;
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController
-      ,  public translateService: TranslateService , 
-       private builder: FormBuilder , public user:User ,  private app: App, private principal: Principal , public orderService : OrderService) {
+    , public translateService: TranslateService,private loading: LoadingController,
+    private builder: FormBuilder, public user: User, private app: App, private principal: Principal, public orderService: OrderService) {
 
-    this.translateService.get(['ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS' , 'ALEX']).subscribe((values) => {
+    console.log('con');
+
+    this.translateService.get(['ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS', 'ALEX','PLEASE_WAIT']).subscribe((values) => {
       console.log(values);
-      
+
       this.addORDERError = values.ADD_ORDER_ERROR;
       this.addORDERSuccessString = values.ADD_ORDER_SUCCESS;
+      this.pleaseWait = values.PLEASE_WAIT
       //this.alex = values.ALEX;
     })
 
 
     this.myForm = builder.group({
       //'userId':['', [Validators.required ]],
-      'name': ['', [Validators.required , Validators.maxLength(45)]],
-      'phone':['', [Validators.required , Validators.pattern("(01)[0-9]{9}")]],
-      'secondPhone':['', [ Validators.pattern("(01)[0-9]{9}")]],
-      'address1': ['', [Validators.required , Validators.maxLength(100)]],
-      'address2': ['', [Validators.required , Validators.maxLength(100)]],
-      'city': ['', [Validators.required]],
-      "order":['',[Validators.required , Validators.maxLength(45)]]
+      'name': ['', [Validators.required, Validators.maxLength(45)]],
+      'phone': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
+      'secondPhone': ['', [Validators.pattern("(01)[0-9]{9}")]],
+      'address1': ['', [Validators.required, Validators.maxLength(100)]],
+      'address2': ['', [Validators.maxLength(100)]],
+      'city': ["'Alexandria'", [Validators.required]],
+      "order": ['', [Validators.required, Validators.maxLength(45)]]
     });
 
-    
 
-    
+
+
 
     // let form = builder.group({
     //   "order":['',[Validators.required , Validators.maxLength(45)]]
@@ -90,16 +95,26 @@ export class AddOrderPage {
 
 
   ngOnInit() {
+
+    let load = this.loading.create({
+      content: this.pleaseWait
+  
+  
+    })
+    load.present()
+
     this.principal.identity().then((account) => {
       console.log(account);
-      
+      load.dismiss();
       if (account === null || account.authorities[0] != 'ROLE_AGENCY') {
-         this.app.getRootNavs()[0].setRoot(FirstRunPage);
+        this.app.getRootNavs()[0].setRoot(FirstRunPage);
       } else {
 
         this.account = account;
-        
+
       }
+    }).catch((err)=>{
+      load.dismiss();
     });
   }
 
@@ -108,24 +123,24 @@ export class AddOrderPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad AddOrderPage');
   }
-  getAllUsers(){
+  getAllUsers() {
     this.user.findAll().subscribe(
-      res =>{
+      res => {
 
-        console.log(res , "res");
+        console.log(res, "res");
         this.userList = res;
-        
 
-      }, err =>{
 
-        console.log(err , "err");
-        
+      }, err => {
+
+        console.log(err, "err");
+
 
       }
     )
 
   }
-  add(){
+  add() {
     // this.order.orders.push('');
     // let form = this.builder.group({
     //   "order":['',[Validators.required , Validators.maxLength(45)]]
@@ -136,79 +151,97 @@ export class AddOrderPage {
     this.orderString += this.myForm.get('order').value;
     this.orderString += ' - ';
     let subOrder = {
-      name : this.myForm.get('order').value,
-      index : this.ordersArray.length + 1
+      name: this.myForm.get('order').value,
+      index: this.ordersArray.length + 1
     }
     this.ordersArray.push(subOrder);
     this.myForm.get('order').setValue('');
     this.myForm.get('order').clearValidators();
     this.myForm.get('order').clearAsyncValidators();
     this.myForm.get('order').updateValueAndValidity();
-    
+
   }
-  addOrder(){
+  addOrder() {
 
     //let orderValue = '';
     // this.forms.forEach(element => {
-      
+
     //   let value = element.get('order').value + " - ";
 
     //   orderValue +=  value;
 
     // });
+    
     //orderValue = this.o
 
-    this.orderString += this.myForm.get('order').value
+
+    let load = this.loading.create({
+      content: this.pleaseWait
+  
+  
+    })
+    load.present()
+
+
+
+    if (this.myForm.get('order').value.length > 0) {
+
+      this.orderString += this.myForm.get('order').value
+    }else{
+      this.orderString = this.orderString.substring(0 , this.orderString.length - 2);
+    }
 
     let orderObject = {
       //userId : this.myForm.get('userId').value,
-      orders : this.orderString ,
-      name : this.myForm.get("name").value,
-      firstPhone :  this.myForm.get("phone").value,
-      secondPhone : this.myForm.get("secondPhone").value,
-      city : this.myForm.get("city").value,
-      address : this.myForm.get("address1").value,
-      secondAddress : this.myForm.get("address2").value,
-      status : 'not assigned',
-      captainId : 0 ,
-      agencyId : this.account.id
+      orders: this.orderString,
+      name: this.myForm.get("name").value,
+      firstPhone: this.myForm.get("phone").value,
+      secondPhone: this.myForm.get("secondPhone").value,
+      city: this.myForm.get("city").value,
+      address: this.myForm.get("address1").value,
+      secondAddress: this.myForm.get("address2").value,
+      status: 'not assigned',
+      captainId: 0,
+      agencyId: this.account.id
     }
 
-    console.log(orderObject , 'ssssssssssss');
+    console.log(orderObject, 'ssssssssssss');
 
 
     this.orderService.save(orderObject).subscribe((res) => {
-      console.log(res , 'res');
+      console.log(res, 'res');
 
       let obj = res;
-      
+
       let toast = this.toastCtrl.create({
         message: this.addORDERSuccessString,
         duration: 3000,
         position: 'top'
       });
       toast.present();
-      this.navCtrl.push('AssignOrderPage',{item:obj})
+      load.dismiss();
+      this.navCtrl.push('AssignOrderPage', { item: obj })
     }, (err) => {
-      console.log('error' , err);
-      
+      console.log('error', err);
+
       // Unable to add address
       // const error = JSON.parse(err.error);
       let displayError = this.addORDERError;
-      
+
       let toast = this.toastCtrl.create({
-          message: displayError,
-          duration: 3000,
-          position: 'middle'
+        message: displayError,
+        duration: 3000,
+        position: 'middle'
       });
       toast.present();
+      load.dismiss();
     });
-    
-    
+
+
 
   }
 
-  change(){
+  change() {
 
     // let valid = true;
 
@@ -220,30 +253,30 @@ export class AddOrderPage {
     // this.formsValid = valid;
 
   }
-  hasError(field: string, error: string , form) {
-    
+  hasError(field: string, error: string, form) {
+
     const ctrl = form.get(field);
     return ctrl.dirty && ctrl.hasError(error);
 
   }
-  check(item){
-    console.log(item , this.myForm.get("city").value , 'ssssssss');
+  check(item) {
+    console.log(item, this.myForm.get("city").value, 'ssssssss');
 
     let flag = false;
-    
-    if(item == this.myForm.get("city").value){
+
+    if (item == this.myForm.get("city").value) {
       console.log('************');
-      
-      flag =  true;
+
+      flag = true;
     }
     console.log(flag);
-    
+
     return flag;
   }
 
-  compareFn(e1: any  , e2: any): boolean {
+  compareFn(e1: any, e2: any): boolean {
     return e1 && e2 ? e1.id === e2.id : e1 === e2;
   }
- 
+
 
 }

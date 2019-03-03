@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { IonicPage, NavController, ToastController, AlertController, App } from 'ionic-angular';
+import { IonicPage, NavController, ToastController, AlertController, App, LoadingController } from 'ionic-angular';
 import { MainPage, FirstRunPage } from '../pages';
 import { LoginService } from '../../providers/login/login.service';
 import { Api } from '../../providers/api/api';
@@ -27,11 +27,12 @@ export class LoginPage {
   account: { username: string, password: string, rememberMe: boolean } = {
     username: '',
     password: '',
-    rememberMe: false,
+    rememberMe: true,
   };
 
   // Our translated text strings
   private loginErrorString: string;
+  public pleaseWait;
 
   myForm: FormGroup;
 
@@ -41,13 +42,15 @@ export class LoginPage {
     public app: App,
     public loginService: LoginService,
     public toastCtrl: ToastController,
+    private loading: LoadingController, 
     public translateService: TranslateService,
     private builder: FormBuilder,
     private principal: Principal,
     private accountService: AccountService, private captainService: CaptainService , public myApp:MyApp) {
 
-    this.translateService.get('LOGIN_ERROR').subscribe((value) => {
-      this.loginErrorString = value;
+    this.translateService.get(['LOGIN_ERROR' , 'PLEASE_WAIT']).subscribe((values) => {
+      this.loginErrorString = values.LOGIN_ERROR;
+      this.pleaseWait = values.PLEASE_WAIT;
     })
     this.validateUser();
 
@@ -60,8 +63,17 @@ export class LoginPage {
 
   // Attempt to login in through our User service
   doLogin() {
+
+    let load = this.loading.create({
+      content: this.pleaseWait
+  
+  
+    })
+    load.present()
+
     this.loginService.login(this.account).then((response) => {
 
+      load.dismiss();
       this.myApp.checkAccess();
 
       this.validateUser();
@@ -78,13 +90,20 @@ export class LoginPage {
         position: 'top'
       });
       toast.present();
+      load.dismiss();
     });
   }
   validateUser(){
+    let load = this.loading.create({
+      content: this.pleaseWait
+  
+  
+    })
+    load.present()
+
     this.principal.identity().then((account) => {
 
-        
-
+        load.dismiss();
       console.log(account);
 
       if (account === null) {
@@ -108,6 +127,8 @@ export class LoginPage {
 
 
       }
+    }).catch((err) =>{
+      load.dismiss();
     });
 
   }

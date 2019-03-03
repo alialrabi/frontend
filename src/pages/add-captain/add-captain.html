@@ -85,6 +85,16 @@
       <p class="validationHint" *ngIf="hasError('password', 'required')"> {{ 'REQURIED' | translate }}  </p>
     <p class="validationHint" *ngIf="hasError('password', 'minlength')">{{ 'MIN_LENGTH' | translate }} </p>
     
+    <ion-item >
+      <ion-label floating>
+        <ion-icon name="lock" item-start class="text-primary"></ion-icon>
+        {{ 'CONFIRM_PASSWORD' | translate }}
+      </ion-label>
+      <ion-input type="password" name="passwordConfirm" formControlName="passwordConfirm" [disabled] = "!myForm.get('password').valid"></ion-input>
+    </ion-item>
+
+    <p class="validationHint" *ngIf="hasError('passwordConfirm', 'required')"> {{ 'REQURIED' | translate }} </p>
+    <p class="validationHint" *ngIf="notMathces()">{{ 'CONFIRM_PASSWORD_VALIDATE' | translate }} </p>
 
 
       <!-- <ion-item>
@@ -97,7 +107,7 @@
     </form>
 
     <div margin-top style="margin-bottom: 40px;">
-      <button ion-button block color="dark" tappable (click)="addCaptain()" [disabled]="!myForm.valid">
+      <button ion-button block color="dark" tappable (click)="addCaptain()" [disabled]="!myForm.valid || notMathces()">
         {{ 'ADD_CAPTAIN_BUTTON' | translate }}
       </button>
     </div>

@@ -1,8 +1,9 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, App } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, App, LoadingController } from 'ionic-angular';
 import { CaptainService } from '../../providers/auth/captain.service';
 import { Principal } from '../../providers/auth/principal.service';
 import { FirstRunPage } from '../pages';
+import { TranslateService } from '@ngx-translate/core';
 
 /**
  * Generated class for the CaptainsMapPage page.
@@ -23,6 +24,7 @@ export class CaptainsMapPage {
   map: any;
   public account = null;
   public userType = '';
+  public pleaseWait;
 
   public captainsMarkers = [];
   // public captains = [
@@ -64,16 +66,31 @@ export class CaptainsMapPage {
   //   }
   // ]
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private app: App, private principal: Principal, public captainService: CaptainService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams ,private loading: LoadingController ,public translateService: TranslateService , private app: App, private principal: Principal, public captainService: CaptainService) {
+  
+    this.translateService.get(['PLEASE_WAIT']).subscribe((values) => {
+      
+      this.pleaseWait = values.PLEASE_WAIT
+    })
+  
   }
 
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CaptainsMapPage');
 
+    let load = this.loading.create({
+      content: this.pleaseWait
+  
+  
+    })
+    load.present()
+
     this.principal.identity().then((account) => {
       console.log(account);
       this.account = account;
+
+      load.dismiss();
 
       if (account === null) {
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
@@ -89,6 +106,8 @@ export class CaptainsMapPage {
       }
       console.log(this.userType);
 
+    }).catch((err) =>{
+      load.dismiss();
     });
 
 
@@ -119,6 +138,12 @@ export class CaptainsMapPage {
   getAllCaptains() {
     console.log('****');
 
+    let load = this.loading.create({
+      content: this.pleaseWait
+  
+  
+    })
+    load.present()
 
 
     this.deletemarkers();
@@ -151,9 +176,11 @@ export class CaptainsMapPage {
 
       });
 
+      load.dismiss();
+
     }, err => {
       console.log(err, 'err');
-
+      load.dismiss();
 
     })
   }
@@ -161,7 +188,12 @@ export class CaptainsMapPage {
   getAllAgencyCaptains() {
     console.log('****');
 
-
+    let load = this.loading.create({
+      content: this.pleaseWait
+  
+  
+    })
+    load.present()
 
     this.deletemarkers();
     this.captainService.getByAgencyId(this.account.id).subscribe(res => {
@@ -193,10 +225,11 @@ export class CaptainsMapPage {
 
       });
 
+      load.dismiss();
     }, err => {
       console.log(err, 'err');
 
-
+      load.dismiss();
     })
   }
 

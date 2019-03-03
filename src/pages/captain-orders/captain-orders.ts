@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ItemDivider, ToastController, App } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ItemDivider, ToastController, App, LoadingController } from 'ionic-angular';
 import { OrderService } from '../../providers/auth/order.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Principal } from '../../providers/auth/principal.service';
@@ -38,16 +38,19 @@ export class CaptainOrdersPage {
   assingOrderSuccess = null;
   assignOrderError = null;
 
+  public pleaseWait;
 
-  constructor(public navCtrl: NavController, private loginService: LoginService, public accountService:AccountService , private captainService: CaptainService, private app: App, private principal: Principal, public navParams: NavParams, public orderService: OrderService, public translateService: TranslateService, public toastCtrl: ToastController) {
+
+  constructor(public navCtrl: NavController, private loginService: LoginService, private loading: LoadingController ,public accountService:AccountService , private captainService: CaptainService, private app: App, private principal: Principal, public navParams: NavParams, public orderService: OrderService, public translateService: TranslateService, public toastCtrl: ToastController) {
 
     // this.captain = this.navParams.get("item");
 
-    this.translateService.get(['DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'ASSIGN_ORDER_ERROR', 'ASSIGN_ORDER_SUCCESS']).subscribe((values) => {
+    this.translateService.get(['DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'ASSIGN_ORDER_ERROR', 'ASSIGN_ORDER_SUCCESS' , 'PLEASE_WAIT']).subscribe((values) => {
       this.deliverOrderError = values.DELIVER_ORDER_ERROR;
       this.deliverOrderSuccess = values.DELIVER_ORDER_SUCCESS;
       this.assignOrderError = values.ASSIGN_ORDER_ERROR;
       this.assingOrderSuccess = values.ASSIGN_ORDER_SUCCESS;
+      this.pleaseWait = values.PLEASE_WAIT
     })
 
   }
@@ -96,6 +99,14 @@ export class CaptainOrdersPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CaptainOrdersPage');
+
+    let load = this.loading.create({
+      content: this.pleaseWait
+  
+  
+    })
+    load.present()
+
     let classIn = this;
     this.principal.identity().then((account) => {
       console.log(account);
@@ -110,6 +121,7 @@ export class CaptainOrdersPage {
 
             this.myVar = 'assigned';
             console.log("**********");
+            load.dismiss();
             
             this.getAllOrders(this.myVar);
             if(this.captain.agencyId != 0){
@@ -123,25 +135,36 @@ export class CaptainOrdersPage {
 
           }, err => {
             console.log(err, 'errror');
+            load.dismiss();
 
           }
         )
 
       }
+    }).catch((err) =>{
+      load.dismiss()
     });
 
 
   }
 
   getCaptainAgency(){
+    let load = this.loading.create({
+      content: this.pleaseWait
+  
+  
+    })
+    load.present()
     this.accountService.getById(this.captain.agencyId).subscribe(
       res =>{
         console.log(res , 'nnnnnnnnnnnnn');
         this.agency = res;
         this.autoAssign = res.autoAssign
+        load.dismiss();
         
 
       }, err =>{
+        load.dismiss();
 
         console.log(err , 'errrrrrrror');
         
@@ -152,6 +175,13 @@ export class CaptainOrdersPage {
 
 
   getNotAssigned(status) {
+    let load = this.loading.create({
+      content: this.pleaseWait
+  
+  
+    })
+    load.present()
+
     this.ordersList = [];
     console.log("orders");
     console.log(this.captain);
@@ -162,9 +192,11 @@ export class CaptainOrdersPage {
       console.log("*************");
 
       this.ordersList = res;
+      load.dismiss();
 
     }, err => {
       console.log(err);
+      load.dismiss()
 
 
     })
@@ -172,6 +204,15 @@ export class CaptainOrdersPage {
 
 
   getAllOrders(status) {
+
+    let load = this.loading.create({
+      content: this.pleaseWait
+  
+  
+    })
+    load.present()
+
+
     this.ordersList = [];
     console.log("orders");
     this.myVar = status;
@@ -184,9 +225,11 @@ export class CaptainOrdersPage {
 
       this.ordersList = res;
 
+      load.dismiss();
+
     }, err => {
       console.log(err);
-
+      load.dismiss();
 
     })
   }
@@ -228,6 +271,15 @@ export class CaptainOrdersPage {
   }
 
   finish(item) {
+
+    let load = this.loading.create({
+      content: this.pleaseWait
+  
+  
+    })
+    load.present()
+
+
     this.orderService.finishOrder(item.id).subscribe(
       res => {
         let toast = this.toastCtrl.create({
@@ -238,7 +290,7 @@ export class CaptainOrdersPage {
         toast.present();
         console.log("success");
 
-
+        load.dismiss();
         this.getAllOrders(this.myVar);
 
       }, err => {
@@ -253,12 +305,20 @@ export class CaptainOrdersPage {
           position: 'middle'
         });
         toast.present();
-
+        load.dismiss();
       }
     )
 
   }
   assignOrder(order) {
+
+    let load = this.loading.create({
+      content: this.pleaseWait
+  
+  
+    })
+    load.present()
+
     this.orderService.assign(this.captain.id, order.id).subscribe(
       res => {
         let toast = this.toastCtrl.create({
@@ -267,6 +327,7 @@ export class CaptainOrdersPage {
           position: 'top'
         });
         toast.present();
+        load.dismiss();
         this.getAllOrders(this.myVar);
 
       }, err => {
@@ -281,6 +342,7 @@ export class CaptainOrdersPage {
           position: 'middle'
         });
         toast.present();
+        load.dismiss();
 
       }
     )

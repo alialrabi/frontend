@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, LoadingController } from 'ionic-angular';
 import { CaptainService } from '../../providers/auth/captain.service';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -23,14 +23,17 @@ export class AgencyCaptainsPage {
 
   unassignCaptainError;
   unassignCaptainSuccess;
+  public pleaseWait;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams , public toastCtrl: ToastController , public captainService:CaptainService , public translateService:TranslateService) {
+
+  constructor(public navCtrl: NavController, public navParams: NavParams ,private loading: LoadingController , public toastCtrl: ToastController , public captainService:CaptainService , public translateService:TranslateService) {
 
     this.agency = this.navParams.get("item");
 
-    this.translateService.get(['UN_ASSIGN_CAPTAIN_ERROR', 'UN_ASSIGN_CAPTAIN_SUCCESS']).subscribe((values) => {
+    this.translateService.get(['UN_ASSIGN_CAPTAIN_ERROR', 'UN_ASSIGN_CAPTAIN_SUCCESS' , 'PLEASE_WAIT']).subscribe((values) => {
       this.unassignCaptainError = values.UN_ASSIGN_CAPTAIN_ERROR;
       this.unassignCaptainSuccess = values.UN_ASSIGN_CAPTAIN_SUCCESS;
+      this.pleaseWait = values.PLEASE_WAIT
     })
 
     this.getAgencyCaptains();
@@ -42,23 +45,37 @@ export class AgencyCaptainsPage {
   }
 
   getAgencyCaptains(){
+    let load = this.loading.create({
+      content: this.pleaseWait
+  
+  
+    })
+    load.present()
     this.captainsList = [];
     this.captainService.getByAgencyId(this.agency.id).subscribe(res => {
       console.log(res);
       
   
       this.captainsList = res;
+      load.dismiss();
   
     },err =>{
       console.log(err);
-      
+      load.dismiss();
   
     })
    }
 
    unAssingCaptain(captain){
+    let load = this.loading.create({
+      content: this.pleaseWait
+  
+  
+    })
+    load.present()
      this.captainService.unAssignCaptain(captain.id).subscribe(
        res =>{
+         load.dismiss();
          this.getAgencyCaptains();
 
         let toast = this.toastCtrl.create({
@@ -78,7 +95,7 @@ export class AgencyCaptainsPage {
           position: 'middle'
         });
         toast.present();
-
+        load.dismiss();
        }
      );
    }

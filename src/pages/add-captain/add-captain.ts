@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, ToastController, App } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ToastController, App, LoadingController } from 'ionic-angular';
 import { ImagePicker } from '@ionic-native/image-picker';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { JhiDataUtils } from 'ng-jhipster';
@@ -59,16 +59,18 @@ export class AddCaptainPage {
   private signupSuccessString: string;
   private existingUserError: string;
   private invalidPasswordError: string;
-
+  public pleaseWait;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public _alert: AlertController
     , public imagePicker: ImagePicker, public camera: Camera, public toastCtrl: ToastController, 
     public captainService:CaptainService ,
+    private loading: LoadingController,
      public translateService: TranslateService , private app:App , private builder: FormBuilder , public user: User , private accountService: AccountService) {
 
-      this.translateService.get(['ADD_CAPTAIN_ERROR', 'ADD_CAPTAIN_SUCCESS']).subscribe((values) => {
+      this.translateService.get(['ADD_CAPTAIN_ERROR', 'ADD_CAPTAIN_SUCCESS' , 'PLEASE_WAIT']).subscribe((values) => {
         this.addAddressError = values.SIGNUP_ERROR;
         this.addAdressSuccessString = values.SIGNUP_SUCCESS;
+        this.pleaseWait = values.PLEASE_WAIT
       })
 
       this.myForm = builder.group({
@@ -77,6 +79,7 @@ export class AddCaptainPage {
         'phone':['', [Validators.required , Validators.pattern("(01)[0-9]{9}")]],
         'email':['', [Validators.required  , Validators.email]],
         'password': ['', [Validators.required , Validators.minLength(6) ]],
+        'passwordConfirm': ['', [Validators.required ]]
       });
 
       
@@ -166,7 +169,12 @@ export class AddCaptainPage {
   addCaptain(){
 
 
-
+    let load = this.loading.create({
+      content: this.pleaseWait
+  
+  
+    })
+    load.present()
 
 
     this.account.login = this.account.email;
@@ -189,6 +197,7 @@ export class AddCaptainPage {
           position: 'top'
         });
         toast.present();
+        load.dismiss();
         //this.navCtrl.push(CaptainsPage);
         this.app.getRootNavs()[0].setRoot(CaptainsPage);
       }, (err1) => {
@@ -204,6 +213,7 @@ export class AddCaptainPage {
             position: 'middle'
         });
         toast.present();
+        load.dismiss();
       });
 
 
@@ -229,6 +239,7 @@ export class AddCaptainPage {
           position: 'top'
       });
       toast.present();
+      load.dismiss();
     });
 
 
@@ -247,4 +258,9 @@ export class AddCaptainPage {
     const ctrl = this.myForm.get(field);
     return ctrl.dirty && ctrl.hasError(error);
   }
+  notMathces(){
+    const ctrl = this.myForm.get("passwordConfirm");
+    return ctrl.dirty && ctrl.value != this.myForm.get("password").value && ctrl.value.length > 5
+  }
+
 }

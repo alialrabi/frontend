@@ -32,6 +32,7 @@ export class SettingsPage {
   public account ;
 
   public confirmAutoAssignMessage;
+  public confirmAutoAssignTitle;
   public changeAutoAssignSuccessString;
   public changeAutoAssignError;
 
@@ -59,11 +60,11 @@ export class SettingsPage {
     public translate: TranslateService) {
 
       this.translate.get(['AUTO_ASSIGN_ERROR', 'AUTO_ASSIGN_SUCCESS',
-      'AUTO_ASSIGN_CONFIRM_MESSAGE']).subscribe((values) => {
+      'AUTO_ASSIGN_CONFIRM_MESSAGE' , 'AUTO_ASSIGN_CONFIRM_TITLE']).subscribe((values) => {
         this.changeAutoAssignError = values.AUTO_ASSIGN_ERROR
         this.changeAutoAssignSuccessString = values.AUTO_ASSIGN_SUCCESS
         this.confirmAutoAssignMessage = values.AUTO_ASSIGN_CONFIRM_MESSAGE
-        
+        this.confirmAutoAssignTitle = values.AUTO_ASSIGN_CONFIRM_TITLE
       })
 
 
@@ -107,7 +108,8 @@ export class SettingsPage {
 
 
     let alert = this.alertCtrl.create({
-      title: this.confirmAutoAssignMessage,
+      title: this.confirmAutoAssignTitle,
+      message:  this.confirmAutoAssignMessage,
       buttons: [{
         text: ' Done',
         handler: () => {
@@ -146,8 +148,8 @@ export class SettingsPage {
       console.log(res);
       // var id = res;
       console.log("00000000000000000000000000");
-      
-      this.validateUser(false);
+      this.account.autoAssign = obj.autoAssign;
+     // this.validateUser(false);
       let toast = this.toastCtrl.create({
         message: this.changeAutoAssignSuccessString,
         duration: 3000,

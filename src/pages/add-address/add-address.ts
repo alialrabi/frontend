@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, Platform, App } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, Platform, App, LoadingController } from 'ionic-angular';
 import { AddressService } from '../../providers/auth/address.service';
 import { MainPage, FirstRunPage } from '../pages';
 import { TranslateService } from '@ngx-translate/core';
@@ -8,6 +8,7 @@ import { elementDef } from '@angular/core/src/view';
 import { HomePage } from '../home/home';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Principal } from '../../providers/auth/principal.service';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 /**
  * Generated class for the AddAddressPage page.
  *
@@ -32,6 +33,8 @@ export class AddAddressPage {
   mainMarker = null;
   public user ;
 
+  public pleaseWait;
+
   address: { country: string, city: string, street: string, userId: Number, postalCode: String, latitude: Number, longitude: Number } = {
     country: '',
     city: '',
@@ -47,13 +50,15 @@ export class AddAddressPage {
   myForm: FormGroup;
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public addressService: AddressService, public toastCtrl: ToastController,
+  constructor(public navCtrl: NavController,     private loading: LoadingController,
+    public navParams: NavParams, public addressService: AddressService, public toastCtrl: ToastController,
     public translateService: TranslateService, private app: App, private principal: Principal, public geolocation: Geolocation, private builder: FormBuilder, public plaform: Platform
   ) {
 
-    this.translateService.get(['ADD_ADDRESS_ERROR', 'ADD_ADDRESS_SUCCESS']).subscribe((values) => {
+    this.translateService.get(['ADD_ADDRESS_ERROR', 'ADD_ADDRESS_SUCCESS' , 'PLEASE_WAIT']).subscribe((values) => {
       this.addAddressError = values.SIGNUP_ERROR;
       this.addAdressSuccessString = values.SIGNUP_SUCCESS;
+      this.pleaseWait = values.PLEASE_WAIT
     })
 
     this.myForm = builder.group({
@@ -154,6 +159,14 @@ export class AddAddressPage {
   chooseLocation() {
 
    // this.address.userId = Number.parseInt(localStorage.getItem("userId"));
+
+   let load = this.loading.create({
+    content: this.pleaseWait
+
+
+  })
+  load.present()
+
    this.address.userId = this.user.id;
     console.log(this.address, 'sssssssssssssssss');
 
@@ -166,9 +179,11 @@ export class AddAddressPage {
         position: 'top'
       });
       toast.present();
+      load.dismiss();
       this.navCtrl.setRoot(HomePage);
     }, (err) => {
       console.log('error', err);
+      
 
       // Unable to add address
       // const error = JSON.parse(err.error);
@@ -180,6 +195,7 @@ export class AddAddressPage {
         position: 'middle'
       });
       toast.present();
+      load.dismiss();
     });
 
   }

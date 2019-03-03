@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, App } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, App, LoadingController } from 'ionic-angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { CaptainService } from '../../providers/auth/captain.service';
@@ -24,16 +24,19 @@ export class AssignCaptainsPage {
 
   assingOrderSuccess = null;
   assignOrderError = null;
+  public pleaseWait;
+
 
   public agency = null;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private app:App  ,private builder: FormBuilder, public captainService: CaptainService, public toastCtrl: ToastController, public translateService: TranslateService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private app:App ,private loading: LoadingController ,private builder: FormBuilder, public captainService: CaptainService, public toastCtrl: ToastController, public translateService: TranslateService) {
 
     this.agency = this.navParams.get("item");
 
-    this.translateService.get(['ASSIGN_ORDER_ERROR', 'ASSIGN_ORDER_SUCCESS']).subscribe((values) => {
+    this.translateService.get(['ASSIGN_ORDER_ERROR', 'ASSIGN_ORDER_SUCCESS' , 'PLEASE_WAIT']).subscribe((values) => {
       this.assignOrderError = values.ASSIGN_ORDER_ERROR;
       this.assingOrderSuccess = values.ASSIGN_ORDER_SUCCESS;
+      this.pleaseWait = values.PLEASE_WAIT
     })
 
 
@@ -52,16 +55,25 @@ export class AssignCaptainsPage {
   }
 
   getAllCaptains() {
+    let load = this.loading.create({
+      content: this.pleaseWait
+  
+  
+    })
+    load.present()
+
+    
     this.captainService.getNotAssigned().subscribe(
       res => {
 
         console.log(res, "res");
         this.captainList = res;
-
+        load.dismiss()
 
       }, err => {
 
         console.log(err, "err");
+        load.dismiss();
 
 
       }
@@ -71,6 +83,14 @@ export class AssignCaptainsPage {
 
 
   assignCaptain() {
+    let load = this.loading.create({
+      content: this.pleaseWait
+  
+  
+    })
+    load.present()
+
+
     let ids = this.myForm.get("captainIds").value;
     console.log(ids, 'ids');
 
@@ -87,6 +107,7 @@ export class AssignCaptainsPage {
           position: 'top'
         });
         toast.present();
+        load.dismiss()
         //this.navCtrl.push(AgenciesPage);
         this.app.getRootNavs()[0].setRoot(AgenciesPage);
 
@@ -100,6 +121,7 @@ export class AssignCaptainsPage {
           position: 'middle'
         });
         toast.present();
+        load.dismiss()
 
       }
     )

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, App } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, App, LoadingController } from 'ionic-angular';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { User } from '../../providers/user/user';
 import { TranslateService } from '@ngx-translate/core';
@@ -36,6 +36,8 @@ export class AddAgencyPage {
   private signupSuccessString: string;
   private existingUserError: string;
   private invalidPasswordError: string;
+  public pleaseWait;
+
 
   myForm: FormGroup;
 
@@ -44,16 +46,18 @@ export class AddAgencyPage {
     public toastCtrl: ToastController,
     public translateService: TranslateService,
     public loginService: LoginService,
+    private loading: LoadingController,
     public app:App,
     public accountService: AccountService,
     private builder: FormBuilder) {
 
     this.translateService.get(['SIGNUP_ERROR', 'SIGNUP_SUCCESS',
-      'EXISTING_USER_ERROR', 'INVALID_PASSWORD_ERROR']).subscribe((values) => {
+      'EXISTING_USER_ERROR', 'INVALID_PASSWORD_ERROR' , 'PLEASE_WAIT']).subscribe((values) => {
         this.signupErrorString = values.SIGNUP_ERROR;
         this.signupSuccessString = values.SIGNUP_SUCCESS;
         this.existingUserError = values.EXISTING_USER_ERROR;
         this.invalidPasswordError = values.INVALID_PASSWORD_ERROR;
+        this.pleaseWait = values.PLEASE_WAIT;
       })
 
     this.myForm = builder.group({
@@ -61,6 +65,7 @@ export class AddAgencyPage {
       'lastName': ['', [Validators.required, Validators.maxLength(45)]],
       'email': ['', [Validators.required, Validators.email]],
       'password': ['', [Validators.required, Validators.minLength(6)]],
+      'passwordConfirm': ['', [Validators.required]]
     });
 
   }
@@ -68,6 +73,14 @@ export class AddAgencyPage {
     console.log('ionViewDidLoad AddAgencyPage');
   }
   addAgency() {
+
+    let load = this.loading.create({
+      content: this.pleaseWait
+  
+  
+    })
+    load.present()
+
     // set login to same as email
     this.account.login = this.account.email;
     this.account.activated = true;
@@ -82,12 +95,14 @@ export class AddAgencyPage {
         position: 'top'
       });
       toast.present();
+      load.dismiss();
        //this.navCtrl.push(AgenciesPage);
        this.app.getRootNavs()[0].setRoot(AgenciesPage);
 
     }, (err) => {
       // Unable to sign up
       console.log(err);
+
 
       const error = JSON.parse(err.error);
       let displayError = this.signupErrorString;
@@ -103,12 +118,19 @@ export class AddAgencyPage {
         position: 'top'
       });
       toast.present();
+
+      load.dismiss();
     });
   }
 
   hasError(field: string, error: string) {
     const ctrl = this.myForm.get(field);
     return ctrl.dirty && ctrl.hasError(error);
+  }
+
+  notMathces(){
+    const ctrl = this.myForm.get("passwordConfirm");
+    return ctrl.dirty && ctrl.value != this.myForm.get("password").value && ctrl.value.length > 5
   }
 
 }
