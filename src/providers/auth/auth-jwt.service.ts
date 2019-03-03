@@ -21,7 +21,7 @@ export class AuthServerProvider {
     const data = {
       username: credentials.username,
       password: credentials.password,
-      // rememberMe: credentials.rememberMe
+      rememberMe: credentials.rememberMe
     };
 
     return this.http.post(Api.API_URL_login + '/auth/login', data).map((response: any) => {

@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, App, MenuController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, App, MenuController, LoadingController } from 'ionic-angular';
 import { AddOrderPage } from '../add-order/add-order';
 import { OrderService } from '../../providers/auth/order.service';
 import { Principal } from '../../providers/auth/principal.service';
 import { FirstRunPage } from '../pages';
+import { TranslateService } from '@ngx-translate/core';
 
 /**
  * Generated class for the OrdersPage page.
@@ -24,13 +25,29 @@ export class OrdersPage {
 
   public ordersList = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,  private app: App, private principal: Principal, public orderService: OrderService) {
+  public pleaseWait;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private loading: LoadingController ,public translateService: TranslateService,  private app: App, private principal: Principal, public orderService: OrderService) {
     
+    this.translateService.get(['PLEASE_WAIT']).subscribe((values) => {
+      
+      this.pleaseWait = values.PLEASE_WAIT
+    })
+
   }
 
   ngOnInit() {
+
+    let load = this.loading.create({
+      content: this.pleaseWait
+  
+  
+    })
+    load.present()
+
     this.principal.identity().then((account) => {
       console.log(account);
+      load.dismiss();
       
       if (account === null  ) {
          this.app.getRootNavs()[0].setRoot(FirstRunPage);
@@ -41,6 +58,8 @@ export class OrdersPage {
         this.getAllOrders(this.myVar);   
         
       }
+    }).catch((err) =>{
+      load.dismiss();
     });
   }
 
@@ -49,6 +68,13 @@ export class OrdersPage {
     console.log('ionViewDidLoad OrdersPage');
   }
   getAllOrders(status) {
+    let load = this.loading.create({
+      content: this.pleaseWait
+  
+  
+    })
+    load.present()
+
     this.myVar = status;
     this.ordersList = [];
     this.orderService.getAllByStatus(status , this.account.id).subscribe(res => {
@@ -57,10 +83,12 @@ export class OrdersPage {
 
       this.ordersList = res;
 
+      load.dismiss()
+
     }, err => {
       console.log(err);
 
-
+      load.dismiss()
     })
   }
 
@@ -89,7 +117,7 @@ export class OrdersPage {
         if (orders.charAt(index) === '-' && orders.charAt(index - 1) === ' ' && orders.charAt(index + 1) === ' ') {
           let subOrder = {
             name : orders.substring(0, index - 1),
-            index : orders.length + 1
+            index : items.length + 1
           }
           items.push(subOrder);
           orders = orders.substring(index+1 , orders.length)
@@ -101,8 +129,14 @@ export class OrdersPage {
       }
     }
     console.log(items);
+
+    let subOrder1 = {
+      name : orders,
+      index : items.length + 1
+    }
     
-    items.push(orders)
+    items.push(subOrder1)
+    
     console.log(items, 'mmmmmmmmmmmmmmm');
 
     return items;

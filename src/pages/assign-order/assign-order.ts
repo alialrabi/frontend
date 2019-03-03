@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, App } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, App, LoadingController } from 'ionic-angular';
 import { CaptainService } from '../../providers/auth/captain.service';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
@@ -27,19 +27,21 @@ export class AssignOrderPage {
 
   assingOrderSuccess = null;
   assignOrderError = null;
+  public pleaseWait;
 
   public order;
 
   public account = null;
 
   constructor(public navCtrl: NavController, public navParams: NavParams ,
-    private builder: FormBuilder , public captainService:CaptainService  , private app: App, private principal: Principal, public toastCtrl: ToastController , public translateService: TranslateService , public orderService:OrderService ) {
+    private builder: FormBuilder , public captainService:CaptainService  ,private loading: LoadingController , private app: App, private principal: Principal, public toastCtrl: ToastController , public translateService: TranslateService , public orderService:OrderService ) {
 
       this.order = this.navParams.get("item");
 
-    this.translateService.get(['ASSIGN_ORDER_ERROR', 'ASSIGN_ORDER_SUCCESS']).subscribe((values) => {
+    this.translateService.get(['ASSIGN_ORDER_ERROR', 'ASSIGN_ORDER_SUCCESS' , 'PLEASE_WAIT']).subscribe((values) => {
       this.assignOrderError = values.ASSIGN_ORDER_ERROR;
       this.assingOrderSuccess = values.ASSIGN_ORDER_SUCCESS;
+      this.pleaseWait = values.PLEASE_WAIT
     })
 
 
@@ -53,9 +55,18 @@ export class AssignOrderPage {
   }
 
   ngOnInit() {
+
+    let load = this.loading.create({
+      content: this.pleaseWait
+  
+  
+    })
+    load.present()
+
     this.principal.identity().then((account) => {
       console.log(account);
       this.account = account;
+      load.dismiss()
       
       if (account === null ) {
          this.app.getRootNavs()[0].setRoot(FirstRunPage);
@@ -65,6 +76,8 @@ export class AssignOrderPage {
        
         
       
+    }).catch((err)=>{
+      load.dismiss();
     });
   }
   
@@ -74,16 +87,23 @@ export class AssignOrderPage {
   }
 
   getAllCaptains(){
+    let load = this.loading.create({
+      content: this.pleaseWait
+  
+  
+    })
+    load.present()
     this.captainService.getByAgencyId(this.account.id).subscribe(
       res =>{
 
         console.log(res , "res");
         this.captainList = res;
-        
+        load.dismiss();
 
       }, err =>{
 
         console.log(err , "err");
+        load.dismiss();
         
 
       }
@@ -91,6 +111,13 @@ export class AssignOrderPage {
 
   }
   assignOrder(){
+
+    let load = this.loading.create({
+      content: this.pleaseWait
+  
+  
+    })
+    load.present()
 
     this.orderService.assign(this.myForm.get('captainId').value , this.order.id).subscribe(
       res =>{
@@ -100,6 +127,7 @@ export class AssignOrderPage {
           position: 'top'
         });
         toast.present();
+        load.dismiss();
         //this.navCtrl.push(OrdersPage);
         this.app.getRootNavs()[0].setRoot(OrdersPage);
 
@@ -115,12 +143,19 @@ export class AssignOrderPage {
           position: 'middle'
       });
       toast.present();
+      load.dismiss();
 
       }
     )
 
   }
   assignOrderToFreeCaptain(){
+    let load = this.loading.create({
+      content: this.pleaseWait
+  
+  
+    })
+    load.present()
 
     this.orderService.assignToFreeCaptain(this.order.id).subscribe(
       res =>{
@@ -130,6 +165,7 @@ export class AssignOrderPage {
           position: 'top'
         });
         toast.present();
+        load.dismiss();
        // this.navCtrl.push(OrdersPage);
         this.app.getRootNavs()[0].setRoot(OrdersPage);
 
@@ -145,6 +181,7 @@ export class AssignOrderPage {
           position: 'middle'
       });
       toast.present();
+      load.dismiss();
 
       }
     )

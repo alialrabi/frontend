@@ -1,4 +1,8 @@
 {
+  "PLEASE_WAIT":"please wait ...",
+  "AUTO_ASSIGN_CONFIRM_TITLE":"Auto Assign",
+  "CONFIRM_PASSWORD":"Confirm Password",
+  "CONFIRM_PASSWORD_VALIDATE":"Passwords not matches",
   "AUTO_ASSIGN_MESSAGE2":" orders to them selves",
   "AUTO_ASSIGN_MESSAGE1":"Enable Captians to assign",
   "SETTING":"Setting",

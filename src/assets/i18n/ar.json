@@ -1,4 +1,8 @@
 {
+  "PLEASE_WAIT":"... انتظر من فضلك",
+  "AUTO_ASSIGN_CONFIRM_TITLE":"الالحاق الالكترونى",
+  "CONFIRM_PASSWORD":"تاكيد كلمه السر",
+  "CONFIRM_PASSWORD_VALIDATE":"كلمه السر غير متطابقه",
   "AUTO_ASSIGN_MESSAGE2":"الطلبات الى انفسهم",
   "AUTO_ASSIGN_MESSAGE1":"تمكين الطيارين من الحاق ",
   "SETTING":"الظبط",
