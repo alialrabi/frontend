@@ -1,4 +1,9 @@
 {
+  "WORKING_CONFIRM_MESSAGE":"Do you want to change your working status ?",
+  "WORKING_ERROR":"Error in updateing work status",
+  "WORKING_SUCCESS":"Updateing work status successfully",
+  "WORKING_MESSAGE1":"change working status",
+  "WORKING_CONFIRM_TITLE":"Working Status",
   "PLEASE_WAIT":"please wait ...",
   "AUTO_ASSIGN_CONFIRM_TITLE":"Auto Assign",
   "CONFIRM_PASSWORD":"Confirm Password",
@@ -6,7 +11,7 @@
   "AUTO_ASSIGN_MESSAGE2":" orders to them selves",
   "AUTO_ASSIGN_MESSAGE1":"Enable Captians to assign",
   "SETTING":"Setting",
-  "AUTO_ASSIGN_CONFIRM_MESSAGE":"Do you want to change the Auto assign technology",
+  "AUTO_ASSIGN_CONFIRM_MESSAGE":"Do you want to change the Auto assign technology ?",
   "AUTO_ASSIGN_ERROR":"Error in chenge Auto assign",
   "AUTO_ASSIGN_SUCCESS":"Change Auto Assign Successfully",
   "BANHA":"Banha",

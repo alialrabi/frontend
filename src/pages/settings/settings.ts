@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { IonicPage, NavController, NavParams, App, AlertController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, App, AlertController, ToastController, LoadingController } from 'ionic-angular';
 
 import { Settings } from '../../providers/providers';
 import { Principal } from '../../providers/auth/principal.service';
 import { FirstRunPage } from '../pages';
 import { AccountService } from '../../providers/auth/account.service';
+import { CaptainService } from '../../providers/auth/captain.service';
 
 /**
  * The Settings page is a simple form that syncs with a Settings provider
@@ -36,6 +37,11 @@ export class SettingsPage {
   public changeAutoAssignSuccessString;
   public changeAutoAssignError;
 
+  public confirmWorkingMessage;
+  public confirmWorkingTitle;
+  public changeWorkingSuccessString;
+  public changeWorkingError;
+
 
   profileSettings = {
     page: 'profile',
@@ -48,11 +54,17 @@ export class SettingsPage {
 
   subSettings: any = SettingsPage;
 
+  userType ='';
+  public pleaseWait = '';
+  public captain;
+
   constructor(public navCtrl: NavController,
     public settings: Settings,
     public formBuilder: FormBuilder,
     public principal:Principal,
     public app:App,
+    private captainService: CaptainService,
+    private loading: LoadingController ,
     public toastCtrl:ToastController,
     public accountService:AccountService,
     private alertCtrl: AlertController,
@@ -60,17 +72,25 @@ export class SettingsPage {
     public translate: TranslateService) {
 
       this.translate.get(['AUTO_ASSIGN_ERROR', 'AUTO_ASSIGN_SUCCESS',
-      'AUTO_ASSIGN_CONFIRM_MESSAGE' , 'AUTO_ASSIGN_CONFIRM_TITLE']).subscribe((values) => {
+      'AUTO_ASSIGN_CONFIRM_MESSAGE' , 'AUTO_ASSIGN_CONFIRM_TITLE' , 'WORKING_ERROR', 'WORKING_SUCCESS',
+      'WORKING_CONFIRM_MESSAGE' , 'WORKING_CONFIRM_TITLE','PLEASE_WAIT']).subscribe((values) => {
         this.changeAutoAssignError = values.AUTO_ASSIGN_ERROR
         this.changeAutoAssignSuccessString = values.AUTO_ASSIGN_SUCCESS
         this.confirmAutoAssignMessage = values.AUTO_ASSIGN_CONFIRM_MESSAGE
         this.confirmAutoAssignTitle = values.AUTO_ASSIGN_CONFIRM_TITLE
+
+        this.changeWorkingError = values.WORKING_ERROR
+        this.changeWorkingSuccessString = values.WORKING_SUCCESS
+        this.confirmWorkingMessage = values.WORKING_CONFIRM_MESSAGE
+        this.confirmWorkingTitle = values.WORKING_CONFIRM_TITLE
+
+        this.pleaseWait = values.PLEASE_WAIT
       })
 
 
       this.myForm = formBuilder.group({
         'autoAssign':['', [ ]],
-        
+        'working':['', [ ]],
       });
 
 
@@ -82,23 +102,72 @@ export class SettingsPage {
   }
   validateUser(flag){
     console.log("++++++ 99999 -------");
+
+    let load = this.loading.create({
+      content: this.pleaseWait
+  
+  
+    })
+    load.present()
+
     
     this.principal.identity().then((account) => {
       console.log(account);
-      
-      if (account === null || account.authorities[0] != 'ROLE_AGENCY') {
+      load.dismiss();
+      if (account === null ) {
          this.app.getRootNavs()[0].setRoot(FirstRunPage);
-      } else {
-        console.log("555555555 ************** 555555555555555");
-        
 
+      } else if( account.authorities[0] == 'ROLE_AGENCY'){
+        console.log("555555555 ************** 555555555555555");
+      
         this.account = account;
         if(flag){
         this.myForm.get("autoAssign").setValue(this.account.autoAssign)
         }
+        this.userType = 'Agency'
         
       }
+      else if( account.authorities[0] == 'ROLE_CAPTAIN'){
+      
+        this.account = account;
+        
+        this.userType = 'Captain'
+
+        this.getCaptain(this.account.id);
+        
+      }
+    }).catch((err) =>{
+      load.dismiss();
     });
+  }
+
+  getCaptain(captainId){
+
+    let load = this.loading.create({
+      content: this.pleaseWait
+  
+  
+    })
+    load.present()
+
+    this.captainService.getByUserId(captainId).subscribe(
+      data => {
+        this.captain = data;
+
+        
+        load.dismiss();
+        
+        this.myForm.get("working").setValue(this.captain.working)
+        
+
+
+      }, err => {
+        console.log(err, 'errror');
+        load.dismiss();
+
+      }
+    )
+
   }
 
   changeAssign(){
@@ -134,6 +203,71 @@ export class SettingsPage {
     });
     alert.present();
     
+  }
+
+  changeWorking(){
+
+    let alert = this.alertCtrl.create({
+      title: this.confirmWorkingTitle,
+      message:  this.confirmWorkingMessage,
+      buttons: [{
+        text: ' Done',
+        handler: () => {
+
+          console.log("----------------------");
+          
+
+        this.updateWorking();
+         
+        }
+      } , {
+
+
+        text: ' Cancel',
+        handler: () => {
+
+          //nothing
+        }
+
+
+      }]
+    });
+    alert.present();
+
+
+  }
+  updateWorking(){
+
+    let obj = {
+      captainId:this.captain.id,
+      working:this.myForm.get('working').value
+    }
+
+    this.captainService.updateWorking(obj).subscribe((res) => {
+      console.log(res);
+      // var id = res;
+      console.log("00000000000000000000000000");
+      this.captain.working = obj.working;
+     // this.validateUser(false);
+      let toast = this.toastCtrl.create({
+        message: this.changeWorkingSuccessString,
+        duration: 3000,
+        position: 'top'
+      });
+      toast.present();
+
+    }, (err) => {
+      // Unable to sign up
+     let displayError = this.changeWorkingError;
+      let toast = this.toastCtrl.create({
+        message: displayError,
+        duration: 3000,
+        position: 'top'
+      });
+      toast.present();
+    });
+
+
   }
 
   updateAutoAssign(){

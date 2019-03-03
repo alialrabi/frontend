@@ -21,6 +21,10 @@ export class CaptainService  {
 
         return this.http.put(Api.API_URL_login + '/tlabatac/api/updateLocation?access_token=' +this.authservice.getToken() ,updateLocation);
     }
+    updateWorking(updateWorking: any): Observable<Object> {
+
+        return this.http.put(Api.API_URL_login + '/tlabatac/api/updateWorking?access_token=' +this.authservice.getToken() ,updateWorking);
+    }
 
     unAssignCaptain(captainId: any): Observable<Object> {
 

@@ -6,43 +6,51 @@
 -->
 <ion-header>
   <ion-navbar>
+
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+
     <ion-title>
-      Welcome, {{captain?.name}}!
+      Captain Orders
     </ion-title>
-    <ion-buttons end>
+    <!-- <ion-buttons end>
       <button ion-button (click)="logout()" id="logout">
         Logout
       </button>
-    </ion-buttons>
+    </ion-buttons> -->
   </ion-navbar>
 </ion-header>
 
 
 <ion-content class="auth-page-captain">
 
-    <ion-grid style="width: 100%">
-        <ion-row>
-          <ion-col style="padding: 0px" *ngIf = "autoAssign" >
-            <button ion-button block tappable [ngClass] ="{'tap-selected': myVar == 'not assigned', 'tap-notselected': myVar != 'not assigned'}" (click)="getNotAssigned('not assigned')">
-              <!-- <ion-icon name="close" item-start></ion-icon> -->
-              {{ 'NOT_ASSIGNED' | translate }}
-            </button>
-          </ion-col>
-          <ion-col style="padding: 0px">
-            <button ion-button  block tappable [ngClass] ="{'tap-selected': myVar == 'assigned', 'tap-notselected': myVar != 'assigned'}" (click)="getAllOrders('assigned')">
-                <!-- <ion-icon name="stats" item-start></ion-icon> -->
-                {{ 'ASSIGNED' | translate }}
-            </button>
-          </ion-col>
-          <ion-col style="padding: 0px">
-            <button ion-button block tappable [ngClass] = "{'tap-selected': myVar == 'delivered', 'tap-notselected': myVar != 'delivered'}" (click)="getAllOrders('delivered')">
-                <!-- <ion-icon name="checkmark" item-start></ion-icon> -->
-                {{ 'DELIVERED' | translate }}
-            </button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
- 
+  <ion-grid style="width: 100%">
+    <ion-row>
+      <ion-col style="padding: 0px" *ngIf="autoAssign">
+        <button ion-button block tappable [ngClass]="{'tap-selected': myVar == 'not assigned', 'tap-notselected': myVar != 'not assigned'}"
+          (click)="getNotAssigned('not assigned')">
+          <!-- <ion-icon name="close" item-start></ion-icon> -->
+          {{ 'NOT_ASSIGNED' | translate }}
+        </button>
+      </ion-col>
+      <ion-col style="padding: 0px">
+        <button ion-button block tappable [ngClass]="{'tap-selected': myVar == 'assigned', 'tap-notselected': myVar != 'assigned'}"
+          (click)="getAllOrders('assigned')">
+          <!-- <ion-icon name="stats" item-start></ion-icon> -->
+          {{ 'ASSIGNED' | translate }}
+        </button>
+      </ion-col>
+      <ion-col style="padding: 0px">
+        <button ion-button block tappable [ngClass]="{'tap-selected': myVar == 'delivered', 'tap-notselected': myVar != 'delivered'}"
+          (click)="getAllOrders('delivered')">
+          <!-- <ion-icon name="checkmark" item-start></ion-icon> -->
+          {{ 'DELIVERED' | translate }}
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
 
 
   <ion-list style="padding-top: 15px;">
@@ -74,17 +82,17 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-      
+
       <ion-buttons end class="btn-style" *ngIf="myVar == 'assigned'">
         <button ion-button (click)="finish(order)">
-            {{ 'DELIVER' | translate }}
+          {{ 'DELIVER' | translate }}
         </button>
       </ion-buttons>
       <ion-buttons end class="btn-style" *ngIf="myVar == 'not assigned'">
-          <button ion-button (click)="assignOrder(order)">
-              {{ 'ASSIGN_ORDER' | translate }}
-          </button>
-        </ion-buttons>
+        <button ion-button (click)="assignOrder(order)">
+          {{ 'ASSIGN_ORDER' | translate }}
+        </button>
+      </ion-buttons>
     </ion-item>
 
 

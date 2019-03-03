@@ -1,4 +1,9 @@
 {
+  "WORKING_CONFIRM_MESSAGE":"هل تريد تعديل حاله العمل",
+  "WORKING_ERROR":"خطأ فى تعديل حاله العمل",
+  "WORKING_SUCCESS":"تم تعديل حاله العمل",
+  "WORKING_MESSAGE1":"تغير حاله العمل ",
+  "WORKING_CONFIRM_TITLE":"حاله العمل",
   "PLEASE_WAIT":"... انتظر من فضلك",
   "AUTO_ASSIGN_CONFIRM_TITLE":"الالحاق الالكترونى",
   "CONFIRM_PASSWORD":"تاكيد كلمه السر",

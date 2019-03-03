@@ -15,6 +15,7 @@ import { CaptainsPage } from '../pages/captains/captains';
 import { AgenciesPage } from '../pages/agencies/agencies';
 import { LoginService } from '../providers/login/login.service';
 import { SettingsPage } from '../pages/settings/settings';
+import { CaptainOrdersPage } from '../pages/captain-orders/captain-orders';
 
 export interface MenuItem {
   title: string;
@@ -38,15 +39,15 @@ export class MyApp {
   public userType = '';
 
 
-  constructor(private translate: TranslateService, public menu: MenuController , platform: Platform, settings: Settings, private config: Config,
-              private statusBar: StatusBar , private loginService:LoginService , private app: App, private principal: Principal , private splashScreen: SplashScreen , private keyboard: Keyboard ) {
+  constructor(private translate: TranslateService, public menu: MenuController, platform: Platform, settings: Settings, private config: Config,
+    private statusBar: StatusBar, private loginService: LoginService, private app: App, private principal: Principal, private splashScreen: SplashScreen, private keyboard: Keyboard) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       this.keyboard.disableScroll(true);
-      
+
     });
     this.initTranslate();
     // this.appMenuItems = [
@@ -56,47 +57,53 @@ export class MyApp {
   }
 
   ngOnInit() {
-   this.checkAccess();
+    this.checkAccess();
   }
 
-  checkAccess(){
+  checkAccess() {
     this.principal.identity().then((account) => {
-      console.log(account , 'app');
-      
-      if (account == null ) {
+      console.log(account, 'app');
+
+      if (account == null) {
         console.log('***************');
 
-         this.account = account;
-         this.userType = '';
-        
-         this.app.getRootNavs()[0].setRoot(FirstRunPage);
+        this.account = account;
+        this.userType = '';
 
-      } else if(account.authorities[0] == 'ROLE_AGENCY') {
+        this.app.getRootNavs()[0].setRoot(FirstRunPage);
+
+      } else if (account.authorities[0] == 'ROLE_AGENCY') {
         this.isLogOut = false;
         this.userType = 'Agency'
         this.account = account;
         this.appMenuItems = [
-           {title: 'Orders', component: OrdersPage, icon: 'basket'},
-           {title: 'Captains', component: CaptainsPage, icon: 'bicycle'},
-           {title: 'Setting', component: SettingsPage, icon: 'construct'}
+          { title: 'Orders', component: OrdersPage, icon: 'basket' },
+          { title: 'Captains', component: CaptainsPage, icon: 'bicycle' },
+          { title: 'Setting', component: SettingsPage, icon: 'construct' }
         ];
-        this.nav.setRoot("OrdersPage")       
-      } else if(account.authorities[0] == 'ROLE_CAPTAIN') {
+        this.nav.setRoot("OrdersPage")
+      } else if (account.authorities[0] == 'ROLE_CAPTAIN') {
         this.isLogOut = false;
         this.userType = 'Captain'
         this.account = account;
-      }     else {
+        this.appMenuItems = [
+          { title: 'Orders', component: CaptainOrdersPage, icon: 'basket' },
+          { title: 'Setting', component: SettingsPage, icon: 'construct' }
+        ];
+        this.nav.setRoot("CaptainOrdersPage")
+
+      } else {
         this.isLogOut = false;
         this.userType = 'Admin'
         this.account = account;
         this.appMenuItems = [
-           {title: 'Agencies', component: AgenciesPage, icon: 'home'},
-           {title: 'Captains', component: CaptainsPage, icon: 'bicycle'}
+          { title: 'Agencies', component: AgenciesPage, icon: 'home' },
+          { title: 'Captains', component: CaptainsPage, icon: 'bicycle' }
         ];
-        this.nav.setRoot("AgenciesPage")   
+        this.nav.setRoot("AgenciesPage")
       }
-      console.log(this.userType , 'user');
-      
+      console.log(this.userType, 'user');
+
     });
   }
 
@@ -117,9 +124,9 @@ export class MyApp {
     });
   }
 
-  openPage(page){
+  openPage(page) {
     console.log(page);
-    
+
     this.app.getRootNavs()[0].setRoot(page.component);
     //this.menu.close("authenticated");
   }
@@ -128,22 +135,22 @@ export class MyApp {
       res => {
 
         this.loginService.logout();
-    //this.userType = '';
-    //this.account = null;
-    
-    
-      this.checkAccess();
-      this.isLogOut = true;
-    // this.app.getRootNavs()[0].setRoot(FirstRunPage);
+        //this.userType = '';
+        //this.account = null;
+
+
+        this.checkAccess();
+        this.isLogOut = true;
+        // this.app.getRootNavs()[0].setRoot(FirstRunPage);
 
       }
-    );   
-    
-    
+    );
+
+
   }
 
-  openMenu(){
+  openMenu() {
     this.menu.open();
   }
-  
+
 }

@@ -47,10 +47,15 @@
 
   <form [formGroup]="myForm"  class="list-form" style="width: 100%">
 
-  <ion-item>
+  <ion-item *ngIf="userType == 'Agency'">
     <ion-label>{{'AUTO_ASSIGN_MESSAGE1' | translate}} <br> {{'AUTO_ASSIGN_MESSAGE2' | translate}}  </ion-label>
     <ion-toggle formControlName="autoAssign" (ionChange)= "changeAssign()"></ion-toggle>
   </ion-item>
+
+  <ion-item *ngIf="userType == 'Captain'">
+      <ion-label>{{'WORKING_MESSAGE1' | translate}}   </ion-label>
+      <ion-toggle formControlName="working" (ionChange)= "changeWorking()"></ion-toggle>
+    </ion-item>
 
 </form>
 
