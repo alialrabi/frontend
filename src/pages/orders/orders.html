@@ -12,7 +12,7 @@
       <ion-icon name="menu"></ion-icon>
     </button>
 
-    <ion-title>Orders</ion-title>
+    <ion-title>{{ 'ORDERS' | translate }}</ion-title>
     <ion-buttons end class="btn-style">
       <button ion-button (click)="add()">
         <ion-icon name="add"></ion-icon>
@@ -47,6 +47,25 @@
           </ion-col>
         </ion-row>
       </ion-grid>
+
+
+      <div text-center *ngIf="ordersList.length == 0">
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <img src="../../assets/img/sad.png" class="not-found-img">
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+      
+                <h3 class="not-found-text"> {{ 'EMPTY_LIST' | translate }}</h3>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+      
+        </div>
+  
  
 
 

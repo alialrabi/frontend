@@ -1,4 +1,11 @@
 {
+  "ORDERS":"Orders",
+  "WELCOME_PAGE":"Welcome",
+  "CAPTAINS_ON_MAP":"Captains On Map",
+  "CAPTAIN_ORDERS":"'Captain Orders",
+  "AGENCY_CAPTAINS":"Agency Captains",
+  "AGENCIES":"Agencies",
+  "EMPTY_LIST":"No Data Found",
   "WORKING_CONFIRM_MESSAGE":"Do you want to change your working status ?",
   "WORKING_ERROR":"Error in updateing work status",
   "WORKING_SUCCESS":"Updateing work status successfully",

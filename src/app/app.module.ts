@@ -42,6 +42,9 @@ import { AgencyCaptainsPageModule } from '../pages/agency-captains/agency-captai
 import { LoginPageModule } from '../pages/login/login.module';
 //import { settings } from 'cluster';
 import { SettingsPageModule } from '../pages/settings/settings.module';
+import { CaptainService } from '../providers/auth/captain.service';
+import { BackgroundMode } from '@ionic-native/background-mode';
+
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
 export function createTranslateLoader(http: HttpClient) {
@@ -107,6 +110,7 @@ export function provideSettings(storage: Storage) {
     Api,
     User,
     LoginService,
+    CaptainService,
     Principal,
     AccountService,
     AuthServerProvider,
@@ -116,6 +120,7 @@ export function provideSettings(storage: Storage) {
     SplashScreen,
     StatusBar,
     Geolocation,
+    BackgroundMode,
     ImagePicker,
     Keyboard,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },

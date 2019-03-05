@@ -12,7 +12,7 @@
     </button>
 
     <ion-title>
-      Captain Orders
+      {{ 'CAPTAIN_ORDERS' | translate }}
     </ion-title>
     <!-- <ion-buttons end>
       <button ion-button (click)="logout()" id="logout">
@@ -52,6 +52,22 @@
   </ion-grid>
 
 
+  <div text-center *ngIf="ordersList.length == 0">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <img src="../../assets/img/sad.png" class="not-found-img">
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+
+          <h3 class="not-found-text"> {{ 'EMPTY_LIST' | translate }}</h3>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </div>
 
   <ion-list style="padding-top: 15px;">
 

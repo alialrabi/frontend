@@ -7,26 +7,26 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Welcome page</ion-title>
+    <ion-title>{{ 'WELCOME_PAGE' | translate }}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content text-center  >
-    <ion-grid>
-        <ion-row>
-            <ion-col>
-    <img src="../../assets/img/talabatk_logo.jpeg" >
-   </ion-col>
+<ion-content text-center>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <img src="../../assets/img/talabatk_logo.jpeg">
+      </ion-col>
     </ion-row>
     <ion-row>
-        <ion-col> 
-    <!-- <div class="wrapper"> -->
-   <button ion-button round class="btn-style" (click)="start()" >{{ 'Start' | translate }}</button>
-   </ion-col>
-   </ion-row>
-   </ion-grid>
- 
-<!-- </div> -->
+      <ion-col>
+        <!-- <div class="wrapper"> -->
+        <button ion-button round class="btn-style" (click)="start()">{{ 'Start' | translate }}</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- </div> -->
 </ion-content>

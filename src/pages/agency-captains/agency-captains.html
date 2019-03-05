@@ -7,13 +7,30 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Agency captains</ion-title>
+    <ion-title>{{ 'AGENCY_CAPTAINS' | translate }}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content class="auth-page-captain">
+
+    <div text-center *ngIf="captainsList.length == 0">
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <img src="../../assets/img/sad.png" class="not-found-img">
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+    
+              <h3 class="not-found-text"> {{ 'EMPTY_LIST' | translate }}</h3>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+    
+      </div>
 
 
   <ion-list style="padding-top: 15px;">

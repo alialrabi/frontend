@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
-import { Config, Nav, Platform, App, MenuController } from 'ionic-angular';
+import { Config, Nav, Platform, App, MenuController, ToastController } from 'ionic-angular';
 import { Settings } from '../providers/providers';
 import { LandingPage } from '../pages/landing/landing';
 import { HomePage } from '../pages/home/home';
@@ -16,13 +16,17 @@ import { AgenciesPage } from '../pages/agencies/agencies';
 import { LoginService } from '../providers/login/login.service';
 import { SettingsPage } from '../pages/settings/settings';
 import { CaptainOrdersPage } from '../pages/captain-orders/captain-orders';
+import { CaptainService } from '../providers/auth/captain.service';
+import { Observable } from 'rxjs/Observable';
+import  'rxjs/add/observable/interval';
+import { BackgroundMode } from '@ionic-native/background-mode';
 
 export interface MenuItem {
   title: string;
   component: any;
   icon: string;
 }
-
+//declare var backgroundGeolocation;
 @Component({
   templateUrl: 'app.html'
 })
@@ -37,23 +41,32 @@ export class MyApp {
 
   public account = null;
   public userType = '';
+  public captain;
+
+  public internal = null;
 
 
-  constructor(private translate: TranslateService, public menu: MenuController, platform: Platform, settings: Settings, private config: Config,
-    private statusBar: StatusBar, private loginService: LoginService, private app: App, private principal: Principal, private splashScreen: SplashScreen, private keyboard: Keyboard) {
+  constructor(private translate: TranslateService, private backgroundMode: BackgroundMode , public menu: MenuController, platform: Platform, settings: Settings, private config: Config,
+    private statusBar: StatusBar,  public toastCtrl: ToastController , private loginService: LoginService  ,private captainService:CaptainService ,private app: App, private principal: Principal, private splashScreen: SplashScreen, private keyboard: Keyboard) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       this.keyboard.disableScroll(true);
-
+      
     });
     this.initTranslate();
+    console.log("pppppppppppppppppppppp");
+    //backgroundGeolocation = new BackgroundGeolocation();
+    //this.startTracking()
     // this.appMenuItems = [
     //   // {title: 'Home', component: HomePage, icon: 'home'},
     //   // {title: 'Local Weather', component: EntityPage, icon: 'person'}
     // ];
+
+    
+
   }
 
   ngOnInit() {
@@ -91,6 +104,7 @@ export class MyApp {
           { title: 'Setting', component: SettingsPage, icon: 'construct' }
         ];
         this.nav.setRoot("CaptainOrdersPage")
+        this.getCaptain(account.id);
 
       } else {
         this.isLogOut = false;
@@ -107,6 +121,22 @@ export class MyApp {
     });
   }
 
+  getCaptain(captainId){
+
+    this.captainService.getByUserId(captainId).subscribe(
+      data => {
+        this.captain = data;    
+        
+        this.updateLocationTimer(this);
+        
+
+      }, err => {
+        console.log(err, 'errror');
+
+      }
+    )
+
+  }
 
 
   initTranslate() {
@@ -133,7 +163,14 @@ export class MyApp {
   logout() {
     this.menu.close().then(
       res => {
-
+        if(this.internal != null){
+          console.log("unsubscribe");
+          
+          this.internal.unsubscribe();
+          this.backgroundMode.disable();
+          this.internal = null;
+        }
+        
         this.loginService.logout();
         //this.userType = '';
         //this.account = null;
@@ -152,5 +189,52 @@ export class MyApp {
   openMenu() {
     this.menu.open();
   }
+
+
+  updateLocation(classIn) {
+    
+    navigator.geolocation.getCurrentPosition(function (position) {
+
+      let location = {
+        lat: position.coords.latitude+'',
+        lng: position.coords.longitude+'',
+        captainId: classIn.captain.id
+      }
+      console.log(location);
+      
+      console.log("******************");
+      
+
+      classIn.captainService.updateLocation(location).subscribe(
+        res => {
+          console.log(res, 'sssssssssss');
+
+        }, err => {
+          console.log(err, 'errrrrrpr');
+
+        }
+      )
+
+
+    }, err => {
+      console.log(err, 'error sssssssssssss');
+
+    })
+
+
+  }
+
+
+
+  updateLocationTimer(classIn){
+    this.backgroundMode.enable();
+    this.internal = Observable.interval(1000 * 60).subscribe( x => {
+      console.log(x , 'eeeeeeeeeeeeeeee');
+      classIn.updateLocation(classIn);
+      
+    });
+
+   }
+  
 
 }

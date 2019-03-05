@@ -13,7 +13,7 @@
       </button>
 
 
-      <ion-title>Agancies</ion-title>
+      <ion-title>{{ 'AGENCIES' | translate }}</ion-title>
 
       <ion-buttons end class="btn-style">
         <button ion-button (click)="add()">
@@ -26,6 +26,24 @@
 
 
 <ion-content class="auth-page-captain">
+
+    <div text-center *ngIf="agenciesList.length == 0">
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <img src="../../assets/img/sad.png" class="not-found-img">
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+    
+              <h3 class="not-found-text"> {{ 'EMPTY_LIST' | translate }}</h3>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+    
+      </div>
+    
 
 
   <ion-list style="padding-top: 15px;">

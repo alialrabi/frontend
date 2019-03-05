@@ -7,6 +7,8 @@ import { FirstRunPage } from '../pages';
 import { CaptainService } from '../../providers/auth/captain.service';
 import { LoginService } from '../../providers/login/login.service';
 import { AccountService } from '../../providers/auth/account.service';
+import { Observable } from 'rxjs/Observable';
+import  'rxjs/add/observable/interval';
 
 
 /**
@@ -40,6 +42,8 @@ export class CaptainOrdersPage {
 
   public pleaseWait;
 
+  interval = null;
+
 
   constructor(public navCtrl: NavController, private loginService: LoginService, private loading: LoadingController ,public accountService:AccountService , private captainService: CaptainService, private app: App, private principal: Principal, public navParams: NavParams, public orderService: OrderService, public translateService: TranslateService, public toastCtrl: ToastController) {
 
@@ -60,16 +64,12 @@ export class CaptainOrdersPage {
   }
 
   updateLocation(classIn) {
-    console.log("*********");
     
-    console.log("*****");
-    
-
     navigator.geolocation.getCurrentPosition(function (position) {
 
       let location = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
+        lat: position.coords.latitude+'',
+        lng: position.coords.longitude+'',
         captainId: classIn.captain.id
       }
       console.log(location);
@@ -117,7 +117,10 @@ export class CaptainOrdersPage {
 
         this.captainService.getByUserId(account.id).subscribe(
           data => {
+            
+            
             this.captain = data;
+            console.log(data , this.captain);
 
             this.myVar = 'assigned';
             console.log("**********");
@@ -129,7 +132,7 @@ export class CaptainOrdersPage {
             }
             console.log("********************");
             
-            classIn.updateLocation(classIn);
+           //classIn.updateLocationTimer(classIn);
 
 
 
@@ -146,6 +149,15 @@ export class CaptainOrdersPage {
     });
 
 
+  }
+
+  updateLocationTimer(classIn){
+      
+   Observable.interval(10000).subscribe( x => {
+      console.log(x , 'eeeeeeeeeeeeeeee');
+      classIn.updateLocation(classIn);
+      
+    }) 
   }
 
   getCaptainAgency(){

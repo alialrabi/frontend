@@ -1,4 +1,11 @@
 {
+  "ORDERS":"الطلبات",
+  "WELCOME_PAGE":"مرحبا",
+  "CAPTAINS_ON_MAP":"الطيارين على الخريطه",
+  "CAPTAIN_ORDERS":"طلبات الطيار",
+  "AGENCY_CAPTAINS":"'طيارين المحل",
+  "AGENCIES":"المحلات",
+  "EMPTY_LIST":"لا توجد اى بيانات",
   "WORKING_CONFIRM_MESSAGE":"هل تريد تعديل حاله العمل",
   "WORKING_ERROR":"خطأ فى تعديل حاله العمل",
   "WORKING_SUCCESS":"تم تعديل حاله العمل",
