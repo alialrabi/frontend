@@ -50,5 +50,14 @@ export class CaptainService  {
 
         return this.http.get(Api.API_URL_login + '/tlabatac/api/captainsByAgencyId/'+agencyId+'?access_token=' +this.authservice.getToken());
     }
+    getCaptainElevation(captainId:any) : Observable<any>{
+
+        return this.http.get(Api.API_URL_login + '/tlabatac/api/evaluationsByCaptainId/'+captainId+'?access_token=' +this.authservice.getToken());
+    }
+
+    updateEvaluation(evaluation: any): Observable<Object> {
+
+        return this.http.put(Api.API_URL_login + '/tlabatac/api/evaluations?access_token=' +this.authservice.getToken() , evaluation);
+    }
 
 }

@@ -26,7 +26,7 @@
           <ion-icon name="thumbs-up" item-start class="text-primary"></ion-icon>
           {{ 'MORAL' | translate }}
         </ion-label>
-        <ion-input type="number" min="1" max="5" formControlName="moral" name="moral"></ion-input>
+        <ion-input type="number" min="1" max="5" formControlName="moral" name="moral" [(ngModel)]="evaluation.moral"></ion-input>
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('moral', 'required')"> {{ 'REQURIED' | translate }} </p>
@@ -38,7 +38,7 @@
           <ion-icon name="man" item-start class="text-primary"></ion-icon>
           {{ 'APPEARANCE' | translate }}
         </ion-label>
-        <ion-input type="number" min="1" max="5" formControlName="appearnce" name="appearnce"></ion-input>
+        <ion-input type="number" min="1" max="5" formControlName="appearnce" name="appearnce" [(ngModel)]="evaluation.appearance"></ion-input>
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('appearnce', 'required' )"> {{ 'REQURIED' | translate }} </p>
@@ -49,7 +49,7 @@
           <ion-icon name="speedometer" item-start class="text-primary"></ion-icon>
           {{ 'SPEED' | translate }}
         </ion-label>
-        <ion-input type="number" min="1" max="5" formControlName="speed" name="speed"></ion-input>
+        <ion-input type="number" min="1" max="5" formControlName="speed" name="speed" [(ngModel)]="evaluation.speed"></ion-input>
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('speed', 'required')"> {{ 'REQURIED' | translate }} </p>
@@ -60,7 +60,7 @@
           <ion-icon name="clock" item-start class="text-primary"></ion-icon>
           {{ 'COMMITMENT' | translate }}
         </ion-label>
-        <ion-input type="number" min="1" max="5" formControlName="commitment" name="commitment"></ion-input>
+        <ion-input type="number" min="1" max="5" formControlName="commitment" name="commitment" [(ngModel)]="evaluation.commitment"></ion-input>
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('commitment', 'required' )"> {{ 'REQURIED' | translate }} </p>
@@ -71,7 +71,7 @@
           <ion-icon name="done-all" item-start class="text-primary"></ion-icon>
           {{ 'EXCELLENCE' | translate }}
         </ion-label>
-        <ion-input type="number" min="1" max="5" formControlName="excellence" name="excellence"></ion-input>
+        <ion-input type="number" min="1" max="5" formControlName="excellence" name="excellence" [(ngModel)]="evaluation.excellence"></ion-input>
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('excellence', 'required')"> {{ 'REQURIED' | translate }} </p>

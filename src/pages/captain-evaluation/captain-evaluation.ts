@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, LoadingController, App } from 'ionic-angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { CaptainService } from '../../providers/auth/captain.service';
+import { CaptainsPage } from '../captains/captains';
 
 /**
  * Generated class for the CaptainEvaluationPage page.
@@ -19,14 +20,30 @@ import { CaptainService } from '../../providers/auth/captain.service';
 export class CaptainEvaluationPage {
 
   myForm: FormGroup;
+  public evaluation = {
+    moral:1,
+    appearance:1,
+    speed:1,
+    commitment:1,
+    excellence:1,
+  };
+  captain;
+
+  public editEvaluationSuccess;
+  public editEvaluationError;
+  public pleaseWait;
 
   constructor(public navCtrl: NavController, public navParams: NavParams , public toastCtrl: ToastController, 
-    public captainService:CaptainService ,
+    public captainService:CaptainService ,private loading: LoadingController , private app:App ,
      public translateService: TranslateService , private builder: FormBuilder ) {
 
-      this.translateService.get(['EDIT_EVALUATION_ERROR', 'EDIT_EVALUATION_SUCCESS']).subscribe((values) => {
-        // this.addAddressError = values.SIGNUP_ERROR;
-        // this.addAdressSuccessString = values.SIGNUP_SUCCESS;
+      this.captain = this.navParams.get("item");
+      this.getEvaluation(this.captain.id);
+
+      this.translateService.get(['EDIT_EVALUATION_ERROR', 'EDIT_EVALUATION_SUCCESS' , 'PLEASE_WAIT']).subscribe((values) => {
+         this.editEvaluationError = values.EDIT_EVALUATION_ERROR;
+         this.editEvaluationSuccess = values.EDIT_EVALUATION_SUCCESS;
+         this.pleaseWait = values.PLEASE_WAIT
       })
 
       this.myForm = builder.group({
@@ -43,7 +60,64 @@ export class CaptainEvaluationPage {
     console.log('ionViewDidLoad CaptainEvaluationPage');
   }
 
+  getEvaluation(captainId){
+
+    let load = this.loading.create({
+      content: this.pleaseWait
+  
+  
+    })
+    load.present()
+
+    this.captainService.getCaptainElevation(captainId).subscribe(
+      res =>{
+        this.evaluation = res;
+        load.dismiss();
+        
+      }, err =>{
+        console.log(err , 'errrrrror');
+        load.dismiss();
+        
+      }
+    )
+  }
+
   editEvaluation(){
+
+    let load = this.loading.create({
+      content: this.pleaseWait
+  
+  
+    })
+    load.present()
+
+    this.captainService.updateEvaluation(this.evaluation).subscribe((res) => {
+      console.log(res , 'res');
+      
+      let toast = this.toastCtrl.create({
+        message: this.editEvaluationSuccess,
+        duration: 3000,
+        position: 'top'
+      });
+      toast.present();
+      load.dismiss();
+      //this.navCtrl.push(CaptainsPage);
+      this.app.getRootNavs()[0].setRoot(CaptainsPage);
+    }, (err1) => {
+      console.log('error' , err1);
+      
+      // Unable to add address
+      // const error = JSON.parse(err.error);
+      let displayError = this.editEvaluationError;
+      
+      let toast = this.toastCtrl.create({
+          message: displayError,
+          duration: 3000,
+          position: 'middle'
+      });
+      toast.present();
+      load.dismiss();
+    });
 
   }
 
