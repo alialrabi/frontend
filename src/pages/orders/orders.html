@@ -14,7 +14,7 @@
 
     <ion-title>{{ 'ORDERS' | translate }}</ion-title>
     <ion-buttons end class="btn-style">
-      <button ion-button (click)="add()">
+      <button ion-button (click)="add()" *ngIf="userType == 'Agency'">
         <ion-icon name="add"></ion-icon>
       </button>
     </ion-buttons>
@@ -100,7 +100,7 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-      <ion-buttons end class="btn-style" *ngIf="myVar != 'delivered'">
+      <ion-buttons end class="btn-style" *ngIf="myVar != 'delivered' && userType == 'Agency'">
         <button ion-button (click)="assingCaptain(order)">
           {{ 'ASSIGN_CAPTAIN' | translate }}
           </button>

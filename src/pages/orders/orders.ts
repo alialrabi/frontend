@@ -26,11 +26,13 @@ export class OrdersPage {
   public ordersList = [];
 
   public pleaseWait;
+  userType = '';
+  userId = 0;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private loading: LoadingController ,public translateService: TranslateService,  private app: App, private principal: Principal, public orderService: OrderService) {
-    
+  constructor(public navCtrl: NavController, public navParams: NavParams, private loading: LoadingController, public translateService: TranslateService, private app: App, private principal: Principal, public orderService: OrderService) {
+
     this.translateService.get(['PLEASE_WAIT']).subscribe((values) => {
-      
+
       this.pleaseWait = values.PLEASE_WAIT
     })
 
@@ -40,25 +42,35 @@ export class OrdersPage {
 
     let load = this.loading.create({
       content: this.pleaseWait
-  
-  
+
+
     })
     load.present()
 
     this.principal.identity().then((account) => {
       console.log(account);
       load.dismiss();
-      
-      if (account === null  ) {
-         this.app.getRootNavs()[0].setRoot(FirstRunPage);
-      } else if(account.authorities[0] == 'ROLE_AGENCY'){
 
-        this.account = account;    
+      if (account === null) {
+        this.app.getRootNavs()[0].setRoot(FirstRunPage);
+      } else if (account.authorities[0] == 'ROLE_AGENCY') {
+
+        this.account = account;
         this.myVar = 'assigned';
-        this.getAllOrders(this.myVar);   
-        
+        this.userType = 'Agency';
+        this.userId = account.id;
+        this.getAllOrders(this.myVar);
+
+
+      } else {
+        this.account = account;
+        this.myVar = 'assigned';
+        this.userType = 'Admin';
+        this.userId = 0;
+        this.getAllOrders(this.myVar);
+
       }
-    }).catch((err) =>{
+    }).catch((err) => {
       load.dismiss();
     });
   }
@@ -70,14 +82,14 @@ export class OrdersPage {
   getAllOrders(status) {
     let load = this.loading.create({
       content: this.pleaseWait
-  
-  
+
+
     })
     load.present()
 
     this.myVar = status;
     this.ordersList = [];
-    this.orderService.getAllByStatus(status , this.account.id).subscribe(res => {
+    this.orderService.getAllByStatus(status, this.userId).subscribe(res => {
       console.log(res);
 
 
@@ -116,11 +128,11 @@ export class OrdersPage {
         console.log(orders.charAt(index));
         if (orders.charAt(index) === '-' && orders.charAt(index - 1) === ' ' && orders.charAt(index + 1) === ' ') {
           let subOrder = {
-            name : orders.substring(0, index - 1),
-            index : items.length + 1
+            name: orders.substring(0, index - 1),
+            index: items.length + 1
           }
           items.push(subOrder);
-          orders = orders.substring(index+1 , orders.length)
+          orders = orders.substring(index + 1, orders.length)
         }
 
         //}
@@ -131,19 +143,19 @@ export class OrdersPage {
     console.log(items);
 
     let subOrder1 = {
-      name : orders,
-      index : items.length + 1
+      name: orders,
+      index: items.length + 1
     }
-    
+
     items.push(subOrder1)
-    
+
     console.log(items, 'mmmmmmmmmmmmmmm');
 
     return items;
   }
 
-  assingCaptain(order){
-    this.navCtrl.push('AssignOrderPage',{item:order})
+  assingCaptain(order) {
+    this.navCtrl.push('AssignOrderPage', { item: order })
   }
 
   // openMenu(){

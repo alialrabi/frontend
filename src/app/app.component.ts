@@ -20,6 +20,7 @@ import { CaptainService } from '../providers/auth/captain.service';
 import { Observable } from 'rxjs/Observable';
 import  'rxjs/add/observable/interval';
 import { BackgroundMode } from '@ionic-native/background-mode';
+import { AdminDashboardPage } from '../pages/admin-dashboard/admin-dashboard';
 
 export interface MenuItem {
   title: string;
@@ -111,10 +112,13 @@ export class MyApp {
         this.userType = 'Admin'
         this.account = account;
         this.appMenuItems = [
+          { title: 'Dashboard', component: AdminDashboardPage, icon: 'stats' },
           { title: 'Agencies', component: AgenciesPage, icon: 'home' },
-          { title: 'Captains', component: CaptainsPage, icon: 'bicycle' }
+          { title: 'Captains', component: CaptainsPage, icon: 'bicycle' },
+          { title: 'Orders', component: OrdersPage, icon: 'basket' }
+          
         ];
-        this.nav.setRoot("AgenciesPage")
+        this.nav.setRoot("AdminDashboardPage")
       }
       console.log(this.userType, 'user');
 

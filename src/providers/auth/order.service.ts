@@ -20,6 +20,10 @@ export class OrderService  {
 
         return this.http.get(Api.API_URL_login + '/tlabatac/api/ordersByStatus/'+status+'/'+agencyId+'?access_token=' +this.authservice.getToken());
     }
+    getAdminStatistics(searchFilter: any) : Observable<any>{
+
+        return this.http.post(Api.API_URL_login + '/tlabatac/api/getAdminDashboard?access_token=' +this.authservice.getToken() , searchFilter);
+    }
     getCaptainOrders(captainId:any , status:any) : Observable<any>{
         console.log(captainId , 'ssssssssssssssss');
         

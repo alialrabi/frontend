@@ -5,6 +5,7 @@ import { CaptainOrdersPage } from '../captain-orders/captain-orders';
 import { OrdersPage } from '../orders/orders';
 import { AgenciesPage } from '../agencies/agencies';
 import { LoginPage } from '../login/login';
+import { AdminDashboardPage } from '../admin-dashboard/admin-dashboard';
 
 /**
  * Generated class for the LandingPage page.
@@ -60,7 +61,7 @@ export class LandingPage {
           this.app.getRootNavs()[0].setRoot(OrdersPage);
         }
         else {
-          this.app.getRootNavs()[0].setRoot(AgenciesPage);
+          this.app.getRootNavs()[0].setRoot(AdminDashboardPage);
         }
 
 

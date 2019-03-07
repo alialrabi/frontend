@@ -38,11 +38,10 @@ export class AddCaptainPage {
   };
 
 
-  captain : {code:number , name:string , phone:string , evaluation : string , image : any , imageContentType:string , latitude:string , longitude:string , busy:boolean  , userId:any , agencyId:number , working:boolean } = {
+  captain : {code:number , name:string , phone:string , image : any , imageContentType:string , latitude:string , longitude:string , busy:boolean  , userId:any , agencyId:number , working:boolean } = {
     code: null,
     name: '',
     phone: '',
-    evaluation: '5',
     image: null ,
     imageContentType:'',
     latitude:'31.214262511126286',
