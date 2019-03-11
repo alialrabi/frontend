@@ -45,6 +45,11 @@ import { SettingsPageModule } from '../pages/settings/settings.module';
 import { CaptainService } from '../providers/auth/captain.service';
 import { BackgroundMode } from '@ionic-native/background-mode';
 import { AdminDashboardPageModule } from '../pages/admin-dashboard/admin-dashboard.module';
+import { UserOrdersPage } from '../pages/user-orders/user-orders';
+import { UserOrdersPageModule } from '../pages/user-orders/user-orders.module';
+import { ChooseAddressPageModule } from '../pages/choose-address/choose-address.module';
+import { AddressService } from '../providers/auth/address.service';
+import { OrdersMapPageModule } from '../pages/orders-map/orders-map.module';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -101,7 +106,10 @@ export function provideSettings(storage: Storage) {
     AssignCaptainsPageModule ,
     AgencyCaptainsPageModule ,
     SettingsPageModule ,
-    AdminDashboardPageModule
+    AdminDashboardPageModule,
+    UserOrdersPageModule,
+    ChooseAddressPageModule,
+    OrdersMapPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

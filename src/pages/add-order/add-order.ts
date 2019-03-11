@@ -8,6 +8,7 @@ import { OrderService } from '../../providers/auth/order.service';
 import { OrdersPage } from '../orders/orders';
 import { FirstRunPage } from '../pages';
 import { Principal } from '../../providers/auth/principal.service';
+import { UserOrdersPage } from '../user-orders/user-orders';
 
 /**
  * Generated class for the AddOrderPage page.
@@ -52,6 +53,9 @@ export class AddOrderPage {
   public addORDERSuccessString;
   public alex = 'Alexandria';
   public pleaseWait;
+  public userType;
+  address = null;
+  
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController
@@ -59,6 +63,8 @@ export class AddOrderPage {
     private builder: FormBuilder, public user: User, private app: App, private principal: Principal, public orderService: OrderService) {
 
     console.log('con');
+    this.address = this.navParams.get("address");
+
 
     this.translateService.get(['ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS', 'ALEX','PLEASE_WAIT']).subscribe((values) => {
       console.log(values);
@@ -72,13 +78,14 @@ export class AddOrderPage {
 
     this.myForm = builder.group({
       //'userId':['', [Validators.required ]],
-      'name': ['', [Validators.required, Validators.maxLength(45)]],
+      'name': ['', []],
       'phone': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
       'secondPhone': ['', [Validators.pattern("(01)[0-9]{9}")]],
-      'address1': ['', [Validators.required, Validators.maxLength(100)]],
-      'address2': ['', [Validators.maxLength(100)]],
-      'city': ["'Alexandria'", [Validators.required]],
-      "order": ['', [Validators.required, Validators.maxLength(45)]]
+      'address1': ['', []],
+      'address2': ['', []],
+      'city': ["'Alexandria'", []],
+      "order": ['', [Validators.required, Validators.maxLength(45)]],
+      "fromAddress":['',[]]
     });
 
 
@@ -106,10 +113,35 @@ export class AddOrderPage {
     this.principal.identity().then((account) => {
       console.log(account);
       load.dismiss();
-      if (account === null || account.authorities[0] != 'ROLE_AGENCY') {
+      if (account === null || (account.authorities[0] != 'ROLE_AGENCY' && account.authorities[0] != 'ROLE_USER')) {
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
-      } else {
+      } else if(account.authorities[0] == 'ROLE_AGENCY') {
 
+        this.userType = "Agency";
+        this.account = account;
+        this.myForm.get("address1").clearValidators();
+        this.myForm.get("address1").setValidators([Validators.required, Validators.maxLength(100)]);
+        this.myForm.get("address1").updateValueAndValidity();
+
+        this.myForm.get("address2").clearValidators();
+        this.myForm.get("address2").setValidators([Validators.maxLength(100)]);
+        this.myForm.get("address2").updateValueAndValidity();
+        
+        this.myForm.get("name").clearValidators();
+        this.myForm.get("name").setValidators([Validators.required, Validators.maxLength(45)]);
+        this.myForm.get("name").updateValueAndValidity();
+
+        this.myForm.get("city").clearValidators();
+        this.myForm.get("city").setValidators([Validators.required]);
+        this.myForm.get("city").updateValueAndValidity();
+
+      }else if(account.authorities[0] == 'ROLE_USER') {
+        this.myForm.get("fromAddress").clearValidators();
+        this.myForm.get("fromAddress").setValidators([Validators.required, Validators.maxLength(100)]);
+       
+        this.myForm.get("fromAddress").updateValueAndValidity();
+
+        this.userType = "User";
         this.account = account;
 
       }
@@ -202,7 +234,20 @@ export class AddOrderPage {
       secondAddress: this.myForm.get("address2").value,
       status: 'not assigned',
       captainId: 0,
-      agencyId: this.account.id
+      agencyId: this.account.id,
+      userId: 0,
+      fromAddress:null,
+      isUserOrder:false ,
+      addressId:0 
+
+    }
+    if(this.userType == 'User'){
+      orderObject.userId = this.account.id;
+      orderObject.fromAddress = this.myForm.get('fromAddress').value;
+      orderObject.isUserOrder = true;
+      orderObject.addressId = this.address.id;
+      orderObject.name = this.account.firstName + ' '+this.account.lastName
+
     }
 
     console.log(orderObject, 'ssssssssssss');
@@ -220,7 +265,11 @@ export class AddOrderPage {
       });
       toast.present();
       load.dismiss();
+      if(this.userType == 'User'){
+        this.app.getRootNavs()[0].setRoot(UserOrdersPage);
+      }else{
       this.navCtrl.push('AssignOrderPage', { item: obj })
+      }
     }, (err) => {
       console.log('error', err);
 

@@ -89,7 +89,7 @@ export class OrdersPage {
 
     this.myVar = status;
     this.ordersList = [];
-    this.orderService.getAllByStatus(status, this.userId).subscribe(res => {
+    this.orderService.getAllByStatus(status, this.userId , false).subscribe(res => {
       console.log(res);
 
 

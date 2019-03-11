@@ -34,7 +34,7 @@
       <!-- <p class="validationHint" *ngIf="hasError('userId', 'required' , myForm )"> {{ 'REQURIED' | translate }} </p> -->
 
 
-      <ion-item>
+      <ion-item *ngIf="userType != 'User'">
         <ion-label floating>
           <ion-icon name="person" item-start class="text-primary"></ion-icon>
           {{ 'NAME' | translate }}
@@ -67,7 +67,7 @@
 
       <p class="validationHint" *ngIf="hasError('secondPhone', 'pattern' , myForm)">{{ 'PHONE_NUMBER' | translate }} </p>
 
-      <ion-item>
+      <ion-item *ngIf="userType != 'User'">
         <ion-label floating>
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
           {{ 'CITY' | translate }}
@@ -84,8 +84,20 @@
       </ion-item>
       <p class="validationHint" *ngIf="hasError('city', 'required' , myForm)"> {{ 'REQURIED' | translate }}  </p>
 
-      <ion-item>
+      <ion-item *ngIf="userType == 'User'">
         <ion-label floating>
+          <ion-icon name="pin" item-start class="text-primary"></ion-icon>
+          {{ 'FROM_ADDRESS' | translate }}
+        </ion-label>
+        <ion-input type="text" formControlName="fromAddress" name="fromAddress"></ion-input>
+      </ion-item>
+
+      <p class="validationHint" *ngIf="hasError('fromAddress', 'required' , myForm)"> {{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('fromAddress', 'maxlength' , myForm)">{{ 'MAX_LENGTH' | translate }} </p>
+
+
+      <ion-item *ngIf="userType != 'User'">
+        <ion-label floating >
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
           {{ 'FULL_ADDRESS' | translate }} 1
         </ion-label>
@@ -95,8 +107,8 @@
       <p class="validationHint" *ngIf="hasError('address1', 'required' , myForm)"> {{ 'REQURIED' | translate }}  </p>
       <p class="validationHint" *ngIf="hasError('address1', 'maxlength' , myForm)">{{ 'MAX_LENGTH' | translate }} </p>
 
-      <ion-item>
-        <ion-label floating>
+      <ion-item *ngIf="userType != 'User'">
+        <ion-label floating *ngIf="userType != 'User'">
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
           {{ 'FULL_ADDRESS' | translate }} 2
         </ion-label>

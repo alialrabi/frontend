@@ -1,30 +1,27 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { AddAddressPage } from './add-address';
+import { ChooseAddressPage } from './choose-address';
 import { TranslateModule } from '@ngx-translate/core';
 import { AddressService } from '../../providers/auth/address.service';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-
 
 @NgModule({
   declarations: [
-    AddAddressPage,
+    ChooseAddressPage,
   ],
   imports: [
-    IonicPageModule.forChild(AddAddressPage),
-    FormsModule ,
+    IonicPageModule.forChild(ChooseAddressPage),
     TranslateModule.forChild()
   ],
   exports:[
-    AddAddressPage
-  ]
-  ,
+    ChooseAddressPage
+  ],
   entryComponents:[
-    AddAddressPage
+    ChooseAddressPage
   ],
   providers:[
+  
     AddressService
+    
   ]
 })
-export class AddAddressPageModule {}
+export class ChooseAddressPageModule {}

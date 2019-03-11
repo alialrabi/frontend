@@ -1,0 +1,55 @@
+page-user-orders {
+
+    .circle-pic{
+        width:70px;
+        height:70px;
+        border-radius: 50%;      
+    }
+    .icon-btn{
+       
+    position: absolute;
+    padding: 20px;
+    margin-top: 20px;
+    margin-left: 50px;
+    
+    }
+    .img-col{
+        width: 60px;
+        max-width: 80px;
+    }
+    .info-div{
+        margin-left: 20px;
+        margin-top: 5px;
+       
+    }
+    .auth-page-captain {
+        background-color: #fff;
+        &::after {
+          content: "";
+          background: url("../assets/img/bg.jpg") no-repeat;
+          background-size: cover;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          right: 0;
+          position: absolute;
+          z-index: 0;
+        }
+    }
+    .item-background {
+        background-color: unset;
+    }
+    .btn-style {
+        padding: 5px;
+    }
+
+    .tap-selected {
+        background: #4cc2f9;
+        color: white;
+        
+    }
+    .tap-notselected {
+        background: initial;
+        color: black;
+}
+}

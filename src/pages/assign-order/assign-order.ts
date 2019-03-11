@@ -7,6 +7,7 @@ import { OrderService } from '../../providers/auth/order.service';
 import { OrdersPage } from '../orders/orders';
 import { FirstRunPage } from '../pages';
 import { Principal } from '../../providers/auth/principal.service';
+import { UserOrdersPage } from '../user-orders/user-orders';
 
 /**
  * Generated class for the AssignOrderPage page.
@@ -32,6 +33,8 @@ export class AssignOrderPage {
   public order;
 
   public account = null;
+  userType = ''
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams ,
     private builder: FormBuilder , public captainService:CaptainService  ,private loading: LoadingController , private app: App, private principal: Principal, public toastCtrl: ToastController , public translateService: TranslateService , public orderService:OrderService ) {
@@ -70,8 +73,15 @@ export class AssignOrderPage {
       
       if (account === null ) {
          this.app.getRootNavs()[0].setRoot(FirstRunPage);
-      }else {
+      }else if(account.authorities[0]== 'ROLE_AGENCY'){
+        this.account = account;
+        this.userType = 'Agency'
         this.getAllCaptains();
+      }else{
+        this.account = account;
+        this.userType = 'Admin'
+        this.getAllCaptains();
+
       }
        
         
@@ -128,8 +138,14 @@ export class AssignOrderPage {
         });
         toast.present();
         load.dismiss();
+        if(this.userType == 'Admin'){
+          this.app.getRootNavs()[0].setRoot(UserOrdersPage);
+        }else{
+          this.app.getRootNavs()[0].setRoot(OrdersPage);
+        }
+
         //this.navCtrl.push(OrdersPage);
-        this.app.getRootNavs()[0].setRoot(OrdersPage);
+        
 
       }, err =>{
         console.log(err);

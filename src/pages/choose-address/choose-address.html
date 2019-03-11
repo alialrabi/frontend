@@ -1,0 +1,59 @@
+<!--
+  Generated template for the ChooseAddressPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ 'CHOOSE_ADDRESS' | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="auth-page">
+  <div class="login-content">
+
+    <!-- Logo -->
+    <div padding text-center>
+      <div class="logo"></div>
+      <h2 ion-text class="text-primary">
+        Tlabatac
+      </h2>
+    </div>
+
+    <!-- Login form -->
+    <form class="list-form" [formGroup]="myForm">
+      <ion-item>
+          <ion-label floating>
+            <ion-icon name="person" item-start class="text-primary"></ion-icon>
+            {{ 'ADDRESS' | translate }}
+          </ion-label>
+          <ion-select formControlName="address">
+            <ion-option *ngFor="let item of addressList" [selected]="item.country ==item.country && item.city == item.city && item.street == item.street && item.postalCode == item.postalCode" [value]="item"  >{{item.street}} , {{item.city}} </ion-option>
+  
+          </ion-select>
+        </ion-item>
+
+      <p class="validationHint" *ngIf="hasError('address', 'required')"> {{ 'REQURIED' | translate }} </p>
+
+
+
+    </form>
+
+    <div margin-top>
+      <button ion-button block color="dark" tappable (click)="chooseAddress()" [disabled]="!myForm.valid">
+        {{ 'CHOOSE_ADDRESS' | translate }}
+      </button>
+    </div>
+
+    <div margin-top>
+      <button ion-button block color="dark" tappable (click)="newAddress()">
+        {{ 'NEW_ADDRESS' | translate }}
+      </button>
+    </div>
+  </div>
+
+</ion-content>

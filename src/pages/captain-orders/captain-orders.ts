@@ -199,7 +199,7 @@ export class CaptainOrdersPage {
     console.log(this.captain);
     this.myVar = status;
 
-    this.orderService.getAllByStatus(status, this.captain.agencyId).subscribe(res => {
+    this.orderService.getAllByStatus(status, this.captain.agencyId , false).subscribe(res => {
       console.log(res);
       console.log("*************");
 

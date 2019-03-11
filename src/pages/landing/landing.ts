@@ -6,6 +6,7 @@ import { OrdersPage } from '../orders/orders';
 import { AgenciesPage } from '../agencies/agencies';
 import { LoginPage } from '../login/login';
 import { AdminDashboardPage } from '../admin-dashboard/admin-dashboard';
+import { UserOrdersPage } from '../user-orders/user-orders';
 
 /**
  * Generated class for the LandingPage page.
@@ -59,6 +60,8 @@ export class LandingPage {
 
         } else if(account.authorities[0] == 'ROLE_AGENCY') {
           this.app.getRootNavs()[0].setRoot(OrdersPage);
+        } else if (account.authorities[0] == 'ROLE_USER'  && account.authorities.length == 1){
+          this.app.getRootNavs()[0].setRoot(UserOrdersPage);
         }
         else {
           this.app.getRootNavs()[0].setRoot(AdminDashboardPage);
