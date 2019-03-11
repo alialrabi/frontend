@@ -6,6 +6,7 @@ import { CaptainsMapPage } from '../captains-map/captains-map';
 import { FirstRunPage } from '../pages';
 import { Principal } from '../../providers/auth/principal.service';
 import { TranslateService } from '@ngx-translate/core';
+import { CaptainEvaluationPage } from '../captain-evaluation/captain-evaluation';
 
 /**
  * Generated class for the CaptainsPage page.
@@ -130,6 +131,10 @@ export class CaptainsPage {
  }
  openMap(){
    this.navCtrl.push(CaptainsMapPage)
+ }
+
+ openEvaluation(captain){
+   this.navCtrl.push(CaptainEvaluationPage , {item : captain});
  }
 
 //  openMenu(){

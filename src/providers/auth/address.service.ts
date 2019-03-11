@@ -12,5 +12,9 @@ export class AddressService  {
         
         return this.http.post(Api.API_URL_login + '/tlabatac/api/addresses?access_token=' +this.authservice.getToken() ,address);
     }
+    getUserAddresses(userId: any): Observable<any> {
+        
+        return this.http.get(Api.API_URL_login + '/tlabatac/api/addresses/getByUserId/'+userId+'?access_token=' +this.authservice.getToken() );
+    }
 
 }

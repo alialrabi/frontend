@@ -1,0 +1,98 @@
+<ion-header>
+  <ion-navbar>
+      <button ion-button menuToggle>
+          <ion-icon name="menu"></ion-icon>
+        </button>
+    <ion-title>
+      {{ 'DASHBOARD' | translate }}
+    </ion-title>
+    <ion-buttons end class="btn-style">
+        <button ion-button (click)="toggleSearch()">
+          <ion-icon name="search"></ion-icon>
+        </button>
+      </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="auth-page2">
+  <!-- <section text-center margin-bottom>
+    <ion-icon name="person"></ion-icon>
+    <h1 style="font-size:1.4em" no-margin>{{ 'WELCOME' | translate }}, <br>
+      {{account?.firstName}} {{account?.lastName}}</h1>
+  </section> -->
+  <div class="login-content">
+
+      <form class="list-form" [formGroup]="myForm" style="width: 86%;margin-right: 7%;margin-left: 7%;"  *ngIf="seachFlag">
+
+          <ion-item>
+              <ion-label floating>
+                <ion-icon name="person" item-start class="text-primary"></ion-icon>
+                {{ 'CAPTAIN' | translate }}
+              </ion-label>
+              <ion-select formControlName="captainId">
+                <ion-option *ngFor="let item of captainList" [selected]="item.name ==item.name" [value]="item.id"  >{{item.name}} </ion-option>      
+              </ion-select>
+            </ion-item>
+            <ion-item>
+                <ion-label floating>
+                  <ion-icon name="calendar" item-start class="text-primary"></ion-icon>
+                  {{ 'START_DATE' | translate }}
+                </ion-label>
+                <ion-datetime displayFormat="YYYY-MM-DD" max="{{maxDate}}" formControlName="startDate" [(ngModel)] ="seaarchFilter.startDate"></ion-datetime>
+              </ion-item>
+              <ion-item>
+                  <ion-label floating>
+                    <ion-icon name="calendar" item-start class="text-primary"></ion-icon>
+                    {{ 'END_DATE' | translate }}
+                  </ion-label>
+                  <ion-datetime displayFormat="YYYY-MM-DD" max="{{maxDate}}" formControlName="endDate" [(ngModel)] ="seaarchFilter.endDate"></ion-datetime>
+                </ion-item>
+        </form>
+
+        <ion-grid  *ngIf="seachFlag">
+
+            <ion-row>
+                <ion-col col-6>
+                  <ion-buttons end class="btn-style" style="width: 100%;">
+                    <button ion-button (click)="getAdminStatistcs()" style="width: 100%;">
+                      {{ 'SEARCH' | translate }}
+                    </button>
+                  </ion-buttons>
+                </ion-col>
+                <ion-col col-6>
+                  <ion-buttons end class="btn-style" style="width: 100%;">
+                    <button ion-button (click)="clear()" style="width: 100%;">
+                      {{ 'CLEAR_FIELDS' | translate }}
+                    </button>
+                  </ion-buttons>
+      
+                </ion-col>
+      
+              </ion-row>
+
+        </ion-grid>
+      
+
+
+    <ion-grid [ngClass]="{'search': !seachFlag , 'not-search': seachFlag}">
+      <ion-row>
+        <ion-col col-6>
+          <ion-card text-center padding color="#4c6df9">
+            <ion-icon name="clock" class="ion-icon2"></ion-icon>
+            <h2>{{ 'DELIVER_TIME_AVERAGE' | translate }}</h2>
+            <h1>{{statistic?.deliverTimeAverage}}</h1>
+          </ion-card>
+        </ion-col>
+        <ion-col col-6>
+          <ion-card text-center padding color="#4c6df9">
+            <ion-icon name="basket" class="ion-icon2"></ion-icon>
+            <h2>{{ 'ORDER_COUNT_AVERAGE' | translate }}</h2>
+            <h1>{{statistic?.ordersByDayAverage}}</h1>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
+  </div>
+  
+</ion-content>

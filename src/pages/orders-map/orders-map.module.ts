@@ -1,24 +1,23 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { CaptainsMapPage } from './captains-map';
-import { CaptainService } from '../../providers/auth/captain.service';
+import { OrdersMapPage } from './orders-map';
 import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
-    CaptainsMapPage,
+    OrdersMapPage,
   ],
   imports: [
-    IonicPageModule.forChild(CaptainsMapPage),
+    IonicPageModule.forChild(OrdersMapPage),
     TranslateModule.forChild()
   ],
   entryComponents:[
-    CaptainsMapPage
+    OrdersMapPage
   ],exports:[
-    CaptainsMapPage
+    OrdersMapPage
   ],
   providers :[
-    CaptainService
+    
   ]
 })
-export class CaptainsMapPageModule {}
+export class OrdersMapPageModule {}

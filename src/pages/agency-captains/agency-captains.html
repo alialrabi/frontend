@@ -7,7 +7,19 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Agency captains</ion-title>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+
+    <ion-title *ngIf="agency != null">{{agency.firstName}} {{ 'CAPTAINS' | translate }}</ion-title>
+    <ion-title *ngIf="agency == null">{{user?.firstName}} {{ 'CAPTAINS' | translate }}</ion-title>
+
+    <ion-buttons end class="btn-style">
+      <button ion-button (click)="add()" *ngIf="agency == null">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+
   </ion-navbar>
 
 </ion-header>
@@ -15,43 +27,59 @@
 
 <ion-content class="auth-page-captain">
 
+  <div text-center *ngIf="captainsList.length == 0">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <img src="../../assets/img/sad.png" class="not-found-img">
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+
+          <h3 class="not-found-text"> {{ 'EMPTY_LIST' | translate }}</h3>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </div>
+
 
   <ion-list style="padding-top: 15px;">
 
 
-      <ion-item class="item-background" *ngFor="let captain of captainsList.slice().reverse()">
-        <ion-grid>
-          <ion-row >
-            <ion-col  class="img-col">
-              <img class="circle-pic" *ngIf="!captain.image"src="../../assets/img/person.png"
-              />
-              <img class="circle-pic" *ngIf="captain.image" [src]="['data:image/jpg;base64',captain.image]" />
-            </ion-col>
+    <ion-item class="item-background" *ngFor="let captain of captainsList.slice().reverse()">
+      <ion-grid>
+        <ion-row>
+          <ion-col class="img-col">
+            <img class="circle-pic" *ngIf="!captain.image" src="../../assets/img/person.png" />
+            <img class="circle-pic" *ngIf="captain.image" [src]="['data:image/jpg;base64',captain.image]" />
+          </ion-col>
 
-            <ion-col  class="btn-col">
+          <ion-col class="btn-col">
 
-              <div class="account-info info-div">
-                <p>
-                  {{captain.name}}
-                </p>
+            <div class="account-info info-div">
+              <p>
+                {{captain.name}}
+              </p>
 
-                <p>
-                  Code : {{captain.code}}
-                </p>
+              <p>
+                Code : {{captain.code}}
+              </p>
 
-              </div>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
 
-        <ion-buttons end class="btn-style">
-          <button ion-button (click)="unAssingCaptain(captain)">
-            {{ 'UN_ASSIGN_CAPTAIN' | translate }}
-            </button>
-        </ion-buttons>
+      <ion-buttons end class="btn-style">
+        <button ion-button (click)="unAssingCaptain(captain)">
+          {{ 'UN_ASSIGN_CAPTAIN' | translate }}
+        </button>
+      </ion-buttons>
 
 
-      </ion-item>
+    </ion-item>
 
 
 

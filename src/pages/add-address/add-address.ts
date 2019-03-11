@@ -9,6 +9,9 @@ import { HomePage } from '../home/home';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Principal } from '../../providers/auth/principal.service';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { AddOrderPage } from '../add-order/add-order';
+import { MyApp } from '../../app/app.component';
+import { UserOrdersPage } from '../user-orders/user-orders';
 /**
  * Generated class for the AddAddressPage page.
  *
@@ -31,39 +34,42 @@ export class AddAddressPage {
   map: any;
   openMap = false;
   mainMarker = null;
-  public user ;
+  public user;
 
   public pleaseWait;
+  public alex = 'Alexandria';
 
-  address: { country: string, city: string, street: string, userId: Number, postalCode: String, latitude: Number, longitude: Number } = {
-    country: '',
+  address: { country: string, city: string, street: string, userId: Number, postalCode: String, latitude: String, longitude: String } = {
+    country: 'Egypt',
     city: '',
     street: '',
     userId: 0,
     postalCode: '',
-    latitude: 26.555555555555,
-    longitude: 12.5824526
+    latitude: '26.555555555555',
+    longitude: '12.5824526'
   }
 
   private addAddressError: string;
   private addAdressSuccessString: string;
   myForm: FormGroup;
+  to = null;
 
 
-  constructor(public navCtrl: NavController,     private loading: LoadingController,
+  constructor(public navCtrl: NavController, private loading: LoadingController,
     public navParams: NavParams, public addressService: AddressService, public toastCtrl: ToastController,
     public translateService: TranslateService, private app: App, private principal: Principal, public geolocation: Geolocation, private builder: FormBuilder, public plaform: Platform
   ) {
+    this.to = this.navParams.get("address");
 
-    this.translateService.get(['ADD_ADDRESS_ERROR', 'ADD_ADDRESS_SUCCESS' , 'PLEASE_WAIT']).subscribe((values) => {
+    this.translateService.get(['ADD_ADDRESS_ERROR', 'ADD_ADDRESS_SUCCESS', 'PLEASE_WAIT']).subscribe((values) => {
       this.addAddressError = values.SIGNUP_ERROR;
       this.addAdressSuccessString = values.SIGNUP_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
     })
 
     this.myForm = builder.group({
-      'country': ['', [Validators.required, Validators.maxLength(45)]],
-      'city': ['', [Validators.required, Validators.maxLength(45)]],
+      //'country': ['', [Validators.required, Validators.maxLength(45)]],
+      'city': ['Alexandria', []],
       'street': ['', [Validators.required, Validators.maxLength(45)]],
       'postalCode': ['', [Validators.required, Validators.maxLength(45)]],
     });
@@ -73,9 +79,9 @@ export class AddAddressPage {
   ngOnInit() {
     this.principal.identity().then((account) => {
       console.log(account);
-      
+
       if (account === null) {
-         this.app.getRootNavs()[0].setRoot(FirstRunPage);
+        this.app.getRootNavs()[0].setRoot(FirstRunPage);
       } else {
         this.user = account;
 
@@ -105,8 +111,8 @@ export class AddAddressPage {
     navigator.geolocation.getCurrentPosition(function (position) {
 
       let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-      mainClass.address.latitude = position.coords.latitude;
-      mainClass.address.longitude = position.coords.longitude;
+      mainClass.address.latitude = position.coords.latitude+'';
+      mainClass.address.longitude = position.coords.longitude+'';
 
       let mapOptions = {
         center: latLng,
@@ -155,19 +161,20 @@ export class AddAddressPage {
     );
 
   }
-  
+
   chooseLocation() {
 
-   // this.address.userId = Number.parseInt(localStorage.getItem("userId"));
+    // this.address.userId = Number.parseInt(localStorage.getItem("userId"));
 
-   let load = this.loading.create({
-    content: this.pleaseWait
+    let load = this.loading.create({
+      content: this.pleaseWait
 
 
-  })
-  load.present()
+    })
+    load.present()
 
-   this.address.userId = this.user.id;
+    this.address.userId = this.user.id;
+    this.address.city = this.myForm.get("city").value;
     console.log(this.address, 'sssssssssssssssss');
 
     this.addressService.save(this.address).subscribe((res) => {
@@ -180,10 +187,15 @@ export class AddAddressPage {
       });
       toast.present();
       load.dismiss();
-      this.navCtrl.setRoot(HomePage);
+     // this.myApp.checkAccess();
+      if (this.to == null || this.to == undefined) {
+        this.navCtrl.setRoot(UserOrdersPage);
+      } else {
+        this.navCtrl.setRoot(AddOrderPage , {address:res});
+      }
     }, (err) => {
       console.log('error', err);
-      
+
 
       // Unable to add address
       // const error = JSON.parse(err.error);

@@ -1,17 +1,26 @@
-<ion-menu side="left" id="authenticated" [content]="content" *ngIf = "account != null && (userType == 'Admin' || userType == 'Agency')">
+<ion-menu side="left" id="authenticated" [content]="content" *ngIf = "account != null && (userType == 'Admin' || userType == 'Agency' || userType == 'Captain' || userType == 'User')">
   <ion-header *ngIf = "!isLogOut" >
     <ion-toolbar class="user-profile">
 
       <ion-grid>
         <ion-row> 
           <ion-col col-4>
-              <div class="user-avatar">
+              <div class="user-avatar" *ngIf = "userType == 'Admin' || userType == 'User' || userType == 'Agency' || (userType == 'Captain' && !captain)  || (userType == 'Captain' && captain && !captain.image)">
                 <img src="../assets/img/person.png">
               </div>
+              <div class="user-avatar" *ngIf = "userType == 'Captain' && captain && captain.image">
+                <img [src]="['data:image/jpg;base64',captain.image]">
+              </div>
           </ion-col>
-          <ion-col padding-top col-8>
+          <ion-col padding-top col-8 *ngIf = "(userType != 'Captain' || !captain)">
             <h2 ion-text class="no-margin bold text-white">
               {{account?.firstName}} {{account?.lastName}}
+            </h2>
+            <span ion-text color="light">{{userType}}</span>
+          </ion-col>
+          <ion-col padding-top col-8 *ngIf = "(userType == 'Captain' && captain)">
+            <h2 ion-text class="no-margin bold text-white">
+              {{captain?.name}}
             </h2>
             <span ion-text color="light">{{userType}}</span>
           </ion-col>

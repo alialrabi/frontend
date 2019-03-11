@@ -38,18 +38,18 @@ export class AddCaptainPage {
   };
 
 
-  captain : {code:number , name:string , phone:string , evaluation : string , image : any , imageContentType:string , latitude:number , longitude:number , busy:boolean  , userId:any , agencyId:number } = {
+  captain : {code:number , name:string , phone:string , image : any , imageContentType:string , latitude:string , longitude:string , busy:boolean  , userId:any , agencyId:number , working:boolean } = {
     code: null,
     name: '',
     phone: '',
-    evaluation: '5',
     image: null ,
     imageContentType:'',
-    latitude:26.565155512,
-   longitude:12.05827521259 ,
+    latitude:'31.214262511126286',
+   longitude:'29.98716374830485' ,
    busy:false ,
    userId:0 ,
-   agencyId:0
+   agencyId:0,
+   working:true
   }
   myForm: FormGroup;
   private addAddressError: string;

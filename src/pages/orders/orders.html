@@ -12,9 +12,9 @@
       <ion-icon name="menu"></ion-icon>
     </button>
 
-    <ion-title>Orders</ion-title>
+    <ion-title>{{ 'ORDERS' | translate }}</ion-title>
     <ion-buttons end class="btn-style">
-      <button ion-button (click)="add()">
+      <button ion-button (click)="add()" *ngIf="userType == 'Agency'">
         <ion-icon name="add"></ion-icon>
       </button>
     </ion-buttons>
@@ -27,19 +27,19 @@
 
     <ion-grid style="width: 100%">
         <ion-row>
-          <ion-col style="padding: 0px">
+          <ion-col style="padding: 0px" col-4>
             <button ion-button block tappable [ngClass] ="{'tap-selected': myVar == 'not assigned', 'tap-notselected': myVar != 'not assigned'}" (click)="getAllOrders('not assigned')">
               <!-- <ion-icon name="close" item-start></ion-icon> -->
               {{ 'NOT_ASSIGNED' | translate }}
             </button>
           </ion-col>
-          <ion-col style="padding: 0px">
+          <ion-col style="padding: 0px" col-4>
             <button ion-button  block tappable [ngClass] ="{'tap-selected': myVar == 'assigned', 'tap-notselected': myVar != 'assigned'}" (click)="getAllOrders('assigned')">
                 <!-- <ion-icon name="stats" item-start></ion-icon> -->
                 {{ 'ASSIGNED' | translate }}
             </button>
           </ion-col>
-          <ion-col style="padding: 0px">
+          <ion-col style="padding: 0px" col-4>
             <button ion-button block tappable [ngClass] = "{'tap-selected': myVar == 'delivered', 'tap-notselected': myVar != 'delivered'}" (click)="getAllOrders('delivered')">
                 <!-- <ion-icon name="checkmark" item-start></ion-icon> -->
                 {{ 'DELIVERED' | translate }}
@@ -47,6 +47,25 @@
           </ion-col>
         </ion-row>
       </ion-grid>
+
+
+      <div text-center *ngIf="ordersList.length == 0">
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <img src="../../assets/img/sad.png" class="not-found-img">
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+      
+                <h3 class="not-found-text"> {{ 'EMPTY_LIST' | translate }}</h3>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+      
+        </div>
+  
  
 
 
@@ -81,7 +100,7 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-      <ion-buttons end class="btn-style" *ngIf="myVar != 'delivered'">
+      <ion-buttons end class="btn-style" *ngIf="myVar != 'delivered' && userType == 'Agency'">
         <button ion-button (click)="assingCaptain(order)">
           {{ 'ASSIGN_CAPTAIN' | translate }}
           </button>

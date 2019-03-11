@@ -116,7 +116,7 @@ export class LoginPage {
 
         if (account.authorities[0] === 'ROLE_CAPTAIN') {
 
-          this.app.getRootNavs()[0].setRoot(CaptainOrdersPage);
+          //this.app.getRootNavs()[0].setRoot(CaptainOrdersPage);
 
         } else if(account.authorities[0] == 'ROLE_AGENCY') {
          // this.app.getRootNavs()[0].setRoot(OrdersPage);

@@ -115,11 +115,11 @@ export class CaptainsMapPage {
 
   }
   loadmap() {
-    let latLng = new google.maps.LatLng(26.555, 12.5824);
+    let latLng = new google.maps.LatLng(31.214262511126286, 29.98716374830485);
 
     let mapOptions = {
       center: latLng,
-      zoom:10
+      zoom:12
     }
 
     this.map = new google.maps.Map(this.elementRef.nativeElement, mapOptions);
@@ -200,7 +200,7 @@ export class CaptainsMapPage {
       console.log(res, 'res');
       res.forEach(element => {
 
-        let latLng = new google.maps.LatLng(element.latitude, element.longitude);
+        let latLng = new google.maps.LatLng(Number.parseFloat(element.latitude), Number.parseFloat(element.longitude));
         if (!element.busy) {
           let marker = new google.maps.Marker({
             map: this.map,

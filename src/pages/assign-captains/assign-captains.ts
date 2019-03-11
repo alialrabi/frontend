@@ -4,6 +4,10 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { CaptainService } from '../../providers/auth/captain.service';
 import { AgenciesPage } from '../agencies/agencies';
+import { FirstRunPage } from '../pages';
+import { Principal } from '../../providers/auth/principal.service';
+import { UserOrdersPage } from '../user-orders/user-orders';
+import { AgencyCaptainsPage } from '../agency-captains/agency-captains';
 
 /**
  * Generated class for the AssignCaptainsPage page.
@@ -28,12 +32,13 @@ export class AssignCaptainsPage {
 
 
   public agency = null;
+  public user = null;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private app:App ,private loading: LoadingController ,private builder: FormBuilder, public captainService: CaptainService, public toastCtrl: ToastController, public translateService: TranslateService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private principal: Principal, private app: App, private loading: LoadingController, private builder: FormBuilder, public captainService: CaptainService, public toastCtrl: ToastController, public translateService: TranslateService) {
 
     this.agency = this.navParams.get("item");
 
-    this.translateService.get(['ASSIGN_ORDER_ERROR', 'ASSIGN_ORDER_SUCCESS' , 'PLEASE_WAIT']).subscribe((values) => {
+    this.translateService.get(['ASSIGN_ORDER_ERROR', 'ASSIGN_ORDER_SUCCESS', 'PLEASE_WAIT']).subscribe((values) => {
       this.assignOrderError = values.ASSIGN_ORDER_ERROR;
       this.assingOrderSuccess = values.ASSIGN_ORDER_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
@@ -49,6 +54,18 @@ export class AssignCaptainsPage {
     this.getAllCaptains();
 
   }
+  ngOnInit() {
+    this.principal.identity().then((account) => {
+      console.log(account);
+
+      if (account === null) {
+        this.app.getRootNavs()[0].setRoot(FirstRunPage);
+      } else {
+        this.user = account;
+
+      }
+    });
+  }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AssignCaptainsPage');
@@ -57,12 +74,12 @@ export class AssignCaptainsPage {
   getAllCaptains() {
     let load = this.loading.create({
       content: this.pleaseWait
-  
-  
+
+
     })
     load.present()
 
-    
+
     this.captainService.getNotAssigned().subscribe(
       res => {
 
@@ -85,8 +102,8 @@ export class AssignCaptainsPage {
   assignCaptain() {
     let load = this.loading.create({
       content: this.pleaseWait
-  
-  
+
+
     })
     load.present()
 
@@ -95,8 +112,15 @@ export class AssignCaptainsPage {
     console.log(ids, 'ids');
 
     let assignCaptains = {
-      agencyId: this.agency.id,
-      captainsIds: ids
+      agencyId: 0,
+      captainsIds: ids,
+      adminAssign:false
+    }
+    if (this.agency == null || this.agency == undefined) {
+      assignCaptains.agencyId = this.user.id
+      assignCaptains.adminAssign = true;
+    } else {
+      assignCaptains.agencyId = this.agency.id;
     }
 
     this.captainService.assignCaptains(assignCaptains).subscribe(
@@ -109,7 +133,13 @@ export class AssignCaptainsPage {
         toast.present();
         load.dismiss()
         //this.navCtrl.push(AgenciesPage);
-        this.app.getRootNavs()[0].setRoot(AgenciesPage);
+        if (this.agency == null || this.agency == undefined) {
+          this.app.getRootNavs()[0].setRoot(AgencyCaptainsPage);
+        } else {
+          this.app.getRootNavs()[0].setRoot(AgenciesPage);
+        }
+
+
 
       }, err => {
 

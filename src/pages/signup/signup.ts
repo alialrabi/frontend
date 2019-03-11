@@ -8,6 +8,7 @@ import { LoginPage } from '../login/login';
 import { AddAddressPage } from '../add-address/add-address';
 import { LoginService } from "../../providers/login/login.service"
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MyApp } from '../../app/app.component';
 
 @IonicPage()
 @Component({
@@ -37,6 +38,7 @@ export class SignupPage {
   constructor(public navCtrl: NavController,
     public user: User,
     public toastCtrl: ToastController,
+    public myApp:MyApp,
     public translateService: TranslateService ,
   public loginService:LoginService ,
   private builder: FormBuilder) {
@@ -54,8 +56,10 @@ export class SignupPage {
       'lastName': ['', [Validators.required , Validators.maxLength(45) ]],
       'email':['', [Validators.required  , Validators.email]],
       'password': ['', [Validators.required , Validators.minLength(6) ]],
+      'passwordConfirm': ['', [Validators.required]]
     });
 
+    
   }
 
   doSignup() {
@@ -70,11 +74,12 @@ export class SignupPage {
       let loginAccount = {
         username: this.account.email,
         password: this.account.password,
-        rememberMe: false,
+        rememberMe: true,
       }
 
       //localStorage.setItem("userId" , id+"");
         this.loginService.login(loginAccount).then((response) => {
+          this.myApp.checkAccessToSignUp();
           let toast = this.toastCtrl.create({
             message: this.signupSuccessString,
             duration: 3000,
@@ -111,6 +116,10 @@ export class SignupPage {
   hasError(field: string, error: string) {
     const ctrl = this.myForm.get(field);
     return ctrl.dirty && ctrl.hasError(error);
+  }
+  notMathces(){
+    const ctrl = this.myForm.get("passwordConfirm");
+    return ctrl.dirty && ctrl.value != this.myForm.get("password").value && ctrl.value.length > 5
   }
 
 }
