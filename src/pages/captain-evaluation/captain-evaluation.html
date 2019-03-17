@@ -1,7 +1,23 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{ 'Edit_EVALUATION' | translate }}</ion-title>
+
+      <ion-grid style="width: 100%">
+          <ion-row>
+            <ion-col col-1 >
+              <ion-buttons style="margin-block-start: 2px" class="btn-style">
+                <button ion-button (click)="back()">
+                  <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
+                </button>
+              </ion-buttons>
+            </ion-col>
+            <ion-col col-11 style="margin-top: 5px;">
+                <ion-title>{{ 'Edit_EVALUATION' | translate }}</ion-title>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+    
   </ion-navbar>
 
 </ion-header>
@@ -14,7 +30,7 @@
     <div padding text-center>
       <div class="logo"></div>
       <h2 ion-text class="text-primary">
-        Tlabatac
+        {{ 'TLABATAC' | translate }}
       </h2>
     </div>
 
@@ -22,11 +38,11 @@
     <form class="list-form" [formGroup]="myForm">
 
       <ion-item>
-        <ion-label floating>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="thumbs-up" item-start class="text-primary"></ion-icon>
           {{ 'MORAL' | translate }}
         </ion-label>
-        <ion-input type="number" min="1" max="5" formControlName="moral" name="moral" [(ngModel)]="evaluation.moral"></ion-input>
+        <ion-input type="number" min="1" max="5" formControlName="moral" name="moral" [lang]="language" [dir]="direction" [(ngModel)]="evaluation.moral"></ion-input>
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('moral', 'required')"> {{ 'REQURIED' | translate }} </p>
@@ -34,44 +50,44 @@
 
 
       <ion-item>
-        <ion-label floating>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="man" item-start class="text-primary"></ion-icon>
           {{ 'APPEARANCE' | translate }}
         </ion-label>
-        <ion-input type="number" min="1" max="5" formControlName="appearnce" name="appearnce" [(ngModel)]="evaluation.appearance"></ion-input>
+        <ion-input type="number" min="1" max="5" formControlName="appearnce" name="appearnce" [lang]="language" [dir]="direction" [(ngModel)]="evaluation.appearance"></ion-input>
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('appearnce', 'required' )"> {{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('appearnce', 'pattern' )">{{ 'EVALUATION_VALID' | translate }} </p>
 
       <ion-item>
-        <ion-label floating>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="speedometer" item-start class="text-primary"></ion-icon>
           {{ 'SPEED' | translate }}
         </ion-label>
-        <ion-input type="number" min="1" max="5" formControlName="speed" name="speed" [(ngModel)]="evaluation.speed"></ion-input>
+        <ion-input type="number" min="1" max="5" formControlName="speed" name="speed" [lang]="language" [dir]="direction" [(ngModel)]="evaluation.speed"></ion-input>
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('speed', 'required')"> {{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('speed', 'pattern' )">{{ 'EVALUATION_VALID' | translate }} </p>
 
       <ion-item>
-        <ion-label floating>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="clock" item-start class="text-primary"></ion-icon>
           {{ 'COMMITMENT' | translate }}
         </ion-label>
-        <ion-input type="number" min="1" max="5" formControlName="commitment" name="commitment" [(ngModel)]="evaluation.commitment"></ion-input>
+        <ion-input type="number" min="1" max="5" formControlName="commitment" name="commitment" [lang]="language" [dir]="direction" [(ngModel)]="evaluation.commitment"></ion-input>
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('commitment', 'required' )"> {{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('commitment', 'pattern' )">{{ 'EVALUATION_VALID' | translate }} </p>
 
       <ion-item>
-        <ion-label floating>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="done-all" item-start class="text-primary"></ion-icon>
           {{ 'EXCELLENCE' | translate }}
         </ion-label>
-        <ion-input type="number" min="1" max="5" formControlName="excellence" name="excellence" [(ngModel)]="evaluation.excellence"></ion-input>
+        <ion-input type="number" min="1" max="5" formControlName="excellence" name="excellence" [lang]="language" [dir]="direction" [(ngModel)]="evaluation.excellence"></ion-input>
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('excellence', 'required')"> {{ 'REQURIED' | translate }} </p>

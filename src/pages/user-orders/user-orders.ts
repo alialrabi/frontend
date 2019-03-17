@@ -170,7 +170,7 @@ export class UserOrdersPage {
   }
 
   add() {
-    this.navCtrl.push(ChooseAddressPage);
+    this.navCtrl.setRoot(ChooseAddressPage);
 
   }
   viewOrder(orders) {
@@ -220,7 +220,7 @@ export class UserOrdersPage {
   }
 
   assingCaptain(order) {
-    this.navCtrl.push('AssignOrderPage', { item: order })
+    this.navCtrl.setRoot('AssignOrderPage', { item: order })
   }
 
   finish(item) {
@@ -244,7 +244,7 @@ export class UserOrdersPage {
         console.log("success");
 
         load.dismiss();
-        this.getAllOrders(this.myVar);
+        this.getUserOrders(this.myVar);
 
       }, err => {
         console.log(err);
@@ -268,7 +268,7 @@ export class UserOrdersPage {
     console.log('ionViewDidLoad UserOrdersPage');
   }
   viewLocation(order){
-    this.navCtrl.push('OrdersMapPage', { item: order })
+    this.navCtrl.setRoot('OrdersMapPage', { item: order })
   }
 
 }

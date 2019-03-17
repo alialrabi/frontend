@@ -63,15 +63,15 @@ export class AgenciesPage {
    }
   
    add(){
-    this.navCtrl.push(AddAgencyPage);
+    this.navCtrl.setRoot(AddAgencyPage);
   
    }
 
    assingCaptains(agency){
-     this.navCtrl.push(AssignCaptainsPage , {item:agency});
+     this.navCtrl.setRoot(AssignCaptainsPage , {item:agency});
    }
    viewCaptains(agency){
-    this.navCtrl.push(AgencyCaptainsPage , {item:agency});
+    this.navCtrl.setRoot(AgencyCaptainsPage , {item:agency});
    }
 
 

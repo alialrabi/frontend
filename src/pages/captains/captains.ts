@@ -126,15 +126,15 @@ export class CaptainsPage {
  }
 
  add(){
-  this.navCtrl.push(AddCaptainPage);
+  this.navCtrl.setRoot(AddCaptainPage);
 
  }
  openMap(){
-   this.navCtrl.push(CaptainsMapPage)
+   this.navCtrl.setRoot(CaptainsMapPage)
  }
 
  openEvaluation(captain){
-   this.navCtrl.push(CaptainEvaluationPage , {item : captain});
+   this.navCtrl.setRoot(CaptainEvaluationPage , {item : captain});
  }
 
 //  openMenu(){

@@ -8,6 +8,7 @@ import { OrdersPage } from '../orders/orders';
 import { FirstRunPage } from '../pages';
 import { Principal } from '../../providers/auth/principal.service';
 import { UserOrdersPage } from '../user-orders/user-orders';
+import { MyApp } from '../../app/app.component';
 
 /**
  * Generated class for the AssignOrderPage page.
@@ -31,6 +32,9 @@ export class AssignOrderPage {
   public pleaseWait;
 
   public order;
+
+  language = MyApp.language
+  direction = MyApp.direction
 
   public account = null;
   userType = ''
@@ -211,5 +215,12 @@ export class AssignOrderPage {
   skip(){
     //this.navCtrl.push(OrdersPage);
     this.app.getRootNavs()[0].setRoot(OrdersPage);
+  }
+  back(){
+    if(this.userType == 'Agency'){
+    this.navCtrl.setRoot(OrdersPage);
+    }else{
+      this.navCtrl.setRoot(UserOrdersPage);
+    }
   }
 }

@@ -7,9 +7,24 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title *ngIf="!openMap">{{ 'ADD_ADDRESS' | translate }}</ion-title>
-    <ion-title *ngIf="openMap">MAP</ion-title>
-  </ion-navbar>
+
+      <ion-grid style="width: 100%">
+          <ion-row>
+            <ion-col col-1  *ngIf="to != null && to != undefined">
+              <ion-buttons style="margin-block-start: 2px" class="btn-style">
+                <button ion-button (click)="back()">
+                  <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
+                </button>
+              </ion-buttons>
+            </ion-col>
+            <ion-col col-11 style="margin-top: 5px;">
+                <ion-title *ngIf="!openMap">{{ 'ADD_ADDRESS' | translate }}</ion-title>
+                <ion-title *ngIf="openMap">{{ 'MAP' | translate }}</ion-title>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-navbar>
+
 
   <!-- <ion-buttons end *ngIf="openMap">
     <button ion-button (click)="chooseLocation()">
@@ -25,7 +40,7 @@
     <div padding text-center>
       <div class="logo"></div>
       <h2 ion-text class="text-primary">
-        Tlabatac
+        {{ 'TLABATAC' | translate }}
       </h2>
     </div>
 
@@ -51,17 +66,17 @@
       </ion-item> -->
 
       <ion-item >
-        <ion-label floating>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
           {{ 'CITY' | translate }}
         </ion-label>
-        <ion-select formControlName="city" [placeholder]="alex" [(ngModel)] = "alex">
-          <ion-option [selected]="alex == item" [value]="'Alexandria'"  >{{'ALEX' | translate}} </ion-option>
-          <ion-option [selected]="alex == item" [value]="'Cairo'"  >{{'CAIRO' | translate}} </ion-option>
-          <ion-option [selected]="alex == item" [value]="'Tanta'"  >{{'TANTA' | translate}} </ion-option>
-          <ion-option [selected]="alex == item" [value]="'Damnhor'"  >{{'DAMNHOR' | translate}} </ion-option>
-          <ion-option [selected]="alex == item" [value]="'Shibin Elkom'"  >{{'SHIPIN_ELKOM' | translate}} </ion-option>
-          <ion-option [selected]="alex == item" [value]="'Banha'"  >{{'BANHA' | translate}} </ion-option>
+        <ion-select formControlName="city" [placeholder]="alexValue" [(ngModel)] = "alex" [lang]="language" [dir]="direction">
+          <ion-option [selected]="alex == item" [value]="'Alexandria'" [dir]="direction" >{{'ALEX' | translate}} </ion-option>
+          <ion-option [selected]="alex == item" [value]="'Cairo'" [dir]="direction" >{{'CAIRO' | translate}} </ion-option>
+          <ion-option [selected]="alex == item" [value]="'Tanta'" [dir]="direction" >{{'TANTA' | translate}} </ion-option>
+          <ion-option [selected]="alex == item" [value]="'Damnhor'" [dir]="direction" >{{'DAMNHOR' | translate}} </ion-option>
+          <ion-option [selected]="alex == item" [value]="'Shibin Elkom'" [dir]="direction" >{{'SHIPIN_ELKOM' | translate}} </ion-option>
+          <ion-option [selected]="alex == item" [value]="'Banha'" [dir]="direction" >{{'BANHA' | translate}} </ion-option>
 
         </ion-select>
       </ion-item>
@@ -70,22 +85,22 @@
       <p class="validationHint" *ngIf="hasError('city', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
 
       <ion-item>
-        <ion-label floating>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
           {{ 'DETAILS' | translate }}
         </ion-label>
-        <ion-input type="text" [(ngModel)]="address.street" formControlName="street" name="street"></ion-input>
+        <ion-input type="text" [(ngModel)]="address.street" formControlName="street" name="street" [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('street', 'required')">{{ 'REQURIED' | translate }}  </p>
       <p class="validationHint" *ngIf="hasError('street', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
 
       <ion-item>
-        <ion-label floating>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="mail" item-start class="text-primary"></ion-icon>
           {{ 'POSTAL_CODE' | translate }}
         </ion-label>
-        <ion-input type="email" [(ngModel)]="address.postalCode" formControlName="postalCode" name="postalcode"></ion-input>
+        <ion-input type="email" [(ngModel)]="address.postalCode" formControlName="postalCode" name="postalcode" [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('postalCode', 'required')">{{ 'REQURIED' | translate }}  </p>
@@ -111,7 +126,7 @@
         <ion-col>
           <div margin-top *ngIf="openMap">
             <button ion-button block color="dark" tappable (click)="chooseLocation()">
-              Choose Location
+              {{ 'CHOOSE_LOCATION' | translate }}
             </button>
           </div>
         </ion-col>

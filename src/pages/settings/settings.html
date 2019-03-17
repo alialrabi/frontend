@@ -1,9 +1,9 @@
 <ion-header>
 
   <ion-navbar>
-      <button ion-button menuToggle>
-          <ion-icon name="menu"></ion-icon>
-        </button>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-title>{{ 'SETTING'| translate}}</ion-title>
   </ion-navbar>
 
@@ -45,18 +45,48 @@
     </ion-list>
   </form> -->
 
-  <form [formGroup]="myForm"  class="list-form" style="width: 100%">
+  <form [formGroup]="myForm" class="list-form" style="width: 100%">
 
-  <ion-item *ngIf="userType == 'Agency'">
-    <ion-label>{{'AUTO_ASSIGN_MESSAGE1' | translate}} <br> {{'AUTO_ASSIGN_MESSAGE2' | translate}}  </ion-label>
-    <ion-toggle formControlName="autoAssign" (ionChange)= "changeAssign()"></ion-toggle>
-  </ion-item>
-
-  <ion-item *ngIf="userType == 'Captain'">
-      <ion-label>{{'WORKING_MESSAGE1' | translate}}   </ion-label>
-      <ion-toggle formControlName="working" (ionChange)= "changeWorking()"></ion-toggle>
+    <ion-item *ngIf="userType == 'Agency'">
+      <ion-label>{{'AUTO_ASSIGN_MESSAGE1' | translate}}
+        <br> {{'AUTO_ASSIGN_MESSAGE2' | translate}} </ion-label>
+      <ion-toggle formControlName="autoAssign" (ionChange)="changeAssign()"></ion-toggle>
     </ion-item>
 
-</form>
+    <ion-item *ngIf="userType == 'Captain'">
+      <ion-label>{{'WORKING_MESSAGE1' | translate}} </ion-label>
+      <ion-toggle formControlName="working" (ionChange)="changeWorking()"></ion-toggle>
+    </ion-item>
+
+    <ion-list radio-group style="background-color: #ffffff" (ionChange)="changeLanguage()" formControlName="langKey" [(ngModel)]="langKey">
+
+      <ion-list-header>
+          {{'LANGUAGE' | translate}}
+      </ion-list-header>
+
+      <ion-grid style="padding-top: 0px">
+        <ion-row>
+          <ion-col col-6>
+            <ion-item text-center>
+              <ion-label>{{'ENGLISH' | translate}}</ion-label>
+              <ion-radio value="en"></ion-radio>
+            </ion-item>
+          </ion-col>
+          <ion-col col-6>
+            <ion-item text-center>
+              <ion-label>{{'ARABIC' | translate}}</ion-label>
+              <ion-radio value="ar"></ion-radio>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+
+
+
+    </ion-list>
+
+
+  </form>
 
 </ion-content>

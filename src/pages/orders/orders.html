@@ -76,24 +76,27 @@
       <ion-grid>
         <ion-row>
           <ion-col class="img-col">
-            <img class="circle-pic" src="../../assets/img/person.png" />
+            <img class="circle-pic" src="../../assets/img/orders.jpg" />
           </ion-col>
 
           <ion-col >
 
             <div class="account-info info-div">
               <p>
-                Name : {{order.name}}
+                {{ 'NAME' | translate }} : <strong>{{order.name}}</strong>
               </p>
               <p>
-                Address : {{order.address}}
+                {{ 'ADDRESS' | translate }} 1 : <strong>{{order.address}}</strong>
+              </p>
+              <p *ngIf="order.secondAddress != null && order.secondAddress != ''">
+                {{ 'ADDRESS' | translate }} 2 : <strong>{{order.secondAddress}}</strong>
               </p>
               <p>
-                Orders :
+                {{ 'ORDERS' | translate }} :-
               </p>
               <div *ngFor="let item of viewOrder(order.orders)">
-                <p style="margin-left: 15px;">
-                  {{item.index}}. {{item.name}}
+                <p style="margin-left: 15px;margin-right: 15px">
+                  {{item.index}}- <strong>{{item.name}}</strong>
                 </p>
               </div>
             </div>

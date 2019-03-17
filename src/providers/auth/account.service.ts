@@ -47,4 +47,10 @@ export class AccountService  {
         return this.http.put(Api.API_URL_login + '/uaa/api/updateAutoAssign?access_token=' +this.authservice.getToken(), accountInfo);
  
       }
+      updateLanguage(updateLanguageModel: any) : Observable<any>{
+
+        //return  this.http.post(Api.API_URL +'/api/registerCaptainUser' , accountInfo );       
+        return this.http.put(Api.API_URL_login + '/uaa/api/updateLanguage?access_token=' +this.authservice.getToken(), updateLanguageModel);
+ 
+      }
 }

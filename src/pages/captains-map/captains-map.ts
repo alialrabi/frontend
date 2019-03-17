@@ -4,6 +4,8 @@ import { CaptainService } from '../../providers/auth/captain.service';
 import { Principal } from '../../providers/auth/principal.service';
 import { FirstRunPage } from '../pages';
 import { TranslateService } from '@ngx-translate/core';
+import { CaptainsPage } from '../captains/captains';
+import { MyApp } from '../../app/app.component';
 
 /**
  * Generated class for the CaptainsMapPage page.
@@ -27,6 +29,11 @@ export class CaptainsMapPage {
   public pleaseWait;
 
   public captainsMarkers = [];
+
+  language = MyApp.language
+  direction = MyApp.direction
+
+
   // public captains = [
   //   {
   //     busy: true,
@@ -247,6 +254,8 @@ export class CaptainsMapPage {
     this.setMapOnAll(null);
   }
 
-
+  back(){
+    this.navCtrl.setRoot(CaptainsPage);
+  }
 
 }

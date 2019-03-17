@@ -9,6 +9,7 @@ import { OrdersPage } from '../orders/orders';
 import { FirstRunPage } from '../pages';
 import { Principal } from '../../providers/auth/principal.service';
 import { UserOrdersPage } from '../user-orders/user-orders';
+import { MyApp } from '../../app/app.component';
 
 /**
  * Generated class for the AddOrderPage page.
@@ -55,6 +56,15 @@ export class AddOrderPage {
   public pleaseWait;
   public userType;
   address = null;
+  language = MyApp.language
+  direction = MyApp.direction
+
+  alexValue = ''
+  cairoValue = ''
+  tantaValue = ''
+  shibinValue = ''
+  daminhoorValue = ''
+  banhaValue = ''
   
 
 
@@ -66,13 +76,18 @@ export class AddOrderPage {
     this.address = this.navParams.get("address");
 
 
-    this.translateService.get(['ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS', 'ALEX','PLEASE_WAIT']).subscribe((values) => {
+    this.translateService.get(['ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS', 'ALEX' , 'CAIRO' , 'TANTA' , 'DAMNHOR' , 'SHIPIN_ELKOM' , 'BANHA' ,'PLEASE_WAIT']).subscribe((values) => {
       console.log(values);
 
       this.addORDERError = values.ADD_ORDER_ERROR;
       this.addORDERSuccessString = values.ADD_ORDER_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
-      //this.alex = values.ALEX;
+      this.alexValue = values.ALEX;
+      this.cairoValue = values.CAIRO;
+      this.daminhoorValue = values.DAMNHOR;
+      this.tantaValue = values.TANTA;
+      this.shibinValue = values.SHIPIN_ELKOM;
+      this.banhaValue = values.BANHA;
     })
 
 
@@ -88,6 +103,13 @@ export class AddOrderPage {
       "fromAddress":['',[]]
     });
 
+    this.myForm.get('city').setValue('Alexandria');
+    this.myForm.get('city').updateValueAndValidity();
+    this.myForm.get('city').markAsDirty();
+    this.myForm.get('city').markAsTouched();
+    this.myForm.get('city').markAsPristine();
+    console.log(this.myForm.get('city').dirty);
+        
 
 
 
@@ -229,7 +251,7 @@ export class AddOrderPage {
       name: this.myForm.get("name").value,
       firstPhone: this.myForm.get("phone").value,
       secondPhone: this.myForm.get("secondPhone").value,
-      city: this.myForm.get("city").value,
+      city: this.getCity(this.myForm.get("city").value),
       address: this.myForm.get("address1").value,
       secondAddress: this.myForm.get("address2").value,
       status: 'not assigned',
@@ -246,6 +268,7 @@ export class AddOrderPage {
       orderObject.fromAddress = this.myForm.get('fromAddress').value;
       orderObject.isUserOrder = true;
       orderObject.addressId = this.address.id;
+      orderObject.agencyId = 0
       orderObject.name = this.account.firstName + ' '+this.account.lastName
 
     }
@@ -268,7 +291,7 @@ export class AddOrderPage {
       if(this.userType == 'User'){
         this.app.getRootNavs()[0].setRoot(UserOrdersPage);
       }else{
-      this.navCtrl.push('AssignOrderPage', { item: obj })
+      this.navCtrl.setRoot('AssignOrderPage', { item: obj })
       }
     }, (err) => {
       console.log('error', err);
@@ -327,5 +350,40 @@ export class AddOrderPage {
     return e1 && e2 ? e1.id === e2.id : e1 === e2;
   }
 
+  getCity(cityValue){
+    console.log(cityValue , 'ssssssssssss');
 
+    
+    let city = ''
+    if(cityValue == 'Alexandria'){
+      city =this.alexValue;
+
+    }else if(cityValue == 'Cairo'){
+      city = this.cairoValue;
+      
+    }else if(cityValue == 'Tanta'){
+      city = this.tantaValue;
+      
+    }else if(cityValue == 'Damnhor'){
+      city = this.daminhoorValue;
+      
+    }else if(cityValue == 'Shibin Elkom'){
+      city = this.shibinValue;
+      
+    }else if(cityValue == 'Banha'){
+      city = this.banhaValue;
+      
+    }
+    return city;
+
+  }
+
+  back(){
+    if(this.userType == 'User'){
+      this.navCtrl.setRoot(UserOrdersPage);
+    }else{
+      this.navCtrl.setRoot(OrdersPage);
+    }
+    
+  }
 }

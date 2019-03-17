@@ -23,7 +23,7 @@ export class SignupPage {
     firstName: '',
     lastName: '',
     password: '',
-    langKey: 'en',
+    langKey: MyApp.language,
     activated: true
   };
 
@@ -32,6 +32,9 @@ export class SignupPage {
   private signupSuccessString: string;
   private existingUserError: string;
   private invalidPasswordError: string;
+
+  language = MyApp.language
+  direction = MyApp.direction
 
   myForm: FormGroup;
 
@@ -56,7 +59,8 @@ export class SignupPage {
       'lastName': ['', [Validators.required , Validators.maxLength(45) ]],
       'email':['', [Validators.required  , Validators.email]],
       'password': ['', [Validators.required , Validators.minLength(6) ]],
-      'passwordConfirm': ['', [Validators.required]]
+      'passwordConfirm': ['', [Validators.required]],
+      "langKey":[this.language , []]
     });
 
     
@@ -72,7 +76,7 @@ export class SignupPage {
      // var id = res;
 
       let loginAccount = {
-        username: this.account.email,
+        username: this.account.email.toLowerCase(),
         password: this.account.password,
         rememberMe: true,
       }
@@ -86,7 +90,7 @@ export class SignupPage {
             position: 'top'
           });
           toast.present();
-          this.navCtrl.push(AddAddressPage);
+          this.navCtrl.setRoot(AddAddressPage);
         });
 
     }, (err) => {
@@ -119,7 +123,7 @@ export class SignupPage {
   }
   notMathces(){
     const ctrl = this.myForm.get("passwordConfirm");
-    return ctrl.dirty && ctrl.value != this.myForm.get("password").value && ctrl.value.length > 5
+    return ctrl.dirty && ctrl.value != this.myForm.get("password").value
   }
 
 }

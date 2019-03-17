@@ -25,27 +25,27 @@
       <form class="list-form" [formGroup]="myForm" style="width: 86%;margin-right: 7%;margin-left: 7%;"  *ngIf="seachFlag">
 
           <ion-item>
-              <ion-label floating>
+              <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
                 <ion-icon name="person" item-start class="text-primary"></ion-icon>
                 {{ 'CAPTAIN' | translate }}
               </ion-label>
-              <ion-select formControlName="captainId">
-                <ion-option *ngFor="let item of captainList" [selected]="item.name ==item.name" [value]="item.id"  >{{item.name}} </ion-option>      
+              <ion-select formControlName="captainId" [lang]="language" [dir]="direction">
+                <ion-option *ngFor="let item of captainList" [selected]="item.name ==item.name" [value]="item.id" [dir]="direction">{{item.name}} </ion-option>      
               </ion-select>
             </ion-item>
             <ion-item>
-                <ion-label floating>
+                <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
                   <ion-icon name="calendar" item-start class="text-primary"></ion-icon>
                   {{ 'START_DATE' | translate }}
                 </ion-label>
-                <ion-datetime displayFormat="YYYY-MM-DD" max="{{maxDate}}" formControlName="startDate" [(ngModel)] ="seaarchFilter.startDate"></ion-datetime>
+                <ion-datetime displayFormat="YYYY-MM-DD" max="{{maxDate}}" formControlName="startDate" [(ngModel)] ="seaarchFilter.startDate" [lang]="language" [dir]="direction"></ion-datetime>
               </ion-item>
               <ion-item>
-                  <ion-label floating>
+                  <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
                     <ion-icon name="calendar" item-start class="text-primary"></ion-icon>
                     {{ 'END_DATE' | translate }}
                   </ion-label>
-                  <ion-datetime displayFormat="YYYY-MM-DD" max="{{maxDate}}" formControlName="endDate" [(ngModel)] ="seaarchFilter.endDate"></ion-datetime>
+                  <ion-datetime displayFormat="YYYY-MM-DD" max="{{maxDate}}" formControlName="endDate" [(ngModel)] ="seaarchFilter.endDate" [lang]="language" [dir]="direction"></ion-datetime>
                 </ion-item>
         </form>
 

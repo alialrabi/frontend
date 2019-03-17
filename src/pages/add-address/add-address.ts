@@ -12,6 +12,7 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { AddOrderPage } from '../add-order/add-order';
 import { MyApp } from '../../app/app.component';
 import { UserOrdersPage } from '../user-orders/user-orders';
+import { ChooseAddressPage } from '../choose-address/choose-address';
 /**
  * Generated class for the AddAddressPage page.
  *
@@ -54,6 +55,17 @@ export class AddAddressPage {
   myForm: FormGroup;
   to = null;
 
+  language = MyApp.language
+  direction = MyApp.direction
+
+  egyptText = 'Egypt';
+
+  alexValue = ''
+  cairoValue = ''
+  tantaValue = ''
+  shibinValue = ''
+  daminhoorValue = ''
+  banhaValue = ''
 
   constructor(public navCtrl: NavController, private loading: LoadingController,
     public navParams: NavParams, public addressService: AddressService, public toastCtrl: ToastController,
@@ -61,10 +73,18 @@ export class AddAddressPage {
   ) {
     this.to = this.navParams.get("address");
 
-    this.translateService.get(['ADD_ADDRESS_ERROR', 'ADD_ADDRESS_SUCCESS', 'PLEASE_WAIT']).subscribe((values) => {
+    this.translateService.get(['ADD_ADDRESS_ERROR', 'ADD_ADDRESS_SUCCESS', 'EGYPT' , 'ALEX' , 'CAIRO' , 'TANTA' , 'DAMNHOR' , 'SHIPIN_ELKOM' , 'BANHA'   , 'PLEASE_WAIT']).subscribe((values) => {
       this.addAddressError = values.SIGNUP_ERROR;
       this.addAdressSuccessString = values.SIGNUP_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
+
+      this.alexValue = values.ALEX;
+      this.cairoValue = values.CAIRO;
+      this.daminhoorValue = values.DAMNHOR;
+      this.tantaValue = values.TANTA;
+      this.shibinValue = values.SHIPIN_ELKOM;
+      this.banhaValue = values.BANHA;
+      this.egyptText = values.EGYPT
     })
 
     this.myForm = builder.group({
@@ -74,6 +94,11 @@ export class AddAddressPage {
       'postalCode': ['', [Validators.required, Validators.maxLength(45)]],
     });
 
+    this.myForm.get('city').setValue('Alexandria');
+    this.myForm.get('city').updateValueAndValidity();
+    this.myForm.get('city').markAsDirty();
+    this.myForm.get('city').markAsTouched();
+    this.myForm.get('city').markAsPristine();
   }
 
   ngOnInit() {
@@ -174,7 +199,8 @@ export class AddAddressPage {
     load.present()
 
     this.address.userId = this.user.id;
-    this.address.city = this.myForm.get("city").value;
+    this.address.city = this.getCity(this.myForm.get("city").value);
+    this.address.country = this.egyptText;
     console.log(this.address, 'sssssssssssssssss');
 
     this.addressService.save(this.address).subscribe((res) => {
@@ -211,8 +237,41 @@ export class AddAddressPage {
     });
 
   }
+
+  getCity(cityValue){
+    console.log(cityValue , 'ssssssssssss');
+
+    
+    let city = ''
+    if(cityValue == 'Alexandria'){
+      city =this.alexValue;
+
+    }else if(cityValue == 'Cairo'){
+      city = this.cairoValue;
+      
+    }else if(cityValue == 'Tanta'){
+      city = this.tantaValue;
+      
+    }else if(cityValue == 'Damnhor'){
+      city = this.daminhoorValue;
+      
+    }else if(cityValue == 'Shibin Elkom'){
+      city = this.shibinValue;
+      
+    }else if(cityValue == 'Banha'){
+      city = this.banhaValue;
+      
+    }
+    return city;
+
+  }
+
+
   hasError(field: string, error: string) {
     const ctrl = this.myForm.get(field);
     return ctrl.dirty && ctrl.hasError(error);
+  }
+  back(){
+    this.navCtrl.setRoot(ChooseAddressPage);
   }
 }

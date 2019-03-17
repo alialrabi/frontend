@@ -7,12 +7,32 @@
 <ion-header>
 
   <ion-navbar>
-    <button ion-button menuToggle>
+    <button ion-button menuToggle *ngIf="agency == null || agency == undefined">
       <ion-icon name="menu"></ion-icon>
     </button>
 
-    <ion-title *ngIf="agency != null">{{agency.firstName}} {{ 'CAPTAINS' | translate }}</ion-title>
-    <ion-title *ngIf="agency == null">{{user?.firstName}} {{ 'CAPTAINS' | translate }}</ion-title>
+
+
+    <ion-grid style="width: 100%">
+        <ion-row>
+          <ion-col col-1 *ngIf="agency != null && agency != undefined">
+            <ion-buttons style="margin-block-start: 2px" class="btn-style">
+              <button ion-button (click)="back()">
+                <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
+              </button>
+            </ion-buttons>
+          </ion-col>
+          <ion-col col-11 [style.margin-top]="agency != null && agency != undefined ? '10px' : '0px'">
+              <ion-title *ngIf="agency != null">{{ 'AGENCY_CAPTAINS' | translate }}</ion-title>
+              <ion-title *ngIf="agency == null">{{ 'YOUR_CAPTAINS' | translate }}</ion-title>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+
+
+
+    
 
     <ion-buttons end class="btn-style">
       <button ion-button (click)="add()" *ngIf="agency == null">
@@ -60,11 +80,11 @@
 
             <div class="account-info info-div">
               <p>
-                {{captain.name}}
+                <strong> {{captain.name}} </strong>
               </p>
 
               <p>
-                Code : {{captain.code}}
+                {{'CODE' | translate}} : <strong>{{captain.code}}</strong> 
               </p>
 
             </div>

@@ -105,7 +105,7 @@ export class OrdersPage {
   }
 
   add() {
-    this.navCtrl.push(AddOrderPage);
+    this.navCtrl.setRoot(AddOrderPage);
 
   }
   viewOrder(orders) {
@@ -155,7 +155,7 @@ export class OrdersPage {
   }
 
   assingCaptain(order) {
-    this.navCtrl.push('AssignOrderPage', { item: order })
+    this.navCtrl.setRoot('AssignOrderPage', { item: order })
   }
 
   // openMenu(){

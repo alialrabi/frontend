@@ -6,11 +6,12 @@ import { JhiDataUtils } from 'ng-jhipster';
 import { CaptainService } from '../../providers/auth/captain.service';
 import { MainPage } from '../pages';
 import { TranslateService } from '@ngx-translate/core';
-import { importType } from '@angular/compiler/src/output/output_ast';
+import { importType, THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { CaptainsPage } from '../captains/captains';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { User } from '../../providers/user/user';
 import { AccountService } from '../../providers/auth/account.service';
+import { MyApp } from '../../app/app.component';
 
 
 /**
@@ -33,10 +34,12 @@ export class AddCaptainPage {
     firstName: '',
     lastName: '',
     password: '',
-    langKey: 'en',
+    langKey: MyApp.language,
     activated: true
   };
 
+  language = MyApp.language
+  direction = MyApp.direction
 
   captain : {code:number , name:string , phone:string , image : any , imageContentType:string , latitude:string , longitude:string , busy:boolean  , userId:any , agencyId:number , working:boolean } = {
     code: null,
@@ -61,16 +64,22 @@ export class AddCaptainPage {
   private invalidPasswordError: string;
   public pleaseWait;
 
+  public choosePhoto='';
+  public chooseFromGalary = '';
+  public takePhoto = '';
   constructor(public navCtrl: NavController, public navParams: NavParams, public _alert: AlertController
     , public imagePicker: ImagePicker, public camera: Camera, public toastCtrl: ToastController, 
     public captainService:CaptainService ,
     private loading: LoadingController,
      public translateService: TranslateService , private app:App , private builder: FormBuilder , public user: User , private accountService: AccountService) {
 
-      this.translateService.get(['ADD_CAPTAIN_ERROR', 'ADD_CAPTAIN_SUCCESS' , 'PLEASE_WAIT']).subscribe((values) => {
+      this.translateService.get(['ADD_CAPTAIN_ERROR', 'ADD_CAPTAIN_SUCCESS' , 'CHOOSE_PHOTO' , 'CHOOSE_FROM_GALARY' , 'TAKE_A_PHOTO' , 'PLEASE_WAIT']).subscribe((values) => {
         this.addAddressError = values.SIGNUP_ERROR;
         this.addAdressSuccessString = values.SIGNUP_SUCCESS;
         this.pleaseWait = values.PLEASE_WAIT
+        this.takePhoto = values.TAKE_A_PHOTO
+        this.chooseFromGalary = values.CHOOSE_FROM_GALARY
+        this.choosePhoto = values.CHOOSE_PHOTO
       })
 
       this.myForm = builder.group({
@@ -90,16 +99,16 @@ export class AddCaptainPage {
   }
   showDialog() {
     let alert = this._alert.create({
-      title: 'Choose Photo',
+      title: this.choosePhoto,
       buttons: [
         {
-          text: 'Choose from gallary',
+          text: this.chooseFromGalary,
           handler: () => {
             this.openImagePicker();
           }
         },
         {
-          text: 'Take a photo',
+          text: this.takePhoto,
           handler: () => {
             this.takePicture();
           }
@@ -131,7 +140,7 @@ export class AddCaptainPage {
 
       let toast = this.toastCtrl.create({
         message: err,
-        duration: 10000,
+        duration: 3000,
         position: 'top'
       });
       toast.present();
@@ -158,7 +167,7 @@ export class AddCaptainPage {
 
         let toast = this.toastCtrl.create({
           message: error,
-          duration: 10000,
+          duration: 3000,
           position: 'top'
         });
         toast.present();
@@ -260,7 +269,11 @@ export class AddCaptainPage {
   }
   notMathces(){
     const ctrl = this.myForm.get("passwordConfirm");
-    return ctrl.dirty && ctrl.value != this.myForm.get("password").value && ctrl.value.length > 5
+    return ctrl.dirty && ctrl.value != this.myForm.get("password").value
+  }
+
+  back(){
+    this.navCtrl.setRoot(CaptainsPage);
   }
 
 }

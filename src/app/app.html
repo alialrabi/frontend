@@ -1,4 +1,4 @@
-<ion-menu side="left" id="authenticated" [content]="content" *ngIf = "account != null && (userType == 'Admin' || userType == 'Agency' || userType == 'Captain' || userType == 'User')">
+<ion-menu [side]="menuSide" id="authenticated" [content]="content" *ngIf = "account != null && (userType == 'Admin' || userType == 'Agency' || userType == 'Captain' || userType == 'User')">
   <ion-header *ngIf = "!isLogOut" >
     <ion-toolbar class="user-profile">
 
@@ -16,13 +16,13 @@
             <h2 ion-text class="no-margin bold text-white">
               {{account?.firstName}} {{account?.lastName}}
             </h2>
-            <span ion-text color="light">{{userType}}</span>
+            <span ion-text color="light">{{userTypeText}}</span>
           </ion-col>
           <ion-col padding-top col-8 *ngIf = "(userType == 'Captain' && captain)">
             <h2 ion-text class="no-margin bold text-white">
               {{captain?.name}}
             </h2>
-            <span ion-text color="light">{{userType}}</span>
+            <span ion-text color="light">{{userTypeText}}</span>
           </ion-col>
         </ion-row>
 
@@ -35,8 +35,8 @@
           </ion-col> -->
           <ion-col no-padding class="column">
             <button ion-button icon-left small full color="light"  (click)="logout()">
-              <ion-icon name="log-out"></ion-icon>
-              Log Out
+              <ion-icon name="log-out"  style="margin-right: 5px;margin-left: 5px"></ion-icon>
+              {{ 'LOG_OUT' | translate }}
             </button>
           </ion-col>
         </ion-row>
@@ -49,10 +49,40 @@
   <ion-content color="primary" *ngIf = "!isLogOut" >
 
     <ion-list class="user-list">
-      <button ion-item menuClose class="text-1x" *ngFor="let menuItem of appMenuItems" (click)="openPage(menuItem)">
-        <ion-icon item-left [name]="menuItem.icon" color="primary"></ion-icon>
-        <span ion-text color="primary">{{menuItem.title}}</span>
+      <button ion-item menuClose class="text-1x" (click)="openPage('AdminDashboardPage')" *ngIf="userType == 'Admin'">
+        <ion-icon item-left name="stats" color="primary"></ion-icon>
+        <span ion-text color="primary">{{'DASHBOARD' | translate}}</span>
       </button>
+      <button ion-item menuClose class="text-1x" (click)="openPage('AgenciesPage')" *ngIf="userType == 'Admin'">
+        <ion-icon item-left name="home" color="primary"></ion-icon>
+        <span ion-text color="primary">{{'AGENCIES' | translate}}</span>
+      </button>
+      <button ion-item menuClose class="text-1x" (click)="openPage('OrdersPage')" *ngIf="userType == 'Admin' || userType == 'Agency'">
+        <ion-icon item-left name="basket" color="primary"></ion-icon>
+        <span ion-text color="primary">{{'ORDERS' | translate}}</span>
+      </button>
+      <button ion-item menuClose class="text-1x" (click)="openPage('CaptainOrdersPage')" *ngIf="userType == 'Captain'">
+        <ion-icon item-left name="basket" color="primary"></ion-icon>
+        <span ion-text color="primary">{{'ORDERS' | translate}}</span>
+      </button>
+      <button ion-item menuClose class="text-1x" (click)="openPage('CaptainsPage')" *ngIf="userType == 'Admin' || userType == 'Agency'">
+        <ion-icon item-left name="bicycle" color="primary"></ion-icon>
+        <span ion-text color="primary">{{'CAPTAINS' | translate}}</span>
+      </button>
+      <button ion-item menuClose class="text-1x" (click)="openPage('AgencyCaptainsPage')" *ngIf="userType == 'Admin'">
+        <ion-icon item-left name="bicycle" color="primary"></ion-icon>
+        <span ion-text color="primary">{{'YOUR_CAPTAINS' | translate}}</span>
+      </button>
+      <button ion-item menuClose class="text-1x" (click)="openPage('UserOrdersPage')" *ngIf="userType == 'Admin' || userType == 'Captain' || userType == 'User'">
+        <ion-icon item-left name="basket" color="primary"></ion-icon>
+        <span ion-text color="primary">{{'USER_ORDERS' | translate}}</span>
+      </button>
+      <button ion-item menuClose class="text-1x" (click)="openPage('SettingsPage')">
+        <ion-icon item-left name="construct" color="primary"></ion-icon>
+        <span ion-text color="primary">{{'SETTING' | translate}}</span>
+      </button>
+      
+
     </ion-list>
   </ion-content>
 

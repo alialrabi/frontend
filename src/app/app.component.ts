@@ -36,6 +36,10 @@ export interface MenuItem {
 export class MyApp {
   rootPage: any = LandingPage;
 
+  public static language = "en";
+  public static direction = "ltr";
+  menuSide = "left";
+
   appMenuItems: Array<MenuItem>;
 
   public isLogOut = false;
@@ -44,12 +48,26 @@ export class MyApp {
 
   public account = null;
   public userType = '';
+
   public captain;
+  public userTypeText = '';
+  // public userAdmin = 'Admin';
+  // public userCaptain = 'Captain';
+  // public userAgency = 'Agency';
+  // public userUser = 'User';
+
+  // public ordersText = 'Orders';
+  // public captainsText = 'Captains';
+  // public agenciesText = 'Agencies';
+  // public settingText = 'Setting';
+  // public userOrdersText = 'User Orders';
+  // public yourCaptainsText = 'Your Captains';
+  // public dashbardText = 'Dashboard';
 
   public internal = null;
 
 
-  constructor(private translate: TranslateService, private backgroundMode: BackgroundMode, public menu: MenuController, platform: Platform, settings: Settings, private config: Config,
+  constructor(private translate: TranslateService, private backgroundMode: BackgroundMode, public menu: MenuController, public platform: Platform, settings: Settings, private config: Config,
     private statusBar: StatusBar, public toastCtrl: ToastController, private loginService: LoginService, private captainService: CaptainService, private app: App, private principal: Principal, private splashScreen: SplashScreen, private keyboard: Keyboard) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -60,6 +78,7 @@ export class MyApp {
 
     });
     this.initTranslate();
+    this.translateMenu();
     console.log("pppppppppppppppppppppp");
     //backgroundGeolocation = new BackgroundGeolocation();
     //this.startTracking()
@@ -67,8 +86,7 @@ export class MyApp {
     //   // {title: 'Home', component: HomePage, icon: 'home'},
     //   // {title: 'Local Weather', component: EntityPage, icon: 'person'}
     // ];
-
-
+    
 
   }
 
@@ -89,55 +107,123 @@ export class MyApp {
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
 
       } else if (account.authorities[0] == 'ROLE_AGENCY') {
+
+        MyApp.language = account.langKey;
+        this.translate.use(MyApp.language);
+       
+        if(account.langKey == 'en'){
+          this.menuSide = 'left';
+          this.platform.setDir("ltr" , true);
+          MyApp.direction = 'ltr';
+        }else{
+          this.menuSide = 'right';
+          this.platform.setDir("rtl" , true);
+          MyApp.direction = 'rtl';
+        }
+        
+        console.log(MyApp.language);
+
         this.isLogOut = false;
         this.userType = 'Agency'
+        this.translateMenu();
         this.account = account;
-        this.appMenuItems = [
-          { title: 'Orders', component: OrdersPage, icon: 'basket' },
-          { title: 'Captains', component: CaptainsPage, icon: 'bicycle' },
-          { title: 'Setting', component: SettingsPage, icon: 'construct' }
-        ];
+        // this.appMenuItems = [
+        //   { title: this.ordersText, component: OrdersPage, icon: 'basket' },
+        //   { title: this.captainsText, component: CaptainsPage, icon: 'bicycle' },
+        //   { title: this.settingText, component: SettingsPage, icon: 'construct' }
+        // ];
         this.nav.setRoot("OrdersPage")
 
       } else if (account.authorities[0] == 'ROLE_USER'  && account.authorities.length == 1) {
+
+        MyApp.language = account.langKey;
+        this.translate.use(MyApp.language);
+        
+        if(account.langKey == 'en'){
+          this.menuSide = 'left';
+          this.platform.setDir("ltr" , true);
+          MyApp.direction = 'ltr';
+        }else{
+          this.menuSide = 'right';
+          this.platform.setDir("rtl" , true);
+          MyApp.direction = 'rtl';
+        }
+        console.log(MyApp.language);
+
         this.isLogOut = false;
         this.userType = 'User'
+        this.translateMenu();
         this.account = account;
-        this.appMenuItems = [
-          { title: 'User Orders', component: UserOrdersPage, icon: 'basket' }
-        ];
+        // this.appMenuItems = [
+        //   { title: this.userOrdersText, component: UserOrdersPage, icon: 'basket' }
+        // ];
         this.nav.setRoot("UserOrdersPage")
 
       }else if (account.authorities[0] == 'ROLE_CAPTAIN') {
+
+        MyApp.language = account.langKey;
+        this.translate.use(MyApp.language);
+        
+        if(account.langKey == 'en'){
+          this.menuSide = 'left';
+          this.platform.setDir("ltr" , true);
+          MyApp.direction = 'ltr';
+        }else{
+          this.menuSide = 'right';
+          this.platform.setDir("rtl" , true);
+          MyApp.direction = 'rtl';
+        }
+        console.log(MyApp.language);
+
         this.isLogOut = false;
         this.userType = 'Captain'
+        this.translateMenu();
         this.account = account;
-        this.appMenuItems = [
-          { title: 'Orders', component: CaptainOrdersPage, icon: 'basket' },
-          { title: 'User Orders', component: UserOrdersPage, icon: 'basket' },
-          { title: 'Setting', component: SettingsPage, icon: 'construct' }
-        ];
+        // this.appMenuItems = [
+        //   { title: this.ordersText, component: CaptainOrdersPage, icon: 'basket' },
+        //   { title: this.userOrdersText, component: UserOrdersPage, icon: 'basket' },
+        //   { title: this.settingText, component: SettingsPage, icon: 'construct' }
+        // ];
         this.nav.setRoot("CaptainOrdersPage")
         this.getCaptain(account.id);
 
       } else {
+
+        MyApp.language = account.langKey;
+        this.translate.use(MyApp.language);
+        
+        if(account.langKey == 'en'){
+          this.menuSide = 'left';
+          this.platform.setDir("ltr" , true);
+          MyApp.direction = 'ltr';
+        }else{
+          this.menuSide = 'right';
+          this.platform.setDir("rtl" , true);
+          MyApp.direction = 'rtl';
+        }
+        console.log(MyApp.language);
+
         this.isLogOut = false;
         this.userType = 'Admin'
+        this.translateMenu();
         this.account = account;
-        this.appMenuItems = [
-          { title: 'Dashboard', component: AdminDashboardPage, icon: 'stats' },
-          { title: 'Agencies', component: AgenciesPage, icon: 'home' },
-          { title: 'Captains', component: CaptainsPage, icon: 'bicycle' },
-          { title: 'Your Captains', component: AgencyCaptainsPage, icon: 'bicycle' },
-          { title: 'Orders', component: OrdersPage, icon: 'basket' },
-          { title: 'User Orders', component: UserOrdersPage, icon: 'basket' }
+        
+        // this.appMenuItems = [
+        //   { title: this.dashbardText, component: AdminDashboardPage, icon: 'stats' },
+        //   { title: this.agenciesText, component: AgenciesPage, icon: 'home' },
+        //   { title: this.captainsText, component: CaptainsPage, icon: 'bicycle' },
+        //   { title: this.yourCaptainsText, component: AgencyCaptainsPage, icon: 'bicycle' },
+        //   { title: this.ordersText, component: OrdersPage, icon: 'basket' },
+        //   { title: this.userOrdersText, component: UserOrdersPage, icon: 'basket' }
 
-        ];
+        // ];
         this.nav.setRoot("AdminDashboardPage")
       }
       console.log(this.userType, 'user');
 
     });
+    console.log(MyApp.language);
+    
   }
   checkAccessToSignUp() {
     this.principal.identity().then((account) => {
@@ -152,51 +238,112 @@ export class MyApp {
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
 
       } else if (account.authorities[0] == 'ROLE_AGENCY') {
+
+        MyApp.language = account.langKey;
+        this.translate.use(MyApp.language);
+        
+        if(account.langKey == 'en'){
+          this.menuSide = 'left';
+          this.platform.setDir("ltr" , true);
+          MyApp.direction = 'ltr';
+        }else{
+          this.menuSide = 'right';
+          this.platform.setDir("rtl" , true);
+          MyApp.direction = 'rtl';
+        }
+
         this.isLogOut = false;
         this.userType = 'Agency'
+        this.translateMenu();
         this.account = account;
-        this.appMenuItems = [
-          { title: 'Orders', component: OrdersPage, icon: 'basket' },
-          { title: 'Captains', component: CaptainsPage, icon: 'bicycle' },
-          { title: 'Setting', component: SettingsPage, icon: 'construct' }
-        ];
+        // this.appMenuItems = [
+        //   { title: this.ordersText, component: OrdersPage, icon: 'basket' },
+        //   { title: this.captainsText, component: CaptainsPage, icon: 'bicycle' },
+        //   { title: this.settingText, component: SettingsPage, icon: 'construct' }
+        // ];
         this.nav.setRoot("OrdersPage")
 
       } else if (account.authorities[0] == 'ROLE_USER'  && account.authorities.length == 1) {
+
+        MyApp.language = account.langKey;
+        this.translate.use(MyApp.language);
+        
+        if(account.langKey == 'en'){
+          this.menuSide = 'left';
+          this.platform.setDir("ltr" , true);
+          MyApp.direction = 'ltr';
+        }else{
+          this.menuSide = 'right';
+          this.platform.setDir("rtl" , true);
+          MyApp.direction = 'rtl';
+        }
+
         this.isLogOut = false;
         this.userType = 'User'
+        this.translateMenu();
         this.account = account;
-        this.appMenuItems = [
-          { title: 'User Orders', component: UserOrdersPage, icon: 'basket' }
-        ];
+        // this.appMenuItems = [
+        //   { title: this.userOrdersText, component: UserOrdersPage, icon: 'basket' }
+        // ];
         // this.nav.setRoot("UserOrdersPage")
 
       }else if (account.authorities[0] == 'ROLE_CAPTAIN') {
+
+        MyApp.language = account.langKey;
+        this.translate.use(MyApp.language);
+        
+        if(account.langKey == 'en'){
+          this.menuSide = 'left';
+          this.platform.setDir("ltr" , true);
+          MyApp.direction = 'ltr';
+        }else{
+          this.menuSide = 'right';
+          this.platform.setDir("rtl" , true);
+          MyApp.direction = 'rtl';
+        }
+
         this.isLogOut = false;
         this.userType = 'Captain'
+        this.translateMenu();
         this.account = account;
-        this.appMenuItems = [
-          { title: 'Orders', component: CaptainOrdersPage, icon: 'basket' },
-          { title: 'User Orders', component: UserOrdersPage, icon: 'basket' },
-          { title: 'Setting', component: SettingsPage, icon: 'construct' }
+        // this.appMenuItems = [
+        //   { title: this.ordersText, component: CaptainOrdersPage, icon: 'basket' },
+        //   { title: this.userOrdersText, component: UserOrdersPage, icon: 'basket' },
+        //   { title: this.settingText, component: SettingsPage, icon: 'construct' }
          
-        ];
+        // ];
         this.nav.setRoot("CaptainOrdersPage")
         this.getCaptain(account.id);
 
       } else {
+
+        MyApp.language = account.langKey;
+        this.translate.use(MyApp.language);
+        
+        if(account.langKey == 'en'){
+          this.menuSide = 'left';
+          this.platform.setDir("ltr" , true);
+          MyApp.direction = 'ltr';
+        }else{
+          this.menuSide = 'right';
+          this.platform.setDir("rtl" , true);
+          MyApp.direction = 'rtl';
+        }
+
         this.isLogOut = false;
         this.userType = 'Admin'
+        this.translateMenu();
         this.account = account;
-        this.appMenuItems = [
-          { title: 'Dashboard', component: AdminDashboardPage, icon: 'stats' },
-          { title: 'Agencies', component: AgenciesPage, icon: 'home' },
-          { title: 'Captains', component: CaptainsPage, icon: 'bicycle' },
-          { title: 'Your Captains', component: AgencyCaptainsPage, icon: 'bicycle' },
-          { title: 'Orders', component: OrdersPage, icon: 'basket' },
-          { title: 'User Orders', component: UserOrdersPage, icon: 'basket' }
+        
+        // this.appMenuItems = [
+        //   { title: this.dashbardText, component: AdminDashboardPage, icon: 'stats' },
+        //   { title: this.agenciesText, component: AgenciesPage, icon: 'home' },
+        //   { title: this.captainsText, component: CaptainsPage, icon: 'bicycle' },
+        //   { title: this.yourCaptainsText, component: AgencyCaptainsPage, icon: 'bicycle' },
+        //   { title: this.ordersText, component: OrdersPage, icon: 'basket' },
+        //   { title: this.userOrdersText, component: UserOrdersPage, icon: 'basket' }
 
-        ];
+        // ];
         this.nav.setRoot("AdminDashboardPage")
       }
       console.log(this.userType, 'user');
@@ -224,12 +371,12 @@ export class MyApp {
 
   initTranslate() {
     // Set the default language for translation strings, and the current language.
-    this.translate.setDefaultLang('en');
+    this.translate.setDefaultLang(MyApp.language);
 
     if (this.translate.getBrowserLang() !== undefined) {
       this.translate.use(this.translate.getBrowserLang());
     } else {
-      this.translate.use('en'); // Set your language here
+      this.translate.use(MyApp.language); // Set your language here
     }
 
     this.translate.get(['BACK_BUTTON_TEXT']).subscribe(values => {
@@ -240,7 +387,7 @@ export class MyApp {
   openPage(page) {
     console.log(page);
 
-    this.app.getRootNavs()[0].setRoot(page.component);
+    this.app.getRootNavs()[0].setRoot(page);
     //this.menu.close("authenticated");
   }
   logout() {
@@ -316,6 +463,28 @@ export class MyApp {
       classIn.updateLocation(classIn);
 
     });
+
+  }
+  translateMenu(){
+
+    console.log('translateeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
+    
+    
+    this.translate.get(['AGENCY' , 'ADMIN' , 'USER' , 'CAPTAIN']).subscribe((values) => {
+     
+      console.log(values);
+      if(this.userType == 'Admin'){
+        this.userTypeText = values.ADMIN;
+      } else if(this.userType == 'Agency'){
+        this.userTypeText = values.AGENCY;
+      }else if(this.userType == 'User'){
+        this.userTypeText = values.USER;
+      }else if(this.userType == 'Captain'){
+        this.userTypeText = values.CAPTAIN;
+      }     
+      console.log(this.userTypeText , 'user type text');
+       
+   })
 
   }
 
