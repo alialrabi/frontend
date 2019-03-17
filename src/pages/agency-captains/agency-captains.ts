@@ -5,6 +5,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { FirstRunPage } from '../pages';
 import { Principal } from '../../providers/auth/principal.service';
 import { AssignCaptainsPage } from '../assign-captains/assign-captains';
+import { MyApp } from '../../app/app.component';
+import { AgenciesPage } from '../agencies/agencies';
 
 /**
  * Generated class for the AgencyCaptainsPage page.
@@ -29,6 +31,9 @@ export class AgencyCaptainsPage {
   unassignCaptainError;
   unassignCaptainSuccess;
   public pleaseWait;
+
+  language = MyApp.language
+  direction = MyApp.direction
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private principal: Principal, private app: App, private loading: LoadingController, public toastCtrl: ToastController, public captainService: CaptainService, public translateService: TranslateService) {
@@ -138,7 +143,11 @@ export class AgencyCaptainsPage {
   }
 
   add() {
-    this.navCtrl.push(AssignCaptainsPage);
+    this.navCtrl.setRoot(AssignCaptainsPage);
 
+  }
+
+  back(){
+    this.navCtrl.setRoot(AgenciesPage);
   }
 }

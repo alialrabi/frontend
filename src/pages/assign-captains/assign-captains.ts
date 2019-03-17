@@ -8,6 +8,7 @@ import { FirstRunPage } from '../pages';
 import { Principal } from '../../providers/auth/principal.service';
 import { UserOrdersPage } from '../user-orders/user-orders';
 import { AgencyCaptainsPage } from '../agency-captains/agency-captains';
+import { MyApp } from '../../app/app.component';
 
 /**
  * Generated class for the AssignCaptainsPage page.
@@ -33,6 +34,9 @@ export class AssignCaptainsPage {
 
   public agency = null;
   public user = null;
+
+  language = MyApp.language
+  direction = MyApp.direction
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private principal: Principal, private app: App, private loading: LoadingController, private builder: FormBuilder, public captainService: CaptainService, public toastCtrl: ToastController, public translateService: TranslateService) {
 
@@ -162,5 +166,13 @@ export class AssignCaptainsPage {
   hasError(field: string, error: string) {
     const ctrl = this.myForm.get(field);
     return ctrl.dirty && ctrl.hasError(error);
+  }
+  back(){
+    if (this.agency == null || this.agency == undefined) {
+      this.navCtrl.setRoot(AgencyCaptainsPage);
+    }else{
+      this.navCtrl.setRoot(AgenciesPage);
+    }
+    
   }
 }

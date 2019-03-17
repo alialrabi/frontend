@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { IonicPage, NavController, NavParams, App, AlertController, ToastController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, App, AlertController, ToastController, LoadingController, Platform } from 'ionic-angular';
 
 import { Settings } from '../../providers/providers';
 import { Principal } from '../../providers/auth/principal.service';
 import { FirstRunPage } from '../pages';
 import { AccountService } from '../../providers/auth/account.service';
 import { CaptainService } from '../../providers/auth/captain.service';
+import { MyApp } from '../../app/app.component';
 
 /**
  * The Settings page is a simple form that syncs with a Settings provider
@@ -29,13 +30,18 @@ export class SettingsPage {
   settingsReady = false;
 
   form: FormGroup;
-  
-  public account ;
+
+  public account;
 
   public confirmAutoAssignMessage;
   public confirmAutoAssignTitle;
   public changeAutoAssignSuccessString;
   public changeAutoAssignError;
+
+  public confirmChaneLanguage;
+  public confirmChaneLanguageTitle;
+  public changeChaneLanguageSuccessString;
+  public changeChaneLanguageError;
 
   public confirmWorkingMessage;
   public confirmWorkingTitle;
@@ -54,26 +60,33 @@ export class SettingsPage {
 
   subSettings: any = SettingsPage;
 
-  userType ='';
+  userType = '';
   public pleaseWait = '';
+  langKey = MyApp.language;
+
+  doneMessage = '';
+  cancelMessage = '';
+
   public captain;
 
   constructor(public navCtrl: NavController,
     public settings: Settings,
     public formBuilder: FormBuilder,
-    public principal:Principal,
-    public app:App,
+    public principal: Principal,
+    public app: App,
+    private platform: Platform,
     private captainService: CaptainService,
-    private loading: LoadingController ,
-    public toastCtrl:ToastController,
-    public accountService:AccountService,
+    private loading: LoadingController,
+    public toastCtrl: ToastController,
+    public accountService: AccountService,
     private alertCtrl: AlertController,
     public navParams: NavParams,
     public translate: TranslateService) {
 
-      this.translate.get(['AUTO_ASSIGN_ERROR', 'AUTO_ASSIGN_SUCCESS',
-      'AUTO_ASSIGN_CONFIRM_MESSAGE' , 'AUTO_ASSIGN_CONFIRM_TITLE' , 'WORKING_ERROR', 'WORKING_SUCCESS',
-      'WORKING_CONFIRM_MESSAGE' , 'WORKING_CONFIRM_TITLE','PLEASE_WAIT']).subscribe((values) => {
+    this.translate.get(['AUTO_ASSIGN_ERROR', 'AUTO_ASSIGN_SUCCESS',
+      'AUTO_ASSIGN_CONFIRM_MESSAGE', 'AUTO_ASSIGN_CONFIRM_TITLE', 'WORKING_ERROR', 'WORKING_SUCCESS',
+      'WORKING_CONFIRM_MESSAGE', 'WORKING_CONFIRM_TITLE', 'CHANGE_LANGUAGE_ERROR', 'CHANGE_LANGUAGE_SUCCESS',
+      'CHANGE_LANGUAGE_MESSAGE', 'CHANGE_LANGUAGE_CONFIRM_TITLE' , 'DONE' , 'CANCEL' , 'PLEASE_WAIT']).subscribe((values) => {
         this.changeAutoAssignError = values.AUTO_ASSIGN_ERROR
         this.changeAutoAssignSuccessString = values.AUTO_ASSIGN_SUCCESS
         this.confirmAutoAssignMessage = values.AUTO_ASSIGN_CONFIRM_MESSAGE
@@ -84,69 +97,90 @@ export class SettingsPage {
         this.confirmWorkingMessage = values.WORKING_CONFIRM_MESSAGE
         this.confirmWorkingTitle = values.WORKING_CONFIRM_TITLE
 
+        this.changeChaneLanguageError = values.CHANGE_LANGUAGE_ERROR
+        this.changeChaneLanguageSuccessString = values.CHANGE_LANGUAGE_SUCCESS
+        this.confirmChaneLanguage = values.CHANGE_LANGUAGE_MESSAGE
+        this.confirmChaneLanguageTitle = values.CHANGE_LANGUAGE_CONFIRM_TITLE
+
         this.pleaseWait = values.PLEASE_WAIT
+
+        this.doneMessage = values.DONE
+        this.cancelMessage = values.CANCEL
+        
       })
 
 
-      this.myForm = formBuilder.group({
-        'autoAssign':['', [ ]],
-        'working':['', [ ]],
-      });
+    this.myForm = formBuilder.group({
+      'autoAssign': ['', []],
+      'working': ['', []],
+      'langKey': [this.langKey, []]
+    });
 
 
 
   }
   ngOnInit() {
     this.validateUser(true);
-    
+
   }
-  validateUser(flag){
+  validateUser(flag) {
     console.log("++++++ 99999 -------");
 
     let load = this.loading.create({
       content: this.pleaseWait
-  
-  
+
+
     })
     load.present()
 
-    
+
     this.principal.identity().then((account) => {
       console.log(account);
       load.dismiss();
-      if (account === null ) {
-         this.app.getRootNavs()[0].setRoot(FirstRunPage);
+      if (account === null) {
+        this.app.getRootNavs()[0].setRoot(FirstRunPage);
 
-      } else if( account.authorities[0] == 'ROLE_AGENCY'){
+      } else if (account.authorities[0] == 'ROLE_AGENCY') {
         console.log("555555555 ************** 555555555555555");
-      
+
         this.account = account;
-        if(flag){
-        this.myForm.get("autoAssign").setValue(this.account.autoAssign)
+        if (flag) {
+          this.myForm.get("autoAssign").setValue(this.account.autoAssign)
         }
         this.userType = 'Agency'
-        
+
       }
-      else if( account.authorities[0] == 'ROLE_CAPTAIN'){
-      
+      else if (account.authorities[0] == 'ROLE_CAPTAIN') {
+
         this.account = account;
-        
+
         this.userType = 'Captain'
 
         this.getCaptain(this.account.id);
-        
+
+      }else if (account.authorities[0] == 'ROLE_USER' && account.authorities.length == 1) {
+
+        this.account = account;
+
+        this.userType = 'User'
+      }else{
+
+        this.account = account;
+
+        this.userType = 'Admin'
+
       }
-    }).catch((err) =>{
+    }).catch((err) => {
       load.dismiss();
     });
   }
 
-  getCaptain(captainId){
+  getCaptain(captainId) {
 
     let load = this.loading.create({
       content: this.pleaseWait
-  
-  
+
+
     })
     load.present()
 
@@ -154,11 +188,11 @@ export class SettingsPage {
       data => {
         this.captain = data;
 
-        
+
         load.dismiss();
-        
+
         this.myForm.get("working").setValue(this.captain.working)
-        
+
 
 
       }, err => {
@@ -170,29 +204,29 @@ export class SettingsPage {
 
   }
 
-  changeAssign(){
+  changeAssign() {
     console.log("**************");
-    
+
     console.log(this.myForm.get('autoAssign').value);
 
 
     let alert = this.alertCtrl.create({
       title: this.confirmAutoAssignTitle,
-      message:  this.confirmAutoAssignMessage,
+      message: this.confirmAutoAssignMessage,
       buttons: [{
-        text: ' Done',
+        text: this.doneMessage,
         handler: () => {
 
           console.log("----------------------");
-          
 
-        this.updateAutoAssign();
-         
+
+          this.updateAutoAssign();
+
         }
-      } , {
+      }, {
 
 
-        text: ' Cancel',
+        text: this.cancelMessage,
         handler: () => {
 
           //nothing
@@ -202,28 +236,28 @@ export class SettingsPage {
       }]
     });
     alert.present();
-    
+
   }
 
-  changeWorking(){
+  changeWorking() {
 
     let alert = this.alertCtrl.create({
       title: this.confirmWorkingTitle,
-      message:  this.confirmWorkingMessage,
+      message: this.confirmWorkingMessage,
       buttons: [{
-        text: ' Done',
+        text: this.doneMessage,
         handler: () => {
 
           console.log("----------------------");
-          
 
-        this.updateWorking();
-         
+
+          this.updateWorking();
+
         }
-      } , {
+      }, {
 
 
-        text: ' Cancel',
+        text: this.cancelMessage,
         handler: () => {
 
           //nothing
@@ -236,11 +270,11 @@ export class SettingsPage {
 
 
   }
-  updateWorking(){
+  updateWorking() {
 
     let obj = {
-      captainId:this.captain.id,
-      working:this.myForm.get('working').value
+      captainId: this.captain.id,
+      working: this.myForm.get('working').value
     }
 
     this.captainService.updateWorking(obj).subscribe((res) => {
@@ -248,7 +282,7 @@ export class SettingsPage {
       // var id = res;
       console.log("00000000000000000000000000");
       this.captain.working = obj.working;
-     // this.validateUser(false);
+      // this.validateUser(false);
       let toast = this.toastCtrl.create({
         message: this.changeWorkingSuccessString,
         duration: 3000,
@@ -258,7 +292,7 @@ export class SettingsPage {
 
     }, (err) => {
       // Unable to sign up
-     let displayError = this.changeWorkingError;
+      let displayError = this.changeWorkingError;
       let toast = this.toastCtrl.create({
         message: displayError,
         duration: 3000,
@@ -270,12 +304,12 @@ export class SettingsPage {
 
   }
 
-  updateAutoAssign(){
+  updateAutoAssign() {
     console.log("****************          ssssssssssssssssss");
-    
+
     let obj = {
-      userId:this.account.id,
-      autoAssign:this.myForm.get('autoAssign').value
+      userId: this.account.id,
+      autoAssign: this.myForm.get('autoAssign').value
     }
 
     this.accountService.updateAutoAssign(obj).subscribe((res) => {
@@ -283,7 +317,7 @@ export class SettingsPage {
       // var id = res;
       console.log("00000000000000000000000000");
       this.account.autoAssign = obj.autoAssign;
-     // this.validateUser(false);
+      // this.validateUser(false);
       let toast = this.toastCtrl.create({
         message: this.changeAutoAssignSuccessString,
         duration: 3000,
@@ -293,7 +327,7 @@ export class SettingsPage {
 
     }, (err) => {
       // Unable to sign up
-     let displayError = this.changeAutoAssignError;
+      let displayError = this.changeAutoAssignError;
       let toast = this.toastCtrl.create({
         message: displayError,
         duration: 3000,
@@ -305,7 +339,84 @@ export class SettingsPage {
 
   }
 
-  
+  changeLanguage() {
+    if (this.langKey != MyApp.language) {
+
+    let alert = this.alertCtrl.create({
+      title: this.confirmChaneLanguageTitle,
+      message: this.confirmChaneLanguage,
+      buttons: [{
+        text: this.doneMessage,
+        handler: () => {
+
+          console.log("----------------------");
+
+
+          this.updateLanguage();
+
+        }
+      }, {
+
+
+        text: this.cancelMessage,
+        handler: () => {
+
+          //nothing
+        }
+
+
+      }]
+    });
+    alert.present();
+  }
+
+  }
+
+  updateLanguage() {
+    console.log(this.myForm.get('langKey').value, this.langKey);
+
+    if (this.langKey != MyApp.language) {
+
+      let obj = {
+        id: this.account.id,
+        language: this.langKey
+      }
+
+      this.accountService.updateLanguage(obj).subscribe((res) => {
+        console.log(res);
+        // var id = res;
+        console.log("00000000000000000000000000");
+        let toast = this.toastCtrl.create({
+          message: this.changeChaneLanguageSuccessString,
+          duration: 3000,
+          position: 'top'
+        });
+        toast.present();
+        this.app.getRootNavs()[0].setRoot(SettingsPage);
+        window.location.reload();
+
+        // this.validateUser(false);
+        
+
+      }, (err) => {
+        // Unable to sign up
+        let displayError = this.changeChaneLanguageError;
+        let toast = this.toastCtrl.create({
+          message: displayError,
+          duration: 3000,
+          position: 'top'
+        });
+        toast.present();
+      });
+
+
+    }
+
+  }
+
+
+
+
 
   // _buildForm() {
   //   let group: any = {
@@ -358,4 +469,6 @@ export class SettingsPage {
   // ngOnChanges() {
   //   console.log('Ng All Changes');
   // }
+
+
 }

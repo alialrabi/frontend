@@ -1,5 +1,7 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { UserOrdersPage } from '../user-orders/user-orders';
+import { MyApp } from '../../app/app.component';
 
 /**
  * Generated class for the OrdersMapPage page.
@@ -20,6 +22,9 @@ export class OrdersMapPage {
   map: any;
 
   order = null;
+
+  language = MyApp.language
+  direction = MyApp.direction
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.order = this.navParams.get("item");
@@ -48,6 +53,10 @@ export class OrdersMapPage {
       title: this.order.name,
       icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
     });
+  }
+
+  back(){
+    this.navCtrl.setRoot(UserOrdersPage);
   }
 
 

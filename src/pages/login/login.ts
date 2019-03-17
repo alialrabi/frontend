@@ -33,6 +33,8 @@ export class LoginPage {
   // Our translated text strings
   private loginErrorString: string;
   public pleaseWait;
+  language = MyApp.language
+  direction = MyApp.direction
 
   myForm: FormGroup;
 
@@ -70,6 +72,10 @@ export class LoginPage {
   
     })
     load.present()
+
+    this.account.username = this.account.username.toLowerCase();
+    console.log(this.account.username.toLowerCase() , 'lower case');
+    
 
     this.loginService.login(this.account).then((response) => {
 

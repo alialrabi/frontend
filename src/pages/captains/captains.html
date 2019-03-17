@@ -65,11 +65,11 @@
 
               <div class="account-info info-div">
                 <p>
-                  {{captain.name}}
+                  <strong> {{captain.name}} </strong>
                 </p>
 
                 <p>
-                  Code : {{captain.code}}
+                  {{'CODE' | translate}} : <strong>{{captain.code}}</strong> 
                 </p>
 
               </div>
@@ -77,11 +77,11 @@
           </ion-row>
         </ion-grid>
 
-        <!-- <ion-buttons end class="btn-style" *ngIf="userType == 'admin'">
+         <ion-buttons end class="btn-style" *ngIf="userType == 'admin'">
           <button ion-button (click)="openEvaluation(captain)">
             {{ 'EDIT_EVALUATION' | translate }}
           </button>
-        </ion-buttons> -->
+        </ion-buttons> 
 
 
       </ion-item>

@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { CaptainService } from '../../providers/auth/captain.service';
 import { CaptainsPage } from '../captains/captains';
+import { MyApp } from '../../app/app.component';
 
 /**
  * Generated class for the CaptainEvaluationPage page.
@@ -32,6 +33,9 @@ export class CaptainEvaluationPage {
   public editEvaluationSuccess;
   public editEvaluationError;
   public pleaseWait;
+
+  language = MyApp.language
+  direction = MyApp.direction
 
   constructor(public navCtrl: NavController, public navParams: NavParams , public toastCtrl: ToastController, 
     public captainService:CaptainService ,private loading: LoadingController , private app:App ,
@@ -124,6 +128,10 @@ export class CaptainEvaluationPage {
   hasError(field: string, error: string) {
     const ctrl = this.myForm.get(field);
     return ctrl.dirty && ctrl.hasError(error);
+  }
+
+  back(){
+    this.navCtrl.setRoot(CaptainsPage);
   }
 
 }

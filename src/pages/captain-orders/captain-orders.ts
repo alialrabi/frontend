@@ -265,7 +265,11 @@ export class CaptainOrdersPage {
 
         console.log(orders.charAt(index));
         if (orders.charAt(index) === '-' && orders.charAt(index - 1) === ' ' && orders.charAt(index + 1) === ' ') {
-          items.push(orders.substring(0, index - 1));
+          let subOrder = {
+            name: orders.substring(0, index - 1),
+            index: items.length + 1
+          }
+          items.push(subOrder);
           orders = orders.substring(index + 1, orders.length)
         }
 
@@ -276,7 +280,12 @@ export class CaptainOrdersPage {
     }
     console.log(items);
 
-    items.push(orders)
+    let subOrder1 = {
+      name: orders,
+      index: items.length + 1
+    }
+
+    items.push(subOrder1)
     console.log(items, 'mmmmmmmmmmmmmmm');
 
     return items;

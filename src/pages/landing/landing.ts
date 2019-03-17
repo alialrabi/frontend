@@ -36,7 +36,7 @@ export class LandingPage {
 
     //this.app.getRootNavs()[0].setRoot(LoginPage);
     
-    this.navCtrl.push('LoginPage');
+    this.navCtrl.setRoot('LoginPage');
   }
 
   validateUser(){

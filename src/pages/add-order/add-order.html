@@ -1,7 +1,20 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{ 'ADD_ORDER' | translate }}</ion-title>
+    <ion-grid style="width: 100%">
+      <ion-row>
+        <ion-col col-1 >
+          <ion-buttons style="margin-block-start: 2px" class="btn-style">
+            <button ion-button (click)="back()">
+              <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
+            </button>
+          </ion-buttons>
+        </ion-col>
+        <ion-col col-11 style="margin-top: 5px;">
+          <ion-title>{{ 'ADD_ORDER' | translate }}</ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-navbar>
 
 </ion-header>
@@ -14,7 +27,7 @@
     <div padding text-center>
       <div class="logo"></div>
       <h2 ion-text class="text-primary">
-        Tlabatac
+        {{ 'TLABATAC' | translate }}
       </h2>
     </div>
 
@@ -35,87 +48,87 @@
 
 
       <ion-item *ngIf="userType != 'User'">
-        <ion-label floating>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="person" item-start class="text-primary"></ion-icon>
           {{ 'NAME' | translate }}
         </ion-label>
-        <ion-input type="text" formControlName="name" name="name"></ion-input>
+        <ion-input type="text" formControlName="name" name="name" [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
 
-      <p class="validationHint" *ngIf="hasError('name', 'required' , myForm)"> {{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('name', 'required' , myForm)"> {{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('name', 'maxlength' , myForm)">{{ 'MAX_LENGTH' | translate }} </p>
 
 
       <ion-item>
-        <ion-label floating>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="call" item-start class="text-primary"></ion-icon>
           {{ 'PHONE' | translate }}
         </ion-label>
-        <ion-input type="number" formControlName="phone" name="phone"></ion-input>
+        <ion-input type="number" formControlName="phone" name="phone" [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
 
-      <p class="validationHint" *ngIf="hasError('phone', 'required' , myForm)"> {{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('phone', 'required' , myForm)"> {{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('phone', 'pattern' , myForm)">{{ 'PHONE_NUMBER' | translate }} </p>
 
       <ion-item>
-        <ion-label floating>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="call" item-start class="text-primary"></ion-icon>
           {{ 'SECOND_PHONE' | translate }}
         </ion-label>
-        <ion-input type="number" formControlName="secondPhone" name="secondPhone"></ion-input>
+        <ion-input type="number" formControlName="secondPhone" name="secondPhone" [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('secondPhone', 'pattern' , myForm)">{{ 'PHONE_NUMBER' | translate }} </p>
 
       <ion-item *ngIf="userType != 'User'">
-        <ion-label floating>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top': 'right top'">
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
           {{ 'CITY' | translate }}
         </ion-label>
-        <ion-select formControlName="city" [placeholder]="alex" [(ngModel)] = "alex">
-          <ion-option [selected]="alex == item" [value]="'Alexandria'"  >{{'ALEX' | translate}} </ion-option>
-          <ion-option [selected]="alex == item" [value]="'Cairo'"  >{{'CAIRO' | translate}} </ion-option>
-          <ion-option [selected]="alex == item" [value]="'Tanta'"  >{{'TANTA' | translate}} </ion-option>
-          <ion-option [selected]="alex == item" [value]="'Damnhor'"  >{{'DAMNHOR' | translate}} </ion-option>
-          <ion-option [selected]="alex == item" [value]="'Shibin Elkom'"  >{{'SHIPIN_ELKOM' | translate}} </ion-option>
-          <ion-option [selected]="alex == item" [value]="'Banha'"  >{{'BANHA' | translate}} </ion-option>
+        <ion-select formControlName="city" [placeholder]="alexValue" [(ngModel)]="alex" [lang]="language" [dir]="direction">
+          <ion-option [selected]="alex == item" [value]="'Alexandria'" [dir]="direction">{{'ALEX' | translate}} </ion-option>
+          <ion-option [selected]="alex == item" [value]="'Cairo'" [dir]="direction">{{'CAIRO' | translate}} </ion-option>
+          <ion-option [selected]="alex == item" [value]="'Tanta'" [dir]="direction">{{'TANTA' | translate}} </ion-option>
+          <ion-option [selected]="alex == item" [value]="'Damnhor'" [dir]="direction">{{'DAMNHOR' | translate}} </ion-option>
+          <ion-option [selected]="alex == item" [value]="'Shibin Elkom'" [dir]="direction">{{'SHIPIN_ELKOM' | translate}} </ion-option>
+          <ion-option [selected]="alex == item" [value]="'Banha'" [dir]="direction">{{'BANHA' | translate}} </ion-option>
 
         </ion-select>
       </ion-item>
-      <p class="validationHint" *ngIf="hasError('city', 'required' , myForm)"> {{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('city', 'required' , myForm)"> {{ 'REQURIED' | translate }} </p>
 
       <ion-item *ngIf="userType == 'User'">
-        <ion-label floating>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top': 'right top'">
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
           {{ 'FROM_ADDRESS' | translate }}
         </ion-label>
-        <ion-input type="text" formControlName="fromAddress" name="fromAddress"></ion-input>
+        <ion-input type="text" formControlName="fromAddress" name="fromAddress" [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
 
-      <p class="validationHint" *ngIf="hasError('fromAddress', 'required' , myForm)"> {{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('fromAddress', 'required' , myForm)"> {{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('fromAddress', 'maxlength' , myForm)">{{ 'MAX_LENGTH' | translate }} </p>
 
 
       <ion-item *ngIf="userType != 'User'">
-        <ion-label floating >
+        <ion-label floating [style.transform-origin]="language =='en'? 'left top': 'right top'">
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
           {{ 'FULL_ADDRESS' | translate }} 1
         </ion-label>
-        <ion-input type="text" formControlName="address1" name="address1"></ion-input>
+        <ion-input type="text" formControlName="address1" name="address1" [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
 
-      <p class="validationHint" *ngIf="hasError('address1', 'required' , myForm)"> {{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('address1', 'required' , myForm)"> {{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('address1', 'maxlength' , myForm)">{{ 'MAX_LENGTH' | translate }} </p>
 
       <ion-item *ngIf="userType != 'User'">
-        <ion-label floating *ngIf="userType != 'User'">
+        <ion-label floating [style.transform-origin]="language =='en'? 'left top': 'right top'" *ngIf="userType != 'User'">
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
           {{ 'FULL_ADDRESS' | translate }} 2
         </ion-label>
-        <ion-input type="text" formControlName="address2" name="address2"></ion-input>
+        <ion-input type="text" formControlName="address2" name="address2" [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
 
-      <p class="validationHint" *ngIf="hasError('address2', 'required' , myForm)"> {{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('address2', 'required' , myForm)"> {{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('address2', 'maxlength' , myForm)">{{ 'MAX_LENGTH' | translate }} </p>
 
 
@@ -126,30 +139,30 @@
       </div>
 
       <!-- <form class="list-form" *ngFor="let item of order.orders;let count = index" [formGroup]="forms[count]"> -->
-      <ion-item >
-        <ion-label floating>
+      <ion-item>
+        <ion-label floating [style.transform-origin]="language =='en'? 'left top': 'right top'">
           <ion-icon name="reorder" item-start class="text-primary"></ion-icon>
           {{ 'ORDER' | translate }}
         </ion-label>
-        <ion-input type="text" name="item+count" (input)="change()" formControlName="order"></ion-input>
+        <ion-input type="text" name="item+count" (input)="change()" formControlName="order" [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
       <p class="validationHint" *ngIf="hasError('order', 'required' , myForm)"> {{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('order', 'maxlength' , myForm)">{{ 'MAX_LENGTH' | translate }} </p>
 
-    <!-- </form>    -->
-      
+      <!-- </form>    -->
+
     </form>
-    <ion-buttons end class="btn-style" >
-      <button ion-button (click)="add()" [disabled] = "!this.myForm.get('order').value.length>0">
+    <ion-buttons end class="btn-style">
+      <button ion-button (click)="add()" [disabled]="!this.myForm.get('order').value.length>0">
         <ion-icon name="add"></ion-icon>
       </button>
-      </ion-buttons>
+    </ion-buttons>
 
-      <div margin-top style="margin-bottom: 40px;">
-        <button ion-button block color="dark" tappable (click)="addOrder()" [disabled]  = "!myForm.valid" >
-          {{ 'ADD_ORDER_BUTTON' | translate }}
-        </button>
-      </div>
+    <div margin-top style="margin-bottom: 40px;">
+      <button ion-button block color="dark" tappable (click)="addOrder()" [disabled]="!myForm.valid">
+        {{ 'ADD_ORDER_BUTTON' | translate }}
+      </button>
+    </div>
   </div>
 
 </ion-content>

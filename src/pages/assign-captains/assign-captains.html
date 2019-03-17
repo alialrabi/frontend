@@ -1,7 +1,24 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{ 'ASSIGN-CAPTAINS' | translate }}</ion-title>
+
+      <ion-grid style="width: 100%">
+          <ion-row>
+            <ion-col col-1 >
+              <ion-buttons style="margin-block-start: 2px" class="btn-style">
+                <button ion-button (click)="back()">
+                  <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
+                </button>
+              </ion-buttons>
+            </ion-col>
+            <ion-col col-11 style="margin-top: 5px;">
+                <ion-title>{{ 'ASSIGN-CAPTAINS' | translate }}</ion-title>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+
+    
   </ion-navbar>
 
 </ion-header>
@@ -14,19 +31,19 @@
     <div padding text-center>
       <div class="logo"></div>
       <h2 ion-text class="text-primary">
-        Tlabatac
+        {{ 'TLABATAC' | translate }}
       </h2>
     </div>
 
     <!-- Login form -->
     <form class="list-form" [formGroup]="myForm">
       <ion-item>
-        <ion-label floating>
-          <ion-icon name="person" item-start class="text-primary"></ion-icon>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+          <ion-icon name="bicycle" item-start class="text-primary"></ion-icon>
           {{ 'CAPTAIN' | translate }}
         </ion-label>
-        <ion-select formControlName="captainIds" multiple>
-          <ion-option *ngFor="let item of captainList" [selected]="item.name ==item.name" [value]="item.id"  >{{item.name}} </ion-option>
+        <ion-select formControlName="captainIds" multiple [lang]="language" [dir]="direction">
+          <ion-option *ngFor="let item of captainList" [selected]="item.name ==item.name" [value]="item.id" [dir]="direction"  >{{item.name}} </ion-option>
 
         </ion-select>
       </ion-item>

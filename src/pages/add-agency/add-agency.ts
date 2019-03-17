@@ -6,6 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { LoginService } from '../../providers/login/login.service';
 import { AccountService } from '../../providers/auth/account.service';
 import { AgenciesPage } from '../agencies/agencies';
+import { MyApp } from '../../app/app.component';
 
 /**
  * Generated class for the AddAgencyPage page.
@@ -27,7 +28,7 @@ export class AddAgencyPage {
     firstName: '',
     lastName: '',
     password: '',
-    langKey: 'en',
+    langKey: MyApp.language,
     activated: true
   };
 
@@ -37,6 +38,9 @@ export class AddAgencyPage {
   private existingUserError: string;
   private invalidPasswordError: string;
   public pleaseWait;
+
+  language = MyApp.language
+  direction = MyApp.direction
 
 
   myForm: FormGroup;
@@ -130,7 +134,11 @@ export class AddAgencyPage {
 
   notMathces(){
     const ctrl = this.myForm.get("passwordConfirm");
-    return ctrl.dirty && ctrl.value != this.myForm.get("password").value && ctrl.value.length > 5
+    return ctrl.dirty && ctrl.value != this.myForm.get("password").value
+  }
+
+  back(){
+    this.navCtrl.setRoot(AgenciesPage);
   }
 
 }

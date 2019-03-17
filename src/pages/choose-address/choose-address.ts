@@ -8,6 +8,8 @@ import { OrderService } from '../../providers/auth/order.service';
 import { AddressService } from '../../providers/auth/address.service';
 import { AddOrderPage } from '../add-order/add-order';
 import { AddAddressPage } from '../add-address/add-address';
+import { MyApp } from '../../app/app.component';
+import { UserOrdersPage } from '../user-orders/user-orders';
 
 /**
  * Generated class for the ChooseAddressPage page.
@@ -31,6 +33,9 @@ export class ChooseAddressPage {
   userType = ''
 
   value = null
+
+  language = MyApp.language
+  direction = MyApp.direction
 
   constructor(public navCtrl: NavController, public navParams: NavParams ,
     private builder: FormBuilder  ,private loading: LoadingController, private addressService:AddressService , private app: App, private principal: Principal, public toastCtrl: ToastController , public translateService: TranslateService , public orderService:OrderService ) {
@@ -114,6 +119,10 @@ export class ChooseAddressPage {
   hasError(field: string, error: string) {
     const ctrl = this.myForm.get(field);
     return ctrl.dirty && ctrl.hasError(error);
+  }
+
+  back(){
+    this.navCtrl.setRoot(UserOrdersPage);
   }
 
 }
