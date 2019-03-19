@@ -74,7 +74,7 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-      this.keyboard.disableScroll(true);
+      this.keyboard.disableScroll(false);
 
     });
     this.initTranslate();

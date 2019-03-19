@@ -31,12 +31,14 @@
     "@ionic-native/background-mode": "^4.0.0",
     "@ionic-native/camera": "^4.6.0",
     "@ionic-native/core": "~4.15.0",
+    "@ionic-native/facebook": "^4.2.0",
     "@ionic-native/geolocation": "^5.0.0-beta.14",
     "@ionic-native/image-picker": "^4.0.0",
     "@ionic-native/keyboard": "^4.12.0",
     "@ionic-native/open-native-settings": "^5.0.0",
     "@ionic-native/splash-screen": "~4.15.0",
     "@ionic-native/status-bar": "~4.15.0",
+    "@ionic-native/twitter-connect": "^4.2.0",
     "@ionic/storage": "2.2.0",
     "@ngx-translate/core": "8.0.0",
     "@ngx-translate/http-loader": "2.0.0",
@@ -45,6 +47,7 @@
     "cordova-plugin-background-mode": "0.7.2",
     "cordova-plugin-camera": "^4.0.3",
     "cordova-plugin-device": "^2.0.2",
+    "cordova-plugin-facebook4": "4.2.1",
     "cordova-plugin-geolocation": "4.0.1",
     "cordova-plugin-ionic-keyboard": "^2.0.5",
     "cordova-plugin-ionic-webview": "^3.1.2",
@@ -59,6 +62,7 @@
     "rxjs": "5.5.11",
     "rxjs-compat": "^6.4.0",
     "sw-toolbox": "3.6.0",
+    "twitter-connect-plugin": "0.6.0",
     "zone.js": "0.8.26"
   },
   "devDependencies": {
@@ -93,7 +97,18 @@
       },
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-geolocation": {},
-      "cordova-plugin-background-mode": {}
+      "cordova-plugin-background-mode": {},
+      "cordova-plugin-facebook4": {
+        "APP_ID": "340338943258185",
+        "APP_NAME": "Tlabatak",
+        "FACEBOOK_HYBRID_APP_EVENTS": "false",
+        "FACEBOOK_ANDROID_SDK_VERSION": "4.40.0"
+      },
+      "twitter-connect-plugin": {
+        "FABRIC_KEY": "397f61c61dee05a472bd1b259fe2722e8f9441b8",
+        "TWITTER_KEY": "9xTu3SrhvXV5T8VJcjlvZtgrS",
+        "TWITTER_SECRET": "JrLY2GJKPXEpfDedC3ttiQsHhv3F3BKaSIIjr3eFTNoH8GXzCQ"
+      }
     },
     "platforms": [
       "android"

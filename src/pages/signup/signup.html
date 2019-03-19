@@ -110,9 +110,21 @@
         {{ 'SIGNUP_BUTTON' | translate }}
       </button>
       </div>
-      <!--
-        <p text-center ion-text color="secondary">Or Sign Up with:</p>
-  
+      
+        <p text-center ion-text color="secondary">{{ 'SOCIAL_SIGN_UP' | translate }}</p>
+
+        <button ion-button icon-only block class="btn-facebook" (click)="fbSignUp()">
+              <ion-icon name="logo-facebook"></ion-icon>
+              {{ 'LOGIN_FACEBOOK' | translate }}
+            </button>
+         
+            <button ion-button icon-only block class="btn-twitter" (click)="twSignUp()" style="margin-top: 10px">
+              <ion-icon name="logo-twitter"></ion-icon>
+              {{ 'LOGIN_TWITTER' | translate }}
+            </button>
+         
+
+   <!--
         <ion-grid>
           <ion-row>
             <ion-col col-4>

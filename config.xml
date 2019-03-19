@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.tlabatac.ionic" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.tlabatac.ionic" version="1.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Tlabatak</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="eng.aliali2011@gmail.com" href="http://ionicframework.com/">Bayesian Bits</author>
@@ -19,6 +19,8 @@
     <preference name="SplashShowOnlyFirstTime" value="false" />
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
+    <preference name="TwitterConsumerKey" value="9xTu3SrhvXV5T8VJcjlvZtgrS" />
+    <preference name="TwitterConsumerSecret" value="JrLY2GJKPXEpfDedC3ttiQsHhv3F3BKaSIIjr3eFTNoH8GXzCQ" />
     <platform name="android">
         <allow-intent href="market:*" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
@@ -85,5 +87,16 @@
     <plugin name="cordova-plugin-geolocation" spec="4.0.1" />
     <plugin name="cordova-plugin-camera" spec="^4.0.3" />
     <plugin name="cordova-plugin-background-mode" spec="0.7.2" />
+    <plugin name="cordova-plugin-facebook4" spec="4.2.1">
+        <variable name="APP_ID" value="340338943258185" />
+        <variable name="APP_NAME" value="Tlabatak" />
+        <variable name="FACEBOOK_HYBRID_APP_EVENTS" value="false" />
+        <variable name="FACEBOOK_ANDROID_SDK_VERSION" value="4.40.0" />
+    </plugin>
+    <plugin name="twitter-connect-plugin" spec="0.6.0">
+        <variable name="FABRIC_KEY" value="397f61c61dee05a472bd1b259fe2722e8f9441b8" />
+        <variable name="TWITTER_KEY" value="9xTu3SrhvXV5T8VJcjlvZtgrS" />
+        <variable name="TWITTER_SECRET" value="JrLY2GJKPXEpfDedC3ttiQsHhv3F3BKaSIIjr3eFTNoH8GXzCQ" />
+    </plugin>
     <engine name="android" spec="7.1.4" />
 </widget>

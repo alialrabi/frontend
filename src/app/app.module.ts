@@ -51,6 +51,9 @@ import { ChooseAddressPageModule } from '../pages/choose-address/choose-address.
 import { AddressService } from '../providers/auth/address.service';
 import { OrdersMapPageModule } from '../pages/orders-map/orders-map.module';
 
+import { Facebook } from '@ionic-native/facebook';
+import { TwitterConnect } from '@ionic-native/twitter-connect';
+
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
 export function createTranslateLoader(http: HttpClient) {
@@ -133,6 +136,8 @@ export function provideSettings(storage: Storage) {
     BackgroundMode,
     ImagePicker,
     Keyboard,
+    Facebook,
+    TwitterConnect,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler },

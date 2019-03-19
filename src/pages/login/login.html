@@ -48,7 +48,22 @@
         {{ 'LOGIN_BUTTON' | translate }}
       </button>
 
-      <!-- <p text-center ion-text color="secondary">Or Sign in with:</p>
+
+      <p text-center ion-text color="secondary">{{ 'OR_SIGN_IN_WITH' | translate }}</p>
+
+      
+            <button ion-button icon-only block class="btn-facebook" (click)="fbLogin()">
+              <ion-icon name="logo-facebook"></ion-icon>
+              {{ 'LOGIN_FACEBOOK' | translate }}
+            </button>
+         
+            <button ion-button icon-only block class="btn-twitter" (click)="twLogin()" style="margin-top: 10px">
+              <ion-icon name="logo-twitter"></ion-icon>
+              {{ 'LOGIN_TWITTER' | translate }}
+            </button>
+         
+
+      <!--
   
         <ion-grid>
           <ion-row>
@@ -73,11 +88,13 @@
       </div>
   
   -->
-     
+
       <div text-center margin-top>
-        <span ion-text color="secondary" tappable (click)="register()">{{'NEW_HERE' | translate}} <strong>{{'SIGN_UP' | translate}}</strong></span>
+        <span ion-text color="secondary" tappable (click)="register()">{{'NEW_HERE' | translate}}
+          <strong>{{'SIGN_UP' | translate}}</strong>
+        </span>
       </div>
-      
+
 
     </div>
   </div>
