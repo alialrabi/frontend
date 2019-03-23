@@ -7,15 +7,16 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class Api {
 
-  // public static API_URL: string = 'http://localhost:9999';
-  // //public static API_URL_login: string = 'http://localhost:6081';
-  // public static API_URL_login: string = 'http://localhost:8888';
-  // public static API_URL_Talabatk: string = 'http://localhost:6062';
+  public static API_URL: string = 'http://localhost:9999';
+  //public static API_URL_login: string = 'http://localhost:6081';
+  public static API_URL_login: string = 'http://localhost:8888';
+  public static API_URL_Talabatk: string = 'http://localhost:6062';
+
 
   //online 
-  public static API_URL: string =       'https://d3rgr96gwzty3y.cloudfront.net';
-  public static API_URL_login: string = 'https://d3rgr96gwzty3y.cloudfront.net';
-  public static API_URL_Talabatk: string = 'https://d3rgr96gwzty3y.cloudfront.net';
+  // public static API_URL: string =       'https://d3rgr96gwzty3y.cloudfront.net';
+  // public static API_URL_login: string = 'https://d3rgr96gwzty3y.cloudfront.net';
+  // public static API_URL_Talabatk: string = 'https://d3rgr96gwzty3y.cloudfront.net';
 
   constructor(public http: HttpClient) {
   }

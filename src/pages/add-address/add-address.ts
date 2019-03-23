@@ -74,8 +74,8 @@ export class AddAddressPage {
     this.to = this.navParams.get("address");
 
     this.translateService.get(['ADD_ADDRESS_ERROR', 'ADD_ADDRESS_SUCCESS', 'EGYPT' , 'ALEX' , 'CAIRO' , 'TANTA' , 'DAMNHOR' , 'SHIPIN_ELKOM' , 'BANHA'   , 'PLEASE_WAIT']).subscribe((values) => {
-      this.addAddressError = values.SIGNUP_ERROR;
-      this.addAdressSuccessString = values.SIGNUP_SUCCESS;
+      this.addAddressError = values.ADD_ADDRESS_ERROR;
+      this.addAdressSuccessString = values.ADD_ADDRESS_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
 
       this.alexValue = values.ALEX;

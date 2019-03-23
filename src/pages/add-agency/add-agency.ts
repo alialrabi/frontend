@@ -108,12 +108,12 @@ export class AddAgencyPage {
       console.log(err);
 
 
-      const error = JSON.parse(err.error);
+      //const error = JSON.parse(err.error);
       let displayError = this.signupErrorString;
-      if (err.status === 400 && error.type.includes('already-used')) {
+      if (err.status === 400 && (err.error.errorKey == 'userexists' || err.error.message == 'error.userexists' || err.error.title == 'Login name already used!')) {
         displayError = this.existingUserError;
-      } else if (err.status === 400 && error.message === 'error.validation'
-        && error.fieldErrors[0].field === 'password' && error.fieldErrors[0].message === 'Size') {
+      } else if (err.status === 400 && err.error.message === 'error.validation'
+        && err.error.fieldErrors[0].field === 'password' && err.error.fieldErrors[0].message === 'Size') {
         displayError = this.invalidPasswordError;
       }
       let toast = this.toastCtrl.create({

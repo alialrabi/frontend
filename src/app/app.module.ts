@@ -53,6 +53,8 @@ import { OrdersMapPageModule } from '../pages/orders-map/orders-map.module';
 
 import { Facebook } from '@ionic-native/facebook';
 import { TwitterConnect } from '@ionic-native/twitter-connect';
+import { EditAssignCaptainPageModule } from '../pages/edit-assign-captain/edit-assign-captain.module';
+import { Device } from '@ionic-native/device';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -89,7 +91,11 @@ export function provideSettings(storage: Storage) {
         deps: [HttpClient]
       }
     }),
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp,{
+      scrollPadding: false,
+      scrollAssist: true, 
+      autoFocusAssist: false
+  }),
     IonicStorageModule.forRoot(),
     EntityPageModule , 
     LandingPageModule ,
@@ -112,7 +118,8 @@ export function provideSettings(storage: Storage) {
     AdminDashboardPageModule,
     UserOrdersPageModule,
     ChooseAddressPageModule,
-    OrdersMapPageModule
+    OrdersMapPageModule,
+    EditAssignCaptainPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -138,6 +145,7 @@ export function provideSettings(storage: Storage) {
     Keyboard,
     Facebook,
     TwitterConnect,
+    Device,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler },

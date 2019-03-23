@@ -7,6 +7,7 @@ import { Principal } from '../../providers/auth/principal.service';
 import { AssignCaptainsPage } from '../assign-captains/assign-captains';
 import { MyApp } from '../../app/app.component';
 import { AgenciesPage } from '../agencies/agencies';
+import { EditAssignCaptainPage } from '../edit-assign-captain/edit-assign-captain';
 
 /**
  * Generated class for the AgencyCaptainsPage page.
@@ -39,6 +40,9 @@ export class AgencyCaptainsPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private principal: Principal, private app: App, private loading: LoadingController, public toastCtrl: ToastController, public captainService: CaptainService, public translateService: TranslateService) {
 
     this.agency = this.navParams.get("item");
+
+    console.log('agency 3' , this.agency);
+    
 
     this.translateService.get(['UN_ASSIGN_CAPTAIN_ERROR', 'UN_ASSIGN_CAPTAIN_SUCCESS', 'PLEASE_WAIT']).subscribe((values) => {
       this.unassignCaptainError = values.UN_ASSIGN_CAPTAIN_ERROR;
@@ -145,6 +149,12 @@ export class AgencyCaptainsPage {
   add() {
     this.navCtrl.setRoot(AssignCaptainsPage);
 
+  }
+
+  editAssign(captain){
+    console.log('agency 2' , this.agency);
+    
+    this.navCtrl.setRoot(EditAssignCaptainPage , {item:captain , agency:this.agency});
   }
 
   back(){
