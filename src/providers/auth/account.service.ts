@@ -11,7 +11,14 @@ export class AccountService  {
 
     get(): Observable<any> {
         //return this.http.get(Api.API_URL +'/api/account?access_token=' +this.authservice.getToken());
-        return this.http.get(Api.API_URL_login + '/uaa/api/account?access_token=' +this.authservice.getToken());
+        const headers = new HttpHeaders({
+            'Accept':'application/json',
+            //'responseType':'application/json'
+          });
+          const options = {
+            headers: headers
+          };
+        return this.http.get(Api.API_URL_login + '/uaa/api/account?access_token=' +this.authservice.getToken() );
     }
     getById(userId): Observable<any> {
         //return this.http.get(Api.API_URL +'/api/account?access_token=' +this.authservice.getToken());

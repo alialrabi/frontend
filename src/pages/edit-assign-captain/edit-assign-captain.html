@@ -12,7 +12,7 @@
               </ion-buttons>
             </ion-col>
             <ion-col col-11 style="margin-top: 5px;">
-                <ion-title>{{ 'ASSIGN-CAPTAINS' | translate }}</ion-title>
+                <ion-title>{{ 'EDIT_ASSIGN_CAPTAINS' | translate }}</ion-title>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -37,33 +37,13 @@
 
     <!-- Login form -->
     <form class="list-form" [formGroup]="myForm">
-      <ion-item>
-        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
-          <ion-icon name="bicycle" item-start class="text-primary"></ion-icon>
-          {{ 'CAPTAIN' | translate }}
-        </ion-label>
-        <ion-select formControlName="captainIds" multiple [lang]="language" [dir]="direction">
-          <ion-option *ngFor="let item of captainList" [selected]="item.name ==item.name" [value]="item.id" [dir]="direction"  >{{item.name}} </ion-option>
-
-        </ion-select>
-      </ion-item>
-
-      <p class="validationHint" *ngIf="hasError('captainIds', 'required')"> {{ 'REQURIED' | translate }} </p>
-
-      <ion-item>
-        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
-          <ion-icon name="calendar" item-start class="text-primary"></ion-icon>
-          {{ 'START_DATE' | translate }}
-        </ion-label>
-        <ion-datetime displayFormat="YYYY-MM-DD" max="{{maxDate}}"  min="{{minDate}}" formControlName="startDate" [lang]="language" [dir]="direction"></ion-datetime>
-      </ion-item>
-      <p class="validationHint" *ngIf="hasError('startDate', 'required')"> {{ 'REQURIED' | translate }} </p>
+      
       <ion-item>
           <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
             <ion-icon name="calendar" item-start class="text-primary"></ion-icon>
             {{ 'END_DATE' | translate }}
           </ion-label>
-          <ion-datetime displayFormat="YYYY-MM-DD" max="{{maxDate}}"  min="{{minDate}}" formControlName="endDate" [lang]="language" [dir]="direction"></ion-datetime>
+          <ion-datetime displayFormat="YYYY-MM-DD" max="{{maxDate}}"  min="{{minDate}}" [(ngModel)]="assign.endDate" formControlName="endDate" [lang]="language" [dir]="direction"></ion-datetime>
         </ion-item>
         <p class="validationHint" *ngIf="hasError('endDate', 'required')"> {{ 'REQURIED' | translate }} </p>
       
@@ -72,7 +52,7 @@
             <ion-icon name="calendar" item-start class="text-primary"></ion-icon>
             {{ 'START_TIME' | translate }}
           </ion-label>
-          <ion-datetime displayFormat="hh:mm a" pickerFormat="hh:mm a" formControlName="startTime" [lang]="language" [dir]="direction"></ion-datetime>
+          <ion-datetime displayFormat="hh:mm a" pickerFormat="hh:mm a" formControlName="startTime" [(ngModel)]="assign.startTime" [lang]="language" [dir]="direction"></ion-datetime>
         </ion-item>
         <p class="validationHint" *ngIf="hasError('startTime', 'required')"> {{ 'REQURIED' | translate }} </p>
         <ion-item>
@@ -80,16 +60,43 @@
               <ion-icon name="calendar" item-start class="text-primary"></ion-icon>
               {{ 'END_TIME' | translate }}
             </ion-label>
-            <ion-datetime displayFormat="hh:mm a" pickerFormat="hh:mm a" formControlName="endTime" [lang]="language" [dir]="direction"></ion-datetime>
+            <ion-datetime displayFormat="hh:mm a" pickerFormat="hh:mm a" formControlName="endTime" [(ngModel)]="assign.endTime" [lang]="language" [dir]="direction"></ion-datetime>
           </ion-item>
           <p class="validationHint" *ngIf="hasError('endTime', 'required')"> {{ 'REQURIED' | translate }} </p>
-        
+       
+          <ion-list radio-group style="background-color: #ffffff" formControlName="fromToday" [(ngModel)]="fromToday">
+
+            <ion-list-header>
+                {{'CHANGE_FROM' | translate}}
+            </ion-list-header>
+      
+            <ion-grid style="padding-top: 0px">
+              <ion-row>
+                <ion-col col-6>
+                  <ion-item text-center>
+                    <ion-label>{{'TODAY' | translate}}</ion-label>
+                    <ion-radio value="today"></ion-radio>
+                  </ion-item>
+                </ion-col>
+                <ion-col col-6>
+                  <ion-item text-center>
+                    <ion-label>{{'TOMMOROW' | translate}}</ion-label>
+                    <ion-radio value="tomorrow"></ion-radio>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+      
+      
+      
+      
+          </ion-list>    
 
     </form>
 
       <div margin-top>
-        <button ion-button block color="dark" tappable (click)="assignCaptain()" [disabled]  = "!myForm.valid" >
-          {{ 'ASSIGN_CAPTAINS_BUTTON' | translate }}
+        <button ion-button block color="dark" tappable (click)="editAssignCaptain()" [disabled]  = "(!myForm.valid) || validateChange()" >
+          {{ 'EDIT_ASSIGN_CAPTAINS_BUTTON' | translate }}
         </button>
       </div>
       

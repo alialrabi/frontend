@@ -38,9 +38,16 @@ export class AssignCaptainsPage {
   language = MyApp.language
   direction = MyApp.direction
 
+  public maxDate;
+  public minDate;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private principal: Principal, private app: App, private loading: LoadingController, private builder: FormBuilder, public captainService: CaptainService, public toastCtrl: ToastController, public translateService: TranslateService) {
 
     this.agency = this.navParams.get("item");
+
+    var CurrentYear = new Date().getFullYear()
+    this.maxDate = CurrentYear + 1 ;
+    this.minDate = CurrentYear;
 
     this.translateService.get(['ASSIGN_ORDER_ERROR', 'ASSIGN_ORDER_SUCCESS', 'PLEASE_WAIT']).subscribe((values) => {
       this.assignOrderError = values.ASSIGN_ORDER_ERROR;
@@ -52,6 +59,10 @@ export class AssignCaptainsPage {
     this.myForm = builder.group({
       //'userId':['', [Validators.required ]],
       'captainIds': ['', [Validators.required]],
+      'startDate': ['', [Validators.required]],
+      'endDate': ['', [Validators.required]],
+      'startTime': ['', [Validators.required]],
+      'endTime': ['', [Validators.required]],      
 
     });
 
@@ -118,7 +129,11 @@ export class AssignCaptainsPage {
     let assignCaptains = {
       agencyId: 0,
       captainsIds: ids,
-      adminAssign:false
+      adminAssign:false,
+      endDate:this.myForm.get("endDate").value,
+      startDate:this.myForm.get("startDate").value,
+      startTime:this.myForm.get("startTime").value,
+      endTime:this.myForm.get("endTime").value
     }
     if (this.agency == null || this.agency == undefined) {
       assignCaptains.agencyId = this.user.id

@@ -23,6 +23,8 @@ import { BackgroundMode } from '@ionic-native/background-mode';
 import { AdminDashboardPage } from '../pages/admin-dashboard/admin-dashboard';
 import { UserOrdersPage } from '../pages/user-orders/user-orders';
 import { AgencyCaptainsPage } from '../pages/agency-captains/agency-captains';
+import { Device } from '@ionic-native/device';
+import { AddCaptainPage } from '../pages/add-captain/add-captain';
 
 export interface MenuItem {
   title: string;
@@ -49,6 +51,8 @@ export class MyApp {
   public account = null;
   public userType = '';
 
+  public static getCaptainImage = false;
+
   public captain;
   public userTypeText = '';
   // public userAdmin = 'Admin';
@@ -67,18 +71,19 @@ export class MyApp {
   public internal = null;
 
 
-  constructor(private translate: TranslateService, private backgroundMode: BackgroundMode, public menu: MenuController, public platform: Platform, settings: Settings, private config: Config,
+  constructor(private translate: TranslateService, private device: Device, private backgroundMode: BackgroundMode, public menu: MenuController, public platform: Platform, settings: Settings, private config: Config,
     private statusBar: StatusBar, public toastCtrl: ToastController, private loginService: LoginService, private captainService: CaptainService, private app: App, private principal: Principal, private splashScreen: SplashScreen, private keyboard: Keyboard) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-      this.keyboard.disableScroll(true);
+      this.keyboard.disableScroll(false);
 
     });
     this.initTranslate();
     this.translateMenu();
+    
     console.log("pppppppppppppppppppppp");
     //backgroundGeolocation = new BackgroundGeolocation();
     //this.startTracking()
@@ -86,12 +91,13 @@ export class MyApp {
     //   // {title: 'Home', component: HomePage, icon: 'home'},
     //   // {title: 'Local Weather', component: EntityPage, icon: 'person'}
     // ];
-    
+
 
   }
 
   ngOnInit() {
-    this.checkAccess();
+
+      this.checkAccess();
   }
 
   checkAccess() {
@@ -110,17 +116,17 @@ export class MyApp {
 
         MyApp.language = account.langKey;
         this.translate.use(MyApp.language);
-       
-        if(account.langKey == 'en'){
+
+        if (account.langKey == 'en') {
           this.menuSide = 'left';
-          this.platform.setDir("ltr" , true);
+          this.platform.setDir("ltr", true);
           MyApp.direction = 'ltr';
-        }else{
+        } else {
           this.menuSide = 'right';
-          this.platform.setDir("rtl" , true);
+          this.platform.setDir("rtl", true);
           MyApp.direction = 'rtl';
         }
-        
+
         console.log(MyApp.language);
 
         this.isLogOut = false;
@@ -134,18 +140,18 @@ export class MyApp {
         // ];
         this.nav.setRoot("OrdersPage")
 
-      } else if (account.authorities[0] == 'ROLE_USER'  && account.authorities.length == 1) {
+      } else if (account.authorities[0] == 'ROLE_USER' && account.authorities.length == 1) {
 
         MyApp.language = account.langKey;
         this.translate.use(MyApp.language);
-        
-        if(account.langKey == 'en'){
+
+        if (account.langKey == 'en') {
           this.menuSide = 'left';
-          this.platform.setDir("ltr" , true);
+          this.platform.setDir("ltr", true);
           MyApp.direction = 'ltr';
-        }else{
+        } else {
           this.menuSide = 'right';
-          this.platform.setDir("rtl" , true);
+          this.platform.setDir("rtl", true);
           MyApp.direction = 'rtl';
         }
         console.log(MyApp.language);
@@ -159,18 +165,18 @@ export class MyApp {
         // ];
         this.nav.setRoot("UserOrdersPage")
 
-      }else if (account.authorities[0] == 'ROLE_CAPTAIN') {
+      } else if (account.authorities[0] == 'ROLE_CAPTAIN') {
 
         MyApp.language = account.langKey;
         this.translate.use(MyApp.language);
-        
-        if(account.langKey == 'en'){
+
+        if (account.langKey == 'en') {
           this.menuSide = 'left';
-          this.platform.setDir("ltr" , true);
+          this.platform.setDir("ltr", true);
           MyApp.direction = 'ltr';
-        }else{
+        } else {
           this.menuSide = 'right';
-          this.platform.setDir("rtl" , true);
+          this.platform.setDir("rtl", true);
           MyApp.direction = 'rtl';
         }
         console.log(MyApp.language);
@@ -191,14 +197,14 @@ export class MyApp {
 
         MyApp.language = account.langKey;
         this.translate.use(MyApp.language);
-        
-        if(account.langKey == 'en'){
+
+        if (account.langKey == 'en') {
           this.menuSide = 'left';
-          this.platform.setDir("ltr" , true);
+          this.platform.setDir("ltr", true);
           MyApp.direction = 'ltr';
-        }else{
+        } else {
           this.menuSide = 'right';
-          this.platform.setDir("rtl" , true);
+          this.platform.setDir("rtl", true);
           MyApp.direction = 'rtl';
         }
         console.log(MyApp.language);
@@ -207,7 +213,7 @@ export class MyApp {
         this.userType = 'Admin'
         this.translateMenu();
         this.account = account;
-        
+
         // this.appMenuItems = [
         //   { title: this.dashbardText, component: AdminDashboardPage, icon: 'stats' },
         //   { title: this.agenciesText, component: AgenciesPage, icon: 'home' },
@@ -223,7 +229,7 @@ export class MyApp {
 
     });
     console.log(MyApp.language);
-    
+
   }
   checkAccessToSignUp() {
     this.principal.identity().then((account) => {
@@ -241,14 +247,14 @@ export class MyApp {
 
         MyApp.language = account.langKey;
         this.translate.use(MyApp.language);
-        
-        if(account.langKey == 'en'){
+
+        if (account.langKey == 'en') {
           this.menuSide = 'left';
-          this.platform.setDir("ltr" , true);
+          this.platform.setDir("ltr", true);
           MyApp.direction = 'ltr';
-        }else{
+        } else {
           this.menuSide = 'right';
-          this.platform.setDir("rtl" , true);
+          this.platform.setDir("rtl", true);
           MyApp.direction = 'rtl';
         }
 
@@ -263,18 +269,18 @@ export class MyApp {
         // ];
         this.nav.setRoot("OrdersPage")
 
-      } else if (account.authorities[0] == 'ROLE_USER'  && account.authorities.length == 1) {
+      } else if (account.authorities[0] == 'ROLE_USER' && account.authorities.length == 1) {
 
         MyApp.language = account.langKey;
         this.translate.use(MyApp.language);
-        
-        if(account.langKey == 'en'){
+
+        if (account.langKey == 'en') {
           this.menuSide = 'left';
-          this.platform.setDir("ltr" , true);
+          this.platform.setDir("ltr", true);
           MyApp.direction = 'ltr';
-        }else{
+        } else {
           this.menuSide = 'right';
-          this.platform.setDir("rtl" , true);
+          this.platform.setDir("rtl", true);
           MyApp.direction = 'rtl';
         }
 
@@ -287,18 +293,18 @@ export class MyApp {
         // ];
         // this.nav.setRoot("UserOrdersPage")
 
-      }else if (account.authorities[0] == 'ROLE_CAPTAIN') {
+      } else if (account.authorities[0] == 'ROLE_CAPTAIN') {
 
         MyApp.language = account.langKey;
         this.translate.use(MyApp.language);
-        
-        if(account.langKey == 'en'){
+
+        if (account.langKey == 'en') {
           this.menuSide = 'left';
-          this.platform.setDir("ltr" , true);
+          this.platform.setDir("ltr", true);
           MyApp.direction = 'ltr';
-        }else{
+        } else {
           this.menuSide = 'right';
-          this.platform.setDir("rtl" , true);
+          this.platform.setDir("rtl", true);
           MyApp.direction = 'rtl';
         }
 
@@ -310,7 +316,7 @@ export class MyApp {
         //   { title: this.ordersText, component: CaptainOrdersPage, icon: 'basket' },
         //   { title: this.userOrdersText, component: UserOrdersPage, icon: 'basket' },
         //   { title: this.settingText, component: SettingsPage, icon: 'construct' }
-         
+
         // ];
         this.nav.setRoot("CaptainOrdersPage")
         this.getCaptain(account.id);
@@ -319,14 +325,14 @@ export class MyApp {
 
         MyApp.language = account.langKey;
         this.translate.use(MyApp.language);
-        
-        if(account.langKey == 'en'){
+
+        if (account.langKey == 'en') {
           this.menuSide = 'left';
-          this.platform.setDir("ltr" , true);
+          this.platform.setDir("ltr", true);
           MyApp.direction = 'ltr';
-        }else{
+        } else {
           this.menuSide = 'right';
-          this.platform.setDir("rtl" , true);
+          this.platform.setDir("rtl", true);
           MyApp.direction = 'rtl';
         }
 
@@ -334,7 +340,7 @@ export class MyApp {
         this.userType = 'Admin'
         this.translateMenu();
         this.account = account;
-        
+
         // this.appMenuItems = [
         //   { title: this.dashbardText, component: AdminDashboardPage, icon: 'stats' },
         //   { title: this.agenciesText, component: AgenciesPage, icon: 'home' },
@@ -457,7 +463,10 @@ export class MyApp {
 
 
   updateLocationTimer(classIn) {
-    this.backgroundMode.enable();
+    if (this.device.platform.toLowerCase() == 'android' && parseInt(this.device.version, 10) < 8) {
+
+      this.backgroundMode.enable();
+    }
     this.internal = Observable.interval(1000 * 60).subscribe(x => {
       console.log(x, 'eeeeeeeeeeeeeeee');
       classIn.updateLocation(classIn);
@@ -465,28 +474,27 @@ export class MyApp {
     });
 
   }
-  translateMenu(){
+  translateMenu() {
 
     console.log('translateeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
-    
-    
-    this.translate.get(['AGENCY' , 'ADMIN' , 'USER' , 'CAPTAIN']).subscribe((values) => {
-     
+
+
+    this.translate.get(['AGENCY', 'ADMIN', 'USER', 'CAPTAIN']).subscribe((values) => {
+
       console.log(values);
-      if(this.userType == 'Admin'){
+      if (this.userType == 'Admin') {
         this.userTypeText = values.ADMIN;
-      } else if(this.userType == 'Agency'){
+      } else if (this.userType == 'Agency') {
         this.userTypeText = values.AGENCY;
-      }else if(this.userType == 'User'){
+      } else if (this.userType == 'User') {
         this.userTypeText = values.USER;
-      }else if(this.userType == 'Captain'){
+      } else if (this.userType == 'Captain') {
         this.userTypeText = values.CAPTAIN;
-      }     
-      console.log(this.userTypeText , 'user type text');
-       
-   })
+      }
+      console.log(this.userTypeText, 'user type text');
+
+    })
 
   }
-
 
 }
