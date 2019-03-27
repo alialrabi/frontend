@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
 import { UserOrdersPage } from '../user-orders/user-orders';
 import { MyApp } from '../../app/app.component';
 
@@ -26,8 +26,13 @@ export class OrdersMapPage {
   language = MyApp.language
   direction = MyApp.direction
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams , public platform:Platform) {
     this.order = this.navParams.get("item");
+
+    this.platform.registerBackButtonAction(() => {
+      this.navCtrl.setRoot(UserOrdersPage);
+
+    });
 
   }
 

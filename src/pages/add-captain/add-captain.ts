@@ -82,7 +82,7 @@ export class AddCaptainPage {
     public translateService: TranslateService, private app: App, private builder: FormBuilder, public user: User, private accountService: AccountService) {
 
 
-    this.translateService.get(['ADD_CAPTAIN_ERROR', 'ADD_CAPTAIN_SUCCESS', 'CHOOSE_PHOTO', 'CHOOSE_FROM_GALARY', 'TAKE_A_PHOTO', 'PLEASE_WAIT', 'EXISTING_USER_ERROR', 'INVALID_PASSWORD_ERROR']).subscribe((values) => {
+    this.translateService.get(['ADD_CAPTAIN_ERROR', 'ADD_CAPTAIN_SUCCESS', 'CHOOSE_PHOTO', 'CHOOSE_FROM_GALARY', 'TAKE_A_PHOTO', 'PLEASE_WAIT', 'EXISTING_USER_ERROR', 'INVALID_PASSWORD_ERROR' , 'SIGNUP_ERROR']).subscribe((values) => {
       this.addAddressError = values.ADD_CAPTAIN_ERROR;
       this.addAdressSuccessString = values.ADD_CAPTAIN_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
@@ -91,6 +91,7 @@ export class AddCaptainPage {
       this.existingUserError = values.EXISTING_USER_ERROR;
       this.invalidPasswordError = values.INVALID_PASSWORD_ERROR;
       this.choosePhoto = values.CHOOSE_PHOTO
+      this.signupErrorString = values.SIGNUP_ERROR
     })
 
     this.myForm = builder.group({
@@ -100,6 +101,11 @@ export class AddCaptainPage {
       'email': ['', [Validators.required, Validators.email]],
       'password': ['', [Validators.required, Validators.minLength(6)]],
       'passwordConfirm': ['', [Validators.required]]
+    });
+
+    this.platform.registerBackButtonAction(() => {
+      this.navCtrl.setRoot(CaptainsPage);
+
     });
 
 
@@ -185,7 +191,7 @@ export class AddCaptainPage {
       quality: 100,
       outputType: 1
 
-    }
+    }    
 
     this.imagePicker.getPictures(options).then((results) => {
         this.captain.image = results[0];
@@ -243,6 +249,10 @@ export class AddCaptainPage {
     this.account.activated = true;
     this.account.firstName = this.captain.name;
     this.account.lastName = this.captain.name;
+
+    if(this.captain.image == 'O'){
+      this.captain.image = null;
+    }
     // Attempt to login in through our User service
     this.accountService.registerCaptain(this.account).subscribe(
       res1 => {
@@ -316,5 +326,5 @@ export class AddCaptainPage {
   back() {
     this.navCtrl.setRoot(CaptainsPage);
   }
-
+ 
 }

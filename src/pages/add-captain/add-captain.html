@@ -11,7 +11,7 @@
             </button>
           </ion-buttons>
         </ion-col>
-        <ion-col col-11 style="margin-top: 5px;">
+        <ion-col col-11 [style.margin-top] ="language == 'en' ? '5px' : '2px'">
           <ion-title>{{ 'ADD_CAPTAIN' | translate }}</ion-title>
         </ion-col>
       </ion-row>
@@ -26,18 +26,18 @@
 <!-- -->
 <ion-content class="auth-page">
   <div class="login-content">
-    <div [ngClass]="language == 'en' ?  'circle-pic-div' : 'circle-pic-div-ar'">
+    <div [ngClass]="language == 'en' ?  'circle-pic-div' : 'circle-pic-div-ar'" style="width:100%" text-center>
 
-      <ion-grid class="grid-image">
+      <ion-grid class="grid-image" style="width: 50%">
         <ion-row class="grid-image">
-          <ion-col class="grid-image" class="btn-col">
+          <ion-col class="grid-image" class="btn-col" col-9>
 
-            <img class="circle-pic" *ngIf="!captain.image" src="../../assets/img/person.png" />
-            <img class="circle-pic" *ngIf="captain.image" [src]="['data:image/jpg;base64',captain.image]" />
+            <img class="circle-pic" *ngIf="!captain.image || captain.image == 'O'" src="../../assets/img/person.png" />
+            <img class="circle-pic" *ngIf="captain.image  && captain.image != 'O'" [src]="['data:image/jpg;base64',captain.image]" />
           </ion-col>
 
-          <ion-col class="btn-col">
-            <button ion-button icon-only clear class="icon-btn" float-left (click)="showDialog()" [style.margin-left]="language != 'en' ? '54%' : '0%'">
+          <ion-col class="btn-col" col-3 text-center>
+            <button ion-button icon-only clear class="icon-btn" float-left (click)="showDialog()">
               <ion-icon name="camera"></ion-icon>
             </button>
           </ion-col>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, App, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, App, LoadingController, Platform } from 'ionic-angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { CaptainService } from '../../providers/auth/captain.service';
@@ -41,7 +41,7 @@ export class AssignCaptainsPage {
   public maxDate;
   public minDate;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private principal: Principal, private app: App, private loading: LoadingController, private builder: FormBuilder, public captainService: CaptainService, public toastCtrl: ToastController, public translateService: TranslateService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public platform:Platform , private principal: Principal, private app: App, private loading: LoadingController, private builder: FormBuilder, public captainService: CaptainService, public toastCtrl: ToastController, public translateService: TranslateService) {
 
     this.agency = this.navParams.get("item");
 
@@ -49,9 +49,9 @@ export class AssignCaptainsPage {
     this.maxDate = CurrentYear + 1 ;
     this.minDate = CurrentYear;
 
-    this.translateService.get(['ASSIGN_ORDER_ERROR', 'ASSIGN_ORDER_SUCCESS', 'PLEASE_WAIT']).subscribe((values) => {
-      this.assignOrderError = values.ASSIGN_ORDER_ERROR;
-      this.assingOrderSuccess = values.ASSIGN_ORDER_SUCCESS;
+    this.translateService.get(['ASSIGN_CAPTAIN_ERROR', 'ASSIGN_CAPTAIN_SUCCESS', 'PLEASE_WAIT']).subscribe((values) => {
+      this.assignOrderError = values.ASSIGN_CAPTAIN_ERROR;
+      this.assingOrderSuccess = values.ASSIGN_CAPTAIN_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
     })
 
@@ -64,6 +64,14 @@ export class AssignCaptainsPage {
       'startTime': ['', [Validators.required]],
       'endTime': ['', [Validators.required]],      
 
+    });
+
+    this.platform.registerBackButtonAction(() => {
+      if (this.agency == null || this.agency == undefined) {
+        this.navCtrl.setRoot(AgencyCaptainsPage);
+      }else{
+        this.navCtrl.setRoot(AgenciesPage);
+      }
     });
 
     this.getAllCaptains();

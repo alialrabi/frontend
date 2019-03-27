@@ -181,16 +181,16 @@ export class UserOrdersPage {
     while (flag) {
 
       let index = orders.indexOf('-');
-      console.log(index, 'vvvv');
+     // console.log(index, 'vvvv');
 
       if (index != -1) {
 
         // for (let index = 0; index < orders.length; index++) {  
-        console.log(orders, orders.length, 'sssssssssssss');
-        console.log(index, 'index');
+        // console.log(orders, orders.length, 'sssssssssssss');
+        // console.log(index, 'index');
 
 
-        console.log(orders.charAt(index));
+        // console.log(orders.charAt(index));
         if (orders.charAt(index) === '-' && orders.charAt(index - 1) === ' ' && orders.charAt(index + 1) === ' ') {
           let subOrder = {
             name: orders.substring(0, index - 1),
@@ -205,7 +205,7 @@ export class UserOrdersPage {
         flag = false;
       }
     }
-    console.log(items);
+   // console.log(items);
 
     let subOrder1 = {
       name: orders,
@@ -214,7 +214,7 @@ export class UserOrdersPage {
 
     items.push(subOrder1)
 
-    console.log(items, 'mmmmmmmmmmmmmmm');
+    //console.log(items, 'mmmmmmmmmmmmmmm');
 
     return items;
   }

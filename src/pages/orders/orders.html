@@ -75,28 +75,34 @@
     <ion-item class="item-background" *ngFor="let order of ordersList.slice().reverse()">
       <ion-grid>
         <ion-row>
-          <ion-col class="img-col">
+          <ion-col class="img-col" col-3>
             <img class="circle-pic" src="../../assets/img/orders.jpg" />
           </ion-col>
 
-          <ion-col >
+          <ion-col col-9>
 
             <div class="account-info info-div">
               <p>
-                {{ 'NAME' | translate }} : <strong>{{order.name}}</strong>
+                {{ 'NAME' | translate }} : <strong text-wrap>{{order.name}}</strong>
               </p>
               <p>
-                {{ 'ADDRESS' | translate }} 1 : <strong>{{order.address}}</strong>
+                {{ 'ADDRESS' | translate }} 1 : <strong text-wrap>{{order.address}}</strong>
               </p>
               <p *ngIf="order.secondAddress != null && order.secondAddress != ''">
-                {{ 'ADDRESS' | translate }} 2 : <strong>{{order.secondAddress}}</strong>
+                {{ 'ADDRESS' | translate }} 2 : <strong text-wrap>{{order.secondAddress}}</strong>
+              </p>
+              <p>
+                {{ 'PHONE_NUMBER_PHONE' | translate }} 1 : <strong text-wrap>{{order.firstPhone}}</strong>
+              </p>
+              <p *ngIf="order.secondPhone != null && order.secondPhone != ''">
+                {{ 'PHONE_NUMBER_PHONE' | translate }} 2 : <strong text-wrap>{{order.secondPhone}}</strong>
               </p>
               <p>
                 {{ 'ORDERS' | translate }} :-
               </p>
               <div *ngFor="let item of viewOrder(order.orders)">
                 <p style="margin-left: 15px;margin-right: 15px">
-                  {{item.index}}- <strong>{{item.name}}</strong>
+                  {{item.index}}- <strong text-wrap>{{item.name}}</strong>
                 </p>
               </div>
             </div>

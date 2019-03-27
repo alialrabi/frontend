@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, App, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, App, LoadingController, Platform } from 'ionic-angular';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { User } from '../../providers/user/user';
 import { TranslateService } from '@ngx-translate/core';
@@ -52,6 +52,7 @@ export class AddAgencyPage {
     public loginService: LoginService,
     private loading: LoadingController,
     public app:App,
+    public platform:Platform,
     public accountService: AccountService,
     private builder: FormBuilder) {
 
@@ -71,6 +72,12 @@ export class AddAgencyPage {
       'password': ['', [Validators.required, Validators.minLength(6)]],
       'passwordConfirm': ['', [Validators.required]]
     });
+
+    this.platform.registerBackButtonAction(() => {
+      this.navCtrl.setRoot(AgenciesPage);
+
+    });
+
 
   }
   ionViewDidLoad() {

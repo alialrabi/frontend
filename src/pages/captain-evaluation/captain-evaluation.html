@@ -11,7 +11,7 @@
                 </button>
               </ion-buttons>
             </ion-col>
-            <ion-col col-11 style="margin-top: 5px;">
+            <ion-col col-11 [style.margin-top] ="language == 'en' ? '5px' : '2px'">
                 <ion-title>{{ 'Edit_EVALUATION' | translate }}</ion-title>
             </ion-col>
           </ion-row>

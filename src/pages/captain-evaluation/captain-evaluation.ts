@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, LoadingController, App } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, LoadingController, App, Platform } from 'ionic-angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { CaptainService } from '../../providers/auth/captain.service';
@@ -38,7 +38,7 @@ export class CaptainEvaluationPage {
   direction = MyApp.direction
 
   constructor(public navCtrl: NavController, public navParams: NavParams , public toastCtrl: ToastController, 
-    public captainService:CaptainService ,private loading: LoadingController , private app:App ,
+    public captainService:CaptainService ,private loading: LoadingController , private app:App , public platform:Platform,
      public translateService: TranslateService , private builder: FormBuilder ) {
 
       this.captain = this.navParams.get("item");
@@ -56,6 +56,11 @@ export class CaptainEvaluationPage {
         'speed': ['', [Validators.required ,Validators.pattern("[1-5]{1}")]],
         'commitment': ['', [Validators.required  , Validators.pattern("[1-5]{1}")]],
         'excellence': ['', [Validators.required , Validators.pattern("[1-5]{1}")]],
+      });
+
+      this.platform.registerBackButtonAction(() => {
+        this.navCtrl.setRoot(CaptainsPage);
+  
       });
 
   }

@@ -82,6 +82,14 @@ export class SignupPage {
   }
 
   doSignup() {
+
+    let loading = this.loading.create({
+      content: this.pleaseWait
+
+
+    })
+    loading.present()
+
     // set login to same as email
     this.account.login = this.account.email;
     this.account.activated = true;
@@ -105,12 +113,14 @@ export class SignupPage {
             position: 'top'
           });
           toast.present();
+          loading.dismiss();
           this.navCtrl.setRoot(AddAddressPage);
         });
 
     }, (err) => {
       // Unable to sign up
       console.log(err);
+      loading.dismiss();
       
       const error = JSON.parse(err.error);
       let displayError = this.signupErrorString;

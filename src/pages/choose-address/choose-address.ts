@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, App, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, App, ToastController, Platform } from 'ionic-angular';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { FirstRunPage } from '../pages';
 import { Principal } from '../../providers/auth/principal.service';
@@ -38,7 +38,7 @@ export class ChooseAddressPage {
   direction = MyApp.direction
 
   constructor(public navCtrl: NavController, public navParams: NavParams ,
-    private builder: FormBuilder  ,private loading: LoadingController, private addressService:AddressService , private app: App, private principal: Principal, public toastCtrl: ToastController , public translateService: TranslateService , public orderService:OrderService ) {
+    private builder: FormBuilder  ,private loading: LoadingController, public platform:Platform , private addressService:AddressService , private app: App, private principal: Principal, public toastCtrl: ToastController , public translateService: TranslateService , public orderService:OrderService ) {
 
     this.translateService.get([ 'PLEASE_WAIT']).subscribe((values) => {
       
@@ -50,6 +50,11 @@ export class ChooseAddressPage {
       //'userId':['', [Validators.required ]],
       'address': ['', [Validators.required ]],
       
+    });
+
+    this.platform.registerBackButtonAction(() => {
+      this.navCtrl.setRoot(UserOrdersPage);
+
     });
 
     //this.getAllCaptains();

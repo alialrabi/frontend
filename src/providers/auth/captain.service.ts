@@ -34,10 +34,14 @@ export class CaptainService  {
 
         return this.http.put(Api.API_URL_login + '/tlabatac/api/unAssignCaptains/'+captainId+'?access_token=' +this.authservice.getToken() , null);
     }
-
+    
     getAll() : Observable<any>{
 
         return this.http.get(Api.API_URL_login + '/tlabatac/api/captains?access_token=' +this.authservice.getToken());
+    }
+    captainsPickList() : Observable<any>{
+
+        return this.http.get(Api.API_URL_login + '/tlabatac/api/captainsPickList?access_token=' +this.authservice.getToken());
     }
 
     getByUserId(userId:any) : Observable<any>{
@@ -49,19 +53,31 @@ export class CaptainService  {
 
         return this.http.get(Api.API_URL_login + '/tlabatac/api/captainsNotAssigned?access_token=' +this.authservice.getToken());
     }
-
+    
     getByAgencyId(agencyId:any) : Observable<any>{
 
         return this.http.get(Api.API_URL_login + '/tlabatac/api/captainsByAgencyId/'+agencyId+'?access_token=' +this.authservice.getToken());
+    }
+    captainsPickListByAgencyId(agencyId:any) : Observable<any>{
+
+        return this.http.get(Api.API_URL_login + '/tlabatac/api/captainsPickListByAgencyId/'+agencyId+'?access_token=' +this.authservice.getToken());
     }
     getCaptainElevation(captainId:any) : Observable<any>{
 
         return this.http.get(Api.API_URL_login + '/tlabatac/api/evaluationsByCaptainId/'+captainId+'?access_token=' +this.authservice.getToken());
     }
+    getCaptainAssignDetails(searchFilter:any) : Observable<any>{
+
+        return this.http.post(Api.API_URL_login + '/tlabatac/api/getCaptainAssignDetails?access_token=' +this.authservice.getToken() , searchFilter);
+    }
 
     updateEvaluation(evaluation: any): Observable<Object> {
 
         return this.http.put(Api.API_URL_login + '/tlabatac/api/evaluations?access_token=' +this.authservice.getToken() , evaluation);
+    }
+    autoUnAssign(): Observable<Object> {
+
+        return this.http.put(Api.API_URL_login + '/tlabatac/api/autoUnAssign?access_token=' +this.authservice.getToken() , null);
     }
 
 }

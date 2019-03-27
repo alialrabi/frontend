@@ -18,7 +18,7 @@
                 </button>
               </ion-buttons>
             </ion-col>
-            <ion-col col-11 style="margin-top: 5px;">
+            <ion-col col-11 [style.margin-top] ="language == 'en' ? '5px' : '2px'">
                 <ion-title>{{ 'CHOOSE_ADDRESS' | translate }}</ion-title>
             </ion-col>
           </ion-row>
@@ -51,7 +51,7 @@
             {{ 'ADDRESS' | translate }}
           </ion-label>
           <ion-select formControlName="address" [lang]="language" [dir]="direction" >
-            <ion-option *ngFor="let item of addressList" [dir]="direction" [selected]="item.country ==item.country && item.city == item.city && item.street == item.street && item.postalCode == item.postalCode" [value]="item"  >{{item.street}} , {{item.city}} </ion-option>
+            <ion-option *ngFor="let item of addressList" text-wrap [dir]="direction" [selected]="item.country ==item.country && item.city == item.city && item.street == item.street && item.postalCode == item.postalCode" [value]="item"  >{{item.street}} , {{item.city}} </ion-option>
   
           </ion-select>
         </ion-item>

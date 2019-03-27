@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, App, LoadingController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, App, LoadingController, ToastController, Platform } from 'ionic-angular';
 import { MyApp } from '../../app/app.component';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { FirstRunPage } from '../pages';
@@ -53,7 +53,7 @@ export class EditAssignCaptainPage {
   startTimeValue = '';
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private principal: Principal, private app: App, private loading: LoadingController, private builder: FormBuilder, public captainService: CaptainService, public toastCtrl: ToastController, public translateService: TranslateService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public platform:Platform ,private principal: Principal, private app: App, private loading: LoadingController, private builder: FormBuilder, public captainService: CaptainService, public toastCtrl: ToastController, public translateService: TranslateService) {
 
     this.assign = this.navParams.get("item");
     //this.lastAssign = this.navParams.get("item");
@@ -85,6 +85,12 @@ export class EditAssignCaptainPage {
       'fromToday': ['', [Validators.required]]
 
     });
+
+    this.platform.registerBackButtonAction(() => {
+      this.navCtrl.setRoot(AgencyCaptainsPage, { "item": this.agency });
+
+    });
+
   }
 
   ngOnInit() {

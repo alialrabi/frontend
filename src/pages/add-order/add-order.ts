@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, List, ToastController, App, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, List, ToastController, App, LoadingController, Platform } from 'ionic-angular';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { User } from '../../providers/providers';
 import { TranslateService } from '@ngx-translate/core';
@@ -69,7 +69,7 @@ export class AddOrderPage {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController
-    , public translateService: TranslateService,private loading: LoadingController,
+    , public translateService: TranslateService,private loading: LoadingController, public platform:Platform,
     private builder: FormBuilder, public user: User, private app: App, private principal: Principal, public orderService: OrderService) {
 
     console.log('con');
@@ -110,6 +110,14 @@ export class AddOrderPage {
     this.myForm.get('city').markAsPristine();
     console.log(this.myForm.get('city').dirty);
         
+
+    this.platform.registerBackButtonAction(() => {
+      if(this.userType == 'User'){
+        this.navCtrl.setRoot(UserOrdersPage);
+      }else{
+        this.navCtrl.setRoot(OrdersPage);
+      }
+    });
 
 
 
