@@ -191,7 +191,7 @@ export class SettingsPage {
 
         load.dismiss();
 
-        this.myForm.get("working").setValue(this.captain.working)
+        this.myForm.get("working").setValue(!this.captain.working)
 
 
 
@@ -274,7 +274,7 @@ export class SettingsPage {
 
     let obj = {
       captainId: this.captain.id,
-      working: this.myForm.get('working').value
+      working: !this.myForm.get('working').value
     }
 
     this.captainService.updateWorking(obj).subscribe((res) => {
