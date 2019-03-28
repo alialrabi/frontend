@@ -156,7 +156,9 @@ export class AdminDashboardPage {
   }
 
   clear() {
-    this.myForm.reset();
+    this.myForm.get("captainId").setValue("");
+    this.myForm.get("startDate").setValue("");
+    this.myForm.get("endDate").setValue("");
     this.seaarchFilter = {
       captainId: null,
       startDate: null,

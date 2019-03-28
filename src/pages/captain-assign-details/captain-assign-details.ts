@@ -232,7 +232,10 @@ export class CaptainAssignDetailsPage {
     this.seachFlag = !this.seachFlag;
   }
   clear() {
-    this.myForm.reset();
+    this.myForm.get("captainId").setValue("");
+    this.myForm.get("agencyId").setValue("");
+    this.myForm.get("startDate").setValue("");
+    this.myForm.get("endDate").setValue("");
     this.seaarchFilter = {
       captainId: null,
       startDate: null,
