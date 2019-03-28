@@ -25,6 +25,7 @@ import { UserOrdersPage } from '../pages/user-orders/user-orders';
 import { AgencyCaptainsPage } from '../pages/agency-captains/agency-captains';
 import { Device } from '@ionic-native/device';
 import { AddCaptainPage } from '../pages/add-captain/add-captain';
+import { LocationAccuracy } from '@ionic-native/location-accuracy';
 
 export interface MenuItem {
   title: string;
@@ -69,10 +70,11 @@ export class MyApp {
   // public dashbardText = 'Dashboard';
 
   public internal = null;
+  public autoAssignInternal = null;
 
 
   constructor(private translate: TranslateService, private device: Device, private backgroundMode: BackgroundMode, public menu: MenuController, public platform: Platform, settings: Settings, private config: Config,
-    private statusBar: StatusBar, public toastCtrl: ToastController, private loginService: LoginService, private captainService: CaptainService, private app: App, private principal: Principal, private splashScreen: SplashScreen, private keyboard: Keyboard) {
+    private statusBar: StatusBar, public locationAccuracy: LocationAccuracy, public toastCtrl: ToastController, private loginService: LoginService, private captainService: CaptainService, private app: App, private principal: Principal, private splashScreen: SplashScreen, private keyboard: Keyboard) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -83,7 +85,7 @@ export class MyApp {
     });
     this.initTranslate();
     this.translateMenu();
-    
+
     console.log("pppppppppppppppppppppp");
     //backgroundGeolocation = new BackgroundGeolocation();
     //this.startTracking()
@@ -97,7 +99,7 @@ export class MyApp {
 
   ngOnInit() {
 
-      this.checkAccess();
+    this.checkAccess();
   }
 
   checkAccess() {
@@ -211,6 +213,8 @@ export class MyApp {
 
         this.isLogOut = false;
         this.userType = 'Admin'
+        this.autoUnAssign();
+        this.autoAssignRedunduncy();
         this.translateMenu();
         this.account = account;
 
@@ -350,6 +354,7 @@ export class MyApp {
         //   { title: this.userOrdersText, component: UserOrdersPage, icon: 'basket' }
 
         // ];
+
         this.nav.setRoot("AdminDashboardPage")
       }
       console.log(this.userType, 'user');
@@ -357,11 +362,23 @@ export class MyApp {
     });
   }
 
+  autoUnAssign() {
+    this.captainService.autoUnAssign().subscribe(res => {
+      console.log(res);
+
+    }, err => {
+      console.log(err, 'errrror');
+
+    }
+    )
+  }
+
   getCaptain(captainId) {
 
     this.captainService.getByUserId(captainId).subscribe(
       data => {
         this.captain = data;
+        this.updateLocation(this);
 
         this.updateLocationTimer(this);
 
@@ -429,6 +446,50 @@ export class MyApp {
 
   updateLocation(classIn) {
 
+
+    if (this.platform.is("android") || this.platform.is("ios")) {
+      console.log("---------------------------");
+
+      // this.locationAccuracy.canRequest().then((canRequest: any) => {
+
+      //   console.log('canRequest' , canRequest);
+
+
+      // if(canRequest == 0) {
+      // the accuracy option will be ignored by iOS
+      this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
+        () => {
+          console.log("success");
+
+          this.getLocation(classIn)
+        }
+        ,
+        error => console.log('Error requesting location permissions', error)
+      );
+      //   }else{
+      //     this.getLocation(classIn) 
+      //   }
+
+      // }).catch(
+      //   err =>{
+      //     console.log('error' , err);
+
+      //   }
+      // );
+    } else {
+      this.getLocation(classIn);
+    }
+
+
+
+
+
+
+
+
+
+  }
+  getLocation(classIn) {
     navigator.geolocation.getCurrentPosition(function (position) {
 
       let location = {
@@ -456,23 +517,32 @@ export class MyApp {
       console.log(err, 'error sssssssssssss');
 
     })
-
-
   }
 
 
 
   updateLocationTimer(classIn) {
-    if (this.device.platform.toLowerCase() == 'android' && parseInt(this.device.version, 10) < 8) {
+    if (this.platform.is('android')) {
+      if (this.device.platform.toLowerCase() == 'android' && parseInt(this.device.version, 10) < 8) {
 
+        this.backgroundMode.enable();
+      }
+    } else {
       this.backgroundMode.enable();
     }
-    this.internal = Observable.interval(1000 * 60).subscribe(x => {
+    this.internal = Observable.interval(1000 * 60 * 10).subscribe(x => {
       console.log(x, 'eeeeeeeeeeeeeeee');
       classIn.updateLocation(classIn);
 
     });
 
+  }
+  autoAssignRedunduncy() {
+    this.autoAssignInternal = Observable.interval(1000 * 60 * 60).subscribe(x => {
+      console.log(x, 'eeeeeeeeeeeeeeee');
+      this.autoUnAssign();
+
+    });
   }
   translateMenu() {
 

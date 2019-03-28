@@ -6,6 +6,7 @@ import { FirstRunPage } from '../pages';
 import { OrderService } from '../../providers/auth/order.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CaptainService } from '../../providers/auth/captain.service';
+import { MyApp } from '../../app/app.component';
 
 /**
  * Generated class for the AdminDashboardPage page.
@@ -34,6 +35,8 @@ export class AdminDashboardPage {
     endDate: null
   }
   public maxDate;
+  language = MyApp.language
+  direction = MyApp.direction
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public captainService: CaptainService, private builder: FormBuilder, private orderServic: OrderService, public app: App, private loading: LoadingController, public translateService: TranslateService, public principal: Principal) {
     this.translateService.get(['PLEASE_WAIT']).subscribe((values) => {
@@ -92,7 +95,7 @@ export class AdminDashboardPage {
 
     })
     load.present()
-    this.captainService.getAll().subscribe(
+    this.captainService.captainsPickList().subscribe(
       res => {
 
         console.log(res, "res");

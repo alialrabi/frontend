@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, LoadingController, App } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, LoadingController, App, Platform } from 'ionic-angular';
 import { CaptainService } from '../../providers/auth/captain.service';
 import { TranslateService } from '@ngx-translate/core';
 import { FirstRunPage } from '../pages';
@@ -37,7 +37,7 @@ export class AgencyCaptainsPage {
   direction = MyApp.direction
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private principal: Principal, private app: App, private loading: LoadingController, public toastCtrl: ToastController, public captainService: CaptainService, public translateService: TranslateService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public platform:Platform , private principal: Principal, private app: App, private loading: LoadingController, public toastCtrl: ToastController, public captainService: CaptainService, public translateService: TranslateService) {
 
     this.agency = this.navParams.get("item");
 
@@ -50,6 +50,10 @@ export class AgencyCaptainsPage {
       this.pleaseWait = values.PLEASE_WAIT
     })
 
+    this.platform.registerBackButtonAction(() => {
+      this.navCtrl.setRoot(AgenciesPage);
+
+    });
 
 
   }

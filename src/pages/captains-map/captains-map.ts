@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, App, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, App, LoadingController, Platform } from 'ionic-angular';
 import { CaptainService } from '../../providers/auth/captain.service';
 import { Principal } from '../../providers/auth/principal.service';
 import { FirstRunPage } from '../pages';
@@ -73,12 +73,17 @@ export class CaptainsMapPage {
   //   }
   // ]
 
-  constructor(public navCtrl: NavController, public navParams: NavParams ,private loading: LoadingController ,public translateService: TranslateService , private app: App, private principal: Principal, public captainService: CaptainService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams , public platform:Platform ,private loading: LoadingController ,public translateService: TranslateService , private app: App, private principal: Principal, public captainService: CaptainService) {
   
     this.translateService.get(['PLEASE_WAIT']).subscribe((values) => {
       
       this.pleaseWait = values.PLEASE_WAIT
     })
+
+    this.platform.registerBackButtonAction(() => {
+      this.navCtrl.setRoot(CaptainsPage);
+
+    });
   
   }
 
@@ -154,7 +159,7 @@ export class CaptainsMapPage {
 
 
     this.deletemarkers();
-    this.captainService.getAll().subscribe(res => {
+    this.captainService.captainsPickList().subscribe(res => {
       console.log(res, 'res');
       res.forEach(element => {
 
@@ -203,7 +208,7 @@ export class CaptainsMapPage {
     load.present()
 
     this.deletemarkers();
-    this.captainService.getByAgencyId(this.account.id).subscribe(res => {
+    this.captainService.captainsPickListByAgencyId(this.account.id).subscribe(res => {
       console.log(res, 'res');
       res.forEach(element => {
 

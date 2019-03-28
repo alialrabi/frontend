@@ -17,7 +17,7 @@
                 </button>
               </ion-buttons>
             </ion-col>
-            <ion-col col-11 style="margin-top: 5px;">
+            <ion-col col-11 [style.margin-top] ="language == 'en' ? '5px' : '2px'">
                 <ion-title *ngIf="!openMap">{{ 'ADD_ADDRESS' | translate }}</ion-title>
                 <ion-title *ngIf="openMap">{{ 'MAP' | translate }}</ion-title>
             </ion-col>
@@ -125,7 +125,7 @@
       <ion-row>
         <ion-col>
           <div margin-top *ngIf="openMap">
-            <button ion-button block color="dark" tappable (click)="chooseLocation()">
+            <button ion-button block color="dark" tappable (click)="chooseLocation()" [disabled]="locationDisable">
               {{ 'CHOOSE_LOCATION' | translate }}
             </button>
           </div>

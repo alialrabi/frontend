@@ -53,6 +53,10 @@
         <ion-icon item-left name="stats" color="primary"></ion-icon>
         <span ion-text color="primary">{{'DASHBOARD' | translate}}</span>
       </button>
+      <button ion-item menuClose class="text-1x" (click)="openPage('CaptainAssignDetailsPage')" *ngIf="userType == 'Admin'">
+          <ion-icon item-left name="clock" color="primary"></ion-icon>
+          <span ion-text color="primary">{{'ASSIGN_TIME_DETAILS' | translate}}</span>
+        </button>
       <button ion-item menuClose class="text-1x" (click)="openPage('AgenciesPage')" *ngIf="userType == 'Admin'">
         <ion-icon item-left name="home" color="primary"></ion-icon>
         <span ion-text color="primary">{{'AGENCIES' | translate}}</span>

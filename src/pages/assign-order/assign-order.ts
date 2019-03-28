@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, App, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, App, LoadingController, Platform } from 'ionic-angular';
 import { CaptainService } from '../../providers/auth/captain.service';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
@@ -40,7 +40,7 @@ export class AssignOrderPage {
   userType = ''
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams ,
+  constructor(public navCtrl: NavController, public navParams: NavParams , public platform:Platform,
     private builder: FormBuilder , public captainService:CaptainService  ,private loading: LoadingController , private app: App, private principal: Principal, public toastCtrl: ToastController , public translateService: TranslateService , public orderService:OrderService ) {
 
       this.order = this.navParams.get("item");
@@ -56,6 +56,14 @@ export class AssignOrderPage {
       //'userId':['', [Validators.required ]],
       'captainId': ['', [Validators.required ]],
       
+    });
+
+    this.platform.registerBackButtonAction(() => {
+      if(this.userType == 'Agency'){
+        this.navCtrl.setRoot(OrdersPage);
+        }else{
+          this.navCtrl.setRoot(UserOrdersPage);
+        }
     });
 
     //this.getAllCaptains();
@@ -107,7 +115,7 @@ export class AssignOrderPage {
   
     })
     load.present()
-    this.captainService.getByAgencyId(this.account.id).subscribe(
+    this.captainService.captainsPickListByAgencyId(this.account.id).subscribe(
       res =>{
 
         console.log(res , "res");

@@ -1,0 +1,229 @@
+<ion-header>
+
+  <ion-navbar>
+
+
+
+      <button ion-button menuToggle *ngIf="captain == null || captain == undefined">
+          <ion-icon name="menu"></ion-icon>
+        </button>
+    
+    
+    
+        <ion-grid style="width: 100%">
+          <ion-row>
+            <ion-col col-1 *ngIf="captain != null && captain != undefined">
+              <ion-buttons style="margin-block-start: 2px" class="btn-style">
+                <button ion-button (click)="back()">
+                  <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
+                </button>
+              </ion-buttons>
+            </ion-col>
+            <ion-col col-11 [style.margin-top]="captain != null && captain != undefined && language == 'en' ? '10px' : '0px'">
+                <ion-title [style.margin-top]="captain != null && captain != undefined && language == 'ar' ? '7px' : '0px'">{{ 'CAPTAIN_ASSIGN_DETAILS' | translate }}</ion-title>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+    
+    
+    
+    
+    
+    
+        <ion-buttons end class="btn-style"  *ngIf="captain == null || captain == undefined">
+          <button ion-button (click)="toggleSearch()">
+              <ion-icon name="search"></ion-icon>
+            </button>
+        </ion-buttons>
+    
+
+
+
+
+
+
+
+    <!-- <ion-grid style="width: 100%">
+      <ion-row>
+        <ion-col col-1>
+          <ion-buttons style="margin-block-start: 2px" class="btn-style">
+            <button ion-button (click)="back()">
+              <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
+            </button>
+          </ion-buttons>
+        </ion-col>
+        <ion-col col-11 style="margin-top: 5px;">
+          <ion-title>{{ 'CAPTAIN_ASSIGN_DETAILS' | translate }}</ion-title>
+
+          <ion-buttons end class="btn-style" *ngIf="captain == null || captain == undefined">
+            <button ion-button (click)="toggleSearch()">
+              <ion-icon name="search"></ion-icon>
+            </button>
+          </ion-buttons>
+
+        </ion-col>
+      </ion-row>
+    </ion-grid> -->
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="auth-page2">
+
+    <div class="login-content">
+
+    <form class="list-form" [formGroup]="myForm" style="width: 86%;margin-right: 7%;margin-left: 7%;"  *ngIf="seachFlag">
+
+    <ion-item>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+          <ion-icon name="person" item-start class="text-primary"></ion-icon>
+          {{ 'CAPTAIN' | translate }}
+        </ion-label>
+        <ion-select formControlName="captainId" [lang]="language" [dir]="direction">
+          <ion-option *ngFor="let item of captainList" [selected]="item.name ==item.name" [value]="item.id" [dir]="direction">{{item.name}} </ion-option>      
+        </ion-select>
+      </ion-item>
+      <ion-item>
+          <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+            <ion-icon name="person" item-start class="text-primary"></ion-icon>
+            {{ 'AGENCY' | translate }}
+          </ion-label>
+          <ion-select formControlName="agencyId" [lang]="language" [dir]="direction">
+            <ion-option *ngFor="let item of agenciesList" [selected]="item.email ==item.email" [value]="item.id" [dir]="direction">{{item.firstName}} {{item.lastName}}</ion-option>      
+          </ion-select>
+        </ion-item>
+      <ion-item>
+          <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+            <ion-icon name="calendar" item-start class="text-primary"></ion-icon>
+            {{ 'START_DATE_FROM' | translate }}
+          </ion-label>
+          <ion-datetime displayFormat="YYYY-MM-DD" max="{{maxDate}}" (ionChange)="dateChange()" formControlName="startDate" [(ngModel)] ="seaarchFilter.startDate" [lang]="language" [dir]="direction"></ion-datetime>
+        </ion-item>
+        <p class="validationHint" *ngIf="hasError('startDate', 'required')"> {{ 'REQURIED' | translate }} </p>
+        <ion-item>
+            <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+              <ion-icon name="calendar" item-start class="text-primary"></ion-icon>
+              {{ 'START_DATE_TO' | translate }}
+            </ion-label>
+            <ion-datetime displayFormat="YYYY-MM-DD" max="{{maxDate}}" (ionChange)="dateChange()" formControlName="endDate" [(ngModel)] ="seaarchFilter.endDate" [lang]="language" [dir]="direction"></ion-datetime>
+          </ion-item>
+          <p class="validationHint" *ngIf="hasError('endDate', 'required')"> {{ 'REQURIED' | translate }} </p>
+  </form>
+
+  <ion-grid  *ngIf="seachFlag">
+
+      <ion-row>
+          <ion-col col-6>
+            <ion-buttons end class="btn-style" style="width: 100%;">
+              <button ion-button (click)="getCaptainAssignes()" style="width: 100%;" [disabled]  = "!myForm.valid">
+                {{ 'SEARCH' | translate }}
+              </button>
+            </ion-buttons>
+          </ion-col>
+          <ion-col col-6>
+            <ion-buttons end class="btn-style" style="width: 100%;">
+              <button ion-button (click)="clear()" style="width: 100%;">
+                {{ 'CLEAR_FIELDS' | translate }}
+              </button>
+            </ion-buttons>
+
+          </ion-col>
+
+        </ion-row>
+
+  </ion-grid>
+
+  
+
+
+  <div text-center *ngIf="assingCaptains.length == 0">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <img src="../../assets/img/sad.png" class="not-found-img">
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+
+          <h3 class="not-found-text"> {{ 'EMPTY_LIST' | translate }}</h3>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </div>
+
+
+
+  <ion-list style="padding-top: 15px;">
+
+
+    <ion-item class="item-background" *ngFor="let assign of assingCaptains.slice().reverse()">
+      <ion-grid>
+        <ion-row>
+          <ion-col class="img-col" col-3>
+            <img class="circle-pic" src="../../assets/img/clockImage.jpg" />
+          </ion-col>
+
+          <ion-col class="btn-col" col-9>
+
+            <div class="account-info info-div">
+                <p style="margin-top: 13px">
+                    {{'CAPTAIN_TEXT' | translate}} :
+                  <strong text-wrap> {{assign.captainName}}</strong>
+                </p>
+              <p style="margin-top: 13px">
+                  {{'AGENCY_TEXT' | translate}} :
+                <strong text-wrap> {{assign.firstName}} {{assign.lastName}}</strong>
+              </p>
+
+              <p style="margin-top: 10px">
+                {{'FROM' | translate}} :
+                <strong text-wrap>{{assign.startDate}}</strong>
+              </p>
+              <p style="margin-top: 10px">
+                {{'TO' | translate}} :
+                <strong text-wrap>{{assign.endDate}}</strong>
+              </p>
+              <p style="margin-top: 10px">
+                {{'FROM' | translate}} :
+                <strong text-wrap>{{assign.startTime}}</strong>
+              </p>
+              <p style="margin-top: 10px">
+                {{'TO' | translate}} :
+                <strong text-wrap>{{assign.endTime}}</strong>
+              </p>
+              <p style="margin-top: 10px">
+                {{'HOURS_COUNT' | translate}} :
+                <strong text-wrap>{{assign.hoursResult}}</strong>
+              </p>
+              <p style="margin-top: 10px" *ngIf="assign.unAssignDetails != null && assign.unAssignDetails != ''">
+                {{'STATUS' | translate}} :
+                <strong text-wrap>{{assign.unAssignDetails}}</strong>
+              </p>
+              <p style="margin-top: 10px" *ngIf="assign.unAssignDetails == null || assign.unAssignDetails == ''">
+                {{'STATUS' | translate}} :
+                <strong text-wrap>{{'STILL_ASSIGN' | translate}}</strong>
+              </p>
+
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+
+
+
+
+    </ion-item>
+
+
+
+  </ion-list>
+</div>
+
+
+
+
+</ion-content>

@@ -56,6 +56,10 @@ import { TwitterConnect } from '@ionic-native/twitter-connect';
 import { EditAssignCaptainPageModule } from '../pages/edit-assign-captain/edit-assign-captain.module';
 import { Device } from '@ionic-native/device';
 
+import { LocationAccuracy } from '@ionic-native/location-accuracy'
+import { CaptainAssignDetailsPage } from '../pages/captain-assign-details/captain-assign-details';
+import { CaptainAssignDetailsPageModule } from '../pages/captain-assign-details/captain-assign-details.module';
+
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
 export function createTranslateLoader(http: HttpClient) {
@@ -119,7 +123,8 @@ export function provideSettings(storage: Storage) {
     UserOrdersPageModule,
     ChooseAddressPageModule,
     OrdersMapPageModule,
-    EditAssignCaptainPageModule
+    EditAssignCaptainPageModule,
+    CaptainAssignDetailsPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -145,6 +150,7 @@ export function provideSettings(storage: Storage) {
     Keyboard,
     Facebook,
     TwitterConnect,
+    LocationAccuracy ,
     Device,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development

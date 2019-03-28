@@ -13,6 +13,8 @@ import { AddOrderPage } from '../add-order/add-order';
 import { MyApp } from '../../app/app.component';
 import { UserOrdersPage } from '../user-orders/user-orders';
 import { ChooseAddressPage } from '../choose-address/choose-address';
+import { LocationAccuracy } from '@ionic-native/location-accuracy'
+
 /**
  * Generated class for the AddAddressPage page.
  *
@@ -67,13 +69,15 @@ export class AddAddressPage {
   daminhoorValue = ''
   banhaValue = ''
 
+  locationDisable = true;
+
   constructor(public navCtrl: NavController, private loading: LoadingController,
-    public navParams: NavParams, public addressService: AddressService, public toastCtrl: ToastController,
-    public translateService: TranslateService, private app: App, private principal: Principal, public geolocation: Geolocation, private builder: FormBuilder, public plaform: Platform
+    public navParams: NavParams, public locationAccuracy: LocationAccuracy, public addressService: AddressService, public toastCtrl: ToastController,
+    public translateService: TranslateService, private app: App, public platform: Platform, private principal: Principal, public geolocation: Geolocation, private builder: FormBuilder, public plaform: Platform
   ) {
     this.to = this.navParams.get("address");
 
-    this.translateService.get(['ADD_ADDRESS_ERROR', 'ADD_ADDRESS_SUCCESS', 'EGYPT' , 'ALEX' , 'CAIRO' , 'TANTA' , 'DAMNHOR' , 'SHIPIN_ELKOM' , 'BANHA'   , 'PLEASE_WAIT']).subscribe((values) => {
+    this.translateService.get(['ADD_ADDRESS_ERROR', 'ADD_ADDRESS_SUCCESS', 'EGYPT', 'ALEX', 'CAIRO', 'TANTA', 'DAMNHOR', 'SHIPIN_ELKOM', 'BANHA', 'PLEASE_WAIT']).subscribe((values) => {
       this.addAddressError = values.ADD_ADDRESS_ERROR;
       this.addAdressSuccessString = values.ADD_ADDRESS_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
@@ -99,6 +103,14 @@ export class AddAddressPage {
     this.myForm.get('city').markAsDirty();
     this.myForm.get('city').markAsTouched();
     this.myForm.get('city').markAsPristine();
+
+    if (this.to != null && this.to != undefined) {
+
+      this.platform.registerBackButtonAction(() => {
+        this.navCtrl.setRoot(ChooseAddressPage);
+
+      });
+    }
   }
 
   ngOnInit() {
@@ -117,9 +129,61 @@ export class AddAddressPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AddAddressPage');
-    this.loadMap();
+
+    if (this.plaform.is("android") || this.plaform.is("ios")) {
+      console.log("---------------------------");
+      // this.locationAccuracy.canRequest().then((canRequest: any) => {
+
+      // //this.diagnostic.isLocationEnabled().then((isEnabled) =>{
+
+
+      //   console.log('canRequest' , canRequest);
+
+
+      // if(canRequest == 0) {
+      // the accuracy option will be ignored by iOS
+      this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
+        () => {
+          console.log("success");
+
+          this.loadMap()
+        }
+        ,
+        error => console.log('Error requesting location permissions', error)
+      );
+      // }else{
+      //   this.loadMap() 
+      // }
+
+      // }).catch(
+      //   err =>{
+      //     console.log('error' , err);
+
+      //   }
+      // );
+    } else {
+      this.loadMap();
+    }
+
+
   }
   save() {
+
+    console.log(this.locationDisable);
+
+
+    if (this.locationDisable) {
+      this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
+        () => {
+          console.log("success");
+
+          this.loadMap()
+        }
+        ,
+        error => console.log('Error requesting location permissions', error)
+      );
+    }
+
 
     this.mapStyle.height = "100%";
     this.mapStyle.width = "100%";
@@ -135,9 +199,10 @@ export class AddAddressPage {
 
     navigator.geolocation.getCurrentPosition(function (position) {
 
+
       let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-      mainClass.address.latitude = position.coords.latitude+'';
-      mainClass.address.longitude = position.coords.longitude+'';
+      mainClass.address.latitude = position.coords.latitude + '';
+      mainClass.address.longitude = position.coords.longitude + '';
 
       let mapOptions = {
         center: latLng,
@@ -170,17 +235,29 @@ export class AddAddressPage {
         console.log(superclass.address);
       });
 
+      mainClass.locationDisable = false;
+      console.log(mainClass.locationDisable);
+
 
 
     }, function (err) {
-      console.log(err);
+      console.log(err, 'errrrrrrrrrrrrrrrrrrrrrrrrrrror');
+      this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
+        () => {
+          console.log("success");
 
-      let toast = mainClass.toastCtrl.create({
-        message: "error " + err.message,
-        duration: 10000,
-        position: 'top'
-      });
-      toast.present();
+          this.loadMap()
+        }
+        ,
+        error => console.log('Error requesting location permissions', error)
+      );
+
+      // let toast = mainClass.toastCtrl.create({
+      //   message: "error " + err.message,
+      //   duration: 10000,
+      //   position: 'top'
+      // });
+      // toast.present();
 
     }
     );
@@ -213,11 +290,11 @@ export class AddAddressPage {
       });
       toast.present();
       load.dismiss();
-     // this.myApp.checkAccess();
+      // this.myApp.checkAccess();
       if (this.to == null || this.to == undefined) {
         this.navCtrl.setRoot(UserOrdersPage);
       } else {
-        this.navCtrl.setRoot(AddOrderPage , {address:res});
+        this.navCtrl.setRoot(AddOrderPage, { address: res });
       }
     }, (err) => {
       console.log('error', err);
@@ -238,29 +315,29 @@ export class AddAddressPage {
 
   }
 
-  getCity(cityValue){
-    console.log(cityValue , 'ssssssssssss');
+  getCity(cityValue) {
+    console.log(cityValue, 'ssssssssssss');
 
-    
+
     let city = ''
-    if(cityValue == 'Alexandria'){
-      city =this.alexValue;
+    if (cityValue == 'Alexandria') {
+      city = this.alexValue;
 
-    }else if(cityValue == 'Cairo'){
+    } else if (cityValue == 'Cairo') {
       city = this.cairoValue;
-      
-    }else if(cityValue == 'Tanta'){
+
+    } else if (cityValue == 'Tanta') {
       city = this.tantaValue;
-      
-    }else if(cityValue == 'Damnhor'){
+
+    } else if (cityValue == 'Damnhor') {
       city = this.daminhoorValue;
-      
-    }else if(cityValue == 'Shibin Elkom'){
+
+    } else if (cityValue == 'Shibin Elkom') {
       city = this.shibinValue;
-      
-    }else if(cityValue == 'Banha'){
+
+    } else if (cityValue == 'Banha') {
       city = this.banhaValue;
-      
+
     }
     return city;
 
@@ -271,7 +348,7 @@ export class AddAddressPage {
     const ctrl = this.myForm.get(field);
     return ctrl.dirty && ctrl.hasError(error);
   }
-  back(){
+  back() {
     this.navCtrl.setRoot(ChooseAddressPage);
   }
 }

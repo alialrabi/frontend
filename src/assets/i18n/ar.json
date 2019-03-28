@@ -1,4 +1,17 @@
 {
+  "ASSIGN_CAPTAIN_SUCCESS":"تم الحاق الطيار",
+  "ASSIGN_CAPTAIN_ERROR":"خطأ فى الحاق الطيار",
+  "PHONE_NUMBER_PHONE":"رقم الهاتف",
+  "STILL_ASSIGN":"ما زال ملحق",
+  "STATUS":"الحاله",
+  "START_DATE_TO":"تاريخ البدأ الى",
+  "START_DATE_FROM":"تاريخ البدأ من",
+  "CAPTAIN_TEXT":"طيار",
+  "AGENCY_TEXT":"عميل",
+  "ASSIGN_TIME_DETAILS":"تفاصيل وقت الالحاق",
+  "VIEW_ASSIGN_DETAILS":"تفاصيل الالحاق",
+  "HOURS_COUNT":"عدد الساعات الكلى",
+  "CAPTAIN_ASSIGN_DETAILS":"تفاصيل الالحاق",
   "TOMMOROW":"غدا",
   "TODAY":"اليوم",
   "CHANGE_FROM":"تغير من",
@@ -202,6 +215,9 @@
   "SIGNUP_TITLE": "انشاء الحساب",
   "SIGNUP_ERROR": "تعذر إنشاء الحساب. يرجى التحقق من معلومات حسابك وإعادة المحاولة.",
   "SIGNUP_BUTTON": "انشاء الحساب",
+  "SIGNUP_SUCCESS":"تم انشاء الحساب",
+  "EXISTING_USER_ERROR":"اسم المستخدم محجوز اختر اسم اخر",
+  "INVALID_PASSWORD_ERROR":"الرقم السرى ضعيف اختر رقم اخر",
 
   "LIST_MASTER_TITLE": "عناصر",
 
