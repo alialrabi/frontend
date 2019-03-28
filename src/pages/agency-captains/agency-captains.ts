@@ -36,18 +36,21 @@ export class AgencyCaptainsPage {
   language = MyApp.language
   direction = MyApp.direction
 
+  pageNum = 1;
+  moreData = 'Loading more data...'
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public platform:Platform , private principal: Principal, private app: App, private loading: LoadingController, public toastCtrl: ToastController, public captainService: CaptainService, public translateService: TranslateService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public platform: Platform, private principal: Principal, private app: App, private loading: LoadingController, public toastCtrl: ToastController, public captainService: CaptainService, public translateService: TranslateService) {
 
     this.agency = this.navParams.get("item");
 
-    console.log('agency 3' , this.agency);
-    
+    console.log('agency 3', this.agency);
 
-    this.translateService.get(['UN_ASSIGN_CAPTAIN_ERROR', 'UN_ASSIGN_CAPTAIN_SUCCESS', 'PLEASE_WAIT']).subscribe((values) => {
+
+    this.translateService.get(['UN_ASSIGN_CAPTAIN_ERROR', 'UN_ASSIGN_CAPTAIN_SUCCESS', 'PLEASE_WAIT', 'MORE_DATA']).subscribe((values) => {
       this.unassignCaptainError = values.UN_ASSIGN_CAPTAIN_ERROR;
       this.unassignCaptainSuccess = values.UN_ASSIGN_CAPTAIN_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
+      this.moreData = values.MORE_DATA
     })
 
     this.platform.registerBackButtonAction(() => {
@@ -74,7 +77,7 @@ export class AgencyCaptainsPage {
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
       } else {
         this.user = account;
-        this.getAgencyCaptains();
+        this.getAgencyCaptains(0);
 
       }
     }).catch((err) => {
@@ -88,30 +91,62 @@ export class AgencyCaptainsPage {
     console.log('ionViewDidLoad AgencyCaptainsPage');
   }
 
-  getAgencyCaptains() {
-    let load = this.loading.create({
-      content: this.pleaseWait
+  doInfinite(infiniteScroll) {
+    console.log('Begin async operation');
+
+    setTimeout(() => {
 
 
-    })
-    load.present()
-    this.captainsList = [];
+      this.getAgencyCaptains(this.pageNum);
+
+
+      console.log('Async operation has ended');
+      infiniteScroll.complete();
+    }, 1000);
+  }
+
+  getAgencyCaptains(pageNum) {
+    let load;
+    if (pageNum == 0) {
+
+      load = this.loading.create({
+        content: this.pleaseWait
+
+
+      })
+      load.present()
+      this.captainsList = [];
+    }
     let agencyId = 0;
     if (this.agency == null || this.agency == undefined) {
       agencyId = this.user.id
     } else {
       agencyId = this.agency.id;
     }
-    this.captainService.getByAgencyId(agencyId).subscribe(res => {
+    this.captainService.getByAgencyId(agencyId, pageNum).subscribe(res => {
       console.log(res);
 
+      if (pageNum == 0) {
+        this.captainsList = res;
+      } else {
+        if (res.length > 0) {
+          this.pageNum++;
+        }
 
-      this.captainsList = res;
-      load.dismiss();
+        res.forEach(element => {
+          this.captainsList.push(element);
+
+        });
+      }
+      if (pageNum == 0) {
+        load.dismiss();
+      }
 
     }, err => {
       console.log(err);
-      load.dismiss();
+      if (pageNum == 0) {
+        load.dismiss();
+      }
 
     })
   }
@@ -126,7 +161,7 @@ export class AgencyCaptainsPage {
     this.captainService.unAssignCaptain(captain.id).subscribe(
       res => {
         load.dismiss();
-        this.getAgencyCaptains();
+        this.getAgencyCaptains(0);
 
         let toast = this.toastCtrl.create({
           message: this.unassignCaptainSuccess,
@@ -155,13 +190,13 @@ export class AgencyCaptainsPage {
 
   }
 
-  editAssign(captain){
-    console.log('agency 2' , this.agency);
-    
-    this.navCtrl.setRoot(EditAssignCaptainPage , {item:captain , agency:this.agency});
+  editAssign(captain) {
+    console.log('agency 2', this.agency);
+
+    this.navCtrl.setRoot(EditAssignCaptainPage, { item: captain, agency: this.agency });
   }
 
-  back(){
+  back() {
     this.navCtrl.setRoot(AgenciesPage);
   }
 }

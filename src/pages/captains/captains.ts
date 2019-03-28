@@ -27,13 +27,16 @@ export class CaptainsPage {
   userType = '';
   public account = null;
   public pleaseWait;
+  pageNum = 1;
+  moreData = 'Loading more data...'
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private loading: LoadingController, public translateService: TranslateService, private app: App, private principal: Principal, public captainService: CaptainService) {
     //this.getAllCaptains();
 
-    this.translateService.get(['PLEASE_WAIT']).subscribe((values) => {
+    this.translateService.get(['PLEASE_WAIT' , 'MORE_DATA']).subscribe((values) => {
 
       this.pleaseWait = values.PLEASE_WAIT
+      this.moreData = values.MORE_DATA
     })
 
   }
@@ -58,12 +61,12 @@ export class CaptainsPage {
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
       } else if (account.authorities[0] == 'ROLE_AGENCY') {
         this.userType = 'agency'
-        this.getAgencyCaptains();
+        this.getAgencyCaptains(0);
       }
       else {
 
         this.userType = 'admin';
-        this.getAllCaptains();
+        this.getAllCaptains(0);
 
       }
       console.log(this.userType);
@@ -78,53 +81,111 @@ export class CaptainsPage {
     console.log('ionViewDidLoad CaptainsPage');
   }
 
-  getAllCaptains() {
+  getAllCaptains(pageNum) {
+    let load;
+    if (pageNum == 0) {
 
-    let load = this.loading.create({
-      content: this.pleaseWait
+      load = this.loading.create({
+        content: this.pleaseWait
 
 
-    })
-    load.present()
+      })
+      load.present()
+      this.captainsList = [];
+    }
 
-    this.captainsList = [];
-    this.captainService.getAll().subscribe(res => {
+    //this.captainsList = [];
+    this.captainService.getAll(pageNum).subscribe(res => {
       console.log(res);
 
 
-      this.captainsList = res;
-      load.dismiss();
+      if (pageNum == 0) {
+        this.captainsList = res;
+      } else {
+        if (res.length > 0) {
+          this.pageNum++;
+        }
 
+        res.forEach(element => {
+          this.captainsList.push(element);
+
+        });
+      }
+      if (pageNum == 0) {
+        load.dismiss();
+      }
     }, err => {
       console.log(err);
-      load.dismiss();
+      if (pageNum == 0) {
+        load.dismiss();
+      }
 
 
     })
   }
-  getAgencyCaptains() {
+  getAgencyCaptains(pageNum) {
+    let load;
+    if (pageNum == 0) {
 
-    let load = this.loading.create({
-      content: this.pleaseWait
+      load = this.loading.create({
+        content: this.pleaseWait
 
 
-    })
-    load.present()
+      })
+      load.present()
+      this.captainsList = [];
+    }
 
-    this.captainsList = [];
-    this.captainService.getByAgencyId(this.account.id).subscribe(res => {
+    //this.captainsList = [];
+    this.captainService.getByAgencyId(this.account.id, pageNum).subscribe(res => {
       console.log(res);
 
+      if (pageNum == 0) {
+        this.captainsList = res;
+      } else {
+        if (res.length > 0) {
+          this.pageNum++;
+        }
+        res.forEach(element => {
+          this.captainsList.push(element);
 
-      this.captainsList = res;
-      load.dismiss();
+        });
+      }
+      if (pageNum == 0) {
+        load.dismiss();
+      }
 
     }, err => {
       console.log(err);
-      load.dismiss();
+      if (pageNum == 0) {
+        load.dismiss();
+      }
 
     })
   }
+
+  doInfinite(infiniteScroll) {
+    console.log('Begin async operation');
+
+    setTimeout(() => {
+
+      if (this.userType == 'agency') {
+
+        this.getAgencyCaptains(this.pageNum)
+
+      } else {
+
+
+        this.getAllCaptains(this.pageNum);
+
+      }
+
+
+      console.log('Async operation has ended');
+      infiniteScroll.complete();
+    }, 1000);
+  }
+
 
   add() {
     this.navCtrl.setRoot(AddCaptainPage);

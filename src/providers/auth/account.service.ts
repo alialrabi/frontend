@@ -28,6 +28,10 @@ export class AccountService  {
         //return this.http.get(Api.API_URL +'/api/account?access_token=' +this.authservice.getToken());
         return this.http.get(Api.API_URL_login + '/uaa/api/users/getAllAgency?access_token=' +this.authservice.getToken());
     }
+    getAllAgencyWithPagination(pageNum): Observable<any> {
+      //return this.http.get(Api.API_URL +'/api/account?access_token=' +this.authservice.getToken());
+      return this.http.get(Api.API_URL_login + '/uaa/api/users/getAllAgencyWithPagenation/'+pageNum+'?access_token=' +this.authservice.getToken());
+  }
     
 
     save(account: any): Observable<Object> {

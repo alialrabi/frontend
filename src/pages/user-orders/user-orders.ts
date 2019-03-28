@@ -22,7 +22,7 @@ import { CaptainService } from '../../providers/auth/captain.service';
 })
 export class UserOrdersPage {
 
-  space="  ";
+  space = "  ";
   public account = null;
   public myVar = '';
 
@@ -35,20 +35,36 @@ export class UserOrdersPage {
   userType = '';
   userId = 0;
   captainId = 0;
-  captain=null;
+  captain = null;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController ,  private captainService:CaptainService , private loading: LoadingController, public translateService: TranslateService, private app: App, private principal: Principal, public orderService: OrderService) {
+  pageNum = 1;
+  moreData = 'Loading more data...'
 
-    this.translateService.get(['DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT']).subscribe((values) => {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController, private captainService: CaptainService, private loading: LoadingController, public translateService: TranslateService, private app: App, private principal: Principal, public orderService: OrderService) {
+
+    this.translateService.get(['DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT', 'MORE_DATA']).subscribe((values) => {
 
       this.deliverOrderError = values.DELIVER_ORDER_ERROR;
       this.deliverOrderSuccess = values.DELIVER_ORDER_SUCCESS;
 
       this.pleaseWait = values.PLEASE_WAIT
+      this.moreData = values.MORE_DATA
     })
 
   }
 
+  doInfinite(infiniteScroll) {
+    console.log('Begin async operation');
+
+    setTimeout(() => {
+
+      this.getUserOrders(this.myVar, this.pageNum);
+
+
+      console.log('Async operation has ended');
+      infiniteScroll.complete();
+    }, 1000);
+  }
   ngOnInit() {
 
     let load = this.loading.create({
@@ -72,11 +88,11 @@ export class UserOrdersPage {
         this.userId = account.id;
         this.captainId = 0;
         load.dismiss();
-        this.getUserOrders(this.myVar);
+        this.getUserOrders(this.myVar , 0);
 
 
 
-      }else if(account.authorities[0] == 'ROLE_CAPTAIN'){
+      } else if (account.authorities[0] == 'ROLE_CAPTAIN') {
 
         this.account = account;
         this.myVar = 'assigned';
@@ -85,22 +101,22 @@ export class UserOrdersPage {
 
         this.captainService.getByUserId(account.id).subscribe(
           data => {
-            
-            
+
+
             this.captain = data;
             this.captainId = data.id;
-            console.log(data , this.captain);
+            console.log(data, this.captain);
 
             load.dismiss();
-            this.getUserOrders(this.myVar);
-          } ,
-        err =>{
-          console.log(err , 'errrrror');;
-          
-        })       
+            this.getUserOrders(this.myVar , 0);
+          },
+          err => {
+            console.log(err, 'errrrror');;
+
+          })
 
       }
-      
+
       else {
         this.account = account;
         this.myVar = 'assigned';
@@ -108,7 +124,7 @@ export class UserOrdersPage {
         this.userId = 0;
         this.captainId = 0;
         load.dismiss();
-        this.getUserOrders(this.myVar);
+        this.getUserOrders(this.myVar , 0);
 
       }
     }).catch((err) => {
@@ -116,57 +132,77 @@ export class UserOrdersPage {
     });
   }
 
-  getAllOrders(status) {
-    let load = this.loading.create({
-      content: this.pleaseWait
-
-
-    })
-    load.present()
-
+  getAllOrders(status, pageNum) {
     this.myVar = status;
-    this.ordersList = [];
-    this.orderService.getAllByStatus(status, this.userId , true).subscribe(res => {
+    let load;
+    if (pageNum == 0) {
+      load = this.loading.create({
+        content: this.pleaseWait
+
+
+      })
+      load.present()
+      this.ordersList = [];
+      this.pageNum = 1;
+    }
+
+    this.orderService.getAllByStatus(status, this.userId, true, pageNum).subscribe(res => {
       console.log(res);
 
 
-      this.ordersList = res;
+      if (pageNum == 0) {
+        this.ordersList = res;
+        load.dismiss();
+      } else {
+        if (res.length > 0) {
+          this.pageNum++;
+        }
+        res.forEach(element => {
+          this.ordersList.push(element);
 
-      load.dismiss()
-
+        });
+      }
     }, err => {
       console.log(err);
-
-      load.dismiss()
+      if (pageNum == 0) {
+        load.dismiss();
+      }
     })
   }
 
-  getUserOrders(status){
+  getUserOrders(status, pageNum) {
     this.myVar = status;
+    let load;
+    if (pageNum == 0) {
+      load = this.loading.create({
+        content: this.pleaseWait
 
-    let load = this.loading.create({
-      content: this.pleaseWait
 
-
-    })
-    load.present()
-
-    this.ordersList = [];
-
-    this.orderService.getUserOrders(this.userId , this.captainId , status).subscribe(res => {
+      })
+      load.present()
+      this.ordersList = [];
+      this.pageNum = 1;
+    }
+    this.orderService.getUserOrders(this.userId, this.captainId, status, pageNum).subscribe(res => {
       console.log(res);
+      if (pageNum == 0) {
+        this.ordersList = res;
+        load.dismiss();
+      } else {
+        if (res.length > 0) {
+          this.pageNum++;
+        }
+        res.forEach(element => {
+          this.ordersList.push(element);
 
-
-      this.ordersList = res;
-
-      load.dismiss()
-
+        });
+      }
     }, err => {
       console.log(err);
-
-      load.dismiss()
+      if (pageNum == 0) {
+        load.dismiss();
+      }
     })
-
   }
 
   add() {
@@ -181,7 +217,7 @@ export class UserOrdersPage {
     while (flag) {
 
       let index = orders.indexOf('-');
-     // console.log(index, 'vvvv');
+      // console.log(index, 'vvvv');
 
       if (index != -1) {
 
@@ -205,7 +241,7 @@ export class UserOrdersPage {
         flag = false;
       }
     }
-   // console.log(items);
+    // console.log(items);
 
     let subOrder1 = {
       name: orders,
@@ -227,8 +263,8 @@ export class UserOrdersPage {
 
     let load = this.loading.create({
       content: this.pleaseWait
-  
-  
+
+
     })
     load.present()
 
@@ -244,7 +280,7 @@ export class UserOrdersPage {
         console.log("success");
 
         load.dismiss();
-        this.getUserOrders(this.myVar);
+        this.getUserOrders(this.myVar , 0);
 
       }, err => {
         console.log(err);
@@ -267,7 +303,7 @@ export class UserOrdersPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad UserOrdersPage');
   }
-  viewLocation(order){
+  viewLocation(order) {
     this.navCtrl.setRoot('OrdersMapPage', { item: order })
   }
 

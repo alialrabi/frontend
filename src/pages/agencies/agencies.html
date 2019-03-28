@@ -49,7 +49,7 @@
   <ion-list style="padding-top: 15px;">
 
 
-    <ion-item class="item-background" *ngFor="let agency of agenciesList.slice().reverse()">
+    <ion-item class="item-background" *ngFor="let agency of agenciesList">
       <ion-grid>
         <ion-row>
           <ion-col class="img-col" col-3>
@@ -100,7 +100,12 @@
 
 
   </ion-list>
-
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="agenciesList.length != 0">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      [loadingText]="moreData">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 
 
 

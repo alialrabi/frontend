@@ -28,19 +28,19 @@
     <ion-grid style="width: 100%">
         <ion-row>
           <ion-col style="padding: 0px" col-4>
-            <button ion-button block tappable [ngClass] ="{'tap-selected': myVar == 'not assigned', 'tap-notselected': myVar != 'not assigned'}" (click)="getAllOrders('not assigned')">
+            <button ion-button block tappable [ngClass] ="{'tap-selected': myVar == 'not assigned', 'tap-notselected': myVar != 'not assigned'}" (click)="getAllOrders('not assigned' , 0)">
               <!-- <ion-icon name="close" item-start></ion-icon> -->
               {{ 'NOT_ASSIGNED' | translate }}
             </button>
           </ion-col>
           <ion-col style="padding: 0px" col-4>
-            <button ion-button  block tappable [ngClass] ="{'tap-selected': myVar == 'assigned', 'tap-notselected': myVar != 'assigned'}" (click)="getAllOrders('assigned')">
+            <button ion-button  block tappable [ngClass] ="{'tap-selected': myVar == 'assigned', 'tap-notselected': myVar != 'assigned'}" (click)="getAllOrders('assigned' , 0)">
                 <!-- <ion-icon name="stats" item-start></ion-icon> -->
                 {{ 'ASSIGNED' | translate }}
             </button>
           </ion-col>
           <ion-col style="padding: 0px" col-4>
-            <button ion-button block tappable [ngClass] = "{'tap-selected': myVar == 'delivered', 'tap-notselected': myVar != 'delivered'}" (click)="getAllOrders('delivered')">
+            <button ion-button block tappable [ngClass] = "{'tap-selected': myVar == 'delivered', 'tap-notselected': myVar != 'delivered'}" (click)="getAllOrders('delivered' , 0)">
                 <!-- <ion-icon name="checkmark" item-start></ion-icon> -->
                 {{ 'DELIVERED' | translate }}
             </button>
@@ -72,7 +72,7 @@
   <ion-list style="padding-top: 15px;">
 
 
-    <ion-item class="item-background" *ngFor="let order of ordersList.slice().reverse()">
+    <ion-item class="item-background" *ngFor="let order of ordersList">
       <ion-grid>
         <ion-row>
           <ion-col class="img-col" col-3>
@@ -121,7 +121,12 @@
 
   </ion-list>
 
-
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="ordersList.length != 0">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      [loadingText]="moreData">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 
 
 </ion-content>
