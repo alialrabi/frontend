@@ -28,7 +28,7 @@ export class AddAgencyPage {
     firstName: '',
     lastName: '',
     password: '',
-    langKey: MyApp.language,
+    langKey:'ar',
     activated: true
   };
 

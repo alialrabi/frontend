@@ -8,7 +8,7 @@ import { CaptainService } from '../../providers/auth/captain.service';
 import { LoginService } from '../../providers/login/login.service';
 import { AccountService } from '../../providers/auth/account.service';
 import { Observable } from 'rxjs/Observable';
-import  'rxjs/add/observable/interval';
+import 'rxjs/add/observable/interval';
 
 
 /**
@@ -44,38 +44,60 @@ export class CaptainOrdersPage {
 
   interval = null;
 
+  pageNum = 1;
+  moreData = 'Loading more data...'
 
-  constructor(public navCtrl: NavController, private loginService: LoginService, private loading: LoadingController ,public accountService:AccountService , private captainService: CaptainService, private app: App, private principal: Principal, public navParams: NavParams, public orderService: OrderService, public translateService: TranslateService, public toastCtrl: ToastController) {
+
+  constructor(public navCtrl: NavController, private loginService: LoginService, private loading: LoadingController, public accountService: AccountService, private captainService: CaptainService, private app: App, private principal: Principal, public navParams: NavParams, public orderService: OrderService, public translateService: TranslateService, public toastCtrl: ToastController) {
 
     // this.captain = this.navParams.get("item");
 
-    this.translateService.get(['DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'ASSIGN_ORDER_ERROR', 'ASSIGN_ORDER_SUCCESS' , 'PLEASE_WAIT']).subscribe((values) => {
+    this.translateService.get(['DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'ASSIGN_ORDER_ERROR', 'ASSIGN_ORDER_SUCCESS', 'PLEASE_WAIT', 'MORE_DATA']).subscribe((values) => {
       this.deliverOrderError = values.DELIVER_ORDER_ERROR;
       this.deliverOrderSuccess = values.DELIVER_ORDER_SUCCESS;
       this.assignOrderError = values.ASSIGN_ORDER_ERROR;
       this.assingOrderSuccess = values.ASSIGN_ORDER_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
+      this.moreData = values.MORE_DATA
     })
 
   }
 
   ngOnInit() {
-    
+
+  }
+
+  doInfinite(infiniteScroll) {
+    console.log('Begin async operation');
+
+    setTimeout(() => {
+
+      if (this.myVar == 'not assigned') {
+        this.getNotAssigned(this.myVar, this.pageNum);
+      } else {
+
+        this.getAllOrders(this.myVar, this.pageNum);
+
+      }
+
+      console.log('Async operation has ended');
+      infiniteScroll.complete();
+    }, 1000);
   }
 
   updateLocation(classIn) {
-    
+
     navigator.geolocation.getCurrentPosition(function (position) {
 
       let location = {
-        lat: position.coords.latitude+'',
-        lng: position.coords.longitude+'',
+        lat: position.coords.latitude + '',
+        lng: position.coords.longitude + '',
         captainId: classIn.captain.id
       }
       console.log(location);
-      
+
       console.log("******************");
-      
+
 
       classIn.captainService.updateLocation(location).subscribe(
         res => {
@@ -102,8 +124,8 @@ export class CaptainOrdersPage {
 
     let load = this.loading.create({
       content: this.pleaseWait
-  
-  
+
+
     })
     load.present()
 
@@ -117,22 +139,22 @@ export class CaptainOrdersPage {
 
         this.captainService.getByUserId(account.id).subscribe(
           data => {
-            
-            
+
+
             this.captain = data;
-            console.log(data , this.captain);
+            console.log(data, this.captain);
 
             this.myVar = 'assigned';
             console.log("**********");
             load.dismiss();
-            
-            this.getAllOrders(this.myVar);
-            if(this.captain.agencyId != 0){
-            this.getCaptainAgency();
+
+            this.getAllOrders(this.myVar, 0);
+            if (this.captain.agencyId != 0) {
+              this.getCaptainAgency();
             }
             console.log("********************");
-            
-           //classIn.updateLocationTimer(classIn);
+
+            //classIn.updateLocationTimer(classIn);
 
 
 
@@ -144,104 +166,126 @@ export class CaptainOrdersPage {
         )
 
       }
-    }).catch((err) =>{
+    }).catch((err) => {
       load.dismiss()
     });
 
 
   }
 
-  updateLocationTimer(classIn){
-      
-   Observable.interval(10000).subscribe( x => {
-      console.log(x , 'eeeeeeeeeeeeeeee');
+  updateLocationTimer(classIn) {
+
+    Observable.interval(10000).subscribe(x => {
+      console.log(x, 'eeeeeeeeeeeeeeee');
       classIn.updateLocation(classIn);
-      
-    }) 
+
+    })
   }
 
-  getCaptainAgency(){
+  getCaptainAgency() {
     let load = this.loading.create({
       content: this.pleaseWait
-  
-  
+
+
     })
     load.present()
     this.accountService.getById(this.captain.agencyId).subscribe(
-      res =>{
-        console.log(res , 'nnnnnnnnnnnnn');
+      res => {
+        console.log(res, 'nnnnnnnnnnnnn');
         this.agency = res;
         this.autoAssign = res.autoAssign
         load.dismiss();
-        
 
-      }, err =>{
+
+      }, err => {
         load.dismiss();
 
-        console.log(err , 'errrrrrrror');
-        
+        console.log(err, 'errrrrrrror');
+
 
       }
     )
   }
 
 
-  getNotAssigned(status) {
-    let load = this.loading.create({
-      content: this.pleaseWait
-  
-  
-    })
-    load.present()
+  getNotAssigned(status, pageNum) {
+    this.myVar = status;
+    let load;
+    if (pageNum == 0) {
+      load = this.loading.create({
+        content: this.pleaseWait
 
-    this.ordersList = [];
+
+      })
+      load.present()
+      this.ordersList = [];
+      this.pageNum = 1;
+    }
+
+
     console.log("orders");
     console.log(this.captain);
-    this.myVar = status;
 
-    this.orderService.getAllByStatus(status, this.captain.agencyId , false).subscribe(res => {
+
+    this.orderService.getAllByStatus(status, this.captain.agencyId, false, pageNum).subscribe(res => {
       console.log(res);
       console.log("*************");
+      if (pageNum == 0) {
+        this.ordersList = res;
+        load.dismiss();
+      } else {
+        if (res.length > 0) {
+          this.pageNum++;
+        }
+        res.forEach(element => {
+          this.ordersList.push(element);
 
-      this.ordersList = res;
-      load.dismiss();
-
+        });
+      }
     }, err => {
       console.log(err);
-      load.dismiss()
-
-
+      if (pageNum == 0) {
+        load.dismiss();
+      }
     })
   }
 
 
-  getAllOrders(status) {
+  getAllOrders(status, pageNum) {
 
-    let load = this.loading.create({
-      content: this.pleaseWait
-  
-  
-    })
-    load.present()
-
-
-    this.ordersList = [];
-    console.log("orders");
     this.myVar = status;
+    let load;
+    if (pageNum == 0) {
+      load = this.loading.create({
+        content: this.pleaseWait
 
-    this.orderService.getCaptainOrders(this.captain.id, status).subscribe(res => {
-      console.log(res);
-      console.log("*************");
 
+      })
+      load.present()
+      this.ordersList = [];
+      this.pageNum = 1;
+    }
+    this.orderService.getCaptainOrders(this.captain.id, status, pageNum).subscribe(res => {
+      if (pageNum == 0) {
+        this.ordersList = res;
+      } else {
+        if (res.length > 0) {
+          this.pageNum++;
+        }
+        res.forEach(element => {
+          this.ordersList.push(element);
 
-
-      this.ordersList = res;
-
-      load.dismiss();
+        });
+      }
+      if (pageNum == 0) {
+        load.dismiss();
+      }
 
     }, err => {
       console.log(err);
-      load.dismiss();
+      if (pageNum == 0) {
+        load.dismiss();
+      }
 
     })
   }
@@ -295,8 +339,8 @@ export class CaptainOrdersPage {
 
     let load = this.loading.create({
       content: this.pleaseWait
-  
-  
+
+
     })
     load.present()
 
@@ -312,7 +356,7 @@ export class CaptainOrdersPage {
         console.log("success");
 
         load.dismiss();
-        this.getAllOrders(this.myVar);
+        this.getAllOrders(this.myVar, 0);
 
       }, err => {
         console.log(err);
@@ -335,8 +379,8 @@ export class CaptainOrdersPage {
 
     let load = this.loading.create({
       content: this.pleaseWait
-  
-  
+
+
     })
     load.present()
 
@@ -349,7 +393,7 @@ export class CaptainOrdersPage {
         });
         toast.present();
         load.dismiss();
-        this.getAllOrders(this.myVar);
+        this.getAllOrders(this.myVar, 0);
 
       }, err => {
         console.log(err);

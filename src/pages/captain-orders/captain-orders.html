@@ -29,21 +29,21 @@
     <ion-row>
       <ion-col style="padding: 0px" *ngIf="autoAssign">
         <button ion-button block tappable [ngClass]="{'tap-selected': myVar == 'not assigned', 'tap-notselected': myVar != 'not assigned'}"
-          (click)="getNotAssigned('not assigned')">
+          (click)="getNotAssigned('not assigned' , 0)">
           <!-- <ion-icon name="close" item-start></ion-icon> -->
           {{ 'NOT_ASSIGNED' | translate }}
         </button>
       </ion-col>
       <ion-col style="padding: 0px">
         <button ion-button block tappable [ngClass]="{'tap-selected': myVar == 'assigned', 'tap-notselected': myVar != 'assigned'}"
-          (click)="getAllOrders('assigned')">
+          (click)="getAllOrders('assigned' , 0)">
           <!-- <ion-icon name="stats" item-start></ion-icon> -->
           {{ 'ASSIGNED' | translate }}
         </button>
       </ion-col>
       <ion-col style="padding: 0px">
         <button ion-button block tappable [ngClass]="{'tap-selected': myVar == 'delivered', 'tap-notselected': myVar != 'delivered'}"
-          (click)="getAllOrders('delivered')">
+          (click)="getAllOrders('delivered' , 0)">
           <!-- <ion-icon name="checkmark" item-start></ion-icon> -->
           {{ 'DELIVERED' | translate }}
         </button>
@@ -72,7 +72,7 @@
   <ion-list style="padding-top: 15px;">
 
 
-    <ion-item class="item-background" *ngFor="let order of ordersList.slice().reverse()">
+    <ion-item class="item-background" *ngFor="let order of ordersList">
       <ion-grid>
         <ion-row>
           <ion-col class="img-col" col-3>
@@ -127,7 +127,12 @@
 
   </ion-list>
 
-
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="ordersList.length != 0">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      [loadingText]="moreData">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 
 
 </ion-content>

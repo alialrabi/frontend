@@ -39,9 +39,9 @@ export interface MenuItem {
 export class MyApp {
   rootPage: any = LandingPage;
 
-  public static language = "en";
-  public static direction = "ltr";
-  menuSide = "left";
+  public static language = "ar";
+  public static direction = "rtl";
+  menuSide = "right";
 
   appMenuItems: Array<MenuItem>;
 
@@ -85,6 +85,7 @@ export class MyApp {
     });
     this.initTranslate();
     this.translateMenu();
+    this.platform.setDir("rtl", true);
 
     console.log("pppppppppppppppppppppp");
     //backgroundGeolocation = new BackgroundGeolocation();
@@ -396,11 +397,11 @@ export class MyApp {
     // Set the default language for translation strings, and the current language.
     this.translate.setDefaultLang(MyApp.language);
 
-    if (this.translate.getBrowserLang() !== undefined) {
-      this.translate.use(this.translate.getBrowserLang());
-    } else {
+    // if (this.translate.getBrowserLang() !== undefined) {
+    //   this.translate.use(this.translate.getBrowserLang());
+    // } else {
       this.translate.use(MyApp.language); // Set your language here
-    }
+    //}
 
     this.translate.get(['BACK_BUTTON_TEXT']).subscribe(values => {
       this.config.set('ios', 'backButtonText', values.BACK_BUTTON_TEXT);

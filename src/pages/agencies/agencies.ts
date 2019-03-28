@@ -21,58 +21,89 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class AgenciesPage {
 
-  public  agenciesList = [] ;
+  public agenciesList = [];
 
   public pleaseWait;
+  pageNum = 1;
+  moreData = 'Loading more data...'
 
 
-  constructor(public navCtrl: NavController,public navParams: NavParams 
-     ,private loading: LoadingController , public translateService: TranslateService, public accountService:AccountService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams
+    , private loading: LoadingController, public translateService: TranslateService, public accountService: AccountService) {
 
-    
-    this.translateService.get(['PLEASE_WAIT']).subscribe((values) => {
+
+    this.translateService.get(['PLEASE_WAIT', 'MORE_DATA']).subscribe((values) => {
 
       this.pleaseWait = values.PLEASE_WAIT
+      this.moreData = values.MORE_DATA
     })
-    this.getAllAgincies();
+    this.getAllAgincies(0);
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AgenciesPage');
   }
 
-  getAllAgincies(){
-    let load = this.loading.create({
-      content: this.pleaseWait
-  
-  
-    })
-    load.present()
-    this.agenciesList = [];
-    this.accountService.getAllAgency().subscribe(res => {
-      console.log(res);
-      
-  
-      this.agenciesList = res;
-      load.dismiss();
-    },err =>{
-      console.log(err);
-      load.dismiss();
-  
-    })
-   }
-  
-   add(){
-    this.navCtrl.setRoot(AddAgencyPage);
-  
-   }
+  getAllAgincies(pageNum) {
+    let load;
+    if (pageNum == 0) {
+      load = this.loading.create({
+        content: this.pleaseWait
 
-   assingCaptains(agency){
-     this.navCtrl.setRoot(AssignCaptainsPage , {item:agency});
-   }
-   viewCaptains(agency){
-    this.navCtrl.setRoot(AgencyCaptainsPage , {item:agency});
-   }
+
+      })
+      load.present()
+      this.agenciesList = [];
+    }
+    //this.agenciesList = [];
+    this.accountService.getAllAgencyWithPagination(pageNum).subscribe(res => {
+      console.log(res);
+
+      if (pageNum == 0) {
+        this.agenciesList = res;
+
+        load.dismiss();
+      }else{
+        if(res.length > 0){
+          this.pageNum++;
+        }
+        res.forEach(element => {
+          this.agenciesList.push(element);
+        });
+      }
+    }, err => {
+      console.log(err);
+      if (pageNum == 0) {
+        load.dismiss();
+      }
+
+    })
+  }
+
+  doInfinite(infiniteScroll) {
+    console.log('Begin async operation');
+
+    setTimeout(() => {
+
+      this.getAllAgincies(this.pageNum);
+
+      console.log('Async operation has ended');
+      infiniteScroll.complete();
+    }, 1000);
+  }
+
+
+  add() {
+    this.navCtrl.setRoot(AddAgencyPage);
+
+  }
+
+  assingCaptains(agency) {
+    this.navCtrl.setRoot(AssignCaptainsPage, { item: agency });
+  }
+  viewCaptains(agency) {
+    this.navCtrl.setRoot(AgencyCaptainsPage, { item: agency });
+  }
 
 
   //  openMenu(){

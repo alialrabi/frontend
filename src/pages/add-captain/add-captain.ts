@@ -37,7 +37,7 @@ export class AddCaptainPage {
     firstName: '',
     lastName: '',
     password: '',
-    langKey: MyApp.language,
+    langKey: 'ar',
     activated: true
   };
 

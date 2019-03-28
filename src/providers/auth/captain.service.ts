@@ -35,9 +35,9 @@ export class CaptainService  {
         return this.http.put(Api.API_URL_login + '/tlabatac/api/unAssignCaptains/'+captainId+'?access_token=' +this.authservice.getToken() , null);
     }
     
-    getAll() : Observable<any>{
+    getAll(pageNum) : Observable<any>{
 
-        return this.http.get(Api.API_URL_login + '/tlabatac/api/captains?access_token=' +this.authservice.getToken());
+        return this.http.get(Api.API_URL_login + '/tlabatac/api/allcaptains/'+pageNum+'?access_token=' +this.authservice.getToken());
     }
     captainsPickList() : Observable<any>{
 
@@ -54,9 +54,9 @@ export class CaptainService  {
         return this.http.get(Api.API_URL_login + '/tlabatac/api/captainsNotAssigned?access_token=' +this.authservice.getToken());
     }
     
-    getByAgencyId(agencyId:any) : Observable<any>{
+    getByAgencyId(agencyId:any , pageNum) : Observable<any>{
 
-        return this.http.get(Api.API_URL_login + '/tlabatac/api/captainsByAgencyId/'+agencyId+'?access_token=' +this.authservice.getToken());
+        return this.http.get(Api.API_URL_login + '/tlabatac/api/captainsByAgencyId/'+agencyId+'/'+pageNum+'?access_token=' +this.authservice.getToken());
     }
     captainsPickListByAgencyId(agencyId:any) : Observable<any>{
 
@@ -66,9 +66,9 @@ export class CaptainService  {
 
         return this.http.get(Api.API_URL_login + '/tlabatac/api/evaluationsByCaptainId/'+captainId+'?access_token=' +this.authservice.getToken());
     }
-    getCaptainAssignDetails(searchFilter:any) : Observable<any>{
+    getCaptainAssignDetails(searchFilter:any , pageNum) : Observable<any>{
 
-        return this.http.post(Api.API_URL_login + '/tlabatac/api/getCaptainAssignDetails?access_token=' +this.authservice.getToken() , searchFilter);
+        return this.http.post(Api.API_URL_login + '/tlabatac/api/getCaptainAssignDetails/'+pageNum+'?access_token=' +this.authservice.getToken() , searchFilter);
     }
 
     updateEvaluation(evaluation: any): Observable<Object> {

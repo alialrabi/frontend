@@ -222,7 +222,12 @@ export class AssignOrderPage {
   
   skip(){
     //this.navCtrl.push(OrdersPage);
-    this.app.getRootNavs()[0].setRoot(OrdersPage);
+    if(this.userType == 'Agency'){
+      this.navCtrl.setRoot(OrdersPage);
+      }else{
+        this.navCtrl.setRoot(UserOrdersPage);
+        
+      }
   }
   back(){
     if(this.userType == 'Agency'){

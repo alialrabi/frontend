@@ -159,7 +159,7 @@
   <ion-list style="padding-top: 15px;">
 
 
-    <ion-item class="item-background" *ngFor="let assign of assingCaptains.slice().reverse()">
+    <ion-item class="item-background" *ngFor="let assign of assingCaptains">
       <ion-grid>
         <ion-row>
           <ion-col class="img-col" col-3>
@@ -221,6 +221,14 @@
 
 
   </ion-list>
+
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="assingCaptains.length != 0">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      [loadingText]="moreData">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
 </div>
 
 

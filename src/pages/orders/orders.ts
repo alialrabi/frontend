@@ -29,11 +29,15 @@ export class OrdersPage {
   userType = '';
   userId = 0;
 
+  pageNum = 1;
+  moreData = 'Loading more data...'
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private loading: LoadingController, public translateService: TranslateService, private app: App, private principal: Principal, public orderService: OrderService) {
 
-    this.translateService.get(['PLEASE_WAIT']).subscribe((values) => {
+    this.translateService.get(['PLEASE_WAIT', 'MORE_DATA']).subscribe((values) => {
 
       this.pleaseWait = values.PLEASE_WAIT
+      this.moreData = values.MORE_DATA
     })
 
   }
@@ -59,7 +63,7 @@ export class OrdersPage {
         this.myVar = 'assigned';
         this.userType = 'Agency';
         this.userId = account.id;
-        this.getAllOrders(this.myVar);
+        this.getAllOrders(this.myVar , 0);
 
 
       } else {
@@ -67,7 +71,7 @@ export class OrdersPage {
         this.myVar = 'assigned';
         this.userType = 'Admin';
         this.userId = 0;
-        this.getAllOrders(this.myVar);
+        this.getAllOrders(this.myVar , 0);
 
       }
     }).catch((err) => {
@@ -79,28 +83,54 @@ export class OrdersPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad OrdersPage');
   }
-  getAllOrders(status) {
-    let load = this.loading.create({
-      content: this.pleaseWait
+
+  doInfinite(infiniteScroll) {
+    console.log('Begin async operation');
+
+    setTimeout(() => {
+
+      this.getAllOrders(this.myVar, this.pageNum)
 
 
-    })
-    load.present()
+      console.log('Async operation has ended');
+      infiniteScroll.complete();
+    }, 1000);
+  }
 
+  getAllOrders(status, pageNum) {
     this.myVar = status;
-    this.ordersList = [];
-    this.orderService.getAllByStatus(status, this.userId , false).subscribe(res => {
+    let load;
+    if (pageNum == 0) {
+      load = this.loading.create({
+        content: this.pleaseWait
+
+
+      })
+      load.present()
+      this.ordersList = [];
+      this.pageNum = 1;
+    }
+
+    this.orderService.getAllByStatus(status, this.userId, false, pageNum).subscribe(res => {
       console.log(res);
 
+      if (pageNum == 0) {
+        this.ordersList = res;
+        load.dismiss();
+      } else {
+        if (res.length > 0) {
+          this.pageNum++;
+        }
+        res.forEach(element => {
+          this.ordersList.push(element);
 
-      this.ordersList = res;
-
-      load.dismiss()
-
+        });
+      }
     }, err => {
       console.log(err);
-
-      load.dismiss()
+      if (pageNum == 0) {
+        load.dismiss();
+      }
     })
   }
 

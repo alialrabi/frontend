@@ -43,6 +43,9 @@ export class CaptainAssignDetailsPage {
   agenciesList = []
   public maxDate;
 
+  pageNum = 1;
+  moreData = 'Loading more data...'
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private builder: FormBuilder, public platform: Platform, private loading: LoadingController, public translateService: TranslateService, public accountService: AccountService, public captainService: CaptainService) {
 
     this.captain = navParams.get("item");
@@ -60,9 +63,10 @@ export class CaptainAssignDetailsPage {
     });
 
 
-    this.translateService.get(['PLEASE_WAIT']).subscribe((values) => {
+    this.translateService.get(['PLEASE_WAIT', 'MORE_DATA']).subscribe((values) => {
 
       this.pleaseWait = values.PLEASE_WAIT
+      this.moreData = values.MORE_DATA
     })
 
     this.platform.registerBackButtonAction(() => {
@@ -71,12 +75,27 @@ export class CaptainAssignDetailsPage {
     });
 
 
-    this.getCaptainAssignes();
+    this.getCaptainAssignes(0);
     if (this.captain == null || this.captain == undefined) {
       this.getAllCaptains();
       this.getAllAgencyies();
     }
   }
+
+  doInfinite(infiniteScroll) {
+    console.log('Begin async operation');
+
+    setTimeout(() => {
+
+
+      this.getCaptainAssignes(this.pageNum);
+
+
+      console.log('Async operation has ended');
+      infiniteScroll.complete();
+    }, 1000);
+  }
+
   getAllCaptains() {
     let load = this.loading.create({
       content: this.pleaseWait
@@ -128,14 +147,19 @@ export class CaptainAssignDetailsPage {
 
   }
 
-  getCaptainAssignes() {
+  getCaptainAssignes(pageNum) {
 
-    let load = this.loading.create({
-      content: this.pleaseWait
+    let load;
+    if (pageNum == 0) {
+
+      load = this.loading.create({
+        content: this.pleaseWait
 
 
-    })
-    load.present()
+      })
+      load.present()
+      this.assingCaptains = [];
+    }
 
     if (this.captain == null || this.captain == undefined) {
 
@@ -168,17 +192,28 @@ export class CaptainAssignDetailsPage {
     }
 
 
-    this.assingCaptains = [];
 
-    this.captainService.getCaptainAssignDetails(this.seaarchFilter).subscribe(
+
+    this.captainService.getCaptainAssignDetails(this.seaarchFilter , pageNum).subscribe(
       res => {
-        this.assingCaptains = res;
-        load.dismiss();
+        if (pageNum == 0) {
+          this.assingCaptains = res;
+          load.dismiss();
+        } else {
+          if (res.length > 0) {
+            this.pageNum++;
+          }
+          res.forEach(element => {
+            this.assingCaptains.push(element);
+          });
+        }
 
       }, err => {
 
         console.log(err, 'errorrrr');
-        load.dismiss();
+        if (pageNum == 0) {
+          load.dismiss();
+        }
 
 
       }
@@ -206,16 +241,16 @@ export class CaptainAssignDetailsPage {
     }
 
     this.myForm.get("startDate").clearValidators();
-      this.myForm.get("startDate").updateValueAndValidity();
+    this.myForm.get("startDate").updateValueAndValidity();
 
-      this.myForm.get("endDate").clearValidators();
-      this.myForm.get("endDate").updateValueAndValidity();
+    this.myForm.get("endDate").clearValidators();
+    this.myForm.get("endDate").updateValueAndValidity();
 
   }
   dateChange() {
-    
+
     if ((this.seaarchFilter.startDate != null && this.seaarchFilter.startDate != undefined && this.seaarchFilter.startDate != '') || (this.seaarchFilter.endDate != null && this.seaarchFilter.endDate != undefined && this.seaarchFilter.endDate != '')) {
-            
+
       this.myForm.get("startDate").clearValidators();
       this.myForm.get("startDate").updateValueAndValidity();
       this.myForm.get("startDate").setValidators(Validators.required);
