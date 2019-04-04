@@ -25,48 +25,51 @@
 
 <ion-content class="auth-page-captain">
 
-    <ion-grid style="width: 100%">
-        <ion-row>
-          <ion-col style="padding: 0px" col-4>
-            <button ion-button block tappable [ngClass] ="{'tap-selected': myVar == 'not assigned', 'tap-notselected': myVar != 'not assigned'}" (click)="getAllOrders('not assigned' , 0)">
-              <!-- <ion-icon name="close" item-start></ion-icon> -->
-              {{ 'NOT_ASSIGNED' | translate }}
-            </button>
-          </ion-col>
-          <ion-col style="padding: 0px" col-4>
-            <button ion-button  block tappable [ngClass] ="{'tap-selected': myVar == 'assigned', 'tap-notselected': myVar != 'assigned'}" (click)="getAllOrders('assigned' , 0)">
-                <!-- <ion-icon name="stats" item-start></ion-icon> -->
-                {{ 'ASSIGNED' | translate }}
-            </button>
-          </ion-col>
-          <ion-col style="padding: 0px" col-4>
-            <button ion-button block tappable [ngClass] = "{'tap-selected': myVar == 'delivered', 'tap-notselected': myVar != 'delivered'}" (click)="getAllOrders('delivered' , 0)">
-                <!-- <ion-icon name="checkmark" item-start></ion-icon> -->
-                {{ 'DELIVERED' | translate }}
-            </button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+  <ion-grid style="width: 100%">
+    <ion-row>
+      <ion-col style="padding: 0px" col-4>
+        <button ion-button block tappable [ngClass]="{'tap-selected': myVar == 'not assigned', 'tap-notselected': myVar != 'not assigned'}"
+          (click)="getAllOrders('not assigned' , 0)">
+          <!-- <ion-icon name="close" item-start></ion-icon> -->
+          {{ 'NOT_ASSIGNED' | translate }}
+        </button>
+      </ion-col>
+      <ion-col style="padding: 0px" col-4>
+        <button ion-button block tappable [ngClass]="{'tap-selected': myVar == 'assigned', 'tap-notselected': myVar != 'assigned'}"
+          (click)="getAllOrders('assigned' , 0)">
+          <!-- <ion-icon name="stats" item-start></ion-icon> -->
+          {{ 'ASSIGNED' | translate }}
+        </button>
+      </ion-col>
+      <ion-col style="padding: 0px" col-4>
+        <button ion-button block tappable [ngClass]="{'tap-selected': myVar == 'delivered', 'tap-notselected': myVar != 'delivered'}"
+          (click)="getAllOrders('delivered' , 0)">
+          <!-- <ion-icon name="checkmark" item-start></ion-icon> -->
+          {{ 'DELIVERED' | translate }}
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
 
-      <div text-center *ngIf="ordersList.length == 0">
-          <ion-grid>
-            <ion-row>
-              <ion-col>
-                <img src="../../assets/img/sad.png" class="not-found-img">
-              </ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col>
-      
-                <h3 class="not-found-text"> {{ 'EMPTY_LIST' | translate }}</h3>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-      
-        </div>
-  
- 
+  <div text-center *ngIf="ordersList.length == 0">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <img src="../../assets/img/sad.png" class="not-found-img">
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+
+          <h3 class="not-found-text"> {{ 'EMPTY_LIST' | translate }}</h3>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </div>
+
+
 
 
   <ion-list style="padding-top: 15px;">
@@ -83,36 +86,129 @@
 
             <div class="account-info info-div">
               <p>
-                {{ 'NAME' | translate }} : <strong text-wrap>{{order.name}}</strong>
+                {{ 'NAME' | translate }} :
+                <strong text-wrap>{{order.name}}</strong>
               </p>
               <p>
-                {{ 'ADDRESS' | translate }} 1 : <strong text-wrap>{{order.address}}</strong>
+                {{ 'ADDRESS' | translate }} 1 :
+                <strong text-wrap>{{order.address}}</strong>
               </p>
               <p *ngIf="order.secondAddress != null && order.secondAddress != ''">
-                {{ 'ADDRESS' | translate }} 2 : <strong text-wrap>{{order.secondAddress}}</strong>
+                {{ 'ADDRESS' | translate }} 2 :
+                <strong text-wrap>{{order.secondAddress}}</strong>
               </p>
               <p>
-                {{ 'PHONE_NUMBER_PHONE' | translate }} 1 : <strong text-wrap>{{order.firstPhone}}</strong>
+                {{ 'PHONE_NUMBER_PHONE' | translate }} 1 :
+                <strong text-wrap>{{order.firstPhone}}</strong>
               </p>
               <p *ngIf="order.secondPhone != null && order.secondPhone != ''">
-                {{ 'PHONE_NUMBER_PHONE' | translate }} 2 : <strong text-wrap>{{order.secondPhone}}</strong>
+                {{ 'PHONE_NUMBER_PHONE' | translate }} 2 :
+                <strong text-wrap>{{order.secondPhone}}</strong>
               </p>
               <p>
                 {{ 'ORDERS' | translate }} :-
               </p>
-              <div *ngFor="let item of viewOrder(order.orders)">
-                <p style="margin-left: 15px;margin-right: 15px">
-                  {{item.index}}- <strong text-wrap>{{item.name}}</strong>
-                </p>
-              </div>
             </div>
           </ion-col>
         </ion-row>
       </ion-grid>
+
+      <!-- <div *ngFor="let item of viewOrder(order.orders)">
+                <p style="margin-left: 15px;margin-right: 15px">
+                  {{item.index}}- <strong text-wrap>{{item.name}}</strong>
+                </p>
+              </div> -->
+      <div class="account-info info-div2">
+        <ion-item class="item-background2">
+          <ion-grid style="padding: 0px">
+            <ion-row style="padding: 0px">
+              <ion-col col-6>
+                <p>
+                  {{'NAME' | translate}}
+                </p>
+              </ion-col>
+              <ion-col col-1 style="padding: 0px">
+                  <p>
+                    <strong text-wrap>|</strong>
+                  </p>
+                </ion-col>
+              <ion-col col-5 style="padding: 0px">
+                <p text-center>
+                  {{'PRICE' | translate}}
+                </p>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+        <ion-item class="item-background2" *ngFor="let sub of order.subOrders">
+          <ion-grid style="padding: 0px">
+            <ion-row style="padding: 0px">
+              <ion-col col-6 style="padding: 0px">
+                <p>
+                  <strong text-wrap>{{sub.name}}</strong>
+                </p>
+              </ion-col>
+              <ion-col col-1 style="padding: 0px">
+                  <p>
+                    <strong text-wrap>|</strong>
+                  </p>
+                </ion-col>
+              <ion-col col-5 style="padding: 0px">
+                <p text-center>
+                  <strong text-wrap>{{sub.price}}</strong>
+                </p>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+        <ion-item class="item-background2">
+          <ion-grid style="padding: 0px">
+            <ion-row style="padding: 0px">
+              <ion-col col-6 style="padding: 0px">
+                <p>
+                  <strong text-wrap>{{'DELIVER_PRICE' | translate}}</strong>
+                </p>
+              </ion-col>
+              <ion-col col-1 style="padding: 0px">
+                  <p>
+                    <strong text-wrap>|</strong>
+                  </p>
+                </ion-col>
+              <ion-col col-5 style="padding: 0px">
+                <p text-center>
+                  <strong text-wrap>10.0</strong>
+                </p>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+        <ion-item class="item-background2">
+          <ion-grid style="padding: 0px">
+            <ion-row style="padding: 0px">
+              <ion-col col-6 style="padding: 0px">
+                <p>
+                  <strong text-wrap>{{'TOTAL' | translate}}</strong>
+                </p>
+              </ion-col>
+              <ion-col col-1 style="padding: 0px">
+                  <p>
+                    <strong text-wrap>|</strong>
+                  </p>
+                </ion-col>
+              <ion-col col-5 style="padding: 0px">
+                <p text-center>
+                  <strong text-wrap>{{order.total}}</strong>
+                </p>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </div>
+
       <ion-buttons end class="btn-style" *ngIf="myVar != 'delivered' && userType == 'Agency'">
         <button ion-button (click)="assingCaptain(order)">
           {{ 'ASSIGN_CAPTAIN' | translate }}
-          </button>
+        </button>
       </ion-buttons>
 
     </ion-item>
@@ -122,9 +218,7 @@
   </ion-list>
 
   <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="ordersList.length != 0">
-    <ion-infinite-scroll-content
-      loadingSpinner="bubbles"
-      [loadingText]="moreData">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="moreData">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
 

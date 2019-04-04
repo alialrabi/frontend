@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, List, ToastController, App, LoadingController, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, List, ToastController, App, LoadingController, Platform, ModalController, PopoverController } from 'ionic-angular';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { User } from '../../providers/providers';
 import { TranslateService } from '@ngx-translate/core';
@@ -10,6 +10,8 @@ import { FirstRunPage } from '../pages';
 import { Principal } from '../../providers/auth/principal.service';
 import { UserOrdersPage } from '../user-orders/user-orders';
 import { MyApp } from '../../app/app.component';
+import { async } from 'q';
+import { AddOrderPopoverComponent } from '../../components/add-order-popover/add-order-popover';
 
 /**
  * Generated class for the AddOrderPage page.
@@ -65,18 +67,18 @@ export class AddOrderPage {
   shibinValue = ''
   daminhoorValue = ''
   banhaValue = ''
-  
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController
-    , public translateService: TranslateService,private loading: LoadingController, public platform:Platform,
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public poverCtrl:PopoverController , public modalController: ModalController, public toastCtrl: ToastController
+    , public translateService: TranslateService, private loading: LoadingController, public platform: Platform,
     private builder: FormBuilder, public user: User, private app: App, private principal: Principal, public orderService: OrderService) {
 
     console.log('con');
     this.address = this.navParams.get("address");
 
 
-    this.translateService.get(['ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS', 'ALEX' , 'CAIRO' , 'TANTA' , 'DAMNHOR' , 'SHIPIN_ELKOM' , 'BANHA' ,'PLEASE_WAIT']).subscribe((values) => {
+    this.translateService.get(['ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS', 'ALEX', 'CAIRO', 'TANTA', 'DAMNHOR', 'SHIPIN_ELKOM', 'BANHA', 'PLEASE_WAIT']).subscribe((values) => {
       console.log(values);
 
       this.addORDERError = values.ADD_ORDER_ERROR;
@@ -99,8 +101,8 @@ export class AddOrderPage {
       'address1': ['', []],
       'address2': ['', []],
       'city': ["'Alexandria'", []],
-      "order": ['', [Validators.required, Validators.maxLength(45)]],
-      "fromAddress":['',[]]
+      //"order": ['', [Validators.required, Validators.maxLength(45)]],
+      "fromAddress": ['', []]
     });
 
     this.myForm.get('city').setValue('Alexandria');
@@ -109,12 +111,12 @@ export class AddOrderPage {
     this.myForm.get('city').markAsTouched();
     this.myForm.get('city').markAsPristine();
     console.log(this.myForm.get('city').dirty);
-        
+
 
     this.platform.registerBackButtonAction(() => {
-      if(this.userType == 'User'){
+      if (this.userType == 'User') {
         this.navCtrl.setRoot(UserOrdersPage);
-      }else{
+      } else {
         this.navCtrl.setRoot(OrdersPage);
       }
     });
@@ -135,8 +137,8 @@ export class AddOrderPage {
 
     let load = this.loading.create({
       content: this.pleaseWait
-  
-  
+
+
     })
     load.present()
 
@@ -145,7 +147,7 @@ export class AddOrderPage {
       load.dismiss();
       if (account === null || (account.authorities[0] != 'ROLE_AGENCY' && account.authorities[0] != 'ROLE_USER')) {
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
-      } else if(account.authorities[0] == 'ROLE_AGENCY') {
+      } else if (account.authorities[0] == 'ROLE_AGENCY') {
 
         this.userType = "Agency";
         this.account = account;
@@ -156,7 +158,7 @@ export class AddOrderPage {
         this.myForm.get("address2").clearValidators();
         this.myForm.get("address2").setValidators([Validators.maxLength(100)]);
         this.myForm.get("address2").updateValueAndValidity();
-        
+
         this.myForm.get("name").clearValidators();
         this.myForm.get("name").setValidators([Validators.required, Validators.maxLength(45)]);
         this.myForm.get("name").updateValueAndValidity();
@@ -165,17 +167,17 @@ export class AddOrderPage {
         this.myForm.get("city").setValidators([Validators.required]);
         this.myForm.get("city").updateValueAndValidity();
 
-      }else if(account.authorities[0] == 'ROLE_USER') {
+      } else if (account.authorities[0] == 'ROLE_USER') {
         this.myForm.get("fromAddress").clearValidators();
         this.myForm.get("fromAddress").setValidators([Validators.required, Validators.maxLength(100)]);
-       
+
         this.myForm.get("fromAddress").updateValueAndValidity();
 
         this.userType = "User";
         this.account = account;
 
       }
-    }).catch((err)=>{
+    }).catch((err) => {
       load.dismiss();
     });
   }
@@ -202,7 +204,7 @@ export class AddOrderPage {
     )
 
   }
-  add() {
+  async add(event) {
     // this.order.orders.push('');
     // let form = this.builder.group({
     //   "order":['',[Validators.required , Validators.maxLength(45)]]
@@ -210,17 +212,36 @@ export class AddOrderPage {
     // this.forms.push(form);
     // this.change();
 
-    this.orderString += this.myForm.get('order').value;
-    this.orderString += ' - ';
-    let subOrder = {
-      name: this.myForm.get('order').value,
-      index: this.ordersArray.length + 1
-    }
-    this.ordersArray.push(subOrder);
-    this.myForm.get('order').setValue('');
-    this.myForm.get('order').clearValidators();
-    this.myForm.get('order').clearAsyncValidators();
-    this.myForm.get('order').updateValueAndValidity();
+    const modal = await this.poverCtrl.create(AddOrderPopoverComponent);
+
+    modal.onDidDismiss((dataReturned) => {
+      if (dataReturned !== null) {
+        console.log('Modal Sent Data :', dataReturned);
+
+        this.orderString += dataReturned.name;
+        this.orderString += ' - ';
+
+        this.ordersArray.push(dataReturned);
+      }
+    });
+
+    return await modal.present({
+      ev:event
+    });
+
+
+
+    // this.orderString += this.myForm.get('order').value;
+    // this.orderString += ' - ';
+    // let subOrder = {
+    //   name: this.myForm.get('order').value,
+    //   price: this.ordersArray.length + 1
+    // }
+    // this.ordersArray.push(subOrder);
+    // this.myForm.get('order').setValue('');
+    // this.myForm.get('order').clearValidators();
+    // this.myForm.get('order').clearAsyncValidators();
+    // this.myForm.get('order').updateValueAndValidity();
 
   }
   addOrder() {
@@ -233,25 +254,16 @@ export class AddOrderPage {
     //   orderValue +=  value;
 
     // });
-    
+
     //orderValue = this.o
 
 
     let load = this.loading.create({
       content: this.pleaseWait
-  
-  
+
+
     })
     load.present()
-
-
-
-    if (this.myForm.get('order').value.length > 0) {
-
-      this.orderString += this.myForm.get('order').value
-    }else{
-      this.orderString = this.orderString.substring(0 , this.orderString.length - 2);
-    }
 
     let orderObject = {
       //userId : this.myForm.get('userId').value,
@@ -266,18 +278,18 @@ export class AddOrderPage {
       captainId: 0,
       agencyId: this.account.id,
       userId: 0,
-      fromAddress:null,
-      isUserOrder:false ,
-      addressId:0 
-
+      fromAddress: null,
+      isUserOrder: false,
+      addressId: 0,
+      subOrders:this.ordersArray
     }
-    if(this.userType == 'User'){
+    if (this.userType == 'User') {
       orderObject.userId = this.account.id;
       orderObject.fromAddress = this.myForm.get('fromAddress').value;
       orderObject.isUserOrder = true;
       orderObject.addressId = this.address.id;
       orderObject.agencyId = 0
-      orderObject.name = this.account.firstName + ' '+this.account.lastName
+      orderObject.name = this.account.firstName + ' ' + this.account.lastName
 
     }
 
@@ -296,10 +308,10 @@ export class AddOrderPage {
       });
       toast.present();
       load.dismiss();
-      if(this.userType == 'User'){
+      if (this.userType == 'User') {
         this.app.getRootNavs()[0].setRoot(UserOrdersPage);
-      }else{
-      this.navCtrl.setRoot('AssignOrderPage', { item: obj })
+      } else {
+        this.navCtrl.setRoot('AssignOrderPage', { item: obj })
       }
     }, (err) => {
       console.log('error', err);
@@ -358,40 +370,40 @@ export class AddOrderPage {
     return e1 && e2 ? e1.id === e2.id : e1 === e2;
   }
 
-  getCity(cityValue){
-    console.log(cityValue , 'ssssssssssss');
+  getCity(cityValue) {
+    console.log(cityValue, 'ssssssssssss');
 
-    
+
     let city = ''
-    if(cityValue == 'Alexandria'){
-      city =this.alexValue;
+    if (cityValue == 'Alexandria') {
+      city = this.alexValue;
 
-    }else if(cityValue == 'Cairo'){
+    } else if (cityValue == 'Cairo') {
       city = this.cairoValue;
-      
-    }else if(cityValue == 'Tanta'){
+
+    } else if (cityValue == 'Tanta') {
       city = this.tantaValue;
-      
-    }else if(cityValue == 'Damnhor'){
+
+    } else if (cityValue == 'Damnhor') {
       city = this.daminhoorValue;
-      
-    }else if(cityValue == 'Shibin Elkom'){
+
+    } else if (cityValue == 'Shibin Elkom') {
       city = this.shibinValue;
-      
-    }else if(cityValue == 'Banha'){
+
+    } else if (cityValue == 'Banha') {
       city = this.banhaValue;
-      
+
     }
     return city;
 
   }
 
-  back(){
-    if(this.userType == 'User'){
+  back() {
+    if (this.userType == 'User') {
       this.navCtrl.setRoot(UserOrdersPage);
-    }else{
+    } else {
       this.navCtrl.setRoot(OrdersPage);
     }
-    
+
   }
 }

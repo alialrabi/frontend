@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, App, LoadingController, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, App, LoadingController, Platform, ModalController } from 'ionic-angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { CaptainService } from '../../providers/auth/captain.service';
@@ -9,6 +9,7 @@ import { Principal } from '../../providers/auth/principal.service';
 import { UserOrdersPage } from '../user-orders/user-orders';
 import { AgencyCaptainsPage } from '../agency-captains/agency-captains';
 import { MyApp } from '../../app/app.component';
+import { DatePicker } from '@ionic-native/date-picker';
 
 /**
  * Generated class for the AssignCaptainsPage page.
@@ -24,6 +25,7 @@ import { MyApp } from '../../app/app.component';
 })
 export class AssignCaptainsPage {
 
+ 
   public captainList = [];
   myForm: FormGroup;
 
@@ -40,13 +42,33 @@ export class AssignCaptainsPage {
 
   public maxDate;
   public minDate;
+  yesterday;
+  today;
+  lastSelectedDate;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public platform:Platform , private principal: Principal, private app: App, private loading: LoadingController, private builder: FormBuilder, public captainService: CaptainService, public toastCtrl: ToastController, public translateService: TranslateService) {
+  dates = [];
+  selectedDate = new Date();
+
+  startDate = '';
+  endDate = '';
+
+  isCordova = false;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public datePicker:DatePicker , public platform: Platform, private principal: Principal, private app: App, private loading: LoadingController, private builder: FormBuilder, public captainService: CaptainService, public toastCtrl: ToastController, public translateService: TranslateService) {
+
+    this.isCordova = this.platform.is("cordova");
+    console.log(this.isCordova);
+    
 
     this.agency = this.navParams.get("item");
 
+    this.today = new Date();
+    this.yesterday = new Date(this.today);
+    this.yesterday.setDate(this.today.getDate() - 1);
+    console.log(this.yesterday, 'yesterDay date');
+
     var CurrentYear = new Date().getFullYear()
-    this.maxDate = CurrentYear + 1 ;
+    this.maxDate = CurrentYear + 1;
     this.minDate = CurrentYear;
 
     this.translateService.get(['ASSIGN_CAPTAIN_ERROR', 'ASSIGN_CAPTAIN_SUCCESS', 'PLEASE_WAIT']).subscribe((values) => {
@@ -59,17 +81,17 @@ export class AssignCaptainsPage {
     this.myForm = builder.group({
       //'userId':['', [Validators.required ]],
       'captainIds': ['', [Validators.required]],
-      'startDate': ['', [Validators.required]],
-      'endDate': ['', [Validators.required]],
-      'startTime': ['', [Validators.required]],
-      'endTime': ['', [Validators.required]],      
-
+      // 'startDate': ['', [Validators.required]],
+      // 'endDate': ['', [Validators.required]],
+      'startTime': ['', []],
+      'endTime': ['', []],
+      
     });
 
     this.platform.registerBackButtonAction(() => {
       if (this.agency == null || this.agency == undefined) {
         this.navCtrl.setRoot(AgencyCaptainsPage);
-      }else{
+      } else {
         this.navCtrl.setRoot(AgenciesPage);
       }
     });
@@ -77,6 +99,92 @@ export class AssignCaptainsPage {
     this.getAllCaptains();
 
   }
+  formatDate(date) {
+    let strDate = "";
+    strDate += date.getFullYear();
+    strDate += "-";
+    if ((date.getMonth() + 1) < 10) {
+      strDate += "0"
+    }
+    let month = date.getMonth() + 1;
+    strDate += month;
+    strDate += "-";
+    if (date.getDate() < 10) {
+      strDate += "0"
+    }
+    strDate += date.getDate();
+
+    console.log(strDate , "strDate");
+    
+
+    return strDate;
+  }
+
+  add() {
+
+    let date = {
+      date: this.formatDate(this.selectedDate),
+      startTime: this.myForm.get("startTime").value,
+      endTime: this.myForm.get("endTime").value
+    }
+    this.dates.push(date)
+    console.log(this.dates , 'dates');
+    
+    this.myForm.get("startTime").setValue('');
+    this.myForm.get("endTime").setValue("");
+
+    console.log(this.dates, 'dartes');
+
+  }
+
+  dateSelected(event) {
+    // console.log(event , "date");
+    // console.log(this.selectedDate , '');
+
+    // //console.log(this.myForm.get("startDate").value);
+
+
+    // if(this.myForm.get("startTime").value != '' && this.myForm.get("endTime").value != '' ){
+
+    //   let date = {
+    //     date : this.lastSelectedDate,
+    //     startTime:this.myForm.get("startTime").value,
+    //     endTime:this.myForm.get("endTime").value
+    //   }
+    //   this.dates.push(date)
+    //   this.myForm.get("startTime").setValue('');
+    //   this.myForm.get("endTime").setValue("");
+
+    //   console.log(this.dates , 'dartes');
+    //   this.lastSelectedDate = event
+
+
+    // }else if(this.myForm.get("startTime").value == '' && this.myForm.get("endTime").value == '' ){
+    //   this.lastSelectedDate = event
+
+    // }else{
+
+    //   this.selectedDate = this.lastSelectedDate;
+
+    //   let toast = this.toastCtrl.create({
+    //     message: "ssssssssssssssss",
+    //     duration: 3000,
+    //     position: 'middle'
+    //   });
+    //   toast.present();
+
+
+    // }
+
+    console.log(event);
+
+    this.selectedDate = event;
+    
+    //this.selectedDate.setDate(event.getDate());
+    console.log(this.selectedDate);
+
+  }
+
   ngOnInit() {
     this.principal.identity().then((account) => {
       console.log(account);
@@ -134,14 +242,25 @@ export class AssignCaptainsPage {
     let ids = this.myForm.get("captainIds").value;
     console.log(ids, 'ids');
 
+    if(this.myForm.get("startTime").value != null && this.myForm.get("startTime").value !='') {
+      let date = {
+        date: this.formatDate(this.selectedDate),
+        startTime: this.myForm.get("startTime").value,
+        endTime: this.myForm.get("endTime").value
+      }
+      this.dates.push(date)
+    }
+
+
     let assignCaptains = {
       agencyId: 0,
       captainsIds: ids,
-      adminAssign:false,
-      endDate:this.myForm.get("endDate").value,
-      startDate:this.myForm.get("startDate").value,
-      startTime:this.myForm.get("startTime").value,
-      endTime:this.myForm.get("endTime").value
+      adminAssign: false,
+      // endDate:this.myForm.get("endDate").value,
+      // startDate:this.myForm.get("startDate").value,
+      // startTime: this.myForm.get("startTime").value,
+      // endTime: this.myForm.get("endTime").value
+      subAssignModels:this.dates
     }
     if (this.agency == null || this.agency == undefined) {
       assignCaptains.agencyId = this.user.id
@@ -190,12 +309,34 @@ export class AssignCaptainsPage {
     const ctrl = this.myForm.get(field);
     return ctrl.dirty && ctrl.hasError(error);
   }
-  back(){
+  back() {
     if (this.agency == null || this.agency == undefined) {
       this.navCtrl.setRoot(AgencyCaptainsPage);
-    }else{
+    } else {
       this.navCtrl.setRoot(AgenciesPage);
     }
-    
+
   }
+
+  validateTimes() {
+    if ((this.myForm.get("startTime").value != '' && this.myForm.get("endTime").value != '') || ((this.myForm.get("startTime").value == '' && this.myForm.get("endTime").value == '') && this.dates.length != 0 )) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  showDateTimePicker(event) {
+    this.datePicker.show({
+        date: new Date(),
+        mode: 'time',
+        is24Hour: false,
+        androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
+    }).then(
+        date => { event.target.value = date },
+        err => console.log('Error occurred while getting date: ' + err)
+    )
+}
+
+
 }

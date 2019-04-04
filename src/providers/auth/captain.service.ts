@@ -19,20 +19,24 @@ export class CaptainService  {
     }
     editAssignCaptains(assignCaptains: any): Observable<Object> {
 
-        return this.http.put(Api.API_URL_login + '/tlabatac/api/updateAssignData?access_token=' +this.authservice.getToken() ,assignCaptains);
+        return this.http.put(Api.API_URL_login + '/tlabatac/api/updateSubAssign?access_token=' +this.authservice.getToken() ,assignCaptains);
     }
     updateLocation(updateLocation: any): Observable<Object> {
 
         return this.http.put(Api.API_URL_login + '/tlabatac/api/updateLocation?access_token=' +this.authservice.getToken() ,updateLocation);
+    }
+    updateCaptainInformation(updateLocation: any): Observable<Object> {
+
+        return this.http.put(Api.API_URL_login + '/tlabatac/api/captains?access_token=' +this.authservice.getToken() ,updateLocation);
     }
     updateWorking(updateWorking: any): Observable<Object> {
 
         return this.http.put(Api.API_URL_login + '/tlabatac/api/updateWorking?access_token=' +this.authservice.getToken() ,updateWorking);
     }
 
-    unAssignCaptain(captainId: any): Observable<Object> {
+    unAssignCaptain(captainId: any , day): Observable<Object> {
 
-        return this.http.put(Api.API_URL_login + '/tlabatac/api/unAssignCaptains/'+captainId+'?access_token=' +this.authservice.getToken() , null);
+        return this.http.put(Api.API_URL_login + '/tlabatac/api/unAssignCaptains/'+captainId+'/'+day+'?access_token=' +this.authservice.getToken() , null);
     }
     
     getAll(pageNum) : Observable<any>{
@@ -47,6 +51,10 @@ export class CaptainService  {
     getByUserId(userId:any) : Observable<any>{
 
         return this.http.get(Api.API_URL_login + '/tlabatac/api/captainsByUserId/'+userId+'?access_token=' +this.authservice.getToken());
+    }
+    getCaptainDetails(userId:any) : Observable<any>{
+
+        return this.http.get(Api.API_URL_login + '/tlabatac/api/captainDetails/'+userId+'?access_token=' +this.authservice.getToken());
     }
 
     getNotAssigned() : Observable<any>{
@@ -65,6 +73,10 @@ export class CaptainService  {
     getCaptainElevation(captainId:any) : Observable<any>{
 
         return this.http.get(Api.API_URL_login + '/tlabatac/api/evaluationsByCaptainId/'+captainId+'?access_token=' +this.authservice.getToken());
+    }
+    getSubAssignes(suberAssignId:any , pageNum) : Observable<any>{
+
+        return this.http.get(Api.API_URL_login + '/tlabatac/api/subAssignsBySuberId/'+suberAssignId+'/'+pageNum+'?access_token=' +this.authservice.getToken());
     }
     getCaptainAssignDetails(searchFilter:any , pageNum) : Observable<any>{
 

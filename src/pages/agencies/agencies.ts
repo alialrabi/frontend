@@ -6,6 +6,7 @@ import { AssignCaptainsPage } from '../assign-captains/assign-captains';
 import { AgencyCaptainsPage } from '../agency-captains/agency-captains';
 import { MyApp } from '../../app/app.component';
 import { TranslateService } from '@ngx-translate/core';
+import { AgencyDetailsPage } from '../agency-details/agency-details';
 
 /**
  * Generated class for the AgenciesPage page.
@@ -104,7 +105,9 @@ export class AgenciesPage {
   viewCaptains(agency) {
     this.navCtrl.setRoot(AgencyCaptainsPage, { item: agency });
   }
-
+  agencyDetails(agency){
+    this.navCtrl.setRoot(AgencyDetailsPage, { item: agency });
+  }
 
   //  openMenu(){
   //   this.myApp.openMenu();

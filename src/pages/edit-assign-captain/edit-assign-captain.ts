@@ -7,6 +7,8 @@ import { Principal } from '../../providers/auth/principal.service';
 import { CaptainService } from '../../providers/auth/captain.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AgencyCaptainsPage } from '../agency-captains/agency-captains';
+import { SubAssignDetailsPage } from '../sub-assign-details/sub-assign-details';
+import { DatePicker } from '@ionic-native/date-picker';
 
 /**
  * Generated class for the EditAssignCaptainPage page.
@@ -30,7 +32,7 @@ export class EditAssignCaptainPage {
 
 
   public assign = {
-    endDate: "",
+    date: "",
     startTime: "",
     endTime: "",
     id: "",
@@ -47,29 +49,55 @@ export class EditAssignCaptainPage {
   fromToday = "today";
 
   agency = null;
+  captain = null;
+  from = null;
+  suberAssign = null;
 
   endDateValue = '';
   endTimeValue = '';
   startTimeValue = '';
 
+  date;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public platform:Platform ,private principal: Principal, private app: App, private loading: LoadingController, private builder: FormBuilder, public captainService: CaptainService, public toastCtrl: ToastController, public translateService: TranslateService) {
+  yesterday;
+  today;
+  selectedDate;
+  formatedDate;
+  isCordova = false;
 
-    this.assign = this.navParams.get("item");
+  constructor(public navCtrl: NavController, public navParams: NavParams,private principal: Principal, private app: App, private loading: LoadingController, private builder: FormBuilder, public captainService: CaptainService, public toastCtrl: ToastController,public datePicker:DatePicker , public platform: Platform, public translateService: TranslateService) {
+
+    this.isCordova = this.platform.is("cordova");
+
+    this.assign = this.navParams.get("subAssign");
     //this.lastAssign = this.navParams.get("item");
-    this.endDateValue = this.assign.endDate;
+    let dateString = this.assign.date+"T00:00:00";
+    this.date = new Date(dateString);
+    console.log(this.date);
+    
+    this.endDateValue = this.assign.date;
+
     this.endTimeValue = this.assign.endTime;
     this.startTimeValue = this.assign.startTime;
+    this.selectedDate = this.assign.date;
+    this.formatedDate = this.assign.date;
+
+    this.today = new Date();
+    this.yesterday = new Date(this.today);
+    this.yesterday.setDate(this.today.getDate() - 1);
 
 
     this.agency = this.navParams.get("agency");
+    this.captain = this.navParams.get("captain");
+    this.from = this.navParams.get("from");
+    this.suberAssign = this.navParams.get("suberAssign");
 
     console.log('edit agency ', this.agency);
 
 
-    var CurrentYear = new Date().getFullYear()
-    this.maxDate = CurrentYear + 1;
-    this.minDate = CurrentYear;
+    // var CurrentYear = new Date().getFullYear()
+    // this.maxDate = CurrentYear + 1;
+    // this.minDate = CurrentYear;
 
     this.translateService.get(['EDIT_ASSIGN_ORDER_ERROR', 'EDIT_ASSIGN_ORDER_SUCCESS', 'PLEASE_WAIT']).subscribe((values) => {
       this.assignOrderError = values.EDIT_ASSIGN_ORDER_ERROR;
@@ -78,16 +106,17 @@ export class EditAssignCaptainPage {
     })
 
 
+
     this.myForm = builder.group({
-      'endDate': ['', [Validators.required]],
+      //'endDate': ['', [Validators.required]],
       'startTime': ['', [Validators.required]],
       'endTime': ['', [Validators.required]],
-      'fromToday': ['', [Validators.required]]
+      //'fromToday': ['', [Validators.required]]
 
     });
 
     this.platform.registerBackButtonAction(() => {
-      this.navCtrl.setRoot(AgencyCaptainsPage, { "item": this.agency });
+      this.navCtrl.setRoot(SubAssignDetailsPage, { item: this.suberAssign , captain: this.captain , from: this.from , agency:this.agency });
 
     });
 
@@ -105,6 +134,33 @@ export class EditAssignCaptainPage {
       }
     });
   }
+  formatDate(date) {
+    let strDate = "";
+    strDate += date.getFullYear();
+    strDate += "-";
+    if ((date.getMonth() + 1) < 10) {
+      strDate += "0"
+    }
+    let month = date.getMonth() + 1;
+    strDate += month;
+    strDate += "-";
+    if (date.getDate() < 10) {
+      strDate += "0"
+    }
+    strDate += date.getDate();
+
+    console.log(strDate , "strDate");
+    
+
+    return strDate;
+  }
+
+  dateSelected(event) {
+    this.selectedDate = event;
+    this.formatedDate = this.formatDate(this.selectedDate);
+    console.log(this.formatedDate);
+    
+  }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad EditAssignCaptainPage');
@@ -118,21 +174,14 @@ export class EditAssignCaptainPage {
     load.present()
 
 
-    let ids = [this.assign.id];
-    console.log(ids, 'ids');
 
     let assignCaptains = {
-      captainsIds: ids,
-      endDate: this.myForm.get("endDate").value,
+      id: this.assign.id,
+      date: this.formatDate(this.selectedDate),
       startTime: this.myForm.get("startTime").value,
       endTime: this.myForm.get("endTime").value,
-      fromToday: true
     }
-    if (this.fromToday == 'today') {
-      assignCaptains.fromToday = true
-    } else {
-      assignCaptains.fromToday = false
-    }
+    
     this.captainService.editAssignCaptains(assignCaptains).subscribe(
       res => {
         let toast = this.toastCtrl.create({
@@ -167,15 +216,25 @@ export class EditAssignCaptainPage {
     return ctrl.dirty && ctrl.hasError(error);
   }
   back() {
-    this.navCtrl.setRoot(AgencyCaptainsPage, { "item": this.agency });
+    this.navCtrl.setRoot(SubAssignDetailsPage, { item: this.suberAssign , captain: this.captain , from: this.from , agency:this.agency });
   }
   validateChange() {
 
-    if (this.endTimeValue == this.assign.endTime && this.startTimeValue == this.assign.startTime && this.endDateValue == this.assign.endDate) {
+    if (this.endTimeValue == this.assign.endTime && this.startTimeValue == this.assign.startTime && this.endDateValue == this.formatedDate) {
       return true;
     } else {
       return false;
     }
   }
-
+  showDateTimePicker(event) {
+    this.datePicker.show({
+        date: new Date(),
+        mode: 'time',
+        is24Hour: false,
+        androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
+    }).then(
+        date => { event.target.value = date },
+        err => console.log('Error occurred while getting date: ' + err)
+    )
+  }
 }

@@ -8,6 +8,7 @@ import { Principal } from '../../providers/auth/principal.service';
 import { TranslateService } from '@ngx-translate/core';
 import { CaptainEvaluationPage } from '../captain-evaluation/captain-evaluation';
 import { CaptainAssignDetailsPage } from '../captain-assign-details/captain-assign-details';
+import { CaptainDetailsPage } from '../captain-details/captain-details';
 
 /**
  * Generated class for the CaptainsPage page.
@@ -200,6 +201,9 @@ export class CaptainsPage {
   }
   viewAssignDetails(captain) {
     this.navCtrl.setRoot(CaptainAssignDetailsPage, { item: captain });
+  }
+  captainDetails(captain){
+    this.navCtrl.setRoot(CaptainDetailsPage, { item: captain });
   }
 
   //  openMenu(){

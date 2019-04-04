@@ -7,6 +7,7 @@ import { MyApp } from '../../app/app.component';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Builder } from 'selenium-webdriver';
 import { AccountService } from '../../providers/auth/account.service';
+import { SubAssignDetailsPage } from '../sub-assign-details/sub-assign-details';
 
 /**
  * Generated class for the CaptainAssignDetailsPage page.
@@ -276,6 +277,9 @@ export class CaptainAssignDetailsPage {
   hasError(field: string, error: string) {
     const ctrl = this.myForm.get(field);
     return ctrl.dirty && ctrl.hasError(error);
+  }
+  assignDetails(assign){
+    this.navCtrl.setRoot(SubAssignDetailsPage, { item: assign, from: "CaptainAssignDetailsPage" , captain:this.captain });
   }
 
 }

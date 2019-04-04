@@ -1,0 +1,104 @@
+<!--
+  Generated template for the CaptainDetailsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+
+    <ion-grid style="width: 100%">
+      <ion-row>
+        <ion-col col-1>
+          <ion-buttons style="margin-block-start: 2px;padding-bottom: 0px;padding-top: 0px" class="btn-style">
+            <button ion-button (click)="back()">
+              <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
+            </button>
+          </ion-buttons>
+        </ion-col>
+        <ion-col col-10 [style.margin-top] ="language == 'en' ? '5px' : '2px'">
+          <ion-title>{{ 'CAPTAIN_DETAILS' | translate }}</ion-title>
+        </ion-col>
+        <ion-col col-1>
+            <ion-buttons style="margin-block-start: 2px;padding-bottom: 0px;padding-top: 0px" class="btn-style" >
+              <button ion-button (click)="editCaptain()">
+                <ion-icon name="create"></ion-icon>
+              </button>
+            </ion-buttons>
+          </ion-col>
+      </ion-row>
+    </ion-grid>
+
+
+
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="auth-page-captain">
+
+  <div padding text-center style="width: 100%;height:40%;">
+
+
+    <div [ngClass]="language == 'en' ?  'circle-pic-div' : 'circle-pic-div-ar'" style="width:100%;height: 70%;" text-center>
+
+      <img class="circle-pic" style="width: 50%;height: 100%;" *ngIf="!captain.image || captain.image == 'O'" src="../../assets/img/person.png"
+      />
+      <img class="circle-pic" style="width: 50%;height: 100%;" *ngIf="captain.image  && captain.image != 'O'" [src]="['data:image/jpg;base64',captain.image]"
+      />
+
+    </div>
+
+
+    <h2 ion-text style="color: black" text-wrap>
+      {{ captain.name }}
+    </h2>
+  </div>
+
+  <div class="account-info info-div" style="margin-top: 5%;padding-right: 10px">
+      <ion-item class="item-background">
+          <p>
+            {{'CODE' | translate}} :
+            <strong text-wrap>{{captain.code}}</strong>
+          </p>
+        </ion-item>
+      <ion-item class="item-background">
+          <p>
+            {{'PHONE' | translate}} :
+            <strong text-wrap>{{captain.phone}}</strong>
+          </p>
+        </ion-item>
+    <ion-item class="item-background">
+      <p>
+        {{'EMAIL' | translate}} :
+        <strong text-wrap>{{captain.email}}</strong>
+      </p>
+    </ion-item>
+    <ion-item class="item-background">
+      <p>
+        {{'CREATION_DATE' | translate}} :
+        <strong text-wrap>{{getFormattedDate(captain.creationDate)}}</strong>
+      </p>
+    </ion-item>
+    <ion-item class="item-background">
+      <p>
+        {{'ORDERS_COUNT' | translate}} :
+        <strong text-wrap>{{captain.orderCount}}</strong>
+      </p>
+    </ion-item>
+    <ion-item class="item-background">
+      <p>
+        {{'PASSWORD' | translate}} :
+        <strong text-wrap >{{ togglePassword ? viewStars(captain.password) : captain.password}}
+          <ion-icon [name]="passwordEye" (click)="togglePasswordMethod()" [style.margin-right]="language == 'en' ? '0px' : '10px'" [style.margin-left]="language == 'en' ? '10px' : '0px'"></ion-icon>
+        </strong>
+        </p>
+    </ion-item>
+
+  </div>
+
+
+
+</ion-content>

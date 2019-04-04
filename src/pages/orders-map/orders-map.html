@@ -10,14 +10,14 @@
 
       <ion-grid style="width: 100%">
           <ion-row>
-            <ion-col col-1 >
+            <ion-col col-1>
               <ion-buttons style="margin-block-start: 2px" class="btn-style">
                 <button ion-button (click)="back()">
                   <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
                 </button>
               </ion-buttons>
             </ion-col>
-            <ion-col col-11 [style.margin-top] ="language == 'en' ? '5px' : '2px'">
+            <ion-col col-11  [style.margin-top] ="language == 'en' ? '5px' : '2px'">
                 <ion-title>{{ 'ORDERS_ON_MAP' | translate }}</ion-title>
             </ion-col>
           </ion-row>

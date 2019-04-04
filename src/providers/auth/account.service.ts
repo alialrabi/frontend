@@ -24,6 +24,10 @@ export class AccountService  {
         //return this.http.get(Api.API_URL +'/api/account?access_token=' +this.authservice.getToken());
         return this.http.get(Api.API_URL_login + '/uaa/api/account/'+userId+'?access_token=' +this.authservice.getToken());
     }
+    getAgencyDetails(userId): Observable<any> {
+      //return this.http.get(Api.API_URL +'/api/account?access_token=' +this.authservice.getToken());
+      return this.http.get(Api.API_URL_login + '/tlabatac/api/agencyAccountDetails/'+userId+'?access_token=' +this.authservice.getToken());
+  }
     getAllAgency(): Observable<any> {
         //return this.http.get(Api.API_URL +'/api/account?access_token=' +this.authservice.getToken());
         return this.http.get(Api.API_URL_login + '/uaa/api/users/getAllAgency?access_token=' +this.authservice.getToken());
@@ -45,6 +49,7 @@ export class AccountService  {
     
 
       }
+      
 
       registerAgency(accountInfo: any) : Observable<any>{
 
@@ -56,6 +61,12 @@ export class AccountService  {
 
         //return  this.http.post(Api.API_URL +'/api/registerCaptainUser' , accountInfo );       
         return this.http.put(Api.API_URL_login + '/uaa/api/updateAutoAssign?access_token=' +this.authservice.getToken(), accountInfo);
+ 
+      }
+      updateUserInformation(accountInfo: any) : Observable<any>{
+
+        //return  this.http.post(Api.API_URL +'/api/registerCaptainUser' , accountInfo );       
+        return this.http.put(Api.API_URL_login + '/uaa/api/updateUserInformation?access_token=' +this.authservice.getToken(), accountInfo);
  
       }
       updateLanguage(updateLanguageModel: any) : Observable<any>{
