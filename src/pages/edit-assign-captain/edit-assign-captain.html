@@ -4,7 +4,7 @@
 
       <ion-grid style="width: 100%">
           <ion-row>
-            <ion-col col-1 >
+            <ion-col col-1>
               <ion-buttons style="margin-block-start: 2px" class="btn-style">
                 <button ion-button (click)="back()">
                   <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
@@ -28,17 +28,19 @@
   <div class="login-content">
 
     <!-- Logo -->
-    <div padding text-center>
+    <!-- <div padding text-center>
       <div class="logo"></div>
       <h2 ion-text class="text-primary">
         {{ 'TLABATAC' | translate }}
       </h2>
-    </div>
+    </div> -->
 
     <!-- Login form -->
     <form class="list-form" [formGroup]="myForm">
       
-      <ion-item>
+        <ionic-calendar-date-picker [fromDate]="yesterday" [date]="date" [backgroundStyle]="{ 'background-color': 'transparent' }" (onSelect)="dateSelected($event)" [lang]="language" [dir]="direction" ></ionic-calendar-date-picker>	
+
+      <!-- <ion-item>
           <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
             <ion-icon name="calendar" item-start class="text-primary"></ion-icon>
             {{ 'END_DATE' | translate }}
@@ -46,25 +48,42 @@
           <ion-datetime displayFormat="YYYY-MM-DD" max="{{maxDate}}"  min="{{minDate}}" [(ngModel)]="assign.endDate" formControlName="endDate" [lang]="language" [dir]="direction"></ion-datetime>
         </ion-item>
         <p class="validationHint" *ngIf="hasError('endDate', 'required')"> {{ 'REQURIED' | translate }} </p>
-      
-        <ion-item>
+       -->
+       <ion-item *ngIf="isCordova">
           <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
             <ion-icon name="calendar" item-start class="text-primary"></ion-icon>
             {{ 'START_TIME' | translate }}
           </ion-label>
-          <ion-datetime displayFormat="hh:mm a" pickerFormat="hh:mm a" formControlName="startTime" [(ngModel)]="assign.startTime" [lang]="language" [dir]="direction"></ion-datetime>
+          <ion-input [(ngModel)]="assign.startTime" [lang]="language" [dir]="direction" formControlName="startTime" type="text" readonly="readonly" (focus)="$event.stopPropagation(); showDateTimePicker($event)"></ion-input>
         </ion-item>
-        <p class="validationHint" *ngIf="hasError('startTime', 'required')"> {{ 'REQURIED' | translate }} </p>
-        <ion-item>
+        <p class="validationHint" *ngIf="isCordova && hasError('startTime', 'required')"> {{ 'REQURIED' | translate }} </p>
+        <ion-item *ngIf="isCordova">
+          <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+            <ion-icon name="calendar" item-start class="text-primary"></ion-icon>
+            {{ 'END_TIME' | translate }}
+          </ion-label>
+          <ion-input  [(ngModel)]="assign.endTime" [lang]="language" [dir]="direction" formControlName="endTime" type="text" readonly="readonly" (focus)="$event.stopPropagation(); showDateTimePicker($event)"></ion-input>
+        </ion-item>
+        <p class="validationHint" *ngIf="isCordova && hasError('endTime', 'required')"> {{ 'REQURIED' | translate }} </p>
+  
+        <ion-item *ngIf="!isCordova">
+          <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+            <ion-icon name="calendar" item-start class="text-primary"></ion-icon>
+            {{ 'START_TIME' | translate }}
+          </ion-label>
+          <ion-datetime displayFormat="hh:mm a" pickerFormat="hh:mm a" formControlName="startTime" [(ngModel)]="assign.startTime"></ion-datetime>
+        </ion-item>
+        <p  class="validationHint" *ngIf="!isCordova && hasError('startTime', 'required')"> {{ 'REQURIED' | translate }} </p>
+        <ion-item *ngIf="!isCordova">
             <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
               <ion-icon name="calendar" item-start class="text-primary"></ion-icon>
               {{ 'END_TIME' | translate }}
             </ion-label>
-            <ion-datetime displayFormat="hh:mm a" pickerFormat="hh:mm a" formControlName="endTime" [(ngModel)]="assign.endTime" [lang]="language" [dir]="direction"></ion-datetime>
+            <ion-datetime displayFormat="hh:mm a" pickerFormat="hh:mm a" formControlName="endTime" [(ngModel)]="assign.endTime"></ion-datetime>
           </ion-item>
-          <p class="validationHint" *ngIf="hasError('endTime', 'required')"> {{ 'REQURIED' | translate }} </p>
+          <p class="validationHint" *ngIf="!isCordova && hasError('endTime', 'required')"> {{ 'REQURIED' | translate }} </p>
        
-          <ion-list radio-group style="background-color: #ffffff" formControlName="fromToday" [(ngModel)]="fromToday">
+          <!-- <ion-list radio-group style="background-color: #ffffff" formControlName="fromToday" [(ngModel)]="fromToday">
 
             <ion-list-header>
                 {{'CHANGE_FROM' | translate}}
@@ -90,7 +109,7 @@
       
       
       
-          </ion-list>    
+          </ion-list>     -->
 
     </form>
 

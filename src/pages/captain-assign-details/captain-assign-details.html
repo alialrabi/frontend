@@ -116,7 +116,7 @@
       <ion-row>
           <ion-col col-6>
             <ion-buttons end class="btn-style" style="width: 100%;">
-              <button ion-button (click)="getCaptainAssignes()" style="width: 100%;" [disabled]  = "!myForm.valid">
+              <button ion-button (click)="getCaptainAssignes(0)" style="width: 100%;" [disabled]  = "!myForm.valid">
                 {{ 'SEARCH' | translate }}
               </button>
             </ion-buttons>
@@ -186,14 +186,14 @@
                 {{'TO' | translate}} :
                 <strong text-wrap>{{assign.endDate}}</strong>
               </p>
-              <p style="margin-top: 10px">
+              <!-- <p style="margin-top: 10px">
                 {{'FROM' | translate}} :
                 <strong text-wrap>{{assign.startTime}}</strong>
               </p>
               <p style="margin-top: 10px">
                 {{'TO' | translate}} :
                 <strong text-wrap>{{assign.endTime}}</strong>
-              </p>
+              </p> -->
               <p style="margin-top: 10px">
                 {{'HOURS_COUNT' | translate}} :
                 <strong text-wrap>{{assign.hoursResult}}</strong>
@@ -208,6 +208,16 @@
               </p>
 
             </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-12>
+            <ion-buttons class="btn-style" style="width: 100%; padding: 0px;">
+              <button ion-button (click)="assignDetails(assign)" style="width: 100%;padding: 0px;">
+                {{ 'VIEW_ASSIGN_DETAILS' | translate }}
+              </button>
+            </ion-buttons>
+
           </ion-col>
         </ion-row>
       </ion-grid>

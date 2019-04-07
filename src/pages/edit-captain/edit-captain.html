@@ -1,0 +1,128 @@
+<!--
+  Generated template for the EditCaptainPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  
+    <ion-navbar>
+        <ion-grid style="width: 100%">
+              <ion-row>
+                <ion-col col-1>
+                  <ion-buttons style="margin-block-start: 2px" class="btn-style">
+                    <button ion-button (click)="back()">
+                      <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
+                    </button>
+                  </ion-buttons>
+                </ion-col>
+                <ion-col col-11  [style.margin-top] ="language == 'en' ? '5px' : '2px'">
+                    <ion-title>{{ 'EDIT_CAPTAIN_TITLE' | translate }}</ion-title>
+                </ion-col>
+              </ion-row>
+            </ion-grid>   
+          </ion-navbar>
+</ion-header>
+
+
+<ion-content class="auth-page">
+    <div class="login-content">
+      <div [ngClass]="language == 'en' ?  'circle-pic-div' : 'circle-pic-div-ar'" style="width:100%" text-center>
+  
+        <ion-grid class="grid-image" style="width: 50%">
+          <ion-row class="grid-image">
+            <ion-col class="grid-image" class="btn-col" col-9>
+  
+              <img class="circle-pic" *ngIf="!captain.image || captain.image == 'O'" src="../../assets/img/person.png" />
+              <img class="circle-pic" *ngIf="captain.image  && captain.image != 'O'" [src]="['data:image/jpg;base64',captain.image]" />
+            </ion-col>
+  
+            <ion-col class="btn-col" col-3 text-center>
+              <button ion-button icon-only clear class="icon-btn" float-left (click)="showDialog()">
+                <ion-icon name="camera"></ion-icon>
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+  
+      <!-- Login form -->
+      <form class="list-form" [formGroup]="myForm">
+        <ion-item>
+          <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+            <ion-icon name="flag" item-start class="text-primary"></ion-icon>
+            {{ 'CODE' | translate }}
+          </ion-label>
+          <ion-input type="number" [(ngModel)]="captain.code" formControlName="code" name="code" [lang]="language" [dir]="direction"></ion-input>
+        </ion-item>
+  
+        <p class="validationHint" *ngIf="hasError('code', 'required')"> {{ 'REQURIED' | translate }} </p>
+  
+  
+        <ion-item>
+          <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+            <ion-icon name="person" item-start class="text-primary"></ion-icon>
+            {{ 'NAME' | translate }}
+          </ion-label>
+          <ion-input type="text" [(ngModel)]="captain.name" formControlName="name" name="name" [lang]="language" [dir]="direction"></ion-input>
+        </ion-item>
+  
+        <p class="validationHint" *ngIf="hasError('name', 'required')"> {{ 'REQURIED' | translate }} </p>
+        <p class="validationHint" *ngIf="hasError('name', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
+  
+  
+        <ion-item>
+          <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+            <ion-icon name="call" item-start class="text-primary"></ion-icon>
+            {{ 'PHONE' | translate }}
+          </ion-label>
+          <ion-input type="number" [(ngModel)]="captain.phone" formControlName="phone" name="phone" [lang]="language" [dir]="direction"></ion-input>
+        </ion-item>
+  
+        <p class="validationHint" *ngIf="hasError('phone', 'required')"> {{ 'REQURIED' | translate }} </p>
+        <p class="validationHint" *ngIf="hasError('phone', 'pattern')">{{ 'PHONE_NUMBER' | translate }} </p>
+  
+  
+        <ion-item>
+          <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+            <ion-icon name="mail" item-start class="text-primary"></ion-icon>
+            {{ 'EMAIL' | translate }}
+          </ion-label>
+          <ion-input type="email" [(ngModel)]="account.email" name="email" formControlName="email" [lang]="language" [dir]="direction"></ion-input>
+        </ion-item>
+  
+        <p class="validationHint" *ngIf="hasError('email', 'required')"> {{ 'REQURIED' | translate }} </p>
+        <p class="validationHint" *ngIf="hasError('email', 'email')">{{ 'EMAIL_VALID' | translate }} </p>
+  
+        <ion-item>
+          <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+            <ion-icon name="lock" item-start class="text-primary"></ion-icon>
+            {{ 'PASSWORD' | translate }}
+          </ion-label>
+          <ion-input type="password" name="password" formControlName="password" [lang]="language" [dir]="direction"></ion-input>
+        </ion-item>
+  
+        
+        <p class="validationHint" *ngIf="hasError('password', 'minlength')">{{ 'MIN_LENGTH' | translate }} </p>
+  
+        <ion-item>
+          <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+            <ion-icon name="lock" item-start class="text-primary"></ion-icon>
+            {{ 'CONFIRM_PASSWORD' | translate }}
+          </ion-label>
+          <ion-input type="password" name="passwordConfirm" formControlName="passwordConfirm" [lang]="language" [dir]="direction"  [disabled]="!myForm.get('password').valid"></ion-input>
+        </ion-item>
+  
+        <p class="validationHint" *ngIf="hasError('passwordConfirm', 'required')"> {{ 'REQURIED' | translate }} </p>
+        <p class="validationHint" *ngIf="notMathces()">{{ 'CONFIRM_PASSWORD_VALIDATE' | translate }} </p>
+  
+      </form>
+  
+      <div margin-top style="margin-bottom: 40px;">
+        <button ion-button block color="dark" tappable (click)="editCaptain()" [disabled]="!myForm.valid || notMathces() || !valuesChanges()">
+          {{ 'EDIT_CAPTAIN_BUTTON' | translate }}
+        </button>
+      </div>
+    </div>
+  </ion-content>

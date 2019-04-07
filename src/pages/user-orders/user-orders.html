@@ -132,16 +132,104 @@
               <p>
                 {{ 'ORDERS' | translate }} :-
               </p>
-              <div *ngFor="let item of viewOrder(order.orders)">
+              <!-- <div *ngFor="let item of viewOrder(order.orders)">
                 <p style="margin-left: 15px;margin-right: 15px">
                   {{item.index}}-
                   <strong text-wrap>{{item.name}}</strong>
                 </p>
-              </div>
+              </div> -->
             </div>
           </ion-col>
         </ion-row>
+        </ion-grid>
+        <div class="account-info info-div2">
+            <ion-item class="item-background2">
+              <ion-grid style="padding: 0px">
+                <ion-row style="padding: 0px">
+                  <ion-col col-6>
+                    <p>
+                      {{'NAME' | translate}}
+                    </p>
+                  </ion-col>
+                  <ion-col col-1 style="padding: 0px">
+                      <p>
+                        <strong text-wrap>|</strong>
+                      </p>
+                    </ion-col>
+                  <ion-col col-5 style="padding: 0px">
+                    <p text-center>
+                      {{'PRICE' | translate}}
+                    </p>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-item>
+            <ion-item class="item-background2" *ngFor="let sub of order.subOrders">
+              <ion-grid style="padding: 0px">
+                <ion-row style="padding: 0px">
+                  <ion-col col-6 style="padding: 0px">
+                    <p>
+                      <strong text-wrap>{{sub.name}}</strong>
+                    </p>
+                  </ion-col>
+                  <ion-col col-1 style="padding: 0px">
+                      <p>
+                        <strong text-wrap>|</strong>
+                      </p>
+                    </ion-col>
+                  <ion-col col-5 style="padding: 0px">
+                    <p text-center>
+                      <strong text-wrap>{{sub.price}}</strong>
+                    </p>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-item>
+            <ion-item class="item-background2">
+              <ion-grid style="padding: 0px">
+                <ion-row style="padding: 0px">
+                  <ion-col col-6 style="padding: 0px">
+                    <p>
+                      <strong text-wrap>{{'DELIVER_PRICE' | translate}}</strong>
+                    </p>
+                  </ion-col>
+                  <ion-col col-1 style="padding: 0px">
+                      <p>
+                        <strong text-wrap>|</strong>
+                      </p>
+                    </ion-col>
+                  <ion-col col-5 style="padding: 0px">
+                    <p text-center>
+                      <strong text-wrap>10.0</strong>
+                    </p>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-item>
+            <ion-item class="item-background2">
+              <ion-grid style="padding: 0px">
+                <ion-row style="padding: 0px">
+                  <ion-col col-6 style="padding: 0px">
+                    <p>
+                      <strong text-wrap>{{'TOTAL' | translate}}</strong>
+                    </p>
+                  </ion-col>
+                  <ion-col col-1 style="padding: 0px">
+                      <p>
+                        <strong text-wrap>|</strong>
+                      </p>
+                    </ion-col>
+                  <ion-col col-5 style="padding: 0px">
+                    <p text-center>
+                      <strong text-wrap>{{order.total}}</strong>
+                    </p>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-item>
+          </div>
 
+        <ion-grid>
         <ion-row>
           <ion-col col-6>
             <ion-buttons end class="btn-style" style="width: 100%" *ngIf="myVar != 'delivered' && userType=='Admin'">

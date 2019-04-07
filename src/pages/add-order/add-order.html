@@ -3,14 +3,14 @@
   <ion-navbar>
     <ion-grid style="width: 100%">
       <ion-row>
-        <ion-col col-1 >
+        <ion-col col-1>
           <ion-buttons style="margin-block-start: 2px" class="btn-style">
             <button ion-button (click)="back()">
               <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
             </button>
           </ion-buttons>
         </ion-col>
-        <ion-col col-11 [style.margin-top] ="language == 'en' ? '5px' : '2px'">
+        <ion-col col-11  [style.margin-top] ="language == 'en' ? '5px' : '2px'">
           <ion-title>{{ 'ADD_ORDER' | translate }}</ion-title>
         </ion-col>
       </ion-row>
@@ -132,14 +132,26 @@
       <p class="validationHint" *ngIf="hasError('address2', 'maxlength' , myForm)">{{ 'MAX_LENGTH' | translate }} </p>
 
 
-      <div *ngFor="let item of ordersArray">
-        <p style="margin-left: 15px;">
-          {{item.index}}. {{item.name}}
-        </p>
+      <div class="account-info info-div">
+          <ion-item class="item-background"  *ngIf="ordersArray.length == 0">
+              <p  text-center>
+                <strong text-wrap>{{'NO_ITEMS_YET' | translate}}</strong>
+              </p>
+            </ion-item>
+          <ion-item class="item-background"  *ngFor="let or of ordersArray">
+              <p>
+                {{'NAME' | translate}} :
+                <strong text-wrap>{{or.name}}</strong>
+              </p>
+              <p>
+                  {{'PRICE' | translate}} :
+                  <strong text-wrap>{{or.price}}</strong>
+                </p>
+            </ion-item>
       </div>
 
       <!-- <form class="list-form" *ngFor="let item of order.orders;let count = index" [formGroup]="forms[count]"> -->
-      <ion-item>
+      <!-- <ion-item>
         <ion-label floating [style.transform-origin]="language =='en'? 'left top': 'right top'">
           <ion-icon name="reorder" item-start class="text-primary"></ion-icon>
           {{ 'ORDER' | translate }}
@@ -147,19 +159,19 @@
         <ion-input type="text" name="item+count" (input)="change()" formControlName="order" [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
       <p class="validationHint" *ngIf="hasError('order', 'required' , myForm)"> {{ 'REQURIED' | translate }} </p>
-      <p class="validationHint" *ngIf="hasError('order', 'maxlength' , myForm)">{{ 'MAX_LENGTH' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('order', 'maxlength' , myForm)">{{ 'MAX_LENGTH' | translate }} </p> -->
 
       <!-- </form>    -->
 
     </form>
     <ion-buttons end class="btn-style">
-      <button ion-button (click)="add()" [disabled]="!this.myForm.get('order').value.length>0">
+      <button ion-button (click)="add()">
         <ion-icon name="add"></ion-icon>
       </button>
     </ion-buttons>
 
     <div margin-top style="margin-bottom: 40px;">
-      <button ion-button block color="dark" tappable (click)="addOrder()" [disabled]="!myForm.valid">
+      <button ion-button block color="dark" tappable (click)="addOrder($event)" [disabled]="!myForm.valid || ordersArray.length == 0">
         {{ 'ADD_ORDER_BUTTON' | translate }}
       </button>
     </div>

@@ -56,9 +56,22 @@ import { TwitterConnect } from '@ionic-native/twitter-connect';
 import { EditAssignCaptainPageModule } from '../pages/edit-assign-captain/edit-assign-captain.module';
 import { Device } from '@ionic-native/device';
 
+import { DatePickerModule } from 'ionic-calendar-date-picker';
+
+import { DatePicker } from '@ionic-native/date-picker';
+
+//import { AdMobFree } from '@ionic-native/admob-free'; 
+
 import { LocationAccuracy } from '@ionic-native/location-accuracy'
 import { CaptainAssignDetailsPage } from '../pages/captain-assign-details/captain-assign-details';
 import { CaptainAssignDetailsPageModule } from '../pages/captain-assign-details/captain-assign-details.module';
+import { SubAssignDetailsPageModule } from '../pages/sub-assign-details/sub-assign-details.module';
+import { AgencyDetailsPageModule } from '../pages/agency-details/agency-details.module';
+import { CaptainDetailsPageModule } from '../pages/captain-details/captain-details.module';
+import { EditAgencyPage } from '../pages/edit-agency/edit-agency';
+import { EditAgencyPageModule } from '../pages/edit-agency/edit-agency.module';
+import { EditCaptainPageModule } from '../pages/edit-captain/edit-captain.module';
+import { AddOrderPopoverComponent } from '../components/add-order-popover/add-order-popover';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -83,11 +96,13 @@ export function provideSettings(storage: Storage) {
 
 @NgModule({
   declarations: [
-    MyApp
+    MyApp ,
+    AddOrderPopoverComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
+    DatePickerModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -124,12 +139,17 @@ export function provideSettings(storage: Storage) {
     ChooseAddressPageModule,
     OrdersMapPageModule,
     EditAssignCaptainPageModule,
-    CaptainAssignDetailsPageModule
+    CaptainAssignDetailsPageModule,
+    SubAssignDetailsPageModule,
+    AgencyDetailsPageModule,
+    CaptainDetailsPageModule,
+    EditAgencyPageModule,
+    EditCaptainPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp 
-    
+    MyApp ,
+    AddOrderPopoverComponent
     ],
   providers: [
     Api,
@@ -145,6 +165,7 @@ export function provideSettings(storage: Storage) {
     SplashScreen,
     StatusBar,
     Geolocation,
+    //AdMobFree,
     BackgroundMode,
     ImagePicker,
     Keyboard,
@@ -152,6 +173,7 @@ export function provideSettings(storage: Storage) {
     TwitterConnect,
     LocationAccuracy ,
     Device,
+    DatePicker,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler },

@@ -4,10 +4,12 @@ import { AddOrderPage } from './add-order';
 import { User } from '../../providers/user/user';
 import { TranslateModule } from '@ngx-translate/core';
 import { OrderService } from '../../providers/auth/order.service';
+import { AddOrderPopoverComponent } from '../../components/add-order-popover/add-order-popover';
 
 @NgModule({
   declarations: [
     AddOrderPage,
+    //AddOrderPopoverComponent
   ],
   imports: [
     IonicPageModule.forChild(AddOrderPage),
