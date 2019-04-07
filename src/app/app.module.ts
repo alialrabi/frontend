@@ -60,7 +60,7 @@ import { DatePickerModule } from 'ionic-calendar-date-picker';
 
 import { DatePicker } from '@ionic-native/date-picker';
 
-//import { AdMobFree } from '@ionic-native/admob-free'; 
+import { AdMobFree } from '@ionic-native/admob-free'; 
 
 import { LocationAccuracy } from '@ionic-native/location-accuracy'
 import { CaptainAssignDetailsPage } from '../pages/captain-assign-details/captain-assign-details';
@@ -72,6 +72,7 @@ import { EditAgencyPage } from '../pages/edit-agency/edit-agency';
 import { EditAgencyPageModule } from '../pages/edit-agency/edit-agency.module';
 import { EditCaptainPageModule } from '../pages/edit-captain/edit-captain.module';
 import { AddOrderPopoverComponent } from '../components/add-order-popover/add-order-popover';
+//import { Printer} from '@ionic-native/printer';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -165,13 +166,14 @@ export function provideSettings(storage: Storage) {
     SplashScreen,
     StatusBar,
     Geolocation,
-    //AdMobFree,
+    AdMobFree,
     BackgroundMode,
     ImagePicker,
     Keyboard,
     Facebook,
     TwitterConnect,
     LocationAccuracy ,
+    //Printer,
     Device,
     DatePicker,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },

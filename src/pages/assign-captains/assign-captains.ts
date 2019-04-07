@@ -333,9 +333,42 @@ export class AssignCaptainsPage {
         is24Hour: false,
         androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
     }).then(
-        date => { event.target.value = date },
+        date => {
+          console.log(date);
+          this.startDate = '';
+          this.startDate += date.getHours() > 9 ? date.getHours() : '0'+date.getHours()
+          this.startDate += ":";
+          this.startDate += date.getMinutes() > 9 ? date.getMinutes() : '0'+date.getMinutes()
+          console.log(this.startDate);
+          
+          
+           //event.target.value = date 
+
+          },
         err => console.log('Error occurred while getting date: ' + err)
     )
+}
+showDateTimePickerEnd(event) {
+  this.datePicker.show({
+      date: new Date(),
+      mode: 'time',
+      is24Hour: false,
+      androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
+  }).then(
+      date => {
+        console.log(date);
+        this.endDate = '';
+          this.endDate += date.getHours() > 9 ? date.getHours() : '0'+date.getHours()
+          this.endDate += ":";
+          this.endDate += date.getMinutes() > 9 ? date.getMinutes() : '0'+date.getMinutes()
+        console.log(this.endDate);
+        
+        
+         //event.target.value = date 
+
+        },
+      err => console.log('Error occurred while getting date: ' + err)
+  )
 }
 
 

@@ -27,7 +27,7 @@ import { Device } from '@ionic-native/device';
 import { AddCaptainPage } from '../pages/add-captain/add-captain';
 import { LocationAccuracy } from '@ionic-native/location-accuracy';
 
-//import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
+import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
 
 export interface MenuItem {
   title: string;
@@ -75,7 +75,7 @@ export class MyApp {
   public autoAssignInternal = null;
 
 
-  constructor(private translate: TranslateService,  private device: Device, private backgroundMode: BackgroundMode, public menu: MenuController, public platform: Platform, settings: Settings, private config: Config,
+  constructor(private translate: TranslateService,  private device: Device, public admobFree: AdMobFree , private backgroundMode: BackgroundMode, public menu: MenuController, public platform: Platform, settings: Settings, private config: Config,
     private statusBar: StatusBar, public locationAccuracy: LocationAccuracy, public toastCtrl: ToastController, private loginService: LoginService, private captainService: CaptainService, private app: App, private principal: Principal, private splashScreen: SplashScreen, private keyboard: Keyboard) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -84,7 +84,7 @@ export class MyApp {
       this.splashScreen.hide();
       this.keyboard.disableScroll(false);
       if (this.platform.is("android")) {
-       // this.showBannerAd();
+        this.showBannerAd();
       }
 
     });
@@ -103,19 +103,19 @@ export class MyApp {
 
   }
 
-  // showBannerAd() {
-  //   let bannerConfig: AdMobFreeBannerConfig = {
-  //     isTesting: true, // Remove in production
-  //     autoShow: true,
-  //     id: "ca-app-pub-3499153975001140/3738705665"
-  //   };
-  //   this.admobFree.banner.config(bannerConfig);
+  showBannerAd() {
+    let bannerConfig: AdMobFreeBannerConfig = {
+     // isTesting: true, // Remove in production
+      autoShow: true,
+      id: "ca-app-pub-3499153975001140/3738705665"
+    };
+    this.admobFree.banner.config(bannerConfig);
 
-  //   this.admobFree.banner.prepare().then(() => {
-  //     console.log("banner success");
+    this.admobFree.banner.prepare().then(() => {
+      console.log("banner success");
       
-  //   }).catch(e => console.log("baner erroooor",e));
-  // }
+    }).catch(e => console.log("baner erroooor",e));
+  }
 
   ngOnInit() {
 
