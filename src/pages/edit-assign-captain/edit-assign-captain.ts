@@ -177,9 +177,14 @@ export class EditAssignCaptainPage {
 
     let assignCaptains = {
       id: this.assign.id,
-      date: this.formatDate(this.selectedDate),
+      date: null,
       startTime: this.myForm.get("startTime").value,
       endTime: this.myForm.get("endTime").value,
+    }
+    if(this.selectedDate == this.assign.date){
+      assignCaptains.date = this.assign.date
+    }else{
+      assignCaptains.date = this.formatDate(this.selectedDate);
     }
     
     this.captainService.editAssignCaptains(assignCaptains).subscribe(
@@ -233,8 +238,42 @@ export class EditAssignCaptainPage {
         is24Hour: false,
         androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
     }).then(
-        date => { event.target.value = date },
+        date => {
+          console.log(date);
+          this.assign.startTime = '';
+          this.assign.startTime += date.getHours() > 9 ? date.getHours() : '0'+date.getHours()
+          this.assign.startTime += ":";
+          this.assign.startTime += date.getMinutes() > 9 ? date.getMinutes() : '0'+date.getMinutes()
+          console.log( this.assign.startTime);
+          
+          
+           //event.target.value = date 
+
+          },
+        err => console.log('Error occurred while getting date: ' + err)
+    )
+}
+  showDateTimePickerEnd(event) {
+    this.datePicker.show({
+        date: new Date(),
+        mode: 'time',
+        is24Hour: false,
+        androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
+    }).then(
+        date => {
+          console.log(date);
+          this.assign.endTime = '';
+            this.assign.endTime += date.getHours() > 9 ? date.getHours() : '0'+date.getHours()
+            this.assign.endTime += ":";
+            this.assign.endTime += date.getMinutes() > 9 ? date.getMinutes() : '0'+date.getMinutes()
+          console.log(this.assign.endTime);
+          
+          
+           //event.target.value = date 
+  
+          },
         err => console.log('Error occurred while getting date: ' + err)
     )
   }
+  
 }

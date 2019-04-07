@@ -10,8 +10,11 @@ import { FirstRunPage } from '../pages';
 import { Principal } from '../../providers/auth/principal.service';
 import { UserOrdersPage } from '../user-orders/user-orders';
 import { MyApp } from '../../app/app.component';
-import { async } from 'q';
 import { AddOrderPopoverComponent } from '../../components/add-order-popover/add-order-popover';
+import { WindowRef } from '../../providers/settings/windowRef';
+
+//import { Printer, PrintOptions } from '@ionic-native/printer';
+
 
 /**
  * Generated class for the AddOrderPage page.
@@ -68,11 +71,19 @@ export class AddOrderPage {
   daminhoorValue = ''
   banhaValue = ''
 
+  order1 = {
+    name: '',
+    address: '',
+    secondAddress: '',
+    firstPhone: '',
+    secondPhone: ''
+  }
 
+  print = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public poverCtrl:PopoverController , public modalController: ModalController, public toastCtrl: ToastController
+  constructor(public navCtrl: NavController, public navParams: NavParams, public poverCtrl: PopoverController, public modalController: ModalController, public toastCtrl: ToastController
     , public translateService: TranslateService, private loading: LoadingController, public platform: Platform,
-    private builder: FormBuilder, public user: User, private app: App, private principal: Principal, public orderService: OrderService) {
+    private builder: FormBuilder, public windowRef:WindowRef  ,public user: User, private app: App, private principal: Principal, public orderService: OrderService) {
 
     console.log('con');
     this.address = this.navParams.get("address");
@@ -226,7 +237,7 @@ export class AddOrderPage {
     });
 
     return await modal.present({
-      ev:event
+      ev: event
     });
 
 
@@ -281,8 +292,14 @@ export class AddOrderPage {
       fromAddress: null,
       isUserOrder: false,
       addressId: 0,
-      subOrders:this.ordersArray
+      subOrders: this.ordersArray
     }
+    this.order1.address = this.myForm.get("address1").value;
+    this.order1.firstPhone = orderObject.firstPhone;
+    this.order1.name = orderObject.name;
+    this.order1.secondAddress = orderObject.secondAddress;
+    this.order1.secondPhone = orderObject.secondPhone;
+
     if (this.userType == 'User') {
       orderObject.userId = this.account.id;
       orderObject.fromAddress = this.myForm.get('fromAddress').value;
@@ -295,24 +312,37 @@ export class AddOrderPage {
 
     console.log(orderObject, 'ssssssssssss');
 
-
     this.orderService.save(orderObject).subscribe((res) => {
       console.log(res, 'res');
 
       let obj = res;
-
-      let toast = this.toastCtrl.create({
-        message: this.addORDERSuccessString,
-        duration: 3000,
-        position: 'top'
-      });
-      toast.present();
       load.dismiss();
-      if (this.userType == 'User') {
-        this.app.getRootNavs()[0].setRoot(UserOrdersPage);
+      if (this.userType != 'User' && !this.platform.is("cordova")) {
+        this.print = true;
+        setTimeout(() => {
+          this.printCheck(obj, this.print);
+        }, 700);
       } else {
-        this.navCtrl.setRoot('AssignOrderPage', { item: obj })
+        if (this.userType == 'User') {
+          this.app.getRootNavs()[0].setRoot(UserOrdersPage);
+        } else {
+          this.navCtrl.setRoot('AssignOrderPage', { item: obj })
+        }
       }
+
+
+
+      // let toast = this.toastCtrl.create({
+      //   message: this.addORDERSuccessString,
+      //   duration: 3000,
+      //   position: 'top'
+      // });
+      // toast.present();
+
+
+
+
+
     }, (err) => {
       console.log('error', err);
 
@@ -331,6 +361,72 @@ export class AddOrderPage {
 
 
 
+  }
+  printCheck(obj, print) {
+    // if (print) {
+    //   if (this.platform.is("cordova")) {
+    //     this.printer.isAvailable().then(onSuccess => {
+
+    //       console.log(onSuccess, "success");
+    //       this.print = true;
+    //       var dev = document.getElementById("print");
+
+    //       let options: PrintOptions = {
+    //         name: 'MyDocument',
+    //         printerId: 'printer007',
+    //         duplex: true,
+    //         landscape: true,
+    //         grayscale: true
+    //       }
+
+    //       this.printer.print(dev, options).then(onSuccess2 => {
+    //         console.log("success", onSuccess2);
+
+    //         if (this.userType == 'User') {
+    //           this.app.getRootNavs()[0].setRoot(UserOrdersPage);
+    //         } else {
+    //           this.navCtrl.setRoot('AssignOrderPage', { item: obj })
+    //         }
+
+
+    //       }, err2 => {
+    //         console.log(err2, '11111111111111111111');
+    //         if (this.userType == 'User') {
+    //           this.app.getRootNavs()[0].setRoot(UserOrdersPage);
+    //         } else {
+    //           this.navCtrl.setRoot('AssignOrderPage', { item: obj })
+    //         }
+
+    //       })
+    //     }, err => {
+    //       console.log(err, '22222222222222222222222');
+    //       if (this.userType == 'User') {
+    //         this.app.getRootNavs()[0].setRoot(UserOrdersPage);
+    //       } else {
+    //         this.navCtrl.setRoot('AssignOrderPage', { item: obj })
+    //       }
+
+    //     })
+    //   } else {
+
+    // console.log(this.print);
+
+    // console.log("not cordova");
+
+
+    this.windowRef.nativeWindow.print()
+
+    if (this.userType == 'User') {
+      this.app.getRootNavs()[0].setRoot(UserOrdersPage);
+    } else {
+      this.navCtrl.setRoot('AssignOrderPage', { item: obj })
+    }
+
+    //   }
+    // } else {
+    //   this.print = true;
+    //   this.printCheck(obj, this.print);
+    // }
   }
 
   change() {
@@ -405,5 +501,12 @@ export class AddOrderPage {
       this.navCtrl.setRoot(OrdersPage);
     }
 
+  }
+  getTotal() {
+    let total = 10.0;
+    this.ordersArray.forEach(element => {
+      total += Number.parseFloat(element.price)
+    })
+    return total;
   }
 }

@@ -17,11 +17,11 @@
             </button>
           </ion-buttons>
         </ion-col>
-        <ion-col col-10 [style.margin-top] ="language == 'en' ? '5px' : '2px'">
+        <ion-col col-9.5 [style.margin-top] ="language == 'en' ? '5px' : '2px'">
           <ion-title>{{ 'CAPTAIN_DETAILS' | translate }}</ion-title>
         </ion-col>
-        <ion-col col-1>
-            <ion-buttons style="margin-block-start: 2px;padding-bottom: 0px;padding-top: 0px" class="btn-style" >
+        <ion-col col-1 text-center>
+            <ion-buttons style="padding-bottom: 0px;padding-top: 0px" class="btn-style" >
               <button ion-button (click)="editCaptain()">
                 <ion-icon name="create"></ion-icon>
               </button>

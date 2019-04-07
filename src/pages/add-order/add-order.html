@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header *ngIf="!print">
 
   <ion-navbar>
     <ion-grid style="width: 100%">
@@ -10,7 +10,7 @@
             </button>
           </ion-buttons>
         </ion-col>
-        <ion-col col-11  [style.margin-top] ="language == 'en' ? '5px' : '2px'">
+        <ion-col col-11 [style.margin-top]="language == 'en' ? '5px' : '2px'">
           <ion-title>{{ 'ADD_ORDER' | translate }}</ion-title>
         </ion-col>
       </ion-row>
@@ -24,7 +24,7 @@
   <div class="login-content">
 
     <!-- Logo -->
-    <div padding text-center>
+    <div padding text-center *ngIf="!print">
       <div class="logo"></div>
       <h2 ion-text class="text-primary">
         {{ 'TLABATAC' | translate }}
@@ -32,7 +32,7 @@
     </div>
 
     <!-- Login form -->
-    <form class="list-form" [formGroup]="myForm">
+    <form class="list-form" [formGroup]="myForm" *ngIf="!print">
       <!-- <ion-item>
         <ion-label floating>
           <ion-icon name="person" item-start class="text-primary"></ion-icon>
@@ -133,21 +133,21 @@
 
 
       <div class="account-info info-div">
-          <ion-item class="item-background"  *ngIf="ordersArray.length == 0">
-              <p  text-center>
-                <strong text-wrap>{{'NO_ITEMS_YET' | translate}}</strong>
-              </p>
-            </ion-item>
-          <ion-item class="item-background"  *ngFor="let or of ordersArray">
-              <p>
-                {{'NAME' | translate}} :
-                <strong text-wrap>{{or.name}}</strong>
-              </p>
-              <p>
-                  {{'PRICE' | translate}} :
-                  <strong text-wrap>{{or.price}}</strong>
-                </p>
-            </ion-item>
+        <ion-item class="item-background" *ngIf="ordersArray.length == 0">
+          <p text-center>
+            <strong text-wrap>{{'NO_ITEMS_YET' | translate}}</strong>
+          </p>
+        </ion-item>
+        <ion-item class="item-background" *ngFor="let or of ordersArray">
+          <p>
+            {{'NAME' | translate}} :
+            <strong text-wrap>{{or.name}}</strong>
+          </p>
+          <p>
+            {{'PRICE' | translate}} :
+            <strong text-wrap>{{or.price}}</strong>
+          </p>
+        </ion-item>
       </div>
 
       <!-- <form class="list-form" *ngFor="let item of order.orders;let count = index" [formGroup]="forms[count]"> -->
@@ -164,17 +164,132 @@
       <!-- </form>    -->
 
     </form>
-    <ion-buttons end class="btn-style">
+    <ion-buttons end class="btn-style" *ngIf="!print">
       <button ion-button (click)="add()">
         <ion-icon name="add"></ion-icon>
       </button>
     </ion-buttons>
 
-    <div margin-top style="margin-bottom: 40px;">
+    <div margin-top style="margin-bottom: 40px;" *ngIf="!print">
       <button ion-button block color="dark" tappable (click)="addOrder($event)" [disabled]="!myForm.valid || ordersArray.length == 0">
         {{ 'ADD_ORDER_BUTTON' | translate }}
       </button>
     </div>
+
+
+    <div id="print" *ngIf="print">
+
+      <div class="account-info info-div">
+        <p>
+          {{ 'NAME' | translate }} :
+          <strong text-wrap>{{order1.name}}</strong>
+        </p>
+        <p>
+          {{ 'ADDRESS' | translate }} 1 :
+          <strong text-wrap>{{order1.address}}</strong>
+        </p>
+        <p *ngIf="order1.secondAddress != null && order1.secondAddress != ''">
+          {{ 'ADDRESS' | translate }} 2 :
+          <strong text-wrap>{{order1.secondAddress}}</strong>
+        </p>
+        <p>
+          {{ 'PHONE_NUMBER_PHONE' | translate }} 1 :
+          <strong text-wrap>{{order1.firstPhone}}</strong>
+        </p>
+        <p *ngIf="order1.secondPhone != null && order1.secondPhone != ''">
+          {{ 'PHONE_NUMBER_PHONE' | translate }} 2 :
+          <strong text-wrap>{{order1.secondPhone}}</strong>
+        </p>
+
+      </div>
+      <div class="account-info info-div2">
+        <ion-item class="item-background2">
+          <ion-grid style="padding: 0px">
+            <ion-row style="padding: 0px">
+              <ion-col col-6>
+                <p>
+                  {{'NAME' | translate}}
+                </p>
+              </ion-col>
+              <ion-col col-1 style="padding: 0px">
+                <p>
+                  <strong text-wrap>|</strong>
+                </p>
+              </ion-col>
+              <ion-col col-5 style="padding: 0px">
+                <p text-center>
+                  {{'PRICE' | translate}}
+                </p>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+        <ion-item class="item-background2" *ngFor="let sub of ordersArray">
+          <ion-grid style="padding: 0px">
+            <ion-row style="padding: 0px">
+              <ion-col col-6 style="padding: 0px">
+                <p>
+                  <strong text-wrap>{{sub.name}}</strong>
+                </p>
+              </ion-col>
+              <ion-col col-1 style="padding: 0px">
+                <p>
+                  <strong text-wrap>|</strong>
+                </p>
+              </ion-col>
+              <ion-col col-5 style="padding: 0px">
+                <p text-center>
+                  <strong text-wrap>{{sub.price}}</strong>
+                </p>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+        <ion-item class="item-background2">
+          <ion-grid style="padding: 0px">
+            <ion-row style="padding: 0px">
+              <ion-col col-6 style="padding: 0px">
+                <p>
+                  <strong text-wrap>{{'DELIVER_PRICE' | translate}}</strong>
+                </p>
+              </ion-col>
+              <ion-col col-1 style="padding: 0px">
+                <p>
+                  <strong text-wrap>|</strong>
+                </p>
+              </ion-col>
+              <ion-col col-5 style="padding: 0px">
+                <p text-center>
+                  <strong text-wrap>10.0</strong>
+                </p>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+        <ion-item class="item-background2">
+          <ion-grid style="padding: 0px">
+            <ion-row style="padding: 0px">
+              <ion-col col-6 style="padding: 0px">
+                <p>
+                  <strong text-wrap>{{'TOTAL' | translate}}</strong>
+                </p>
+              </ion-col>
+              <ion-col col-1 style="padding: 0px">
+                <p>
+                  <strong text-wrap>|</strong>
+                </p>
+              </ion-col>
+              <ion-col col-5 style="padding: 0px">
+                <p text-center>
+                  <strong text-wrap>{{getTotal()}}</strong>
+                </p>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </div>
+    </div>
   </div>
+
 
 </ion-content>

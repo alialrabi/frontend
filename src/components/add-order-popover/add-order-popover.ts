@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {  ViewController } from 'ionic-angular';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { MyApp } from '../../app/app.component';
 
 /**
  * Generated class for the AddOrderPopoverComponent component.
@@ -16,6 +17,9 @@ export class AddOrderPopoverComponent {
 
   myForm: FormGroup;
 
+  language = MyApp.language
+  direction = MyApp.direction
+  
   constructor( public viewCtrl: ViewController , private builder: FormBuilder) {
     this.myForm = builder.group({      
       "order": ['', [Validators.required, Validators.maxLength(45)]],
