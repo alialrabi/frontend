@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { IonicPage, NavController, ToastController, AlertController, App, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, ToastController, AlertController, App, LoadingController, Platform } from 'ionic-angular';
 import { MainPage, FirstRunPage } from '../pages';
 import { LoginService } from '../../providers/login/login.service';
 import { Api } from '../../providers/api/api';
@@ -19,6 +19,10 @@ import { MyApp } from '../../app/app.component';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 import { TwitterConnect } from '@ionic-native/twitter-connect';
 import { User } from '../../providers/user/user';
+
+import { AuthService } from "angular4-social-login";
+import { FacebookLoginProvider, GoogleLoginProvider } from "angular4-social-login";
+
 
 @IonicPage()
 @Component({
@@ -53,7 +57,9 @@ export class LoginPage {
     public translateService: TranslateService,
     private builder: FormBuilder,
     private principal: Principal,
+    private authService: AuthService,
     private fb: Facebook,
+    public platform: Platform,
     private accountService: AccountService, private captainService: CaptainService, public myApp: MyApp) {
 
     this.translateService.get(['LOGIN_ERROR', 'PLEASE_WAIT']).subscribe((values) => {
@@ -91,9 +97,9 @@ export class LoginPage {
     this.loginService.login(this.account).then((response) => {
 
       load.dismiss();
-     this.myApp.checkAccess();
+      this.myApp.checkAccess();
 
-     this.validateUser();
+      this.validateUser();
 
 
 
@@ -205,59 +211,71 @@ export class LoginPage {
 
     // })
     // load.present()
-    let classlIn = this;
-    this.fb.login(['public_profile', 'email'])
-      .then(
-        (res: FacebookLoginResponse) => {
-
-          console.log('Logged into Facebook!', res)
-          // let toast1 = classlIn.toastCtrl.create({
-          //   message: '----------------------------',
-          //   duration: 5000,
-          //   position: 'top'
-          // });
-          // toast1.present();
 
 
-          classlIn.fb.api('me?fields=id,name,email,first_name,last_name', []).then(profile => {
-            classlIn.userData = { email: profile['email'], first_name: profile['first_name'], last_name: profile['last_name'] }
-            //load.dismiss()
+    if (this.platform.is("cordova")) {
+      let classlIn = this;
+      this.fb.login(['public_profile', 'email'])
+        .then(
+          (res: FacebookLoginResponse) => {
+
+            console.log('Logged into Facebook!', res)
             // let toast1 = classlIn.toastCtrl.create({
-            //   message: '*****************************',
-            //   duration: 1000,
+            //   message: '----------------------------',
+            //   duration: 5000,
             //   position: 'top'
             // });
             // toast1.present();
-            // let toast = classlIn.toastCtrl.create({
-            //   message: JSON.stringify(classlIn.userData),
-            //   duration: 20000,
-            //   position: 'top'
-            // });
-            // toast.present();
-            classlIn.doLoginToFacebook();
-          }).catch(e => {
 
-            console.log('Error logging into Facebook', e)
-            //load.dismiss();
-            //   let toast = classlIn.toastCtrl.create({
-            //     message: JSON.stringify(e),
-            //     duration: 20000,
-            //     position: 'top'
-            //   });
-            //   toast.present();
-          });
 
-        })
-      .catch(e => {
-        console.log('Error logging into Facebook', e)
-        // let toast = classlIn.toastCtrl.create({
-        //   message: JSON.stringify(e).substring(30, JSON.stringify(e).length - 1),
-        //   duration: 20000,
-        //   position: 'top'
-        // });
-        // toast.present();
-      });
+            classlIn.fb.api('me?fields=id,name,email,first_name,last_name', []).then(profile => {
+              classlIn.userData = { email: profile['email'], first_name: profile['first_name'], last_name: profile['last_name'] }
+              //load.dismiss()
+              // let toast1 = classlIn.toastCtrl.create({
+              //   message: '*****************************',
+              //   duration: 1000,
+              //   position: 'top'
+              // });
+              // toast1.present();
+              // let toast = classlIn.toastCtrl.create({
+              //   message: JSON.stringify(classlIn.userData),
+              //   duration: 20000,
+              //   position: 'top'
+              // });
+              // toast.present();
+              classlIn.doLoginToFacebook();
+            }).catch(e => {
 
+              console.log('Error logging into Facebook', e)
+              //load.dismiss();
+              //   let toast = classlIn.toastCtrl.create({
+              //     message: JSON.stringify(e),
+              //     duration: 20000,
+              //     position: 'top'
+              //   });
+              //   toast.present();
+            });
+
+          })
+        .catch(e => {
+          console.log('Error logging into Facebook', e)
+          // let toast = classlIn.toastCtrl.create({
+          //   message: JSON.stringify(e).substring(30, JSON.stringify(e).length - 1),
+          //   duration: 20000,
+          //   position: 'top'
+          // });
+          // toast.present();
+        });
+    } else {
+
+      this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then(data => {
+       this.userData = { email: data.email, first_name: data.firstName, last_name: data.lastName }
+       this.doLoginToFacebook();
+      }).catch(err => {
+        console.log(err, 'errr 222222222222');
+
+      })
+    }
   }
   doLoginToFacebook() {
 
@@ -346,22 +364,22 @@ export class LoginPage {
     this.tw.login()
       .then(res => {
 
-        console.log(res , '1111111111111');
+        console.log(res, '1111111111111');
 
-        this.userData.email = res.userName+'@twitter.com';
+        this.userData.email = res.userName + '@twitter.com';
         // Get user data
         // There is a bug which fires the success event in the error event.
         // The issue is reported in https://github.com/chroa/twitter-connect-plugin/issues/23
         this.tw.showUser()
           .then(user => {
-            console.log(user , 'useeeeeeeeeeeeeeeeer');
+            console.log(user, 'useeeeeeeeeeeeeeeeer');
             let name = user.name
             let spaceIndex = name.indexOf(' ');
-            if(spaceIndex == 0 || spaceIndex == -1){
+            if (spaceIndex == 0 || spaceIndex == -1) {
               spaceIndex == name.length
             }
-            this.userData.first_name = name.substr(0,spaceIndex);
-            this.userData.last_name = name.substr(name.indexOf(' ')+1);
+            this.userData.first_name = name.substr(0, spaceIndex);
+            this.userData.last_name = name.substr(name.indexOf(' ') + 1);
             loading.dismiss();
             this.doLoginToFacebook();
           }, err => {
@@ -370,8 +388,8 @@ export class LoginPage {
 
           })
       }, err => {
-        console.log(err , 'errrrrrrrrrror 11111111111');
-        
+        console.log(err, 'errrrrrrrrrror 11111111111');
+
         loading.dismiss();
       })
   }

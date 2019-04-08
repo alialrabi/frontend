@@ -74,6 +74,10 @@ import { EditCaptainPageModule } from '../pages/edit-captain/edit-captain.module
 import { AddOrderPopoverComponent } from '../components/add-order-popover/add-order-popover';
 //import { Printer} from '@ionic-native/printer';
 
+import { SocialLoginModule, AuthServiceConfig } from "angular4-social-login";
+import { GoogleLoginProvider, FacebookLoginProvider } from "angular4-social-login";
+ 
+
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
 export function createTranslateLoader(http: HttpClient) {
@@ -95,12 +99,20 @@ export function provideSettings(storage: Storage) {
   });
 }
 
+let config = new AuthServiceConfig([
+  {
+    id: FacebookLoginProvider.PROVIDER_ID,
+    provider: new FacebookLoginProvider("340338943258185")
+  }
+]);
+
 @NgModule({
   declarations: [
     MyApp ,
     AddOrderPopoverComponent
   ],
   imports: [
+    SocialLoginModule.initialize(config),
     BrowserModule,
     HttpClientModule,
     DatePickerModule,
