@@ -46,6 +46,7 @@
     "@ionic/storage": "2.2.0",
     "@ngx-translate/core": "8.0.0",
     "@ngx-translate/http-loader": "2.0.0",
+    "angular4-social-login": "^1.1.1",
     "cordova": "^8.1.2",
     "cordova-admob-sdk": "0.24.1",
     "cordova-android": "7.1.4",
