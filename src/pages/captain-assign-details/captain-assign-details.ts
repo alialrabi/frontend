@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, Platform, AlertController, ToastController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 import { CaptainService } from '../../providers/auth/captain.service';
 import { CaptainsPage } from '../captains/captains';
@@ -29,7 +29,7 @@ export class CaptainAssignDetailsPage {
 
   language = MyApp.language
   direction = MyApp.direction
-
+  side = "left";
   seachFlag = false;
 
   seaarchFilter = {
@@ -46,10 +46,21 @@ export class CaptainAssignDetailsPage {
 
   pageNum = 1;
   moreData = 'Loading more data...'
+  deleteSubTitle = '';
+  deleteSubMessage = '';
+  ok = '';
+  cancel = '';
+  deleteSuccess = '';
+  deleteError = ''
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private builder: FormBuilder, public platform: Platform, private loading: LoadingController, public translateService: TranslateService, public accountService: AccountService, public captainService: CaptainService) {
+  constructor(public navCtrl: NavController,  public toastCtrl: ToastController, public _alert: AlertController , public navParams: NavParams, private builder: FormBuilder, public platform: Platform, private loading: LoadingController, public translateService: TranslateService, public accountService: AccountService, public captainService: CaptainService) {
 
     this.captain = navParams.get("item");
+    if(this.language == 'en'){
+      this.side = "right";
+    }else{
+      this.side = "left";
+    }
 
     var CurrentYear = new Date().getFullYear()
     this.maxDate = CurrentYear + 2;
@@ -64,10 +75,16 @@ export class CaptainAssignDetailsPage {
     });
 
 
-    this.translateService.get(['PLEASE_WAIT', 'MORE_DATA']).subscribe((values) => {
+    this.translateService.get(['PLEASE_WAIT', 'MORE_DATA' , 'DELETE_SUB_TITLE' , 'DELETE_SUB_MESSAGE' , 'DONE' , 'CANCEL' , 'DELETE_SUBASSIGN_SUCCESS' , 'DELETE_SUBASSIGN_ERROR']).subscribe((values) => {
 
       this.pleaseWait = values.PLEASE_WAIT
       this.moreData = values.MORE_DATA
+      this.deleteSubTitle = values.DELETE_SUB_TITLE
+      this.deleteSubMessage  =values.DELETE_SUB_MESSAGE
+      this.ok = values.DONE
+      this.cancel = values.CANCEL
+      this.deleteSuccess = values.DELETE_SUBASSIGN_SUCCESS
+      this.deleteError = values.DELETE_SUBASSIGN_ERROR
     })
 
     this.platform.registerBackButtonAction(() => {
@@ -195,7 +212,7 @@ export class CaptainAssignDetailsPage {
 
 
 
-    this.captainService.getCaptainAssignDetails(this.seaarchFilter , pageNum).subscribe(
+    this.captainService.getCaptainAssignDetails(this.seaarchFilter, pageNum).subscribe(
       res => {
         if (pageNum == 0) {
           this.assingCaptains = res;
@@ -278,8 +295,62 @@ export class CaptainAssignDetailsPage {
     const ctrl = this.myForm.get(field);
     return ctrl.dirty && ctrl.hasError(error);
   }
-  assignDetails(assign){
-    this.navCtrl.setRoot(SubAssignDetailsPage, { item: assign, from: "CaptainAssignDetailsPage" , captain:this.captain });
+  assignDetails(assign) {
+    this.navCtrl.setRoot(SubAssignDetailsPage, { item: assign, from: "CaptainAssignDetailsPage", captain: this.captain });
+  }
+  DeleteSub(sub) {
+
+    let alert = this._alert.create({
+      title: this.deleteSubTitle,
+      message: this.deleteSubMessage,
+      buttons: [
+        {
+          text: this.ok,
+          handler: () => {
+            this.deleteSubAssign(sub)
+          }
+        },
+        {
+          text: this.cancel,
+          handler: () => {
+            
+          }
+        }
+      ]
+    });
+    alert.present();
+
+
+
+  }
+  deleteSubAssign(assign){
+    let load = this.loading.create({
+      content: this.pleaseWait
+
+
+    })
+    load.present()
+    this.captainService.deleteSubAssign(assign.id).subscribe(res =>{
+      load.dismiss();
+      let toast = this.toastCtrl.create({
+        message: this.deleteSuccess,
+        duration: 3000,
+        position: 'top'
+      });
+      toast.present();
+      this.getCaptainAssignes(0);
+      this.pageNum = 1;
+    },err =>{
+      console.log(err , 'errror');
+      let toast = this.toastCtrl.create({
+        message: this.deleteError,
+        duration: 3000,
+        position: 'middle'
+      });
+      toast.present();
+      load.dismiss();
+      
+    })
   }
 
 }

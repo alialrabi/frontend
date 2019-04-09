@@ -71,6 +71,7 @@ export class AddCaptainPage {
   public choosePhoto = '';
   public chooseFromGalary = '';
   public takePhoto = '';
+  platformType="cordova";
   constructor(public navCtrl: NavController, public navParams: NavParams, public _alert: AlertController
     , public imagePicker: ImagePicker, public camera: Camera, public toastCtrl: ToastController,
     public captainService: CaptainService,
@@ -81,6 +82,11 @@ export class AddCaptainPage {
     public storage: LocalStorageService,
     public translateService: TranslateService, private app: App, private builder: FormBuilder, public user: User, private accountService: AccountService) {
 
+      if(platform.is("cordova")){
+        this.platformType = "cordova";
+      }else{
+        this.platformType = "notCordova"
+      }
 
     this.translateService.get(['ADD_CAPTAIN_ERROR', 'ADD_CAPTAIN_SUCCESS', 'CHOOSE_PHOTO', 'CHOOSE_FROM_GALARY', 'TAKE_A_PHOTO', 'PLEASE_WAIT', 'EXISTING_USER_ERROR', 'INVALID_PASSWORD_ERROR' , 'SIGNUP_ERROR']).subscribe((values) => {
       this.addAddressError = values.ADD_CAPTAIN_ERROR;

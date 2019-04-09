@@ -28,7 +28,8 @@ export class CaptainDetailsPage {
     email: "",
     orderCount: '',
     creationDate: '2019-01-01T00:00:00.000Z',
-    password: ""
+    password: "",
+    agencies:[]
   };
   togglePassword = true;
   passwordEye = "eye"

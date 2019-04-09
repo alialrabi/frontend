@@ -27,7 +27,8 @@ export class AgencyDetailsPage {
     email:"",
     orderCount:'',
     creationDate:'2019-01-01T00:00:00.000Z',
-    password:""
+    password:"",
+    captains:[]
   };
   passwordEye="eye"
   language = MyApp.language
