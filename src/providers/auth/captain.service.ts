@@ -91,5 +91,9 @@ export class CaptainService  {
 
         return this.http.put(Api.API_URL_login + '/tlabatac/api/autoUnAssign?access_token=' +this.authservice.getToken() , null);
     }
+    deleteSubAssign(subAssignId): Observable<Object> {
+
+        return this.http.delete(Api.API_URL_login + '/tlabatac/api/sub-assigns/'+subAssignId+'?access_token=' +this.authservice.getToken());
+    }
 
 }

@@ -178,14 +178,14 @@
                 <strong text-wrap> {{assign.firstName}} {{assign.lastName}}</strong>
               </p>
 
-              <p style="margin-top: 10px">
+              <!-- <p style="margin-top: 10px">
                 {{'FROM' | translate}} :
                 <strong text-wrap>{{assign.startDate}}</strong>
               </p>
               <p style="margin-top: 10px">
                 {{'TO' | translate}} :
                 <strong text-wrap>{{assign.endDate}}</strong>
-              </p>
+              </p> -->
               <!-- <p style="margin-top: 10px">
                 {{'FROM' | translate}} :
                 <strong text-wrap>{{assign.startTime}}</strong>
@@ -194,10 +194,7 @@
                 {{'TO' | translate}} :
                 <strong text-wrap>{{assign.endTime}}</strong>
               </p> -->
-              <p style="margin-top: 10px">
-                {{'HOURS_COUNT' | translate}} :
-                <strong text-wrap>{{assign.hoursResult}}</strong>
-              </p>
+              
               <p style="margin-top: 10px" *ngIf="assign.unAssignDetails != null && assign.unAssignDetails != ''">
                 {{'STATUS' | translate}} :
                 <strong text-wrap>{{assign.unAssignDetails}}</strong>
@@ -206,11 +203,15 @@
                 {{'STATUS' | translate}} :
                 <strong text-wrap>{{'STILL_ASSIGN' | translate}}</strong>
               </p>
+              <p style="margin-top: 10px">
+                {{'HOURS_COUNT' | translate}} :
+                <strong text-wrap>{{assign.hoursResult}}</strong>
+              </p>
 
             </div>
           </ion-col>
         </ion-row>
-        <ion-row>
+        <!-- <ion-row>
           <ion-col col-12>
             <ion-buttons class="btn-style" style="width: 100%; padding: 0px;">
               <button ion-button (click)="assignDetails(assign)" style="width: 100%;padding: 0px;">
@@ -219,9 +220,97 @@
             </ion-buttons>
 
           </ion-col>
-        </ion-row>
+        </ion-row> -->
       </ion-grid>
 
+
+      <div class="account-info info-div2" *ngIf="assign.subAssigns.length != 0">
+          <ion-item class="item-background2" text-center *ngIf="assign.subAssigns.length != 0">
+              <p>
+                <strong text-wrap>{{'DAYS_DETAILS' | translate}}</strong>
+              </p>
+            </ion-item>
+        <ion-item class="item-background2" *ngIf="assign.subAssigns.length != 0">
+          <ion-grid style="padding: 0px">
+            <ion-row style="padding: 0px">
+              <ion-col col-4>
+                <p>
+                  {{'DATE' | translate}}
+                </p>
+              </ion-col>
+              <ion-col col-1 style="padding: 0px">
+                  <p>
+                    <strong text-wrap>|</strong>
+                  </p>
+                </ion-col>
+              <ion-col col-3 style="padding: 0px">
+                <p text-center>
+                  {{'FROM' | translate}}
+                </p>
+              </ion-col>
+              <ion-col col-1 style="padding: 0px">
+                <p>
+                  <strong text-wrap>|</strong>
+                </p>
+              </ion-col>
+            <ion-col col-3 style="padding: 0px">
+              <p text-center>
+                {{'TO' | translate}}
+              </p>
+            </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+        <ion-item-sliding  *ngFor="let sub of assign.subAssigns" [lang]="language" [dir]="direction">
+        <ion-item class="item-background2" >
+          <ion-grid style="padding: 0px">
+            <ion-row style="padding: 0px">
+              <ion-col col-4 style="padding: 0px">
+                <p>
+                  <strong text-wrap>{{sub.date}}</strong>
+                </p>
+              </ion-col>
+              <ion-col col-1 style="padding: 0px">
+                  <p>
+                    <strong text-wrap>|</strong>
+                  </p>
+                </ion-col>
+              <ion-col col-3 style="padding: 0px">
+                <p text-center>
+                  <strong text-wrap>{{sub.startTime}}</strong>
+                </p>
+              </ion-col>
+              <ion-col col-1 style="padding: 0px">
+                <p>
+                  <strong text-wrap>|</strong>
+                </p>
+              </ion-col>
+            <ion-col col-3 style="padding: 0px">
+              <p text-center>
+                <strong text-wrap>{{sub.endTime}}</strong>
+              </p>
+            </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+
+        <ion-item-options side="left" style="direction:ltr" class="options" *ngIf="language == 'ar'"> 
+                       
+            <button ion-button class="circul" color="danger" (click)="DeleteSub(sub)">
+
+              <ion-icon  name="ios-trash"></ion-icon>
+           </button>
+           </ion-item-options>
+           <ion-item-options class="options" *ngIf="language == 'en'"> 
+                       
+              <button ion-button class="circul" color="danger" (click)="DeleteSub(sub)">
+  
+                <ion-icon  name="ios-trash"></ion-icon>
+             </button>
+             </ion-item-options>
+
+      </ion-item-sliding>
+      </div>
 
 
 

@@ -11,22 +11,22 @@
     <ion-grid style="width: 100%">
       <ion-row>
         <ion-col col-1>
-          <ion-buttons style="margin-block-start: 2px;padding-bottom: 0px;padding-top: 0px" class="btn-style" >
+          <ion-buttons style="margin-block-start: 2px;padding-bottom: 0px;padding-top: 0px" class="btn-style">
             <button ion-button (click)="back()">
               <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
             </button>
           </ion-buttons>
         </ion-col>
-        <ion-col col-9.5  [style.margin-top] ="language == 'en' ? '5px' : '2px'">
+        <ion-col col-9.5 [style.margin-top]="language == 'en' ? '5px' : '2px'">
           <ion-title>{{ 'AGENCY_DETAILS' | translate }}</ion-title>
         </ion-col>
         <ion-col col-1 text-center>
-            <ion-buttons style="padding-bottom: 0px;padding-top: 0px;" class="btn-style" >
-              <button ion-button (click)="editAgency()">
-                <ion-icon name="create"></ion-icon>
-              </button>
-            </ion-buttons>
-          </ion-col>
+          <ion-buttons style="padding-bottom: 0px;padding-top: 0px;" class="btn-style">
+            <button ion-button (click)="editAgency()">
+              <ion-icon name="create"></ion-icon>
+            </button>
+          </ion-buttons>
+        </ion-col>
       </ion-row>
     </ion-grid>
 
@@ -54,25 +54,80 @@
       </p>
     </ion-item>
     <ion-item class="item-background">
-    <p>
-      {{'CREATION_DATE' | translate}} :
-      <strong text-wrap>{{getFormattedDate(agencyDetail.creationDate)}}</strong>
-    </p>
-  </ion-item>
-    <ion-item class="item-background">
-    <p>
-      {{'ORDERS_COUNT' | translate}} :
-      <strong text-wrap>{{agencyDetail.orderCount}}</strong>
-    </p>
-  </ion-item>
-  <ion-item class="item-background">
-    <p>
-      {{'PASSWORD' | translate}} :
-      <strong text-wrap >{{ togglePassword ? viewStars(agencyDetail.password) : agencyDetail.password}}
-        <ion-icon [name]="passwordEye" (click)="togglePasswordMethod()" [style.margin-right]="language == 'en' ? '0px' : '10px'" [style.margin-left]="language == 'en' ? '10px' : '0px'"></ion-icon>
-      </strong>
+      <p>
+        {{'CREATION_DATE' | translate}} :
+        <strong text-wrap>{{getFormattedDate(agencyDetail.creationDate)}}</strong>
       </p>
-  </ion-item>
+    </ion-item>
+    <ion-item class="item-background">
+      <p>
+        {{'ORDERS_COUNT' | translate}} :
+        <strong text-wrap>{{agencyDetail.orderCount}}</strong>
+      </p>
+    </ion-item>
+    <ion-item class="item-background">
+      <p>
+        {{'PASSWORD' | translate}} :
+        <strong text-wrap>{{ togglePassword ? viewStars(agencyDetail.password) : agencyDetail.password}}
+          <ion-icon [name]="passwordEye" (click)="togglePasswordMethod()" [style.margin-right]="language == 'en' ? '0px' : '10px'"
+            [style.margin-left]="language == 'en' ? '10px' : '0px'"></ion-icon>
+        </strong>
+      </p>
+    </ion-item>
+    <ion-item class="item-background">
+      <p>
+        {{'HOURS_COUNT' | translate}} :
+        <strong text-wrap>{{ agencyDetail.totalHours }}
+        </strong>
+      </p>
+    </ion-item>
+    <ion-item class="item-background" text-center *ngIf="agencyDetail.captains.length != 0">
+      <p>
+        <strong text-wrap>{{'HOURS_DETAILS' | translate}}</strong>
+      </p>
+    </ion-item>
+    <ion-item class="item-background" *ngIf="agencyDetail.captains.length != 0">
+      <ion-grid style="padding: 0px">
+        <ion-row style="padding: 0px">
+          <ion-col col-6>
+            <p>
+              {{'CAPTAIN_NAME' | translate}}
+            </p>
+          </ion-col>
+          <ion-col col-1 style="padding: 0px">
+            <p>
+              <strong text-wrap>|</strong>
+            </p>
+          </ion-col>
+          <ion-col col-5 style="padding: 0px">
+            <p text-center>
+              {{'HOURS_COUNT_DETAILS' | translate}}
+            </p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+    <ion-item class="item-background" *ngFor="let sub of agencyDetail.captains">
+      <ion-grid style="padding: 0px">
+        <ion-row style="padding: 0px">
+          <ion-col col-6 style="padding: 0px">
+            <p>
+              <strong text-wrap>{{sub.name}}</strong>
+            </p>
+          </ion-col>
+          <ion-col col-1 style="padding: 0px">
+            <p>
+              <strong text-wrap>|</strong>
+            </p>
+          </ion-col>
+          <ion-col col-5 style="padding: 0px">
+            <p text-center>
+              <strong text-wrap>{{sub.hoursResult}}</strong>
+            </p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
 
   </div>
 

@@ -88,6 +88,8 @@
         <strong text-wrap>{{captain.orderCount}}</strong>
       </p>
     </ion-item>
+
+
     <ion-item class="item-background">
       <p>
         {{'PASSWORD' | translate}} :
@@ -96,6 +98,60 @@
         </strong>
         </p>
     </ion-item>
+    <ion-item class="item-background">
+      <p>
+        {{'HOURS_COUNT' | translate}} :
+        <strong text-wrap >{{ captain.totalHours }}
+        </strong>
+        </p>
+    </ion-item>
+    <ion-item class="item-background" text-center *ngIf="captain.agencies.length != 0">
+      <p>
+        <strong text-wrap>{{'HOURS_DETAILS' | translate}}</strong>
+      </p>
+    </ion-item>
+      <ion-item class="item-background" *ngIf="captain.agencies.length != 0">
+        <ion-grid style="padding: 0px">
+          <ion-row style="padding: 0px">
+            <ion-col col-6>
+              <p>
+                {{'AGENCY_NAME' | translate}}
+              </p>
+            </ion-col>
+            <ion-col col-1 style="padding: 0px">
+                <p>
+                  <strong text-wrap>|</strong>
+                </p>
+              </ion-col>
+            <ion-col col-5 style="padding: 0px">
+              <p text-center>
+                {{'HOURS_COUNT_DETAILS' | translate}}
+              </p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+      <ion-item class="item-background" *ngFor="let sub of captain.agencies">
+        <ion-grid style="padding: 0px">
+          <ion-row style="padding: 0px">
+            <ion-col col-6 style="padding: 0px">
+              <p>
+                <strong text-wrap>{{sub.firstName}} {{sub.lastName}}</strong>
+              </p>
+            </ion-col>
+            <ion-col col-1 style="padding: 0px">
+                <p>
+                  <strong text-wrap>|</strong>
+                </p>
+              </ion-col>
+            <ion-col col-5 style="padding: 0px">
+              <p text-center>
+                <strong text-wrap>{{sub.hoursResult}}</strong>
+              </p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
 
   </div>
 
