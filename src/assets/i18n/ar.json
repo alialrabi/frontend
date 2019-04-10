@@ -1,4 +1,5 @@
 {
+  "MY_ORDERS":"طلباتى",
   "ADMIN_DELETED_ALL_DAYS":"لقد قام المسؤل بمسح كل ايام الالحاق",
   "PERIOD_FINISHED_MESSAGE":"مده الالحاق قد انتهت",
   "ADMIN_UNASSIGN_MESSAGE":"لقد قام المسؤل بالغاء الالحاق",
@@ -8,7 +9,7 @@
   "CHANGE_AT_MARKET_SUCCESS":"تم تعديل المكان بنجاح",
   "CHANGE_AT_MARKET_TITLE":"تعديل المكان",
   "CHANGE_AT_MARKET_MESSAGE":"هل تريد حقا تعديل مكانك فى المحل او الخارج ؟",
-  "AT_MARKET":"فى المحل",
+  "AT_MARKET":"متاح",
   "EDIT":"تعديل",
   "ADD_ORDER_BUTTON_WITH_PRINT":"اضافه و طباعه الطلب",
   "DATE":"التاريخ",

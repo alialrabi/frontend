@@ -77,9 +77,13 @@
         <ion-icon item-left name="bicycle" color="primary"></ion-icon>
         <span ion-text color="primary">{{'YOUR_CAPTAINS' | translate}}</span>
       </button>
-      <button ion-item menuClose class="text-1x" (click)="openPage('UserOrdersPage')" *ngIf="userType == 'Admin' || userType == 'Captain' || userType == 'User'">
+      <button ion-item menuClose class="text-1x" (click)="openPage('UserOrdersPage')" *ngIf="userType == 'Admin' || userType == 'Captain'">
         <ion-icon item-left name="basket" color="primary"></ion-icon>
         <span ion-text color="primary">{{'USER_ORDERS' | translate}}</span>
+      </button>
+      <button ion-item menuClose class="text-1x" (click)="openPage('UserOrdersPage')" *ngIf="userType == 'User'">
+        <ion-icon item-left name="basket" color="primary"></ion-icon>
+        <span ion-text color="primary">{{'MY_ORDERS' | translate}}</span>
       </button>
       <button ion-item menuClose class="text-1x" (click)="openPage('SettingsPage')">
         <ion-icon item-left name="construct" color="primary"></ion-icon>
