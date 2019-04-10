@@ -52,6 +52,9 @@ export class CaptainAssignDetailsPage {
   cancel = '';
   deleteSuccess = '';
   deleteError = ''
+  adminUnAssignMessage = ''
+  periodFinishMessage = ''
+  adminDeletedAllDays = ''
 
   constructor(public navCtrl: NavController,  public toastCtrl: ToastController, public _alert: AlertController , public navParams: NavParams, private builder: FormBuilder, public platform: Platform, private loading: LoadingController, public translateService: TranslateService, public accountService: AccountService, public captainService: CaptainService) {
 
@@ -75,7 +78,7 @@ export class CaptainAssignDetailsPage {
     });
 
 
-    this.translateService.get(['PLEASE_WAIT', 'MORE_DATA' , 'DELETE_SUB_TITLE' , 'DELETE_SUB_MESSAGE' , 'DONE' , 'CANCEL' , 'DELETE_SUBASSIGN_SUCCESS' , 'DELETE_SUBASSIGN_ERROR']).subscribe((values) => {
+    this.translateService.get(['PLEASE_WAIT', 'MORE_DATA' , 'DELETE_SUB_TITLE' , 'DELETE_SUB_MESSAGE' , 'DONE' , 'CANCEL' , 'DELETE_SUBASSIGN_SUCCESS' , 'DELETE_SUBASSIGN_ERROR' , 'PERIOD_FINISHED_MESSAGE' , 'ADMIN_UNASSIGN_MESSAGE' , 'ADMIN_DELETED_ALL_DAYS']).subscribe((values) => {
 
       this.pleaseWait = values.PLEASE_WAIT
       this.moreData = values.MORE_DATA
@@ -85,6 +88,9 @@ export class CaptainAssignDetailsPage {
       this.cancel = values.CANCEL
       this.deleteSuccess = values.DELETE_SUBASSIGN_SUCCESS
       this.deleteError = values.DELETE_SUBASSIGN_ERROR
+      this.periodFinishMessage = values.PERIOD_FINISHED_MESSAGE
+      this.adminUnAssignMessage = values.ADMIN_UNASSIGN_MESSAGE
+      this.adminDeletedAllDays = values.ADMIN_DELETED_ALL_DAYS
     })
 
     this.platform.registerBackButtonAction(() => {
@@ -351,6 +357,23 @@ export class CaptainAssignDetailsPage {
       load.dismiss();
       
     })
+  }
+  getStatus(message){
+    console.log(message);
+    
+    let result = "";
+    if(message == "This Captain is unAssigned because the Admin is unassign him"){
+      result = this.adminUnAssignMessage
+      console.log("ssssssss");
+      
+    }else if(message == "the admin deleted all assign days"){
+      result = this.adminDeletedAllDays
+    }else if(message == "The assign period is finished"){
+      result = this.periodFinishMessage
+    }else{
+      result = message
+    }
+    return result;
   }
 
 }

@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, Platform, App } from 'ionic-angular';
 import { MyApp } from '../../app/app.component';
 import { TranslateService } from '@ngx-translate/core';
 import { CaptainService } from '../../providers/auth/captain.service';
 import { CaptainsPage } from '../captains/captains';
 import { EditCaptainPage } from '../edit-captain/edit-captain';
+import { Principal } from '../../providers/auth/principal.service';
+import { FirstRunPage } from '../pages';
 
 /**
  * Generated class for the CaptainDetailsPage page.
@@ -42,9 +44,10 @@ export class CaptainDetailsPage {
 
   public pleaseWait;
   item;
+  user;
+  userType="agency";
 
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, public platform: Platform,
+  constructor(public navCtrl: NavController, public navParams: NavParams, public app:App , public principal:Principal , public platform: Platform,
     private loading: LoadingController, public translateService: TranslateService, public captainService: CaptainService) {
 
     this.item = navParams.get("item");
@@ -58,21 +61,53 @@ export class CaptainDetailsPage {
       this.navCtrl.setRoot(CaptainsPage);
     });
 
-    this.getCaptain();
+    //this.getCaptain();
   }
+
+  ngOnInit() {
+
+    let load = this.loading.create({
+      content: this.pleaseWait
+
+
+    })
+    load.present()
+
+    this.principal.identity().then((account) => {
+      console.log(account);
+      load.dismiss();
+
+      if (account === null) {
+        this.app.getRootNavs()[0].setRoot(FirstRunPage);
+      } else if (account.authorities[0] == 'ROLE_AGENCY') {
+        this.user = account;
+        this.userType = 'agency'
+        this.getCaptain(this.user.id)
+
+      }else{
+        this.user = account;
+        this.userType = 'admin'
+        this.getCaptain(0)
+      }
+    }).catch((err) => {
+      console.log(err, 'err')
+      load.dismiss();
+    });
+  }
+
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CaptainDetailsPage');
   }
 
 
-  getCaptain() {
+  getCaptain(agencyId) {
     let load = this.loading.create({
       content: this.pleaseWait
     })
     load.present()
 
-    this.captainService.getCaptainDetails(this.item.id).subscribe(res => {
+    this.captainService.getCaptainDetails(this.item.id , agencyId).subscribe(res => {
       console.log(res);
       this.captain = res
       load.dismiss();

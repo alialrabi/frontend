@@ -13,9 +13,9 @@
     </button>
 
     <ion-title>{{ 'ORDERS' | translate }}</ion-title>
-    <ion-buttons end class="btn-style">
+    <ion-buttons end class="btn-style" >
       <button ion-button (click)="add()" *ngIf="userType == 'Agency'">
-        <ion-icon name="add"></ion-icon>
+          {{ 'ADD' | translate }}
       </button>
     </ion-buttons>
   </ion-navbar>

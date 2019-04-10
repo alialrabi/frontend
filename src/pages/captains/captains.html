@@ -15,12 +15,12 @@
     <ion-title> {{ 'CAPTAINS' | translate }}</ion-title>
     <ion-buttons end class="btn-style">
         <button ion-button (click)="openMap()">
-          <ion-icon name="map"></ion-icon>
+            {{ 'MAP' | translate }}
         </button>
       </ion-buttons>
     <ion-buttons end class="btn-style" *ngIf="userType == 'admin'">
       <button ion-button (click)="add()">
-        <ion-icon name="add"></ion-icon>
+          {{ 'ADD' | translate }}
       </button>
     </ion-buttons>
   </ion-navbar>

@@ -57,6 +57,10 @@
       <ion-label text-wrap>{{'WORKING_MESSAGE1' | translate}} </ion-label>
       <ion-toggle formControlName="working" (ionChange)="changeWorking()"></ion-toggle>
     </ion-item>
+    <ion-item *ngIf="userType == 'Captain'">
+        <ion-label text-wrap>{{'AT_MARKET' | translate}} </ion-label>
+        <ion-toggle formControlName="atMarket" (ionChange)="changeAtMarket()"></ion-toggle>
+      </ion-item>
 
     <ion-list radio-group style="background-color: #ffffff" (ionChange)="changeLanguage()" formControlName="langKey" [(ngModel)]="langKey">
 

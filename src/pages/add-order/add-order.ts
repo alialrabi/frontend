@@ -428,6 +428,97 @@ export class AddOrderPage {
     //   this.printCheck(obj, this.print);
     // }
   }
+  addOrderWithOutPrint(){
+
+    let load = this.loading.create({
+      content: this.pleaseWait
+
+
+    })
+    load.present()
+
+    let orderObject = {
+      //userId : this.myForm.get('userId').value,
+      orders: this.orderString,
+      name: this.myForm.get("name").value,
+      firstPhone: this.myForm.get("phone").value,
+      secondPhone: this.myForm.get("secondPhone").value,
+      city: this.getCity(this.myForm.get("city").value),
+      address: this.myForm.get("address1").value,
+      secondAddress: this.myForm.get("address2").value,
+      status: 'not assigned',
+      captainId: 0,
+      agencyId: this.account.id,
+      userId: 0,
+      fromAddress: null,
+      isUserOrder: false,
+      addressId: 0,
+      subOrders: this.ordersArray
+    }
+    this.order1.address = this.myForm.get("address1").value;
+    this.order1.firstPhone = orderObject.firstPhone;
+    this.order1.name = orderObject.name;
+    this.order1.secondAddress = orderObject.secondAddress;
+    this.order1.secondPhone = orderObject.secondPhone;
+
+    if (this.userType == 'User') {
+      orderObject.userId = this.account.id;
+      orderObject.fromAddress = this.myForm.get('fromAddress').value;
+      orderObject.isUserOrder = true;
+      orderObject.addressId = this.address.id;
+      orderObject.agencyId = 0
+      orderObject.name = this.account.firstName + ' ' + this.account.lastName
+
+    }
+
+    console.log(orderObject, 'ssssssssssss');
+
+    this.orderService.save(orderObject).subscribe((res) => {
+      console.log(res, 'res');
+
+      let obj = res;
+      load.dismiss();
+      
+
+
+      let toast = this.toastCtrl.create({
+        message: this.addORDERSuccessString,
+        duration: 3000,
+        position: 'top'
+      });
+      toast.present();
+
+      if (this.userType == 'User') {
+        this.app.getRootNavs()[0].setRoot(UserOrdersPage);
+      } else {
+        this.navCtrl.setRoot('AssignOrderPage', { item: obj })
+      }
+    
+
+
+
+
+
+    }, (err) => {
+      console.log('error', err);
+
+      // Unable to add address
+      // const error = JSON.parse(err.error);
+      let displayError = this.addORDERError;
+
+      let toast = this.toastCtrl.create({
+        message: displayError,
+        duration: 3000,
+        position: 'middle'
+      });
+      toast.present();
+      load.dismiss();
+    });
+
+
+
+
+  }
 
   change() {
 

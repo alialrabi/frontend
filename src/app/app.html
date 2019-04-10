@@ -61,7 +61,7 @@
         <ion-icon item-left name="home" color="primary"></ion-icon>
         <span ion-text color="primary">{{'AGENCIES' | translate}}</span>
       </button>
-      <button ion-item menuClose class="text-1x" (click)="openPage('OrdersPage')" *ngIf="userType == 'Admin' || userType == 'Agency'">
+      <button ion-item menuClose class="text-1x" (click)="openPage('OrdersPage')" *ngIf="userType == 'Agency'">
         <ion-icon item-left name="basket" color="primary"></ion-icon>
         <span ion-text color="primary">{{'ORDERS' | translate}}</span>
       </button>

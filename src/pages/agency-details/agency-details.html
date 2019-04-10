@@ -10,7 +10,7 @@
 
     <ion-grid style="width: 100%">
       <ion-row>
-        <ion-col col-1>
+        <ion-col col-1 style="max-width: 25px;">
           <ion-buttons style="margin-block-start: 2px;padding-bottom: 0px;padding-top: 0px" class="btn-style">
             <button ion-button (click)="back()">
               <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
@@ -23,7 +23,7 @@
         <ion-col col-1 text-center>
           <ion-buttons style="padding-bottom: 0px;padding-top: 0px;" class="btn-style">
             <button ion-button (click)="editAgency()">
-              <ion-icon name="create"></ion-icon>
+                {{ 'EDIT' | translate }}
             </button>
           </ion-buttons>
         </ion-col>
@@ -40,13 +40,15 @@
 <ion-content class="auth-page-captain">
 
   <div padding text-center style="width: 100%;height:40%;">
-    <div class="person"></div>
+
+    <div class="person" style="max-width: 150px;"></div>
     <h2 ion-text style="color: black" text-wrap>
       {{ agencyDetail.firstName }} {{ agencyDetail.lastName }}
     </h2>
   </div>
 
-  <div class="account-info info-div" style="margin-top: 10%;padding-right: 10px">
+  <div class="account-info info-div" style="margin-top: 30px;padding-right: 10px;margin-bottom: 60px;">
+
     <ion-item class="item-background">
       <p>
         {{'EMAIL' | translate}} :

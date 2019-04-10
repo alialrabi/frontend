@@ -587,6 +587,8 @@ ion-icon[ng-reflect-disabled="true"] {
   width: 60%;
   height: 80%;
   margin-top: 10%;
+  max-width: 300px;
+  max-height: 300px
 }
 .not-found-text {
   color: #595757;

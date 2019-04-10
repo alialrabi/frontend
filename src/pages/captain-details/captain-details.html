@@ -10,7 +10,7 @@
 
     <ion-grid style="width: 100%">
       <ion-row>
-        <ion-col col-1>
+        <ion-col col-1 style="max-width: 25px;">
           <ion-buttons style="margin-block-start: 2px;padding-bottom: 0px;padding-top: 0px" class="btn-style">
             <button ion-button (click)="back()">
               <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
@@ -20,10 +20,10 @@
         <ion-col col-9.5 [style.margin-top] ="language == 'en' ? '5px' : '2px'">
           <ion-title>{{ 'CAPTAIN_DETAILS' | translate }}</ion-title>
         </ion-col>
-        <ion-col col-1 text-center>
+        <ion-col col-1 text-center *ngIf="userType=='admin'">
             <ion-buttons style="padding-bottom: 0px;padding-top: 0px" class="btn-style" >
               <button ion-button (click)="editCaptain()">
-                <ion-icon name="create"></ion-icon>
+                  {{ 'EDIT' | translate }}
               </button>
             </ion-buttons>
           </ion-col>
@@ -39,14 +39,14 @@
 
 <ion-content class="auth-page-captain">
 
-  <div padding text-center style="width: 100%;height:40%;">
+  <div padding text-center style="width: 100%;height:40%;padding-bottom: 0px">
 
 
     <div [ngClass]="language == 'en' ?  'circle-pic-div' : 'circle-pic-div-ar'" style="width:100%;height: 70%;" text-center>
 
-      <img class="circle-pic" style="width: 50%;height: 100%;" *ngIf="!captain.image || captain.image == 'O'" src="../../assets/img/person.png"
+      <img class="circle-pic" style="width: 50%;height: 100%;max-width: 150px;" *ngIf="!captain.image || captain.image == 'O'" src="../../assets/img/person.png"
       />
-      <img class="circle-pic" style="width: 50%;height: 100%;" *ngIf="captain.image  && captain.image != 'O'" [src]="['data:image/jpg;base64',captain.image]"
+      <img class="circle-pic" style="width: 50%;height: 100%;max-width: 150px;" *ngIf="captain.image  && captain.image != 'O'" [src]="['data:image/jpg;base64',captain.image]"
       />
 
     </div>
@@ -57,7 +57,7 @@
     </h2>
   </div>
 
-  <div class="account-info info-div" style="margin-top: 5%;padding-right: 10px">
+  <div class="account-info info-div" style="margin-top: 20px;padding-right: 10px;margin-bottom: 60px;">
       <ion-item class="item-background">
           <p>
             {{'CODE' | translate}} :
@@ -70,19 +70,19 @@
             <strong text-wrap>{{captain.phone}}</strong>
           </p>
         </ion-item>
-    <ion-item class="item-background">
+    <ion-item class="item-background" *ngIf="userType=='admin'">
       <p>
         {{'EMAIL' | translate}} :
         <strong text-wrap>{{captain.email}}</strong>
       </p>
     </ion-item>
-    <ion-item class="item-background">
+    <ion-item class="item-background" *ngIf="userType=='admin'">
       <p>
         {{'CREATION_DATE' | translate}} :
         <strong text-wrap>{{getFormattedDate(captain.creationDate)}}</strong>
       </p>
     </ion-item>
-    <ion-item class="item-background">
+    <ion-item class="item-background" *ngIf="userType=='admin'">
       <p>
         {{'ORDERS_COUNT' | translate}} :
         <strong text-wrap>{{captain.orderCount}}</strong>
@@ -90,7 +90,7 @@
     </ion-item>
 
 
-    <ion-item class="item-background">
+    <ion-item class="item-background" *ngIf="userType=='admin'">
       <p>
         {{'PASSWORD' | translate}} :
         <strong text-wrap >{{ togglePassword ? viewStars(captain.password) : captain.password}}
@@ -105,12 +105,12 @@
         </strong>
         </p>
     </ion-item>
-    <ion-item class="item-background" text-center *ngIf="captain.agencies.length != 0">
+    <ion-item class="item-background" text-center *ngIf="captain.agencies.length != 0 && userType=='admin'">
       <p>
         <strong text-wrap>{{'HOURS_DETAILS' | translate}}</strong>
       </p>
     </ion-item>
-      <ion-item class="item-background" *ngIf="captain.agencies.length != 0">
+      <ion-item class="item-background" *ngIf="captain.agencies.length != 0 && userType=='admin'">
         <ion-grid style="padding: 0px">
           <ion-row style="padding: 0px">
             <ion-col col-6>

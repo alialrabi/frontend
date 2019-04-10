@@ -44,7 +44,7 @@ export class AddCaptainPage {
   language = MyApp.language
   direction = MyApp.direction
 
-  captain: { code: number, name: string, phone: string, image: any, imageContentType: string, latitude: string, longitude: string, lastAssignId: number, busy: boolean, userId: any, agencyId: number, working: boolean } = {
+  captain: { code: number, name: string, phone: string, image: any, imageContentType: string, latitude: string, longitude: string, lastAssignId: number, busy: boolean, userId: any, agencyId: number, working: boolean , atMarket:boolean} = {
     code: null,
     name: '',
     phone: '',
@@ -56,7 +56,8 @@ export class AddCaptainPage {
     busy: false,
     userId: 0,
     agencyId: 0,
-    working: true
+    working: true,
+    atMarket: true
   }
   myForm: FormGroup;
   private addAddressError: string;
