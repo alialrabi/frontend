@@ -39,16 +39,26 @@ export class AssignOrderPage {
   public account = null;
   userType = ''
 
+  busy='';
+  atMarket='';
+  not_working= '';
+  onWay= ''
 
-  constructor(public navCtrl: NavController, public navParams: NavParams , public platform:Platform,
+
+
+  constructor(public navCtrl: NavController, public navParams: NavParams , public platform:Platform ,
     private builder: FormBuilder , public captainService:CaptainService  ,private loading: LoadingController , private app: App, private principal: Principal, public toastCtrl: ToastController , public translateService: TranslateService , public orderService:OrderService ) {
 
       this.order = this.navParams.get("item");
 
-    this.translateService.get(['ASSIGN_ORDER_ERROR', 'ASSIGN_ORDER_SUCCESS' , 'PLEASE_WAIT']).subscribe((values) => {
+    this.translateService.get(['ASSIGN_ORDER_ERROR', 'ASSIGN_ORDER_SUCCESS' , 'PLEASE_WAIT' , 'NOT_WORKING' , 'ON_BACK_WAY' , 'AT_MARKET' , 'BUSY']).subscribe((values) => {
       this.assignOrderError = values.ASSIGN_ORDER_ERROR;
       this.assingOrderSuccess = values.ASSIGN_ORDER_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
+      this.busy = values.BUSY
+      this.atMarket = values.AT_MARKET
+      this.not_working = values.NOT_WORKING
+      this.onWay = values.ON_BACK_WAY
     })
 
 
@@ -235,5 +245,22 @@ export class AssignOrderPage {
     }else{
       this.navCtrl.setRoot(UserOrdersPage);
     }
+  }
+  getStatus(captain){
+    let result = ''
+    if(captain.working){
+      if(captain.busy){
+        result = this.busy
+      }else{
+        if(captain.atMarket){
+          result = this.atMarket
+        }else{
+          result = this.onWay
+        }
+      }
+    }else{
+      result = this.not_working;
+    }
+    return result;
   }
 }

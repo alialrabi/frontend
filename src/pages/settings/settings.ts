@@ -67,6 +67,11 @@ export class SettingsPage {
   doneMessage = '';
   cancelMessage = '';
 
+  changeAtMaketMessage;
+  changeAtMarketTitle;
+  changeAtMarketSuccess;
+  changeAtMarketError;
+
   public captain;
 
   constructor(public navCtrl: NavController,
@@ -86,7 +91,7 @@ export class SettingsPage {
     this.translate.get(['AUTO_ASSIGN_ERROR', 'AUTO_ASSIGN_SUCCESS',
       'AUTO_ASSIGN_CONFIRM_MESSAGE', 'AUTO_ASSIGN_CONFIRM_TITLE', 'WORKING_ERROR', 'WORKING_SUCCESS',
       'WORKING_CONFIRM_MESSAGE', 'WORKING_CONFIRM_TITLE', 'CHANGE_LANGUAGE_ERROR', 'CHANGE_LANGUAGE_SUCCESS',
-      'CHANGE_LANGUAGE_MESSAGE', 'CHANGE_LANGUAGE_CONFIRM_TITLE' , 'DONE' , 'CANCEL' , 'PLEASE_WAIT']).subscribe((values) => {
+      'CHANGE_LANGUAGE_MESSAGE', 'CHANGE_LANGUAGE_CONFIRM_TITLE' , 'DONE' , 'CANCEL' , 'PLEASE_WAIT' , 'CHANGE_AT_MARKET_TITLE' , 'CHANGE_AT_MARKET_SUCCESS' , 'CHANGE_AT_MARKET_MESSAGE' , 'CHANGE_AT_MARKET_ERROR' ]).subscribe((values) => {
         this.changeAutoAssignError = values.AUTO_ASSIGN_ERROR
         this.changeAutoAssignSuccessString = values.AUTO_ASSIGN_SUCCESS
         this.confirmAutoAssignMessage = values.AUTO_ASSIGN_CONFIRM_MESSAGE
@@ -106,6 +111,12 @@ export class SettingsPage {
 
         this.doneMessage = values.DONE
         this.cancelMessage = values.CANCEL
+
+        this.changeAtMaketMessage = values.CHANGE_AT_MARKET_MESSAGE
+        this.changeAtMarketTitle = values.CHANGE_AT_MARKET_TITLE
+        this.changeAtMarketSuccess = values.CHANGE_AT_MARKET_SUCCESS
+        this.changeAtMarketError = values.CHANGE_AT_MARKET_ERROR
+
         
       })
 
@@ -113,6 +124,7 @@ export class SettingsPage {
     this.myForm = formBuilder.group({
       'autoAssign': ['', []],
       'working': ['', []],
+      'atMarket':['' , []],
       'langKey': [this.langKey, []]
     });
 
@@ -192,6 +204,7 @@ export class SettingsPage {
         load.dismiss();
 
         this.myForm.get("working").setValue(!this.captain.working)
+        this.myForm.get("atMarket").setValue(this.captain.atMarket)
 
 
 
@@ -239,6 +252,74 @@ export class SettingsPage {
 
   }
 
+  changeAtMarket(){
+
+    let alert = this.alertCtrl.create({
+      title: this.changeAtMarketTitle,
+      message: this.changeAtMaketMessage,
+      buttons: [{
+        text: this.doneMessage,
+        handler: () => {
+
+          console.log("----------------------");
+
+
+          this.updateAtMarket();
+
+        }
+      }, {
+
+
+        text: this.cancelMessage,
+        handler: () => {
+
+          //nothing
+        }
+
+
+      }]
+    });
+    alert.present();
+
+
+
+  }
+
+  updateAtMarket(){
+
+    
+    let obj = {
+      captainId: this.captain.id,
+      atMarket: this.myForm.get('atMarket').value
+    }
+
+    this.captainService.updateAtMarket(obj).subscribe((res) => {
+      console.log(res);
+      // var id = res;
+      console.log("00000000000000000000000000");
+      this.captain.atMarket = obj.atMarket;
+      // this.validateUser(false);
+      let toast = this.toastCtrl.create({
+        message: this.changeAtMarketSuccess,
+        duration: 3000,
+        position: 'top'
+      });
+      toast.present();
+
+    }, (err) => {
+      // Unable to sign up
+      let displayError = this.changeAtMarketError;
+      let toast = this.toastCtrl.create({
+        message: displayError,
+        duration: 3000,
+        position: 'top'
+      });
+      toast.present();
+    });
+
+
+
+  }
   changeWorking() {
 
     let alert = this.alertCtrl.create({

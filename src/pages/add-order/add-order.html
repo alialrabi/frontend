@@ -3,7 +3,7 @@
   <ion-navbar>
     <ion-grid style="width: 100%">
       <ion-row>
-        <ion-col col-1>
+        <ion-col col-1 style="max-width: 25px;">
           <ion-buttons style="margin-block-start: 2px" class="btn-style">
             <button ion-button (click)="back()">
               <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
@@ -132,23 +132,6 @@
       <p class="validationHint" *ngIf="hasError('address2', 'maxlength' , myForm)">{{ 'MAX_LENGTH' | translate }} </p>
 
 
-      <div class="account-info info-div">
-        <ion-item class="item-background" *ngIf="ordersArray.length == 0">
-          <p text-center>
-            <strong text-wrap>{{'NO_ITEMS_YET' | translate}}</strong>
-          </p>
-        </ion-item>
-        <ion-item class="item-background" *ngFor="let or of ordersArray">
-          <p>
-            {{'NAME' | translate}} :
-            <strong text-wrap>{{or.name}}</strong>
-          </p>
-          <p>
-            {{'PRICE' | translate}} :
-            <strong text-wrap>{{or.price}}</strong>
-          </p>
-        </ion-item>
-      </div>
 
       <!-- <form class="list-form" *ngFor="let item of order.orders;let count = index" [formGroup]="forms[count]"> -->
       <!-- <ion-item>
@@ -170,11 +153,40 @@
       </button>
     </ion-buttons>
 
-    <div margin-top style="margin-bottom: 40px;" *ngIf="!print">
-      <button ion-button block color="dark" tappable (click)="addOrder($event)" [disabled]="!myForm.valid || ordersArray.length == 0">
-        {{ 'ADD_ORDER_BUTTON' | translate }}
-      </button>
+    <ion-grid margin-top style="margin-bottom: 40px;" *ngIf="!print">
+      <ion-row>
+        <ion-col col-6>
+          <button ion-button block color="dark" tappable (click)="addOrder($event)" [disabled]="!myForm.valid || ordersArray.length == 0">
+              {{ 'ADD_ORDER_BUTTON_WITH_PRINT' | translate }}
+           
+          </button>
+        </ion-col>
+        <ion-col col-6>
+          <button ion-button block color="dark" tappable (click)="addOrderWithOutPrint($event)" [disabled]="!myForm.valid || ordersArray.length == 0">
+              {{ 'ADD_ORDER_BUTTON' | translate }}
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <div class="account-info info-div" *ngIf="!print">
+      <ion-item class="item-background" *ngIf="ordersArray.length == 0">
+        <p text-center>
+          <strong text-wrap>{{'NO_ITEMS_YET' | translate}}</strong>
+        </p>
+      </ion-item>
+      <ion-item class="item-background" *ngFor="let or of ordersArray">
+        <p>
+          {{'NAME' | translate}} :
+          <strong text-wrap>{{or.name}}</strong>
+        </p>
+        <p>
+          {{'PRICE' | translate}} :
+          <strong text-wrap>{{or.price}}</strong>
+        </p>
+      </ion-item>
     </div>
+
 
 
     <div id="print" *ngIf="print">

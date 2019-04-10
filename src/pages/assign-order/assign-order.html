@@ -4,7 +4,7 @@
 
       <ion-grid style="width: 100%">
           <ion-row>
-            <ion-col col-1>
+            <ion-col col-1 style="max-width: 25px;">
               <ion-buttons style="margin-block-start: 2px" class="btn-style">
                 <button ion-button (click)="back()">
                   <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
@@ -43,7 +43,7 @@
           {{ 'CAPTAIN' | translate }}
         </ion-label>
         <ion-select formControlName="captainId" [lang]="language" [dir]="direction">
-          <ion-option *ngFor="let item of captainList" [selected]="item.name ==item.name" [value]="item.id" [dir]="direction" >{{item.name}}   {{ item.busy == true ? 'Busy' : 'Free' }} </ion-option>
+          <ion-option *ngFor="let item of captainList" [selected]="item.name ==item.name" [value]="item.id" [dir]="direction" >{{item.name}}   ({{ getStatus(item) }}) </ion-option>
 
         </ion-select>
       </ion-item>

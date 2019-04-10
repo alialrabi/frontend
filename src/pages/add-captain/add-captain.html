@@ -4,7 +4,7 @@
 
     <ion-grid style="width: 100%">
       <ion-row>
-        <ion-col col-1>
+        <ion-col col-1 style="max-width: 25px;">
           <ion-buttons style="margin-block-start: 2px" class="btn-style">
             <button ion-button (click)="back()">
               <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
@@ -28,12 +28,12 @@
   <div class="login-content">
     <div [ngClass]="language == 'en' ?  'circle-pic-div' : 'circle-pic-div-ar'" style="width:100%" text-center>
 
-      <ion-grid class="grid-image" style="width: 50%">
+      <ion-grid class="grid-image" style="width: 50%;max-width: 200px;" >
         <ion-row class="grid-image">
           <ion-col class="grid-image" class="btn-col" col-9>
 
-            <img class="circle-pic" *ngIf="!captain.image || captain.image == 'O'" src="../../assets/img/person.png" />
-            <img class="circle-pic" *ngIf="captain.image  && captain.image != 'O'" [src]="['data:image/jpg;base64',captain.image]" />
+            <img class="circle-pic" style="max-width: 150px;" *ngIf="!captain.image || captain.image == 'O'" src="../../assets/img/person.png" />
+            <img class="circle-pic" style="max-width: 150px;" *ngIf="captain.image  && captain.image != 'O'" [src]="['data:image/jpg;base64',captain.image]" />
           </ion-col>
 
           <ion-col class="btn-col" col-3 text-center>

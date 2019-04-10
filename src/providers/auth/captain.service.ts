@@ -33,6 +33,10 @@ export class CaptainService  {
 
         return this.http.put(Api.API_URL_login + '/tlabatac/api/updateWorking?access_token=' +this.authservice.getToken() ,updateWorking);
     }
+    updateAtMarket(updateAtMarket: any): Observable<Object> {
+
+        return this.http.put(Api.API_URL_login + '/tlabatac/api/updateAtMarket?access_token=' +this.authservice.getToken() ,updateAtMarket);
+    }
 
     unAssignCaptain(captainId: any , day): Observable<Object> {
 
@@ -52,9 +56,9 @@ export class CaptainService  {
 
         return this.http.get(Api.API_URL_login + '/tlabatac/api/captainsByUserId/'+userId+'?access_token=' +this.authservice.getToken());
     }
-    getCaptainDetails(userId:any) : Observable<any>{
+    getCaptainDetails(userId:any , agencyId) : Observable<any>{
 
-        return this.http.get(Api.API_URL_login + '/tlabatac/api/captainDetails/'+userId+'?access_token=' +this.authservice.getToken());
+        return this.http.get(Api.API_URL_login + '/tlabatac/api/captainDetails/'+userId+'/'+agencyId+'?access_token=' +this.authservice.getToken());
     }
 
     getNotAssigned() : Observable<any>{

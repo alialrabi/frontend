@@ -15,7 +15,7 @@
 
     <ion-grid style="width: 100%">
       <ion-row>
-        <ion-col col-1 *ngIf="agency != null && agency != undefined">
+        <ion-col col-1 style="max-width: 25px;" *ngIf="agency != null && agency != undefined">
           <ion-buttons style="margin-block-start: 2px" class="btn-style">
             <button ion-button (click)="back()">
               <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
@@ -36,7 +36,7 @@
 
     <ion-buttons end class="btn-style" *ngIf="agency == null">
       <button ion-button (click)="add()" >
-        <ion-icon name="add"></ion-icon>
+          {{ 'ADD' | translate }}
       </button>
     </ion-buttons>
 
