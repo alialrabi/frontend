@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ToastController, App, LoadingController, Platform } from 'ionic-angular';
 import { ImagePicker } from '@ionic-native/image-picker';
 import { Camera, CameraOptions } from '@ionic-native/camera';
@@ -30,6 +30,8 @@ import { LocalStorageService } from 'ngx-webstorage';
   templateUrl: 'add-captain.html',
 })
 export class AddCaptainPage {
+
+  @ViewChild('imageInput') myInput: ElementRef
 
   account: { login: string, email: string, firstName: string, lastName: string, password: string, langKey: string, activated: boolean } = {
     login: '',
@@ -73,6 +75,7 @@ export class AddCaptainPage {
   public chooseFromGalary = '';
   public takePhoto = '';
   platformType="cordova";
+  browserImage;
   constructor(public navCtrl: NavController, public navParams: NavParams, public _alert: AlertController
     , public imagePicker: ImagePicker, public camera: Camera, public toastCtrl: ToastController,
     public captainService: CaptainService,
@@ -334,4 +337,40 @@ export class AddCaptainPage {
     this.navCtrl.setRoot(CaptainsPage);
   }
  
+  uploadBrowserImage(event:any){
+    //console.log('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb');
+    
+    this.readThis(event.target);
+    //let files = event.target.files;
+
+   // console.log('files' , files);
+   // files[0]
+    
+    
+  }
+
+  openFileSelector(){
+   // console.log("rrrrrrrrrrrrrrrrrrrrrrrrrrr");
+    
+    //this.myInput.nativeElement.click();
+
+    let element = document.getElementById('imageInput') as HTMLElement;
+    element.click()
+  }
+  readThis(inputValue: any): void {
+    var file:File = inputValue.files[0];
+    var myReader:FileReader = new FileReader();
+  
+    myReader.onloadend = (e) => {
+     
+      this.captain.image = myReader.result.substr(myReader.result.indexOf(',')+1);
+      //this.captain.imageContentType = 'fromBrowser'
+      console.log(myReader);
+      
+      console.log(this.captain.image);
+    }
+    myReader.readAsDataURL(file);
+    
+    
+  }
 }
