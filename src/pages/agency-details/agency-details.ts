@@ -5,6 +5,7 @@ import { AccountService } from '../../providers/auth/account.service';
 import { AgenciesPage } from '../agencies/agencies';
 import { MyApp } from '../../app/app.component';
 import { EditAgencyPage } from '../edit-agency/edit-agency';
+import { DaysDetailsPage } from '../days-details/days-details';
 
 /**
  * Generated class for the AgencyDetailsPage page.
@@ -117,6 +118,9 @@ viewStars(password){
 
 editAgency(){
   this.navCtrl.setRoot(EditAgencyPage , {item:this.agencyDetail , agency:this.item}); 
+}
+hoursDetails(sub){
+  this.navCtrl.setRoot(DaysDetailsPage, {from:"AgencyDetailsPage" , agency: this.item, agencyId: this.agencyDetail.id , captainId:sub.id });
 }
 
 }

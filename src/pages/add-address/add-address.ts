@@ -14,6 +14,7 @@ import { MyApp } from '../../app/app.component';
 import { UserOrdersPage } from '../user-orders/user-orders';
 import { ChooseAddressPage } from '../choose-address/choose-address';
 import { LocationAccuracy } from '@ionic-native/location-accuracy'
+import { UserAddressesPage } from '../user-addresses/user-addresses';
 
 /**
  * Generated class for the AddAddressPage page.
@@ -107,7 +108,11 @@ export class AddAddressPage {
     if (this.to != null && this.to != undefined) {
 
       this.platform.registerBackButtonAction(() => {
+        if(this.to == 'UserAddressesPage'){
+          this.navCtrl.setRoot(UserAddressesPage);
+        }else{
         this.navCtrl.setRoot(ChooseAddressPage);
+        }
 
       });
     }
@@ -293,7 +298,9 @@ export class AddAddressPage {
       // this.myApp.checkAccess();
       if (this.to == null || this.to == undefined) {
         this.navCtrl.setRoot(UserOrdersPage);
-      } else {
+      } else if(this.to == 'UserAddressesPage'){
+        this.navCtrl.setRoot(UserAddressesPage);
+      }else {
         this.navCtrl.setRoot(AddOrderPage, { address: res });
       }
     }, (err) => {
@@ -349,6 +356,10 @@ export class AddAddressPage {
     return ctrl.dirty && ctrl.hasError(error);
   }
   back() {
+    if(this.to == 'UserAddressesPage'){
+      this.navCtrl.setRoot(UserAddressesPage);
+    }else{
     this.navCtrl.setRoot(ChooseAddressPage);
+    }
   }
 }

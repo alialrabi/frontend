@@ -7,6 +7,7 @@ import { CaptainsPage } from '../captains/captains';
 import { EditCaptainPage } from '../edit-captain/edit-captain';
 import { Principal } from '../../providers/auth/principal.service';
 import { FirstRunPage } from '../pages';
+import { DaysDetailsPage } from '../days-details/days-details';
 
 /**
  * Generated class for the CaptainDetailsPage page.
@@ -157,6 +158,9 @@ export class CaptainDetailsPage {
 
   editCaptain() {
     this.navCtrl.setRoot(EditCaptainPage, { item: this.captain, captain: this.item });
+  }
+  hoursDetails(sub){
+    this.navCtrl.setRoot(DaysDetailsPage, {from:"CaptainDetailsPage" , captain: this.item, agencyId: sub.id , captainId:this.captain.id });
   }
 
 }

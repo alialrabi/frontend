@@ -6,11 +6,12 @@
         <ion-row> 
           <ion-col col-4>
               <div class="user-avatar" *ngIf = "userType == 'Admin' || userType == 'User' || userType == 'Agency' || (userType == 'Captain' && !captain)  || (userType == 'Captain' && captain && !captain.image)">
-                <img src="../assets/img/person.png">
+                <img src="../assets/img/person.png"  style="height: 62px;">
               </div>
               <div class="user-avatar" *ngIf = "userType == 'Captain' && captain && captain.image">
-                <img [src]="['data:image/jpg;base64',captain.image]">
+                <img [src]="['data:image/jpg;base64',captain.image]"  style="height: 62px;">
               </div>
+
           </ion-col>
           <ion-col padding-top col-8 *ngIf = "(userType != 'Captain' || !captain)">
             <h2 ion-text class="no-margin bold text-white">
@@ -84,6 +85,10 @@
       <button ion-item menuClose class="text-1x" (click)="openPage('UserOrdersPage')" *ngIf="userType == 'User'">
         <ion-icon item-left name="basket" color="primary"></ion-icon>
         <span ion-text color="primary">{{'MY_ORDERS' | translate}}</span>
+      </button>
+      <button ion-item menuClose class="text-1x" (click)="openPage('UserAddressesPage')" *ngIf="userType == 'User'">
+        <ion-icon item-left name="basket" color="primary"></ion-icon>
+        <span ion-text color="primary">{{'MY_ADDRESSES' | translate}}</span>
       </button>
       <button ion-item menuClose class="text-1x" (click)="openPage('SettingsPage')">
         <ion-icon item-left name="construct" color="primary"></ion-icon>

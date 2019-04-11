@@ -1,0 +1,91 @@
+<!--
+  Generated template for the SubAssignDetailsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+
+
+    <ion-grid style="width: 100%">
+      <ion-row>
+        <ion-col col-1 style="max-width: 25px;">
+          <ion-buttons style="margin-block-start: 2px" class="btn-style">
+            <button ion-button (click)="back()">
+              <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
+            </button>
+          </ion-buttons>
+        </ion-col>
+        <ion-col col-11  [style.margin-top] ="language == 'en' ? '9px' : '8px'">
+          <ion-title>{{ 'HOURS_DETAILS' | translate }}</ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="auth-page-captain">
+
+  <div text-center *ngIf="assingCaptains.length == 0">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <img src="../../assets/img/sad.png" class="not-found-img">
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+
+          <h3 class="not-found-text"> {{ 'EMPTY_LIST' | translate }}</h3>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </div>
+
+
+
+  <ion-list style="padding-top: 15px;">
+
+
+    <ion-item class="item-background" *ngFor="let assign of assingCaptains">
+      <ion-grid>
+        <ion-row>
+          <ion-col class="img-col" col-3>
+            <img class="circle-pic" src="../../assets/img/clockImage.jpg" />
+          </ion-col>
+
+          <ion-col class="btn-col" col-9>
+
+            <div class="account-info info-div">
+              <p style="margin-top: 10px">
+                {{'DAY' | translate}} :
+                <strong text-wrap>{{assign.date}}</strong>
+              </p>
+              <p style="margin-top: 10px">
+                {{'FROM' | translate}} :
+                <strong text-wrap>{{assign.startTime}}</strong>
+              </p>
+              <p style="margin-top: 10px">
+                {{'TO' | translate}} :
+                <strong text-wrap>{{assign.endTime}}</strong>
+              </p>
+              <p style="margin-top: 10px">
+                {{'HOURS_COUNT' | translate}} :
+                <strong text-wrap>{{convertToTime(assign.time)}}</strong>
+              </p>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+
+
+
+  </ion-list>
+
+
+</ion-content>

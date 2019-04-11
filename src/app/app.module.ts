@@ -76,6 +76,9 @@ import { AddOrderPopoverComponent } from '../components/add-order-popover/add-or
 
 import { SocialLoginModule, AuthServiceConfig } from "angular4-social-login";
 import { GoogleLoginProvider, FacebookLoginProvider } from "angular4-social-login";
+import { DaysDetailsPageModule } from '../pages/days-details/days-details.module';
+import { UserAddressesPage } from '../pages/user-addresses/user-addresses';
+import { UserAddressesPageModule } from '../pages/user-addresses/user-addresses.module';
  
 
 // The translate loader needs to know where to load i18n files
@@ -157,7 +160,9 @@ let config = new AuthServiceConfig([
     AgencyDetailsPageModule,
     CaptainDetailsPageModule,
     EditAgencyPageModule,
-    EditCaptainPageModule
+    EditCaptainPageModule,
+    DaysDetailsPageModule,
+    UserAddressesPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

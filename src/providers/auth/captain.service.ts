@@ -82,6 +82,10 @@ export class CaptainService  {
 
         return this.http.get(Api.API_URL_login + '/tlabatac/api/subAssignsBySuberId/'+suberAssignId+'/'+pageNum+'?access_token=' +this.authservice.getToken());
     }
+    getSubAssignesToCaptainWithAgency(captainId:any , agencyId:any) : Observable<any>{
+
+        return this.http.get(Api.API_URL_login + '/tlabatac/api/getSubAssignsToCaptainWithAgency/'+captainId+'/'+agencyId+'?access_token=' +this.authservice.getToken());
+    }
     getCaptainAssignDetails(searchFilter:any , pageNum) : Observable<any>{
 
         return this.http.post(Api.API_URL_login + '/tlabatac/api/getCaptainAssignDetails/'+pageNum+'?access_token=' +this.authservice.getToken() , searchFilter);
