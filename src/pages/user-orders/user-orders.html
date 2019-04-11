@@ -12,10 +12,11 @@
       <ion-icon name="menu"></ion-icon>
     </button>
 
-    <ion-title>{{ 'USER_ORDERS' | translate }}</ion-title>
+    <ion-title *ngIf="userType!='User'">{{ 'USER_ORDERS' | translate }}</ion-title>
+    <ion-title *ngIf="userType=='User'">{{'MY_ORDERS' | translate}}</ion-title>
     <ion-buttons end class="btn-style">
       <button ion-button (click)="add()" *ngIf="userType=='User'">
-        <ion-icon name="add"></ion-icon>
+        {{ 'ADD' | translate }}
       </button>
     </ion-buttons>
   </ion-navbar>
