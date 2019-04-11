@@ -333,4 +333,40 @@ export class EditCaptainPage {
     }
   }
 
+  uploadBrowserImage(event:any){
+    //console.log('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb');
+    
+    this.readThis(event.target);
+    //let files = event.target.files;
+
+   // console.log('files' , files);
+   // files[0]
+    
+    
+  }
+
+  openFileSelector(){
+   // console.log("rrrrrrrrrrrrrrrrrrrrrrrrrrr");
+    
+    //this.myInput.nativeElement.click();
+
+    let element = document.getElementById('imageInput') as HTMLElement;
+    element.click()
+  }
+  readThis(inputValue: any): void {
+    var file:File = inputValue.files[0];
+    var myReader:FileReader = new FileReader();
+  
+    myReader.onloadend = (e) => {
+      this.captain.image =myReader.result.substr(myReader.result.indexOf(',')+1);
+      //this.captain.imageContentType = 'fromBrowser'
+      console.log(myReader);
+      
+      console.log(this.captain.image);
+    }
+    myReader.readAsDataURL(file);
+    
+    
+  }
+
 }

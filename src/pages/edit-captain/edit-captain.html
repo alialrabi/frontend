@@ -35,13 +35,18 @@
             <ion-col class="grid-image" class="btn-col" col-9>
   
               <img class="circle-pic" *ngIf="!captain.image || captain.image == 'O'" src="../../assets/img/person.png" />
-              <img class="circle-pic" *ngIf="captain.image  && captain.image != 'O'" [src]="['data:image/jpg;base64',captain.image]" />
+              <img class="circle-pic" *ngIf="captain.image  && captain.image != 'O'  && captain.imageContentType != 'fromBrowser'" [src]="['data:image/jpg;base64',captain.image]" />
+              <img class="circle-pic" *ngIf="captain.image  && captain.image != 'O' && captain.imageContentType == 'fromBrowser'" [src]="captain.image" />
             </ion-col>
   
             <ion-col class="btn-col" col-3 text-center>
               <button ion-button icon-only clear class="icon-btn" float-left (click)="showDialog()">
                 <ion-icon name="camera"></ion-icon>
               </button>
+              <input id="imageInput" type="file" accept="image/*" style="visibility:hidden" [(ngModel)]="browserImage" (change)="uploadBrowserImage($event)" *ngIf="platformType != 'cordova'" />
+            <button ion-button icon-only clear class="icon-btn" float-left (click)="openFileSelector()" *ngIf="platformType != 'cordova'">
+              <ion-icon name="camera"></ion-icon>
+            </button>
             </ion-col>
           </ion-row>
         </ion-grid>
