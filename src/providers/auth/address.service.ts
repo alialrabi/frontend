@@ -16,5 +16,9 @@ export class AddressService  {
         
         return this.http.get(Api.API_URL_login + '/tlabatac/api/addresses/getByUserId/'+userId+'?access_token=' +this.authservice.getToken() );
     }
+    getUserAddressesWithPagination(userId: any , pageNum:any): Observable<any> {
+        
+        return this.http.get(Api.API_URL_login + '/tlabatac/api/addresses/getUserAddressesWithPagination/'+userId+'/'+pageNum+'?access_token=' +this.authservice.getToken() );
+    }
 
 }

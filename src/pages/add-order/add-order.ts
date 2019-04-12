@@ -81,12 +81,20 @@ export class AddOrderPage {
 
   print = false;
 
+  platfromType = 'cordova';
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public poverCtrl: PopoverController, public modalController: ModalController, public toastCtrl: ToastController
     , public translateService: TranslateService, private loading: LoadingController, public platform: Platform,
     private builder: FormBuilder, public windowRef:WindowRef  ,public user: User, private app: App, private principal: Principal, public orderService: OrderService) {
 
     console.log('con');
     this.address = this.navParams.get("address");
+
+    if(this.platform.is('cordova')){
+      this.platfromType = 'cordova'
+    }else{
+      this.platfromType = 'not-cordova'
+    }
 
 
     this.translateService.get(['ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS', 'ALEX', 'CAIRO', 'TANTA', 'DAMNHOR', 'SHIPIN_ELKOM', 'BANHA', 'PLEASE_WAIT']).subscribe((values) => {

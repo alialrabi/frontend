@@ -52,6 +52,9 @@ export class AssignCaptainsPage {
   startDate = '';
   endDate = '';
 
+  startTime = '00:00'
+  endTime = '00:00'
+
   isCordova = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public datePicker:DatePicker , public platform: Platform, private principal: Principal, private app: App, private loading: LoadingController, private builder: FormBuilder, public captainService: CaptainService, public toastCtrl: ToastController, public translateService: TranslateService) {

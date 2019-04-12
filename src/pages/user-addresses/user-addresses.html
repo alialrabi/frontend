@@ -1,0 +1,94 @@
+<!--
+  Generated template for the CaptainsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+
+
+      <ion-title>{{ 'MY_ADDRESSES' | translate }}</ion-title>
+
+      <ion-buttons end class="btn-style">
+        <button ion-button (click)="add()">
+            {{ 'ADD' | translate }}
+        </button>
+      </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="auth-page-captain">
+
+    <div text-center *ngIf="addresses.length == 0">
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <img src="../../assets/img/sad.png" class="not-found-img">
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+    
+              <h3 class="not-found-text"> {{ 'EMPTY_LIST' | translate }}</h3>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+    
+      </div>
+    
+
+
+  <ion-list style="padding-top: 15px;">
+
+
+    <ion-item class="item-background" *ngFor="let address of addresses">
+      <ion-grid>
+        <ion-row>
+          <ion-col class="img-col" col-3>
+            <img class="circle-pic" src="../../assets/img/home.png" />
+          </ion-col>
+
+          <ion-col class="btn-col"col-9>
+
+            <div class="account-info info-div">
+              <p style="margin-top: 13px">
+                  {{'CITY' | translate}} : <strong text-wrap> {{address.city}}</strong>
+              </p>
+
+              <p style="margin-top: 10px">
+                {{'DETAILS' | translate}} : <strong text-wrap>{{address.street}}</strong>
+              </p>
+
+            </div>
+          </ion-col>
+        </ion-row>
+
+      </ion-grid>
+
+
+
+
+
+    </ion-item>
+
+
+
+  </ion-list>
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="addresses.length != 0">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      [loadingText]="moreData">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+
+
+</ion-content>
