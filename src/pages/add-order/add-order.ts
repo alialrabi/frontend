@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, List, ToastController, App, LoadingController, Platform, ModalController, PopoverController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, List, ToastController, App, LoadingController, Platform, ModalController, PopoverController, AlertController } from 'ionic-angular';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { User } from '../../providers/providers';
 import { TranslateService } from '@ngx-translate/core';
@@ -12,6 +12,7 @@ import { UserOrdersPage } from '../user-orders/user-orders';
 import { MyApp } from '../../app/app.component';
 import { AddOrderPopoverComponent } from '../../components/add-order-popover/add-order-popover';
 import { WindowRef } from '../../providers/settings/windowRef';
+import { PhoneVerificationPage } from '../phone-verification/phone-verification';
 
 //import { Printer, PrintOptions } from '@ionic-native/printer';
 
@@ -71,6 +72,12 @@ export class AddOrderPage {
   daminhoorValue = ''
   banhaValue = ''
 
+  yes='';
+  cancel='';
+  phoneTitle='';
+  phoneMessage='';
+  question;
+
   order1 = {
     name: '',
     address: '',
@@ -84,7 +91,7 @@ export class AddOrderPage {
   platfromType = 'cordova';
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public poverCtrl: PopoverController, public modalController: ModalController, public toastCtrl: ToastController
-    , public translateService: TranslateService, private loading: LoadingController, public platform: Platform,
+    , public translateService: TranslateService, private loading: LoadingController, public platform: Platform,public _alert: AlertController,
     private builder: FormBuilder, public windowRef:WindowRef  ,public user: User, private app: App, private principal: Principal, public orderService: OrderService) {
 
     console.log('con');
@@ -97,7 +104,8 @@ export class AddOrderPage {
     }
 
 
-    this.translateService.get(['ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS', 'ALEX', 'CAIRO', 'TANTA', 'DAMNHOR', 'SHIPIN_ELKOM', 'BANHA', 'PLEASE_WAIT']).subscribe((values) => {
+    this.translateService.get(['ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS', 'ALEX', 'CAIRO', 'TANTA', 'DAMNHOR', 'SHIPIN_ELKOM', 'BANHA', 'PLEASE_WAIT' , 'YES' ,
+    'CANCEL' , 'VERIFY_PHONE_TILTLE' , 'VERIFY_PHONE_MESSAGE' , 'QUESTION_MARK' ]).subscribe((values) => {
       console.log(values);
 
       this.addORDERError = values.ADD_ORDER_ERROR;
@@ -109,6 +117,11 @@ export class AddOrderPage {
       this.tantaValue = values.TANTA;
       this.shibinValue = values.SHIPIN_ELKOM;
       this.banhaValue = values.BANHA;
+      this.yes = values.YES
+      this.cancel = values.CANCEL
+      this.phoneTitle = values.VERIFY_PHONE_TILTLE
+      this.phoneMessage = values.VERIFY_PHONE_MESSAGE
+      this.question = values.QUESTION_MARK
     })
 
 
@@ -309,6 +322,10 @@ export class AddOrderPage {
     this.order1.secondPhone = orderObject.secondPhone;
 
     if (this.userType == 'User') {
+
+      console.log("userrr");
+      
+
       orderObject.userId = this.account.id;
       orderObject.fromAddress = this.myForm.get('fromAddress').value;
       orderObject.isUserOrder = true;
@@ -316,7 +333,31 @@ export class AddOrderPage {
       orderObject.agencyId = 0
       orderObject.name = this.account.firstName + ' ' + this.account.lastName
 
-    }
+      load.dismiss();
+
+      let alert = this._alert.create({
+        title: this.phoneTitle,
+        message: this.phoneMessage + ' '+orderObject.firstPhone+' '+this.question,
+        buttons: [
+          {
+            text: this.yes,
+            handler: () => {
+            this.verifyPhone(orderObject);
+            }
+          },
+          {
+            text: this.cancel,
+            handler: () => {
+              
+            }
+          }
+        ]
+      });
+      alert.present();
+
+
+
+    }else{
 
     console.log(orderObject, 'ssssssssssss');
 
@@ -366,7 +407,7 @@ export class AddOrderPage {
       toast.present();
       load.dismiss();
     });
-
+  }
 
 
   }
@@ -477,7 +518,32 @@ export class AddOrderPage {
       orderObject.agencyId = 0
       orderObject.name = this.account.firstName + ' ' + this.account.lastName
 
-    }
+      load.dismiss();
+
+      let alert = this._alert.create({
+        title: this.phoneTitle,
+        message: this.phoneMessage + ' '+orderObject.firstPhone+' '+this.question,
+        buttons: [
+          {
+            text: this.yes,
+            handler: () => {
+            this.verifyPhone(orderObject);
+            }
+          },
+          {
+            text: this.cancel,
+            handler: () => {
+              
+            }
+          }
+        ]
+      });
+      alert.present();
+
+
+
+    }else{
+
 
     console.log(orderObject, 'ssssssssssss');
 
@@ -524,7 +590,7 @@ export class AddOrderPage {
     });
 
 
-
+  }
 
   }
 
@@ -607,5 +673,8 @@ export class AddOrderPage {
       total += Number.parseFloat(element.price)
     })
     return total;
+  }
+  verifyPhone(orderObject){
+    this.navCtrl.setRoot(PhoneVerificationPage , {order:orderObject})
   }
 }

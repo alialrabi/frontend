@@ -1,0 +1,55 @@
+<!--
+  Generated template for the PhoneVerificationPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{'PHONE_VERIFICATION' | translate}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="auth-page">
+  <div class="login-content">
+
+    <!-- Logo -->
+    <!-- <div padding text-center *ngIf="!print">
+      <div class="logo"></div>
+      <h2 ion-text class="text-primary">
+        {{ 'TLABATAC' | translate }}
+      </h2>
+    </div> -->
+
+
+
+    <!-- Login form -->
+    <form class="list-form" [formGroup]="myForm" style="margin-top: 50px">
+      <p> <strong text-wrap>{{ 'VIRIFY_FULL_MESSAGE' | translate }} {{order.firstPhone}} {{ 'VIRIFY_FULL_MESSAGE2' | translate }}</strong></p>
+      <ion-item>
+        <ion-input text-center type="number" formControlName="code" name="code" placeholder="0000" [lang]="language" [dir]="direction"></ion-input>
+      </ion-item>
+      <p class="validationHint" *ngIf="hasError('code', 'required')"> {{ 'REQURIED' | translate }} </p>
+
+    </form>
+
+    <ion-grid margin-top style="margin-bottom: 40px;">
+      <ion-row>
+        <ion-col col-6>
+          <button ion-button block color="dark" tappable (click)="verifyCode($event)" [disabled]="!myForm.valid">
+            {{ 'VIRIFY' | translate }}
+
+          </button>
+        </ion-col>
+        <ion-col col-6>
+          <button ion-button block color="dark" tappable (click)="verifyPhone($event)">
+            {{ 'SEND_NEW_MESSAGE' | translate }}
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

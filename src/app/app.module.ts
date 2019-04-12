@@ -79,6 +79,7 @@ import { GoogleLoginProvider, FacebookLoginProvider } from "angular4-social-logi
 import { DaysDetailsPageModule } from '../pages/days-details/days-details.module';
 import { UserAddressesPage } from '../pages/user-addresses/user-addresses';
 import { UserAddressesPageModule } from '../pages/user-addresses/user-addresses.module';
+import { PhoneVerificationPageModule } from '../pages/phone-verification/phone-verification.module';
  
 
 // The translate loader needs to know where to load i18n files
@@ -162,7 +163,8 @@ let config = new AuthServiceConfig([
     EditAgencyPageModule,
     EditCaptainPageModule,
     DaysDetailsPageModule,
-    UserAddressesPageModule
+    UserAddressesPageModule,
+    PhoneVerificationPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
