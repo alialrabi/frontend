@@ -1,4 +1,12 @@
 {
+  "QUESTION_MARK":"?",
+  "PHONE_VERIFICATION":"Phone Verification",
+  "VIRIFY":"Verify",
+  "VIRIFY_FULL_MESSAGE2":"Copy the Code in the Message and enter it here",
+  "VIRIFY_FULL_MESSAGE":"We Send you A message on this phone number",
+  "SEND_NEW_MESSAGE":"New Message",
+  "VERIFY_PHONE_MESSAGE":"Are you sure this is your phone number",
+  "VERIFY_PHONE_TILTLE":"Phone Number",
   "MY_ADDRESSES":"My Addresses",
   "MY_ORDERS":"My Orders",
   "FROM_WHEN_MESSAGE":"from when do you want to unassign this captain ?",

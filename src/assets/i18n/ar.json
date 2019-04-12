@@ -1,4 +1,12 @@
 {
+  "QUESTION_MARK":"؟",
+  "PHONE_VERIFICATION":"تاكيد رقم الهاتف",
+  "VIRIFY_FULL_MESSAGE2":"انسخ الكود فى الرساله و قم بكتابته هنا",
+  "VIRIFY_FULL_MESSAGE":"لقد ارسلنا لك رساله على هذا الرقم ",
+  "SEND_NEW_MESSAGE":"رساله جديده",
+  "VIRIFY":"تاكيد",
+  "VERIFY_PHONE_MESSAGE":"هل انت متاكد ان هذا و رقم هاتفك",
+  "VERIFY_PHONE_TILTLE":"رقم الهاتف",
   "MY_ADDRESSES":"عناوينى",
   "MY_ORDERS":"طلباتى",
   "ADMIN_DELETED_ALL_DAYS":"لقد قام المسؤل بمسح كل ايام الالحاق",

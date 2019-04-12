@@ -47,4 +47,10 @@ export class OrderService  {
         return this.http.put(Api.API_URL_login + '/tlabatac/api/finishOrder/orderId/'+orderId+'?access_token=' +this.authservice.getToken(), null);
     }
 
+    verifyPhone(phoneNumber) : Observable<any>{
+        
+        return this.http.get(Api.API_URL_login + '/tlabatac/api/verifyPhoneNumber/'+phoneNumber+'?access_token=' +this.authservice.getToken());
+    }
+   
+
 }
