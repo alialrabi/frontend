@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, App } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, App, AlertController, ToastController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 import { AccountService } from '../../providers/auth/account.service';
 import { AddAddressPage } from '../add-address/add-address';
 import { FirstRunPage } from '../pages';
 import { Principal } from '../../providers/auth/principal.service';
 import { AddressService } from '../../providers/auth/address.service';
+import { MyApp } from '../../app/app.component';
+import { EditAddressPage } from '../edit-address/edit-address';
 
 /**
  * Generated class for the UserAddressesPage page.
@@ -29,15 +31,32 @@ export class UserAddressesPage {
   moreData = 'Loading more data...'
   user;
 
+  deleteMessage = '';
+  deleteTitle = '';
+  yes = '';
+  cancel = ''
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,public app:App, public principal:Principal,public addressesService:AddressService,
-     private loading: LoadingController, public translateService: TranslateService, public accountService: AccountService) {
+  deleteSuccess = '';
+  deleteError = ''
+
+  language = MyApp.language
+  direction = MyApp.direction
 
 
-    this.translateService.get(['PLEASE_WAIT', 'MORE_DATA']).subscribe((values) => {
+  constructor(public navCtrl: NavController, public toastCtrl: ToastController , public navParams: NavParams,public app:App, public principal:Principal,public addressesService:AddressService,
+     private loading: LoadingController, public _alert: AlertController , public translateService: TranslateService, public accountService: AccountService) {
+
+
+    this.translateService.get(['PLEASE_WAIT', 'MORE_DATA' , 'DELETE_ADDRESS_TITLE' , 'DELETE_ADDRESS_MESSAGE' , 'DONE' , 'CANCEL' , 'DELETE_ADDRESS_SUCCESS' , 'DELETE_ADDRESS_ERROR' ]).subscribe((values) => {
 
       this.pleaseWait = values.PLEASE_WAIT
       this.moreData = values.MORE_DATA
+      this.deleteMessage = values.DELETE_ADDRESS_MESSAGE
+      this.deleteTitle = values.DELETE_ADDRESS_TITLE
+      this.yes = values.DONE
+      this.cancel = values.CANCEL
+      this.deleteSuccess = values.DELETE_ADDRESS_SUCCESS
+      this.deleteError = values.DELETE_ADDRESS_ERROR
     })
   }
   ngOnInit() {
@@ -124,6 +143,73 @@ export class UserAddressesPage {
 
   add() {
     this.navCtrl.setRoot(AddAddressPage , {address:"UserAddressesPage"});
+
+  }
+  DeleteAddress(address){
+
+    
+    let alert = this._alert.create({
+      title: this.deleteTitle,
+      message: this.deleteMessage,
+      buttons: [
+        {
+          text: this.yes,
+          handler: () => {
+            this.delete(address)
+          }
+        },
+        {
+          text: this.cancel,
+          handler: () => {
+            
+          }
+        }
+      ]
+    });
+    alert.present();
+
+
+
+
+  }
+  delete(address){
+
+    let load = this.loading.create({
+      content: this.pleaseWait
+
+
+    })
+    load.present()
+    this.addressesService.delete(address.id).subscribe(
+      res =>{
+        load.dismiss();
+        this.getAllAddresses(0);
+
+        let toast = this.toastCtrl.create({
+          message: this.deleteSuccess,
+          duration: 3000,
+          position: 'top'
+        });
+        toast.present();
+
+      }, err =>{
+        load.dismiss();
+        console.log(err , 'errr');
+        let toast = this.toastCtrl.create({
+          message: this.deleteError,
+          duration: 3000,
+          position: 'middle'
+        });
+        toast.present();
+        
+
+      }
+    )
+
+  }
+  EditAddress(address){
+
+    this.navCtrl.setRoot(EditAddressPage , {item:address});
 
   }
 }

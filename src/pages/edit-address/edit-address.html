@@ -1,5 +1,5 @@
 <!--
-  Generated template for the AddAddressPage page.
+  Generated template for the EditAddressPage page.
 
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
@@ -8,22 +8,21 @@
 
   <ion-navbar>
 
-      <ion-grid style="width: 100%">
-          <ion-row>
-            <ion-col col-1 style="max-width: 25px;" *ngIf="to != null && to != undefined">
-              <ion-buttons style="margin-block-start: 2px" class="btn-style">
-                <button ion-button (click)="back()">
-                  <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
-                </button>
-              </ion-buttons>
-            </ion-col>
-            <ion-col col-11 [style.margin-top] ="language == 'en' ? '5px' : '2px'">
-                <ion-title *ngIf="!openMap">{{ 'ADD_ADDRESS' | translate }}</ion-title>
-                <ion-title *ngIf="openMap">{{ 'MAP' | translate }}</ion-title>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-navbar>
+    <ion-grid style="width: 100%">
+      <ion-row>
+        <ion-col col-1 style="max-width: 25px;">
+          <ion-buttons style="margin-block-start: 2px" class="btn-style">
+            <button ion-button (click)="back()">
+              <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
+            </button>
+          </ion-buttons>
+        </ion-col>
+        <ion-col col-11 [style.margin-top]="language == 'en' ? '5px' : '2px'">
+          <ion-title >{{ 'EDIT_ADDRESS' | translate }}</ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-navbar>
 
 
   <!-- <ion-buttons end *ngIf="openMap">
@@ -37,13 +36,13 @@
 <ion-content class="auth-page">
   <div class="login-content" *ngIf="!openMap">
 
-    <div padding text-center>
+    <!-- <div padding text-center>
       <div class="logo"></div>
       <h2 ion-text class="text-primary">
         {{ 'TLABATAC' | translate }}
       </h2>
     </div>
-
+ -->
 
     <form class="list-form" [formGroup]="myForm">
       <!-- <ion-item>
@@ -75,41 +74,41 @@
       <p class="validationHint" *ngIf="hasError('name', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
 
 
-      <ion-item >
+      <ion-item>
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
           {{ 'CITY' | translate }}
         </ion-label>
-        <ion-select formControlName="city" [placeholder]="alexValue" [(ngModel)] = "alex" [lang]="language" [dir]="direction">
-          <ion-option [selected]="alex == item" [value]="'Alexandria'" [dir]="direction" >{{'ALEX' | translate}} </ion-option>
-          <ion-option [selected]="alex == item" [value]="'Cairo'" [dir]="direction" >{{'CAIRO' | translate}} </ion-option>
-          <ion-option [selected]="alex == item" [value]="'Tanta'" [dir]="direction" >{{'TANTA' | translate}} </ion-option>
-          <ion-option [selected]="alex == item" [value]="'Damnhor'" [dir]="direction" >{{'DAMNHOR' | translate}} </ion-option>
-          <ion-option [selected]="alex == item" [value]="'Shibin Elkom'" [dir]="direction" >{{'SHIPIN_ELKOM' | translate}} </ion-option>
-          <ion-option [selected]="alex == item" [value]="'Banha'" [dir]="direction" >{{'BANHA' | translate}} </ion-option>
+        <ion-select formControlName="city" [placeholder]="getCityPlaceHolder()" [(ngModel)]="alex" [lang]="language" [dir]="direction">
+          <ion-option [selected]="alex == item" [value]="'Alexandria'" [dir]="direction">{{'ALEX' | translate}} </ion-option>
+          <ion-option [selected]="alex == item" [value]="'Cairo'" [dir]="direction">{{'CAIRO' | translate}} </ion-option>
+          <ion-option [selected]="alex == item" [value]="'Tanta'" [dir]="direction">{{'TANTA' | translate}} </ion-option>
+          <ion-option [selected]="alex == item" [value]="'Damnhor'" [dir]="direction">{{'DAMNHOR' | translate}} </ion-option>
+          <ion-option [selected]="alex == item" [value]="'Shibin Elkom'" [dir]="direction">{{'SHIPIN_ELKOM' | translate}} </ion-option>
+          <ion-option [selected]="alex == item" [value]="'Banha'" [dir]="direction">{{'BANHA' | translate}} </ion-option>
 
         </ion-select>
       </ion-item>
 
-      <p class="validationHint" *ngIf="hasError('city', 'required')">{{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('city', 'required')">{{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('city', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
 
 
-      <ion-item >
-          <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
-            <ion-icon name="pin" item-start class="text-primary"></ion-icon>
-            {{ 'LIVINF_TYPE' | translate }}
-          </ion-label>
-          <ion-select formControlName="livingType" [placeholder]="flatValue" [(ngModel)] = "flat" [lang]="language" [dir]="direction">
-            <ion-option [selected]="flat == item" [value]="'Flat'" [dir]="direction" >{{'FLAT' | translate}} </ion-option>
-            <ion-option [selected]="flat == item" [value]="'Home'" [dir]="direction" >{{'HOME' | translate}} </ion-option>
-            <ion-option [selected]="flat == item" [value]="'Office'" [dir]="direction" >{{'OFFICE' | translate}} </ion-option>
-          </ion-select>
-        </ion-item>
-  
-        <p class="validationHint" *ngIf="hasError('city', 'required')">{{ 'REQURIED' | translate }}  </p>
-        <p class="validationHint" *ngIf="hasError('city', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
-  
+      <ion-item>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+          <ion-icon name="pin" item-start class="text-primary"></ion-icon>
+          {{ 'LIVINF_TYPE' | translate }}
+        </ion-label>
+        <ion-select formControlName="livingType" [placeholder]="getalaivingPlaceholder()" [(ngModel)]="flat" [lang]="language" [dir]="direction">
+          <ion-option [selected]="flat == item" [value]="'Flat'" [dir]="direction">{{'FLAT' | translate}} </ion-option>
+          <ion-option [selected]="flat == item" [value]="'Home'" [dir]="direction">{{'HOME' | translate}} </ion-option>
+          <ion-option [selected]="flat == item" [value]="'Office'" [dir]="direction">{{'OFFICE' | translate}} </ion-option>
+        </ion-select>
+      </ion-item>
+
+      <p class="validationHint" *ngIf="hasError('city', 'required')">{{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('city', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
+
 
       <ion-item>
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
@@ -119,7 +118,7 @@
         <ion-input type="text" [(ngModel)]="address.region" formControlName="region" name="region" [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
 
-      <p class="validationHint" *ngIf="hasError('region', 'required')">{{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('region', 'required')">{{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('region', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
 
 
@@ -131,7 +130,7 @@
         <ion-input type="text" [(ngModel)]="address.street" formControlName="street" name="street" [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
 
-      <p class="validationHint" *ngIf="hasError('street', 'required')">{{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('street', 'required')">{{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('street', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
 
       <ion-item>
@@ -142,7 +141,7 @@
         <ion-input type="text" [(ngModel)]="address.building" formControlName="building" name="building" [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
 
-      <p class="validationHint" *ngIf="hasError('building', 'required')">{{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('building', 'required')">{{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('building', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
 
       <ion-item>
@@ -153,7 +152,7 @@
         <ion-input type="text" [(ngModel)]="address.floor" formControlName="floor" name="floor" [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
 
-      <p class="validationHint" *ngIf="hasError('floor', 'required')">{{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('floor', 'required')">{{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('floor', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
 
       <ion-item>
@@ -161,10 +160,11 @@
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
           {{ 'FLAT_NUMBER' | translate }}
         </ion-label>
-        <ion-input type="text" [(ngModel)]="address.flatNumber" formControlName="flatNumber" name="flatNumber" [lang]="language" [dir]="direction"></ion-input>
+        <ion-input type="text" [(ngModel)]="address.flatNumber" formControlName="flatNumber" name="flatNumber" [lang]="language"
+          [dir]="direction"></ion-input>
       </ion-item>
 
-      <p class="validationHint" *ngIf="hasError('flatNumber', 'required')">{{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('flatNumber', 'required')">{{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('flatNumber', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
 
 
@@ -173,7 +173,8 @@
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
           {{ 'OTHER_DETAILS' | translate }}
         </ion-label>
-        <ion-input type="text" [(ngModel)]="address.otherDetails" formControlName="otherDetails" name="otherDetails" [lang]="language" [dir]="direction"></ion-input>
+        <ion-input type="text" [(ngModel)]="address.otherDetails" formControlName="otherDetails" name="otherDetails" [lang]="language"
+          [dir]="direction"></ion-input>
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('otherDetails', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
@@ -183,7 +184,8 @@
           <ion-icon name="call" item-start class="text-primary"></ion-icon>
           {{ 'MOBLIE_PHONE' | translate }}
         </ion-label>
-        <ion-input type="number" [(ngModel)]="address.mobilePhoneNumber" formControlName="mobilePhoneNumber" name="mobilePhoneNumber" [lang]="language" [dir]="direction"></ion-input>
+        <ion-input type="number" [(ngModel)]="address.mobilePhoneNumber" formControlName="mobilePhoneNumber" name="mobilePhoneNumber"
+          [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('mobilePhoneNumber', 'required')"> {{ 'REQURIED' | translate }} </p>
@@ -194,7 +196,8 @@
           <ion-icon name="call" item-start class="text-primary"></ion-icon>
           {{ 'HOME_PHONE' | translate }}
         </ion-label>
-        <ion-input type="number" [(ngModel)]="address.homePhoneNumber" formControlName="homePhoneNumber" name="homePhoneNumber" [lang]="language" [dir]="direction"></ion-input>
+        <ion-input type="number" [(ngModel)]="address.homePhoneNumber" formControlName="homePhoneNumber" name="homePhoneNumber" [lang]="language"
+          [dir]="direction"></ion-input>
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('homePhoneNumber', 'pattern')">{{ 'PHONE_NUMBER' | translate }} </p>
@@ -202,9 +205,11 @@
     </form>
 
     <div margin-top style="margin-bottom: 40px;">
-      <button ion-button block color="dark" tappable (click)="save()" [disabled]="!myForm.valid" >
-        {{ 'ADD-ADDRESS' | translate }}
-      </button>
+     
+            <button ion-button block color="dark" tappable (click)="next()" [disabled]="!myForm.valid">
+              {{ 'NEXT' | translate }}
+            </button>
+          
     </div>
   </div>
   <div [ngStyle]="mapStyle">
@@ -214,21 +219,30 @@
           <div #map id="map" [ngStyle]="mapStyle"></div>
         </ion-col>
       </ion-row>
-      <ion-row>
-          <ion-col col-4>
-              <div margin-top *ngIf="openMap">
-                <button ion-button block color="dark" tappable (click)="skip()" [disabled]="locationDisable">
-                  {{ 'SKIP' | translate }}
-                </button>
-              </div>
-            </ion-col>
-        <ion-col col-8>
+      <ion-row *ngIf="latitudeValue == '0'">
+        <ion-col col-6 >
           <div margin-top *ngIf="openMap">
-            <button ion-button block color="dark" tappable (click)="chooseLocation()" [disabled]="locationDisable">
-              {{ 'CHOOSE_LOCATION' | translate }}
+            <button ion-button block color="dark" tappable (click)="skip()" [disabled]="locationDisable || notChanges()">
+              {{ 'SAVE_WITHOUT_LOCATION' | translate }}
             </button>
           </div>
         </ion-col>
+        <ion-col col-6>
+          <div margin-top *ngIf="openMap">
+            <button ion-button block color="dark" tappable (click)="chooseLocation()" [disabled]="locationDisable || notChanges()">
+              {{ 'SAVE_CHANGES' | translate }}
+            </button>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="latitudeValue != '0'">
+          <ion-col col-12>
+              <div margin-top *ngIf="openMap">
+                <button ion-button block color="dark" tappable (click)="chooseLocation()" [disabled]="locationDisable || notChanges()">
+                  {{ 'SAVE_CHANGES' | translate }}
+                </button>
+              </div>
+            </ion-col>
       </ion-row>
     </ion-grid>
   </div>

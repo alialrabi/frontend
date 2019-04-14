@@ -1,0 +1,160 @@
+<!--
+  Generated template for the BuyFromMarketPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+
+    <ion-grid style="width: 100%">
+      <ion-row>
+        <ion-col col-1 style="max-width: 25px;">
+          <ion-buttons style="margin-block-start: 2px" class="btn-style">
+            <button ion-button (click)="back()">
+              <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
+            </button>
+          </ion-buttons>
+        </ion-col>
+        <ion-col col-11 [style.margin-top]="language == 'en' ? '5px' : '2px'">
+          <ion-title>{{ 'BUY_FROM_MARKET' | translate }}</ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-navbar>
+
+
+</ion-header>
+
+<!-- -->
+<ion-content class="auth-page">
+  <div class="login-content">
+
+    <form class="list-form" [formGroup]="myForm1" *ngIf="!reciverData">
+      <p style="width: 100%" text-center><strong>{{ 'PRODUCT_DATA' | translate }}</strong></p>
+
+      <ion-item>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+          <ion-icon name="person" item-start class="text-primary"></ion-icon>
+          {{ 'MARKET_NAME' | translate }}
+        </ion-label>
+        <ion-input type="text" [(ngModel)]="order.marketName" formControlName="marketName" name="marketName" [lang]="language" [dir]="direction"></ion-input>
+      </ion-item>
+      <p class="validationHint" *ngIf="hasError('marketName', 'required' , myForm1)">{{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('marketName', 'maxlength' , myForm1)">{{ 'MAX_LENGTH' | translate }} </p>
+
+      <ion-item>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+          <ion-icon name="pin" item-start class="text-primary"></ion-icon>
+          {{ 'MARKET_ADDRESS' | translate }}
+        </ion-label>
+        <ion-input type="text" [(ngModel)]="order.marketAddress" formControlName="marketAddress" name="marketAddress" [lang]="language"
+          [dir]="direction"></ion-input>
+      </ion-item>
+      <p class="validationHint" *ngIf="hasError('marketAddress', 'required' , myForm1)">{{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('marketAddress', 'maxlength' , myForm1)">{{ 'MAX_LENGTH' | translate }} </p>
+
+
+      <ion-item>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+          <ion-icon name="call" item-start class="text-primary"></ion-icon>
+          {{ 'MARKET_PHONE' | translate }}
+        </ion-label>
+        <ion-input type="number" [(ngModel)]="order.marketPhone" formControlName="marketPhone" name="marketPhone" [lang]="language"
+          [dir]="direction"></ion-input>
+      </ion-item>
+      <p class="validationHint" *ngIf="hasError('marketPhone', 'required' , myForm1)"> {{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('marketPhone', 'pattern' , myForm1)">{{ 'PHONE_NUMBER' | translate }} </p>
+      <ion-item>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+          <ion-icon name="cash" item-start class="text-primary"></ion-icon>
+          {{ 'PRICE_RANGE' | translate }}
+        </ion-label>
+        <ion-select formControlName="priceRange" [(ngModel)]="order.priceRange" [lang]="language" [dir]="direction">
+          <ion-option [selected]="order.priceRange == item" [value]="'1 : 500'" [dir]="direction"> 1 : 500 </ion-option>
+          <ion-option [selected]="order.priceRange == item" [value]="'501 : 1000'" [dir]="direction"> 501 : 1000 </ion-option>
+          <ion-option [selected]="order.priceRange == item" [value]="'1001 : 3000'" [dir]="direction"> 1001 : 3000 </ion-option>
+          <ion-option [selected]="order.priceRange == item" [value]="'3001 : 5000'" [dir]="direction"> 3001 : 5000 </ion-option>
+          <ion-option [selected]="order.priceRange == item" [value]="'Other'" [dir]="direction"> {{'OTHER' | translate}} </ion-option>
+        </ion-select>
+      </ion-item>
+      <p class="validationHint" *ngIf="hasError('priceRange', 'required' , myForm1 )">{{ 'REQURIED' | translate }} </p>
+
+      <ion-item>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+          <ion-icon name="paper" item-start class="text-primary"></ion-icon>
+          {{ 'PRODUCT_DESCRIPTION' | translate }}
+        </ion-label>
+        <ion-textarea type="text" [(ngModel)]="order.description" formControlName="description" name="description" [lang]="language"
+          [dir]="direction"></ion-textarea>
+      </ion-item>
+
+      <p class="validationHint" *ngIf="hasError('description', 'required' , myForm1)">{{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('description', 'maxlength' , myForm1)">{{ 'MAX_LENGTH' | translate }} </p>
+
+    </form>
+
+    <div margin-top style="margin-bottom: 40px;" *ngIf="!reciverData">
+      <button ion-button block color="dark" tappable (click)="next()" [disabled]="!myForm1.valid">
+        {{ 'NEXT' | translate }}
+      </button>
+    </div>
+
+      <div [ngClass]="language == 'en' ?  'circle-pic-div' : 'circle-pic-div-ar'" style="width:100%" text-center *ngIf="reciverData">
+          <p style="width: 100%" text-center><strong>{{ 'RECIVER_DATA' | translate }}</strong></p>
+
+        <ion-grid class="grid-image" style="width: 50%;max-width: 200px;">
+          <ion-row class="grid-image">
+            <ion-col class="grid-image" class="btn-col" col-9>
+
+              <img class="circle-pic" style="max-width: 150px;" *ngIf="!order.reciverImage || order.reciverImage == 'O'" src="../../assets/img/person.png"
+              />
+              <img class="circle-pic" style="max-width: 150px;" *ngIf="order.reciverImage  && order.reciverImage != 'O'"
+                [src]="['data:image/jpg;base64',order.reciverImage]" />
+              
+            </ion-col>
+
+            <ion-col class="btn-col" col-3 text-center>
+              <button ion-button icon-only clear class="icon-btn" float-left (click)="showDialog()" *ngIf="platformType == 'cordova'">
+                <ion-icon name="camera"></ion-icon>
+              </button>
+              <input id="imageInput" type="file" accept="image/*" style="visibility:hidden" [(ngModel)]="browserImage" (change)="uploadBrowserImage($event)"
+                *ngIf="platformType != 'cordova'" />
+              <button ion-button icon-only clear class="icon-btn" float-left (click)="openFileSelector()" *ngIf="platformType != 'cordova'">
+                <ion-icon name="camera"></ion-icon>
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+
+      <!-- Login form -->
+      <form class="list-form" [formGroup]="myForm2" *ngIf="reciverData">
+
+        <ion-item>
+          <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+            <ion-icon name="pin" item-start class="text-primary"></ion-icon>
+            {{ 'RECIVER_ADDRESS' | translate }}
+          </ion-label>
+          <ion-input type="text" [(ngModel)]="address" formControlName="address" name="address" [lang]="language" [dir]="direction"
+            (click)="openAddressesSelector()" readonly></ion-input>
+        </ion-item>
+
+        <p class="validationHint" *ngIf="hasError('address', 'required' , myForm2)"> {{ 'REQURIED' | translate }} </p>
+        <p text-wrap (click)="newAddressModal()">
+          <strong> {{ 'NEW_ADDRESS_QUESTION' | translate }} </strong>
+        </p>
+      </form>
+
+      <div margin-top style="margin-bottom: 40px;" *ngIf="reciverData">
+        <button ion-button block color="dark" tappable (click)="addOrder()" [disabled]="!myForm2.valid || order.reciverImage == null || order.reciverImage == '' || order.reciverImage == 'O'">
+          {{ 'ADD_ORDER_BUTTON' | translate }}
+        </button>
+      </div>
+
+
+    
+  </div>
+
+</ion-content>

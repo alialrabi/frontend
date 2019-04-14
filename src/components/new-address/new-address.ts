@@ -1,37 +1,31 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, Platform, App, LoadingController } from 'ionic-angular';
+import { ViewController, LoadingController, NavParams, App, Platform, ToastController } from 'ionic-angular';
+import { LocationAccuracy } from '@ionic-native/location-accuracy';
 import { AddressService } from '../../providers/auth/address.service';
-import { MainPage, FirstRunPage } from '../pages';
 import { TranslateService } from '@ngx-translate/core';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { elementDef } from '@angular/core/src/view';
-import { HomePage } from '../home/home';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Principal } from '../../providers/auth/principal.service';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { AddOrderPage } from '../add-order/add-order';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { MyApp } from '../../app/app.component';
-import { UserOrdersPage } from '../user-orders/user-orders';
-import { ChooseAddressPage } from '../choose-address/choose-address';
-import { LocationAccuracy } from '@ionic-native/location-accuracy'
-import { UserAddressesPage } from '../user-addresses/user-addresses';
 
 /**
- * Generated class for the AddAddressPage page.
+ * Generated class for the NewAddressComponent component.
  *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
+ * See https://angular.io/api/core/Component for more info on Angular
+ * Components.
  */
 declare var google;
-@IonicPage()
 @Component({
-  selector: 'page-add-address',
-  templateUrl: 'add-address.html',
+  selector: 'new-address',
+  templateUrl: 'new-address.html'
 })
-export class AddAddressPage {
+export class NewAddressComponent {
   @ViewChild('map') elementRef: ElementRef;
 
   mapStyle = {
+    height: "0%",
+    width: "0%"
+  }
+  submapStyle = {
     height: "0%",
     width: "0%"
   }
@@ -86,10 +80,12 @@ export class AddAddressPage {
 
   locationDisable = true;
 
-  constructor(public navCtrl: NavController, private loading: LoadingController,
+  constructor( private loading: LoadingController,public viewCtrl: ViewController ,
     public navParams: NavParams, public locationAccuracy: LocationAccuracy, public addressService: AddressService, public toastCtrl: ToastController,
     public translateService: TranslateService, private app: App, public platform: Platform, private principal: Principal, private builder: FormBuilder) {
-    this.to = this.navParams.get("address");
+    this.user = this.navParams.get("user");
+    console.log(this.user);
+    
 
     this.translateService.get(['ADD_ADDRESS_ERROR', 'ADD_ADDRESS_SUCCESS', 'EGYPT', 'ALEX', 'CAIRO', 'TANTA', 'DAMNHOR', 'SHIPIN_ELKOM', 'BANHA', 'PLEASE_WAIT' , 'OFFICE' , 'HOME' , 'FLAT']).subscribe((values) => {
       this.addAddressError = values.ADD_ADDRESS_ERROR;
@@ -130,31 +126,10 @@ export class AddAddressPage {
     this.myForm.get('city').markAsTouched();
     this.myForm.get('city').markAsPristine();
 
-    if (this.to != null && this.to != undefined) {
-
-      this.platform.registerBackButtonAction(() => {
-        if(this.to == 'UserAddressesPage'){
-          this.navCtrl.setRoot(UserAddressesPage);
-        }else{
-        this.navCtrl.setRoot(ChooseAddressPage);
-        }
-
-      });
-    }
+   
+    
   }
 
-  ngOnInit() {
-    this.principal.identity().then((account) => {
-      console.log(account);
-
-      if (account === null) {
-        this.app.getRootNavs()[0].setRoot(FirstRunPage);
-      } else {
-        this.user = account;
-
-      }
-    });
-  }
 
 
   ionViewDidLoad() {
@@ -215,8 +190,10 @@ export class AddAddressPage {
     }
 
 
-    this.mapStyle.height = "100%";
+    this.mapStyle.height = "370px";
     this.mapStyle.width = "100%";
+    this.submapStyle.height = '290px';
+    this.submapStyle.width = '100%'
 
     this.openMap = true;
 
@@ -321,14 +298,9 @@ export class AddAddressPage {
       });
       toast.present();
       load.dismiss();
-      // this.myApp.checkAccess();
-      if (this.to == null || this.to == undefined) {
-        this.navCtrl.setRoot(UserOrdersPage);
-      } else if(this.to == 'UserAddressesPage'){
-        this.navCtrl.setRoot(UserAddressesPage);
-      }else {
-        this.navCtrl.setRoot(AddOrderPage, { address: res });
-      }
+
+      this.chooseAddress(res);
+      
     }, (err) => {
       console.log('error', err);
 
@@ -392,13 +364,7 @@ export class AddAddressPage {
     const ctrl = this.myForm.get(field);
     return ctrl.dirty && ctrl.hasError(error);
   }
-  back() {
-    if(this.to == 'UserAddressesPage'){
-      this.navCtrl.setRoot(UserAddressesPage);
-    }else{
-    this.navCtrl.setRoot(ChooseAddressPage);
-    }
-  }
+  
   skip(){
 
     let load = this.loading.create({
@@ -427,14 +393,10 @@ export class AddAddressPage {
       });
       toast.present();
       load.dismiss();
-      // this.myApp.checkAccess();
-      if (this.to == null || this.to == undefined) {
-        this.navCtrl.setRoot(UserOrdersPage);
-      } else if(this.to == 'UserAddressesPage'){
-        this.navCtrl.setRoot(UserAddressesPage);
-      }else {
-        this.navCtrl.setRoot(AddOrderPage, { address: res });
-      }
+
+      this.chooseAddress(res);
+
+
     }, (err) => {
       console.log('error', err);
 
@@ -454,4 +416,9 @@ export class AddAddressPage {
 
 
   }
+
+  async chooseAddress(address){
+    await this.viewCtrl.dismiss(address);
+  }
+
 }
