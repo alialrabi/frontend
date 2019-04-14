@@ -80,6 +80,13 @@ import { DaysDetailsPageModule } from '../pages/days-details/days-details.module
 import { UserAddressesPage } from '../pages/user-addresses/user-addresses';
 import { UserAddressesPageModule } from '../pages/user-addresses/user-addresses.module';
 import { PhoneVerificationPageModule } from '../pages/phone-verification/phone-verification.module';
+import { OrderKindPageModule } from '../pages/order-kind/order-kind.module';
+import { EditAddressPageModule } from '../pages/edit-address/edit-address.module';
+import { AddressesSelectorComponent } from '../components/addresses-selector/addresses-selector';
+import { NewAddressComponent } from '../components/new-address/new-address';
+import { BuyFromMarketPageModule } from '../pages/buy-from-market/buy-from-market.module';
+import { DeliverFromToPage } from '../pages/deliver-from-to/deliver-from-to';
+import { DeliverFromToPageModule } from '../pages/deliver-from-to/deliver-from-to.module';
  
 
 // The translate loader needs to know where to load i18n files
@@ -113,7 +120,9 @@ let config = new AuthServiceConfig([
 @NgModule({
   declarations: [
     MyApp ,
-    AddOrderPopoverComponent
+    AddOrderPopoverComponent,
+    AddressesSelectorComponent,
+    NewAddressComponent
   ],
   imports: [
     SocialLoginModule.initialize(config),
@@ -164,12 +173,18 @@ let config = new AuthServiceConfig([
     EditCaptainPageModule,
     DaysDetailsPageModule,
     UserAddressesPageModule,
-    PhoneVerificationPageModule
+    PhoneVerificationPageModule,
+    OrderKindPageModule,
+    EditAddressPageModule,
+    BuyFromMarketPageModule,
+    DeliverFromToPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp ,
-    AddOrderPopoverComponent
+    AddOrderPopoverComponent,
+   AddressesSelectorComponent,
+   NewAddressComponent
     ],
   providers: [
     Api,
@@ -184,7 +199,6 @@ let config = new AuthServiceConfig([
     Camera,
     SplashScreen,
     StatusBar,
-    Geolocation,
     AdMobFree,
     BackgroundMode,
     ImagePicker,
@@ -192,6 +206,7 @@ let config = new AuthServiceConfig([
     Facebook,
     TwitterConnect,
     LocationAccuracy ,
+    Geolocation,
     //Printer,
     Device,
     DatePicker,

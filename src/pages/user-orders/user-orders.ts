@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, App, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, App, ToastController, AlertController } from 'ionic-angular';
 import { AddOrderPage } from '../add-order/add-order';
 import { FirstRunPage } from '../pages';
 import { TranslateService } from '@ngx-translate/core';
@@ -7,6 +7,7 @@ import { Principal } from '../../providers/auth/principal.service';
 import { OrderService } from '../../providers/auth/order.service';
 import { ChooseAddressPage } from '../choose-address/choose-address';
 import { CaptainService } from '../../providers/auth/captain.service';
+import { OrderKindPage } from '../order-kind/order-kind';
 
 /**
  * Generated class for the UserOrdersPage page.
@@ -40,15 +41,24 @@ export class UserOrdersPage {
   pageNum = 1;
   moreData = 'Loading more data...'
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController, private captainService: CaptainService, private loading: LoadingController, public translateService: TranslateService, private app: App, private principal: Principal, public orderService: OrderService) {
+  addOrderMessage = '';
+  addOrderTitle = '';
+  deliverFromTo = '';
+  buyFromMarket = '';
 
-    this.translateService.get(['DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT', 'MORE_DATA']).subscribe((values) => {
+  constructor(public navCtrl: NavController, public navParams: NavParams,  public _alert: AlertController , public toastCtrl: ToastController, private captainService: CaptainService, private loading: LoadingController, public translateService: TranslateService, private app: App, private principal: Principal, public orderService: OrderService) {
+
+    this.translateService.get(['DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT', 'MORE_DATA' , 'ADD_ORDER_TITLE' , 'ORDER_KIND_MESSAGE' , 'BUY_FROM_MARKET' , 'DELIVER_FROM_LOCATION_TO_LOCATION']).subscribe((values) => {
 
       this.deliverOrderError = values.DELIVER_ORDER_ERROR;
       this.deliverOrderSuccess = values.DELIVER_ORDER_SUCCESS;
 
       this.pleaseWait = values.PLEASE_WAIT
       this.moreData = values.MORE_DATA
+      this.addOrderMessage = values.ORDER_KIND_MESSAGE;
+      this.addOrderTitle = values.ADD_ORDER_TITLE;
+      this.deliverFromTo = values.DELIVER_FROM_LOCATION_TO_LOCATION;
+      this.buyFromMarket = values.BUY_FROM_MARKET;
     })
 
   }
@@ -206,7 +216,28 @@ export class UserOrdersPage {
   }
 
   add() {
-    this.navCtrl.setRoot(ChooseAddressPage);
+
+    // let alert = this._alert.create({
+    //   title: this.addOrderTitle,
+    //   message:this.addOrderMessage,
+    //   buttons: [
+    //     {
+    //       text: this.buyFromMarket,
+    //       handler: () => {
+
+    //       }
+    //     },
+    //     {
+    //       text: this.deliverFromTo,
+    //       handler: () => {
+
+    //       }
+    //     }
+    //   ]
+    // });
+    // alert.present();
+
+    this.navCtrl.setRoot(OrderKindPage);
 
   }
   viewOrder(orders) {

@@ -5,7 +5,6 @@ import { User } from '../../providers/user/user';
 import { TranslateModule } from '@ngx-translate/core';
 import { OrderService } from '../../providers/auth/order.service';
 import { AddOrderPopoverComponent } from '../../components/add-order-popover/add-order-popover';
-import { WindowRef } from '../../providers/settings/windowRef';
 
 @NgModule({
   declarations: [
@@ -24,7 +23,7 @@ import { WindowRef } from '../../providers/settings/windowRef';
   ],
   providers:[
   
-    User , OrderService , WindowRef
+    User , OrderService
     
   ]
 })

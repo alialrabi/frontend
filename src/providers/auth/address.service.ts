@@ -12,6 +12,14 @@ export class AddressService  {
         
         return this.http.post(Api.API_URL_login + '/tlabatac/api/addresses?access_token=' +this.authservice.getToken() ,address);
     }
+    edit(address: any): Observable<Object> {
+        
+        return this.http.put(Api.API_URL_login + '/tlabatac/api/addresses?access_token=' +this.authservice.getToken() ,address);
+    }
+    delete(id: any): Observable<Object> {
+        
+        return this.http.delete(Api.API_URL_login + '/tlabatac/api/addresses/'+id+'?access_token=' +this.authservice.getToken());
+    }
     getUserAddresses(userId: any): Observable<any> {
         
         return this.http.get(Api.API_URL_login + '/tlabatac/api/addresses/getByUserId/'+userId+'?access_token=' +this.authservice.getToken() );
