@@ -25,7 +25,7 @@ import { DatePicker } from '@ionic-native/date-picker';
 })
 export class AssignCaptainsPage {
 
- 
+
   public captainList = [];
   myForm: FormGroup;
 
@@ -54,14 +54,15 @@ export class AssignCaptainsPage {
 
   startTime = '00:00'
   endTime = '00:00'
+  timeValue = '2002-09-23T00:00:00.000';
 
   isCordova = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public datePicker:DatePicker , public platform: Platform, private principal: Principal, private app: App, private loading: LoadingController, private builder: FormBuilder, public captainService: CaptainService, public toastCtrl: ToastController, public translateService: TranslateService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public datePicker: DatePicker, public platform: Platform, private principal: Principal, private app: App, private loading: LoadingController, private builder: FormBuilder, public captainService: CaptainService, public toastCtrl: ToastController, public translateService: TranslateService) {
 
     this.isCordova = this.platform.is("cordova");
     console.log(this.isCordova);
-    
+
 
     this.agency = this.navParams.get("item");
 
@@ -88,7 +89,7 @@ export class AssignCaptainsPage {
       // 'endDate': ['', [Validators.required]],
       'startTime': ['', []],
       'endTime': ['', []],
-      
+
     });
 
     this.platform.registerBackButtonAction(() => {
@@ -117,8 +118,8 @@ export class AssignCaptainsPage {
     }
     strDate += date.getDate();
 
-    console.log(strDate , "strDate");
-    
+    console.log(strDate, "strDate");
+
 
     return strDate;
   }
@@ -131,11 +132,13 @@ export class AssignCaptainsPage {
       endTime: this.myForm.get("endTime").value
     }
     this.dates.push(date)
-    console.log(this.dates , 'dates');
-    
-    this.myForm.get("startTime").setValue('');
-    this.myForm.get("endTime").setValue("");
+    console.log(this.dates, 'dates');
 
+    this.myForm.get("startTime").setValue("00:00");
+    this.myForm.get("endTime").setValue("00:00");
+    this.startTime = '00:00'
+    this.endTime = '00:00'
+    this.timeValue = '2002-09-23T00:00:00.000';
     console.log(this.dates, 'dartes');
 
   }
@@ -182,7 +185,7 @@ export class AssignCaptainsPage {
     console.log(event);
 
     this.selectedDate = event;
-    
+
     //this.selectedDate.setDate(event.getDate());
     console.log(this.selectedDate);
 
@@ -245,7 +248,7 @@ export class AssignCaptainsPage {
     let ids = this.myForm.get("captainIds").value;
     console.log(ids, 'ids');
 
-    if(this.myForm.get("startTime").value != null && this.myForm.get("startTime").value !='') {
+    if (this.myForm.get("startTime").value != null && this.myForm.get("startTime").value != '') {
       let date = {
         date: this.formatDate(this.selectedDate),
         startTime: this.myForm.get("startTime").value,
@@ -263,7 +266,7 @@ export class AssignCaptainsPage {
       // startDate:this.myForm.get("startDate").value,
       // startTime: this.myForm.get("startTime").value,
       // endTime: this.myForm.get("endTime").value
-      subAssignModels:this.dates
+      subAssignModels: this.dates
     }
     if (this.agency == null || this.agency == undefined) {
       assignCaptains.agencyId = this.user.id
@@ -322,7 +325,7 @@ export class AssignCaptainsPage {
   }
 
   validateTimes() {
-    if ((this.myForm.get("startTime").value != '' && this.myForm.get("endTime").value != '') || ((this.myForm.get("startTime").value == '' && this.myForm.get("endTime").value == '') && this.dates.length != 0 )) {
+    if ((this.myForm.get("startTime").value != '' && this.myForm.get("endTime").value != '') || ((this.myForm.get("startTime").value == '' && this.myForm.get("endTime").value == '') && this.dates.length != 0)) {
       return false;
     } else {
       return true;
@@ -331,48 +334,48 @@ export class AssignCaptainsPage {
 
   showDateTimePicker(event) {
     this.datePicker.show({
-        date: new Date(),
-        mode: 'time',
-        is24Hour: false,
-        androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
-    }).then(
-        date => {
-          console.log(date);
-          this.startDate = '';
-          this.startDate += date.getHours() > 9 ? date.getHours() : '0'+date.getHours()
-          this.startDate += ":";
-          this.startDate += date.getMinutes() > 9 ? date.getMinutes() : '0'+date.getMinutes()
-          console.log(this.startDate);
-          
-          
-           //event.target.value = date 
-
-          },
-        err => console.log('Error occurred while getting date: ' + err)
-    )
-}
-showDateTimePickerEnd(event) {
-  this.datePicker.show({
       date: new Date(),
       mode: 'time',
       is24Hour: false,
       androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
-  }).then(
+    }).then(
+      date => {
+        console.log(date);
+        this.startDate = '';
+        this.startDate += date.getHours() > 9 ? date.getHours() : '0' + date.getHours()
+        this.startDate += ":";
+        this.startDate += date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes()
+        console.log(this.startDate);
+
+
+        //event.target.value = date 
+
+      },
+      err => console.log('Error occurred while getting date: ' + err)
+    )
+  }
+  showDateTimePickerEnd(event) {
+    this.datePicker.show({
+      date: new Date(),
+      mode: 'time',
+      is24Hour: false,
+      androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
+    }).then(
       date => {
         console.log(date);
         this.endDate = '';
-          this.endDate += date.getHours() > 9 ? date.getHours() : '0'+date.getHours()
-          this.endDate += ":";
-          this.endDate += date.getMinutes() > 9 ? date.getMinutes() : '0'+date.getMinutes()
+        this.endDate += date.getHours() > 9 ? date.getHours() : '0' + date.getHours()
+        this.endDate += ":";
+        this.endDate += date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes()
         console.log(this.endDate);
-        
-        
-         //event.target.value = date 
 
-        },
+
+        //event.target.value = date 
+
+      },
       err => console.log('Error occurred while getting date: ' + err)
-  )
-}
+    )
+  }
 
 
 }

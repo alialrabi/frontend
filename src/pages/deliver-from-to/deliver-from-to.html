@@ -122,7 +122,7 @@
       <ion-item>
           <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
             <ion-icon name="call" item-start class="text-primary"></ion-icon>
-            {{ 'SENDER_PHONE' | translate }}
+            {{ 'RECIVER_PHONE' | translate }}
           </ion-label>
           <ion-input type="number" [(ngModel)]="order.reciverPhone" formControlName="reciverPhone" name="reciverPhone" [lang]="language" [dir]="direction"></ion-input>
         </ion-item>

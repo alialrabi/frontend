@@ -4,6 +4,7 @@ import { AssignOrderPage } from './assign-order';
 import { TranslateModule } from '@ngx-translate/core';
 import { CaptainService } from '../../providers/auth/captain.service';
 import { OrderService } from '../../providers/auth/order.service';
+import { UserOrderService } from '../../providers/auth/userOrders.service';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,7 @@ import { OrderService } from '../../providers/auth/order.service';
   ],
   providers:[
   
-    CaptainService , OrderService
+    CaptainService , OrderService , UserOrderService
     
   ]
 })

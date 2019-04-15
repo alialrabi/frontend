@@ -14,4 +14,17 @@ export class UserOrderService {
         return this.http.post(Api.API_URL_login + '/tlabatac/api/user-orders?access_token=' + this.authservice.getToken(), captain);
     }
 
+    getUserOrders(userId:any , captainId , status:any , pageNum) : Observable<any>{
+        
+        return this.http.get(Api.API_URL_login + '/tlabatac/api/user-orders/ordersToUser/'+userId+'/'+captainId+'/'+status+'/'+pageNum+'?access_token=' +this.authservice.getToken());
+    }
+    assign(captainId: number , orderId:number): Observable<Object> {
+
+        return this.http.put(Api.API_URL_login + '/tlabatac/api/user-orders/assignOrder/orderId/'+orderId+'/captainId/'+captainId+'?access_token=' +this.authservice.getToken(), null);
+    }
+    finishOrder( orderId:number): Observable<Object> {
+
+        return this.http.put(Api.API_URL_login + '/tlabatac/api/user-orders/finishOrder/orderId/'+orderId+'?access_token=' +this.authservice.getToken(), null);
+    }
+
 }

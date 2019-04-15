@@ -37,7 +37,8 @@ export class DeliverFromToPage {
     reciverName:'',
     reciverPhone:'',
     reciverAddressId:0,
-    userId:0
+    userId:0,
+    isBuing:false
 
   }
   address = ''

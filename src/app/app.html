@@ -13,12 +13,18 @@
               </div>
 
           </ion-col>
-          <ion-col padding-top col-8 *ngIf = "(userType != 'Captain' || !captain)">
+          <ion-col padding-top col-8 *ngIf = "(userType != 'Captain' || !captain) && userType != 'User'">
             <h2 ion-text class="no-margin bold text-white">
               {{account?.firstName}} {{account?.lastName}}
             </h2>
             <span ion-text color="light">{{userTypeText}}</span>
           </ion-col>
+          <ion-col padding-top col-8 *ngIf = "userType == 'User'">
+              <h2 ion-text class="no-margin bold text-white">
+                {{account?.firstName}}
+              </h2>
+              <span ion-text color="light">{{userTypeText}}</span>
+            </ion-col>
           <ion-col padding-top col-8 *ngIf = "(userType == 'Captain' && captain)">
             <h2 ion-text class="no-margin bold text-white">
               {{captain?.name}}

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { IonicPage, NavController, ToastController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, ToastController, LoadingController, Platform } from 'ionic-angular';
 
 import { User } from '../../providers/providers';
 import { MainPage } from '../pages';
@@ -11,6 +11,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MyApp } from '../../app/app.component';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 import { TwitterConnect } from '@ionic-native/twitter-connect';
+import { AuthService, FacebookLoginProvider } from 'angular4-social-login';
 
 @IonicPage()
 @Component({
@@ -19,14 +20,15 @@ import { TwitterConnect } from '@ionic-native/twitter-connect';
 })
 export class SignupPage {
   // The account fields for the signup form
-  account: { login: string, email: string, firstName: string, lastName: string, password: string, langKey: string , activated: boolean } = {
+  account: { login: string, email: string, firstName: string, lastName: string, password: string, langKey: string , activated: boolean , phone:string} = {
     login: '',
     email: '',
     firstName: '',
     lastName: '',
     password: '',
     langKey: MyApp.language,
-    activated: true
+    activated: true,
+    phone:''
   };
 
   // Our translated text strings
@@ -49,29 +51,35 @@ export class SignupPage {
   }
   public pleaseWait;
 
+  noEmailMessage = ''
+
   constructor(public navCtrl: NavController,
     public user: User,
     public toastCtrl: ToastController,
     public myApp:MyApp,
     private tw: TwitterConnect,
     private fb: Facebook,
+    public platform:Platform,
+    private authService: AuthService,
     private loading: LoadingController,
     public translateService: TranslateService ,
   public loginService:LoginService ,
   private builder: FormBuilder) {
 
     this.translateService.get(['SIGNUP_ERROR', 'SIGNUP_SUCCESS',
-      'EXISTING_USER_ERROR', 'INVALID_PASSWORD_ERROR' , 'PLEASE_WAIT']).subscribe((values) => {
+      'EXISTING_USER_ERROR', 'INVALID_PASSWORD_ERROR' , 'PLEASE_WAIT' , 'NO_EMAIL_MESSAGE']).subscribe((values) => {
       this.signupErrorString = values.SIGNUP_ERROR;
       this.signupSuccessString = values.SIGNUP_SUCCESS;
       this.existingUserError = values.EXISTING_USER_ERROR;
       this.invalidPasswordError = values.INVALID_PASSWORD_ERROR;
       this.pleaseWait = values.PLEASE_WAIT;
+      this.noEmailMessage = values.NO_EMAIL_MESSAGE
     })
 
     this.myForm = builder.group({
       'firstName':['', [Validators.required  , Validators.maxLength(45)]],
-      'lastName': ['', [Validators.required , Validators.maxLength(45) ]],
+      //'lastName': ['', [Validators.required , Validators.maxLength(45) ]],
+      'phone': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
       'email':['', [Validators.required  , Validators.email]],
       'password': ['', [Validators.required , Validators.minLength(6) ]],
       'passwordConfirm': ['', [Validators.required]],
@@ -196,6 +204,18 @@ export class SignupPage {
 
   faceBookSignUp() {
 
+    if (this.userData.email == null || this.userData.email == '') {
+
+      let toast = this.toastCtrl.create({
+                message: this.noEmailMessage,
+                duration: 20000,
+                position: 'top'
+              });
+              toast.present();
+
+    } else {
+
+
     let signUpAccount = {
       login: this.userData.email,
       email: this.userData.email,
@@ -250,7 +270,7 @@ export class SignupPage {
 
     })
 
-
+  }
 
   }
   fbSignUp() {
@@ -260,6 +280,7 @@ export class SignupPage {
 
     // })
     // load.present()
+    if (this.platform.is("cordova")) {
     let classlIn = this;
     this.fb.login(['public_profile', 'email'])
       .then(
@@ -312,6 +333,16 @@ export class SignupPage {
         // });
         // toast.present();
       });
+    }else {
+
+      this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then(data => {
+       this.userData = { email: data.email, first_name: data.firstName, last_name: data.lastName }
+       this.faceBookSignUp();
+      }).catch(err => {
+        console.log(err, 'errr 222222222222');
+
+      })
+    }
 
   }
 

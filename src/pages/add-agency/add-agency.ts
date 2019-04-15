@@ -22,14 +22,15 @@ import { MyApp } from '../../app/app.component';
 })
 export class AddAgencyPage {
 
-  account: { login: string, email: string, firstName: string, lastName: string, password: string, langKey: string, activated: boolean } = {
+  account: { login: string, email: string, firstName: string, lastName: string, password: string, langKey: string, activated: boolean , phone:string } = {
     login: '',
     email: '',
     firstName: '',
     lastName: '',
     password: '',
     langKey:'ar',
-    activated: true
+    activated: true,
+    phone:''
   };
 
   // Our translated text strings
@@ -68,6 +69,7 @@ export class AddAgencyPage {
     this.myForm = builder.group({
       'firstName': ['', [Validators.required, Validators.maxLength(45)]],
       'lastName': ['', [Validators.required, Validators.maxLength(45)]],
+      'phone': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
       'email': ['', [Validators.required, Validators.email]],
       'password': ['', [Validators.required, Validators.minLength(6)]],
       'passwordConfirm': ['', [Validators.required]]

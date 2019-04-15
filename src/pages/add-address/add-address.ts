@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, Platform, App, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, Platform, App, LoadingController, AlertController } from 'ionic-angular';
 import { AddressService } from '../../providers/auth/address.service';
 import { MainPage, FirstRunPage } from '../pages';
 import { TranslateService } from '@ngx-translate/core';
@@ -44,24 +44,24 @@ export class AddAddressPage {
   public alex = 'Alexandria';
   flat = 'Flat'
 
-  address: { country: string, city: string, street: string, userId: Number, latitude: String, longitude: String ,
-    livingType:string , building:string , floor:string , flatNumber:string , otherDetails:string , mobilePhoneNumber:string , homePhoneNumber:string , name:string , region:string } = {
-    country: 'Egypt',
-    city: '',
-    street: '',
-    userId: 0,
-    latitude: '26.555555555555',
-    longitude: '12.5824526',
-    region:'',
-    livingType:'',
-    building:'',
-    floor:'',
-    flatNumber:'',
-    otherDetails:'',
-    mobilePhoneNumber:'',
-    homePhoneNumber:'',
-    name:''
-  }
+  address: {
+    country: string, city: string, street: string, userId: Number, latitude: String, longitude: String,
+    livingType: string, building: string, floor: string, flatNumber: string, otherDetails: string, name: string, region: string
+  } = {
+      country: 'Egypt',
+      city: '',
+      street: '',
+      userId: 0,
+      latitude: '26.555555555555',
+      longitude: '12.5824526',
+      region: '',
+      livingType: '',
+      building: '',
+      floor: '',
+      flatNumber: '',
+      otherDetails: '',
+      name: ''
+    }
 
   private addAddressError: string;
   private addAdressSuccessString: string;
@@ -86,28 +86,38 @@ export class AddAddressPage {
 
   locationDisable = true;
 
-  constructor(public navCtrl: NavController, private loading: LoadingController,
+  dialogTitle = ''
+  dialogMessage = ''
+  ok = ''
+
+  constructor(public navCtrl: NavController, private loading: LoadingController, public _alert: AlertController,
     public navParams: NavParams, public locationAccuracy: LocationAccuracy, public addressService: AddressService, public toastCtrl: ToastController,
     public translateService: TranslateService, private app: App, public platform: Platform, private principal: Principal, private builder: FormBuilder) {
     this.to = this.navParams.get("address");
 
-    this.translateService.get(['ADD_ADDRESS_ERROR', 'ADD_ADDRESS_SUCCESS', 'EGYPT', 'ALEX', 'CAIRO', 'TANTA', 'DAMNHOR', 'SHIPIN_ELKOM', 'BANHA', 'PLEASE_WAIT' , 'OFFICE' , 'HOME' , 'FLAT']).subscribe((values) => {
-      this.addAddressError = values.ADD_ADDRESS_ERROR;
-      this.addAdressSuccessString = values.ADD_ADDRESS_SUCCESS;
-      this.pleaseWait = values.PLEASE_WAIT
+    this.translateService.get(['ADD_ADDRESS_ERROR', 'ADD_ADDRESS_SUCCESS',
+      'EGYPT', 'ALEX', 'CAIRO', 'TANTA', 'DAMNHOR', 'SHIPIN_ELKOM',
+      'BANHA', 'PLEASE_WAIT',
+      'OFFICE', 'HOME', 'FLAT', 'LOCATION_ALERT_TITLE', 'LOCATION_ALERT_MESSAGE', 'OK']).subscribe((values) => {
+        this.addAddressError = values.ADD_ADDRESS_ERROR;
+        this.addAdressSuccessString = values.ADD_ADDRESS_SUCCESS;
+        this.pleaseWait = values.PLEASE_WAIT
 
-      this.alexValue = values.ALEX;
-      this.cairoValue = values.CAIRO;
-      this.daminhoorValue = values.DAMNHOR;
-      this.tantaValue = values.TANTA;
-      this.shibinValue = values.SHIPIN_ELKOM;
-      this.banhaValue = values.BANHA;
-      this.egyptText = values.EGYPT
+        this.alexValue = values.ALEX;
+        this.cairoValue = values.CAIRO;
+        this.daminhoorValue = values.DAMNHOR;
+        this.tantaValue = values.TANTA;
+        this.shibinValue = values.SHIPIN_ELKOM;
+        this.banhaValue = values.BANHA;
+        this.egyptText = values.EGYPT
 
-      this.flatValue = values.FLAT
-      this.homeValue = values.HOME
-      this.officeValue = values.OFFICE
-    })
+        this.flatValue = values.FLAT
+        this.homeValue = values.HOME
+        this.officeValue = values.OFFICE
+        this.dialogTitle = values.LOCATION_ALERT_TITLE
+        this.dialogMessage = values.LOCATION_ALERT_MESSAGE
+        this.ok = values.OK
+      })
 
     this.myForm = builder.group({
       //'country': ['', [Validators.required, Validators.maxLength(45)]],
@@ -119,9 +129,9 @@ export class AddAddressPage {
       'building': ['', [Validators.required, Validators.maxLength(45)]],
       'floor': ['', [Validators.required, Validators.maxLength(45)]],
       'flatNumber': ['', [Validators.required, Validators.maxLength(45)]],
-      'otherDetails': ['', [ Validators.maxLength(45)]],
-      'mobilePhoneNumber': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
-      'homePhoneNumber': ['', []],
+      'otherDetails': ['', [Validators.maxLength(45)]],
+      //'mobilePhoneNumber': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
+      // 'homePhoneNumber': ['', []],
     });
 
     this.myForm.get('city').setValue('Alexandria');
@@ -133,10 +143,10 @@ export class AddAddressPage {
     if (this.to != null && this.to != undefined) {
 
       this.platform.registerBackButtonAction(() => {
-        if(this.to == 'UserAddressesPage'){
+        if (this.to == 'UserAddressesPage') {
           this.navCtrl.setRoot(UserAddressesPage);
-        }else{
-        this.navCtrl.setRoot(ChooseAddressPage);
+        } else {
+          this.navCtrl.setRoot(ChooseAddressPage);
         }
 
       });
@@ -242,31 +252,39 @@ export class AddAddressPage {
 
       mainClass.map = new google.maps.Map(mainClass.elementRef.nativeElement, mapOptions);
 
-      let marker = new google.maps.Marker({
-        map: mainClass.map,
-        animation: google.maps.Animation.DROP,
-        position: mainClass.map.getCenter()
-      });
+      if (mainClass.checkLocation(position.coords.latitude, position.coords.longitude, true)) {
 
-      mainClass.mainMarker = marker;
+        let marker = new google.maps.Marker({
+          map: mainClass.map,
+          animation: google.maps.Animation.DROP,
+          position: mainClass.map.getCenter()
+        });
+
+        mainClass.mainMarker = marker;
+
+      }
       //  console.log(this.map , 'map');
       //  console.log(this.mainMarker , "marker");
 
       var superclass = mainClass;
       google.maps.event.addListener(mainClass.map, 'click', function (event) {
-        superclass.mainMarker.setMap(null);
-        var newmarker = new google.maps.Marker({
-          position: event.latLng,
-          map: superclass.map
-        });
-        superclass.mainMarker = newmarker;
-        superclass.address.latitude = event.latLng.lat();
-        superclass.address.longitude = event.latLng.lng();
-        console.log(superclass.address);
+
+        if (superclass.checkLocation(event.latLng.lat(), event.latLng.lng(), false)) {
+
+          if (superclass.mainMarker != null) {
+            superclass.mainMarker.setMap(null);
+          }
+          var newmarker = new google.maps.Marker({
+            position: event.latLng,
+            map: superclass.map
+          });
+          superclass.mainMarker = newmarker;
+          superclass.address.latitude = event.latLng.lat();
+          superclass.address.longitude = event.latLng.lng();
+        } 
       });
 
       mainClass.locationDisable = false;
-      console.log(mainClass.locationDisable);
 
 
 
@@ -324,9 +342,9 @@ export class AddAddressPage {
       // this.myApp.checkAccess();
       if (this.to == null || this.to == undefined) {
         this.navCtrl.setRoot(UserOrdersPage);
-      } else if(this.to == 'UserAddressesPage'){
+      } else if (this.to == 'UserAddressesPage') {
         this.navCtrl.setRoot(UserAddressesPage);
-      }else {
+      } else {
         this.navCtrl.setRoot(AddOrderPage, { address: res });
       }
     }, (err) => {
@@ -375,13 +393,13 @@ export class AddAddressPage {
     return city;
 
   }
-  getLivingType(livingTypeValue){
+  getLivingType(livingTypeValue) {
     let livingType = '';
-    if(livingTypeValue == 'Flat'){
+    if (livingTypeValue == 'Flat') {
       livingType = this.flatValue
-    }else if(livingTypeValue == 'Home'){
+    } else if (livingTypeValue == 'Home') {
       livingType = this.homeValue
-    }else if(livingTypeValue == 'Office'){
+    } else if (livingTypeValue == 'Office') {
       livingType = this.officeValue
     }
     return livingType;
@@ -393,13 +411,13 @@ export class AddAddressPage {
     return ctrl.dirty && ctrl.hasError(error);
   }
   back() {
-    if(this.to == 'UserAddressesPage'){
+    if (this.to == 'UserAddressesPage') {
       this.navCtrl.setRoot(UserAddressesPage);
-    }else{
-    this.navCtrl.setRoot(ChooseAddressPage);
+    } else {
+      this.navCtrl.setRoot(ChooseAddressPage);
     }
   }
-  skip(){
+  skip() {
 
     let load = this.loading.create({
       content: this.pleaseWait
@@ -430,9 +448,9 @@ export class AddAddressPage {
       // this.myApp.checkAccess();
       if (this.to == null || this.to == undefined) {
         this.navCtrl.setRoot(UserOrdersPage);
-      } else if(this.to == 'UserAddressesPage'){
+      } else if (this.to == 'UserAddressesPage') {
         this.navCtrl.setRoot(UserAddressesPage);
-      }else {
+      } else {
         this.navCtrl.setRoot(AddOrderPage, { address: res });
       }
     }, (err) => {
@@ -453,5 +471,49 @@ export class AddAddressPage {
     });
 
 
+  }
+  checkLocation(lat, lng, first) {
+    if (this.checkLocationInAlex(lat, lng) || this.checkLocationInCairo(lat, lng) || this.checkLocationInTanta(lat, lng)) {
+      return true;
+    } else {
+      if (!first) {
+        let alert = this._alert.create({
+          title: this.dialogTitle,
+          message: this.dialogMessage,
+          buttons: [
+            {
+              text: this.ok,
+              handler: () => {
+
+              }
+            }
+          ]
+        });
+        alert.present();
+
+      }
+    }
+  }
+
+  checkLocationInAlex(lat, lng) {
+    if (lat < 30.890926697 || lat > 31.3947799 || lng < 29.382800910751712 || lng > 30.290039) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+  checkLocationInTanta(lat, lng) {
+    if (lat < 30.746779369 || lat > 30.829999 || lng < 30.94 || lng > 31.049) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+  checkLocationInCairo(lat, lng) {
+    if (lat < 29.5 || lat > 30.2999999999 || lng < 30.3 || lng > 32.213010999999) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

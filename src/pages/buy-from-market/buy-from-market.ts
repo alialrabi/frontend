@@ -40,7 +40,8 @@ export class BuyFromMarketPage {
     description:'',
     reciverImage:null,
     reciverAddressId:0,
-    userId:0
+    userId:0,
+    isBuing:true
 
   }
   address = ''

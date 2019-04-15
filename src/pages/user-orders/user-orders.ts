@@ -8,6 +8,7 @@ import { OrderService } from '../../providers/auth/order.service';
 import { ChooseAddressPage } from '../choose-address/choose-address';
 import { CaptainService } from '../../providers/auth/captain.service';
 import { OrderKindPage } from '../order-kind/order-kind';
+import { UserOrderService } from '../../providers/auth/userOrders.service';
 
 /**
  * Generated class for the UserOrdersPage page.
@@ -46,7 +47,7 @@ export class UserOrdersPage {
   deliverFromTo = '';
   buyFromMarket = '';
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,  public _alert: AlertController , public toastCtrl: ToastController, private captainService: CaptainService, private loading: LoadingController, public translateService: TranslateService, private app: App, private principal: Principal, public orderService: OrderService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,  public _alert: AlertController , public toastCtrl: ToastController, private captainService: CaptainService, private loading: LoadingController, public translateService: TranslateService, private app: App, private principal: Principal, public orderService: UserOrderService) {
 
     this.translateService.get(['DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT', 'MORE_DATA' , 'ADD_ORDER_TITLE' , 'ORDER_KIND_MESSAGE' , 'BUY_FROM_MARKET' , 'DELIVER_FROM_LOCATION_TO_LOCATION']).subscribe((values) => {
 
@@ -142,43 +143,43 @@ export class UserOrdersPage {
     });
   }
 
-  getAllOrders(status, pageNum) {
-    this.myVar = status;
-    let load;
-    if (pageNum == 0) {
-      load = this.loading.create({
-        content: this.pleaseWait
+  // getAllOrders(status, pageNum) {
+  //   this.myVar = status;
+  //   let load;
+  //   if (pageNum == 0) {
+  //     load = this.loading.create({
+  //       content: this.pleaseWait
 
 
-      })
-      load.present()
-      this.ordersList = [];
-      this.pageNum = 1;
-    }
+  //     })
+  //     load.present()
+  //     this.ordersList = [];
+  //     this.pageNum = 1;
+  //   }
 
-    this.orderService.getAllByStatus(status, this.userId, true, pageNum).subscribe(res => {
-      console.log(res);
+  //   this.orderService.getAllByStatus(status, this.userId, true, pageNum).subscribe(res => {
+  //     console.log(res);
 
 
-      if (pageNum == 0) {
-        this.ordersList = res;
-        load.dismiss();
-      } else {
-        if (res.length > 0) {
-          this.pageNum++;
-        }
-        res.forEach(element => {
-          this.ordersList.push(element);
+  //     if (pageNum == 0) {
+  //       this.ordersList = res;
+  //       load.dismiss();
+  //     } else {
+  //       if (res.length > 0) {
+  //         this.pageNum++;
+  //       }
+  //       res.forEach(element => {
+  //         this.ordersList.push(element);
 
-        });
-      }
-    }, err => {
-      console.log(err);
-      if (pageNum == 0) {
-        load.dismiss();
-      }
-    })
-  }
+  //       });
+  //     }
+  //   }, err => {
+  //     console.log(err);
+  //     if (pageNum == 0) {
+  //       load.dismiss();
+  //     }
+  //   })
+  // }
 
   getUserOrders(status, pageNum) {
     this.myVar = status;
@@ -246,7 +247,6 @@ export class UserOrdersPage {
     let flag = true;
 
     while (flag) {
-
       let index = orders.indexOf('-');
       // console.log(index, 'vvvv');
 
@@ -287,7 +287,7 @@ export class UserOrdersPage {
   }
 
   assingCaptain(order) {
-    this.navCtrl.setRoot('AssignOrderPage', { item: order })
+    this.navCtrl.setRoot('AssignOrderPage', { item: order.userOrder , from:"userOrder"})
   }
 
   finish(item) {
@@ -300,7 +300,7 @@ export class UserOrdersPage {
     load.present()
 
 
-    this.orderService.finishOrder(item.id).subscribe(
+    this.orderService.finishOrder(item.userOrder.id).subscribe(
       res => {
         let toast = this.toastCtrl.create({
           message: this.deliverOrderSuccess,
@@ -335,6 +335,7 @@ export class UserOrdersPage {
     console.log('ionViewDidLoad UserOrdersPage');
   }
   viewLocation(order) {
+
     this.navCtrl.setRoot('OrdersMapPage', { item: order })
   }
 
