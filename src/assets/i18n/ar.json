@@ -1,4 +1,10 @@
 {
+  "OK":"حسنا",
+  "LOCATION_ALERT_MESSAGE":"هذا الموقع غير مدعم حاليا",
+  "LOCATION_ALERT_TITLE":"الموقع",
+  "NO_EMAIL_MESSAGE":"لا يمكنك تسجيل الدخول باستخدام الفيس بوك لانك حسابك الخاص على فيس بوك لا يحتوى على بريد اكترونى",
+  "RECIVER_PHONE":"رقم هاتف المستلم",
+  "IDENTIFY_NUMBER":"الرقم التعريفى",
   "RECIVER_NAME":"اسم المستلم",
   "SENDER_PHONE":"رقم هاتف المرسل",
   "SENDER_ADDRESS":"عنوان المرسل",

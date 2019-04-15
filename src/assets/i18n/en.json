@@ -1,4 +1,10 @@
 {
+  "OK":"Ok",
+  "LOCATION_ALERT_MESSAGE":"this location is not supported now",
+  "LOCATION_ALERT_TITLE":"Location",
+  "NO_EMAIL_MESSAGE":"Can not log in with your facebook account because your faceBook account doesn't have an valid email",
+  "RECIVER_PHONE":"Reciver phone",
+  "IDENTIFY_NUMBER":"Identify Number",
   "RECIVER_NAME":"Reciver Name",
   "SENDER_PHONE":"Sender Phone",
   "SENDER_ADDRESS":"Sender Address",

@@ -9,6 +9,7 @@ import { FirstRunPage } from '../pages';
 import { Principal } from '../../providers/auth/principal.service';
 import { UserOrdersPage } from '../user-orders/user-orders';
 import { MyApp } from '../../app/app.component';
+import { UserOrderService } from '../../providers/auth/userOrders.service';
 
 /**
  * Generated class for the AssignOrderPage page.
@@ -43,13 +44,15 @@ export class AssignOrderPage {
   atMarket='';
   not_working= '';
   onWay= ''
+  from = ''
 
 
-
-  constructor(public navCtrl: NavController, public navParams: NavParams , public platform:Platform ,
+  constructor(public navCtrl: NavController, public navParams: NavParams , public platform:Platform , public userOrderService:UserOrderService,
     private builder: FormBuilder , public captainService:CaptainService  ,private loading: LoadingController , private app: App, private principal: Principal, public toastCtrl: ToastController , public translateService: TranslateService , public orderService:OrderService ) {
 
       this.order = this.navParams.get("item");
+      this.from = this.navParams.get("from");
+
 
     this.translateService.get(['ASSIGN_ORDER_ERROR', 'ASSIGN_ORDER_SUCCESS' , 'PLEASE_WAIT' , 'NOT_WORKING' , 'ON_BACK_WAY' , 'AT_MARKET' , 'BUSY']).subscribe((values) => {
       this.assignOrderError = values.ASSIGN_ORDER_ERROR;
@@ -151,7 +154,11 @@ export class AssignOrderPage {
     })
     load.present()
 
-    this.orderService.assign(this.myForm.get('captainId').value , this.order.id).subscribe(
+    if(this.from == 'userOrder'){
+
+      
+
+    this.userOrderService.assign(this.myForm.get('captainId').value , this.order.id).subscribe(
       res =>{
         let toast = this.toastCtrl.create({
           message: this.assingOrderSuccess,
@@ -186,6 +193,44 @@ export class AssignOrderPage {
       }
     )
 
+    }else{
+
+
+    this.orderService.assign(this.myForm.get('captainId').value , this.order.id).subscribe(
+      res =>{
+        let toast = this.toastCtrl.create({
+          message: this.assingOrderSuccess,
+          duration: 3000,
+          position: 'top'
+        });
+        toast.present();
+        load.dismiss();
+        if(this.userType == 'Admin'){
+          this.app.getRootNavs()[0].setRoot(UserOrdersPage);
+        }else{
+          this.app.getRootNavs()[0].setRoot(OrdersPage);
+        }
+
+        //this.navCtrl.push(OrdersPage);
+        
+
+      }, err =>{
+        console.log(err);
+        
+
+        let displayError = this.assignOrderError;
+      
+      let toast = this.toastCtrl.create({
+          message: displayError,
+          duration: 3000,
+          position: 'middle'
+      });
+      toast.present();
+      load.dismiss();
+
+      }
+    )
+  }
   }
   assignOrderToFreeCaptain(){
     let load = this.loading.create({

@@ -43,6 +43,8 @@ export class LoginPage {
   language = MyApp.language
   direction = MyApp.direction
 
+  noEmailMessage = ''
+
   myForm: FormGroup;
 
   constructor(public navCtrl: NavController,
@@ -62,9 +64,10 @@ export class LoginPage {
     public platform: Platform,
     private accountService: AccountService, private captainService: CaptainService, public myApp: MyApp) {
 
-    this.translateService.get(['LOGIN_ERROR', 'PLEASE_WAIT']).subscribe((values) => {
+    this.translateService.get(['LOGIN_ERROR', 'PLEASE_WAIT' , 'NO_EMAIL_MESSAGE']).subscribe((values) => {
       this.loginErrorString = values.LOGIN_ERROR;
       this.pleaseWait = values.PLEASE_WAIT;
+      this.noEmailMessage = values.NO_EMAIL_MESSAGE
     })
     this.validateUser();
 
@@ -269,8 +272,8 @@ export class LoginPage {
     } else {
 
       this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then(data => {
-       this.userData = { email: data.email, first_name: data.firstName, last_name: data.lastName }
-       this.doLoginToFacebook();
+        this.userData = { email: data.email, first_name: data.firstName, last_name: data.lastName }
+        this.doLoginToFacebook();
       }).catch(err => {
         console.log(err, 'errr 222222222222');
 
@@ -279,43 +282,56 @@ export class LoginPage {
   }
   doLoginToFacebook() {
 
+    if (this.userData.email == null || this.userData.email == '') {
 
-    let load = this.loading.create({
-      content: this.pleaseWait
+      let toast = this.toastCtrl.create({
+                message: this.noEmailMessage,
+                duration: 20000,
+                position: 'top'
+              });
+              toast.present();
 
-
-    })
-    load.present()
-
-    let account = {
-      username: this.userData.email,
-      password: this.socialPassword,
-      rememberMe: true,
-    }
+    } else {
 
 
-    this.loginService.login(account).then((response) => {
-
-      load.dismiss();
-      this.myApp.checkAccess();
-
-      this.validateUser();
+      let load = this.loading.create({
+        content: this.pleaseWait
 
 
+      })
+      load.present()
 
 
-    }, (err) => {
-      // Unable to log in
-      this.account.password = '';
-      console.log(err);
-
-
-      if (err.error.status == 400 && err.error.title == "Incorrect password") {
-        this.faceBookSignUp(account);
+      let account = {
+        username: this.userData.email,
+        password: this.socialPassword,
+        rememberMe: true,
       }
 
-      load.dismiss();
-    });
+
+      this.loginService.login(account).then((response) => {
+
+        load.dismiss();
+        this.myApp.checkAccess();
+
+        this.validateUser();
+
+
+
+
+      }, (err) => {
+        // Unable to log in
+        this.account.password = '';
+        console.log(err);
+
+
+        if (err.error.status == 400 && err.error.title == "Incorrect password") {
+          this.faceBookSignUp(account);
+        }
+
+        load.dismiss();
+      });
+    }
   }
 
   faceBookSignUp(loginAccount) {

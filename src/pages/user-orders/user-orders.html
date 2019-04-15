@@ -103,136 +103,72 @@
       <ion-grid>
         <ion-row>
           <ion-col class="img-col" col-3>
-            <img class="circle-pic" src="../../assets/img/orders.jpg" />
+            <img class="circle-pic" src="../../assets/img/orders.jpg" *ngIf="!order.userOrder.reciverImage  || order.userOrder.reciverImage == 'O'"
+            />
+            <img class="circle-pic" style="max-width: 150px;" *ngIf="order.userOrder.reciverImage  && order.userOrder.reciverImage != 'O'"
+              [src]="['data:image/jpg;base64',order.userOrder.reciverImage]" />
           </ion-col>
 
           <ion-col col-9>
 
             <div class="account-info info-div">
               <p>
-                {{ 'NAME' | translate }} :
-                <strong text-wrap>{{order.name}}</strong>
+                {{ 'IDENTIFY_NUMBER' | translate }} :
+                <strong text-wrap>{{order.userOrder.identifyNumber}}</strong>
+              </p>
+              <p *ngIf="order.userOrder.isBuing">
+                {{ 'MARKET_NAME' | translate }} :
+                <strong text-wrap>{{order.userOrder.marketName}}</strong>
+              </p>
+              <p *ngIf="order.userOrder.isBuing">
+                {{ 'MARKET_ADDRESS' | translate }} :
+                <strong text-wrap>{{order.userOrder.marketAddress}}</strong>
+              </p>
+              <p *ngIf="order.userOrder.isBuing">
+                {{ 'MARKET_PHONE' | translate }} :
+                <strong text-wrap>{{order.userOrder.marketPhone}}</strong>
+              </p>
+              <p *ngIf="order.userOrder.isBuing">
+                {{ 'PRICE_RANGE' | translate }} :
+                <strong text-wrap>{{order.userOrder.priceRange}}</strong>
               </p>
               <p>
-                {{ 'FROM' | translate }} :
-                <strong text-wrap>{{order.fromAddress}}</strong>
+                {{ 'PRODUCT_DESCRIPTION' | translate }} :
+                <strong text-wrap>{{order.userOrder.description}}</strong>
               </p>
-              <!--  <li style="margin-left: 22px;margin-right: 22px"></li>  <br/>  -->
-              <p>
-                {{ 'TO' | translate }} :
-                <strong text-wrap>{{order.street}} , {{order.addressCity}} , {{order.country}}</strong>
+              <p *ngIf="!order.userOrder.isBuing">
+                {{ 'APPROXIMATE_WEIGHT' | translate }} :
+                <strong text-wrap>{{order.userOrder.weight}}</strong>
               </p>
-              <p>
-                {{ 'PHONE_NUMBER_PHONE' | translate }} 1 :
-                <strong text-wrap>{{order.firstPhone}}</strong>
+              <p *ngIf="!order.userOrder.isBuing && order.senderAddress != null" (click)="viewLocation(order.senderAddress)">
+                {{ 'SENDER_ADDRESS' | translate }} :
+                  <strong text-wrap>{{order.senderAddress.region}} , {{order.senderAddress.street}} , {{order.senderAddress.building}} , {{order.senderAddress.floor}}
+                    , {{order.senderAddress.flatNumber}}</strong>
               </p>
-              <p *ngIf="order.secondPhone != null && order.secondPhone != ''">
-                {{ 'PHONE_NUMBER_PHONE' | translate }} 2 :
-                <strong text-wrap>{{order.secondPhone}}</strong>
+              <p *ngIf="order.userOrder.senderPhone != null">
+                {{ 'SENDER_PHONE' | translate }} :
+                <strong text-wrap>{{order.userOrder.senderPhone}}</strong>
               </p>
-              <p>
-                {{ 'ORDERS' | translate }} :-
+              <p *ngIf="order.userOrder.reciverName != null">
+                {{ 'RECIVER_NAME' | translate }} :
+                <strong text-wrap>{{order.userOrder.reciverName}}</strong>
               </p>
-              <!-- <div *ngFor="let item of viewOrder(order.orders)">
-                <p style="margin-left: 15px;margin-right: 15px">
-                  {{item.index}}-
-                  <strong text-wrap>{{item.name}}</strong>
-                </p>
-              </div> -->
+              <p *ngIf="order.reciverAddress != null" (click)="viewLocation(order.reciverAddress)">
+                {{ 'RECIVER_ADDRESS' | translate }} :
+                  <strong text-wrap>{{order.reciverAddress.region}} , {{order.reciverAddress.street}} , {{order.reciverAddress.building}} ,
+                    {{order.reciverAddress.floor}} , {{order.reciverAddress.flatNumber}}</strong>
+              </p>
+              <p *ngIf="order.userOrder.reciverPhone != null">
+                {{ 'RECIVER_PHONE' | translate }} :
+                <strong text-wrap>{{order.userOrder.reciverPhone}}</strong>
+              </p>
             </div>
           </ion-col>
         </ion-row>
-        </ion-grid>
-        <div class="account-info info-div2">
-            <ion-item class="item-background2">
-              <ion-grid style="padding: 0px">
-                <ion-row style="padding: 0px">
-                  <ion-col col-6>
-                    <p>
-                      {{'NAME' | translate}}
-                    </p>
-                  </ion-col>
-                  <ion-col col-1 style="padding: 0px">
-                      <p>
-                        <strong text-wrap>|</strong>
-                      </p>
-                    </ion-col>
-                  <ion-col col-5 style="padding: 0px">
-                    <p text-center>
-                      {{'PRICE' | translate}}
-                    </p>
-                  </ion-col>
-                </ion-row>
-              </ion-grid>
-            </ion-item>
-            <ion-item class="item-background2" *ngFor="let sub of order.subOrders">
-              <ion-grid style="padding: 0px">
-                <ion-row style="padding: 0px">
-                  <ion-col col-6 style="padding: 0px">
-                    <p>
-                      <strong text-wrap>{{sub.name}}</strong>
-                    </p>
-                  </ion-col>
-                  <ion-col col-1 style="padding: 0px">
-                      <p>
-                        <strong text-wrap>|</strong>
-                      </p>
-                    </ion-col>
-                  <ion-col col-5 style="padding: 0px">
-                    <p text-center>
-                      <strong text-wrap>{{sub.price}}</strong>
-                    </p>
-                  </ion-col>
-                </ion-row>
-              </ion-grid>
-            </ion-item>
-            <ion-item class="item-background2">
-              <ion-grid style="padding: 0px">
-                <ion-row style="padding: 0px">
-                  <ion-col col-6 style="padding: 0px">
-                    <p>
-                      <strong text-wrap>{{'DELIVER_PRICE' | translate}}</strong>
-                    </p>
-                  </ion-col>
-                  <ion-col col-1 style="padding: 0px">
-                      <p>
-                        <strong text-wrap>|</strong>
-                      </p>
-                    </ion-col>
-                  <ion-col col-5 style="padding: 0px">
-                    <p text-center>
-                      <strong text-wrap>10.0</strong>
-                    </p>
-                  </ion-col>
-                </ion-row>
-              </ion-grid>
-            </ion-item>
-            <ion-item class="item-background2">
-              <ion-grid style="padding: 0px">
-                <ion-row style="padding: 0px">
-                  <ion-col col-6 style="padding: 0px">
-                    <p>
-                      <strong text-wrap>{{'TOTAL' | translate}}</strong>
-                    </p>
-                  </ion-col>
-                  <ion-col col-1 style="padding: 0px">
-                      <p>
-                        <strong text-wrap>|</strong>
-                      </p>
-                    </ion-col>
-                  <ion-col col-5 style="padding: 0px">
-                    <p text-center>
-                      <strong text-wrap>{{order.total}}</strong>
-                    </p>
-                  </ion-col>
-                </ion-row>
-              </ion-grid>
-            </ion-item>
-          </div>
-
-        <ion-grid>
+      </ion-grid>
+      <ion-grid>
         <ion-row>
-          <ion-col col-6>
+          <ion-col>
             <ion-buttons end class="btn-style" style="width: 100%" *ngIf="myVar != 'delivered' && userType=='Admin'">
               <button ion-button style="width: 100%" (click)="assingCaptain(order)">
                 {{ 'ASSIGN_CAPTAIN' | translate }}
@@ -245,13 +181,13 @@
               </button>
             </ion-buttons>
           </ion-col>
-          <ion-col col-6>
+          <!-- <ion-col col-6>
             <ion-buttons end class="btn-style" style="width: 100%;" *ngIf="myVar != 'delivered' && (userType=='Captain' || userType=='Admin')">
               <button ion-button (click)="viewLocation(order)" style="width: 100%;">
                 {{ 'VIEW_LOCATION' | translate }}
               </button>
             </ion-buttons>
-          </ion-col>
+          </ion-col> -->
         </ion-row>
 
       </ion-grid>

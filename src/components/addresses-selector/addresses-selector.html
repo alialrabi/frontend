@@ -41,13 +41,7 @@
               <p style="margin-top: 13px" *ngIf="address.otherDetails != null && address.otherDetails != ''">
                   {{'OTHER_DETAILS' | translate}} : <strong text-wrap> {{address.otherDetails}}</strong>
               </p>
-              <p style="margin-top: 13px">
-                  {{'MOBLIE_PHONE' | translate}} : <strong text-wrap> {{address.mobilePhoneNumber}}</strong>
-              </p>
-              <p style="margin-top: 13px" *ngIf="address.homePhoneNumber != null && address.homePhoneNumber != ''">
-                  {{'HOME_PHONE' | translate}} : <strong text-wrap> {{address.homePhoneNumber}}</strong>
-              </p>
-
+              
             </div>
           </ion-col>
         </ion-row>

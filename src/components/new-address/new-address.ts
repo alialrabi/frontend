@@ -39,7 +39,7 @@ export class NewAddressComponent {
   flat = 'Flat'
 
   address: { country: string, city: string, street: string, userId: Number, latitude: String, longitude: String ,
-    livingType:string , building:string , floor:string , flatNumber:string , otherDetails:string , mobilePhoneNumber:string , homePhoneNumber:string , name:string , region:string } = {
+    livingType:string , building:string , floor:string , flatNumber:string , otherDetails:string , name:string , region:string } = {
     country: 'Egypt',
     city: '',
     street: '',
@@ -52,8 +52,8 @@ export class NewAddressComponent {
     floor:'',
     flatNumber:'',
     otherDetails:'',
-    mobilePhoneNumber:'',
-    homePhoneNumber:'',
+    // mobilePhoneNumber:'',
+    // homePhoneNumber:'',
     name:''
   }
 
@@ -116,8 +116,8 @@ export class NewAddressComponent {
       'floor': ['', [Validators.required, Validators.maxLength(45)]],
       'flatNumber': ['', [Validators.required, Validators.maxLength(45)]],
       'otherDetails': ['', [ Validators.maxLength(45)]],
-      'mobilePhoneNumber': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
-      'homePhoneNumber': ['', []],
+      // 'mobilePhoneNumber': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
+      // 'homePhoneNumber': ['', []],
     });
 
     this.myForm.get('city').setValue('Alexandria');
