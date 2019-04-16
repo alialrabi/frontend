@@ -82,6 +82,7 @@ export class LoginPage {
     email: '',
     first_name: '',
     last_name: '',
+    id:'0'
   }
   // Attempt to login in through our User service
   doLogin() {
@@ -232,7 +233,7 @@ export class LoginPage {
 
 
             classlIn.fb.api('me?fields=id,name,email,first_name,last_name', []).then(profile => {
-              classlIn.userData = { email: profile['email'], first_name: profile['first_name'], last_name: profile['last_name'] }
+              classlIn.userData = {id: profile['id'] , email: profile['email'], first_name: profile['first_name'], last_name: profile['last_name'] }
               //load.dismiss()
               // let toast1 = classlIn.toastCtrl.create({
               //   message: '*****************************',
@@ -272,7 +273,7 @@ export class LoginPage {
     } else {
 
       this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then(data => {
-        this.userData = { email: data.email, first_name: data.firstName, last_name: data.lastName }
+        this.userData = { id: data.id , email: data.email, first_name: data.firstName, last_name: data.lastName }
         this.doLoginToFacebook();
       }).catch(err => {
         console.log(err, 'errr 222222222222');
@@ -309,7 +310,7 @@ export class LoginPage {
     }
 
     if (this.userData.email == null || this.userData.email == '') {
-      account.username = this.userData.first_name + this.userData.last_name + '@facebook.com';
+      account.username = this.userData.id+ 't@facebook.com';
 
       console.log('nullllllllllllllllll' , account.username );
 
@@ -355,8 +356,8 @@ export class LoginPage {
 
     if (this.userData.email == null || this.userData.email == '') {
       
-      signUpAccount.login = this.userData.first_name + this.userData.last_name + '@facebook.com';
-      signUpAccount.email = this.userData.first_name + this.userData.last_name + '@facebook.com';
+      signUpAccount.login = this.userData.id+ 't@facebook.com';
+      signUpAccount.email = this.userData.id+ 't@facebook.com';
 
       console.log('nullllllllllllllllll' , signUpAccount.login );
 
