@@ -219,8 +219,8 @@ export class SignupPage {
     let signUpAccount = {
       login: this.userData.email,
       email: this.userData.email,
-      firstName: this.userData.first_name,
-      lastName: this.userData.last_name,
+      firstName: this.userData.first_name+' '+this.userData.last_name,
+      lastName: '',
       password: this.socialPassword,
       langKey: MyApp.language,
       activated: true
