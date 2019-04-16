@@ -142,7 +142,7 @@
               </p>
               <p *ngIf="!order.userOrder.isBuing && order.senderAddress != null" (click)="viewLocation(order.senderAddress)">
                 {{ 'SENDER_ADDRESS' | translate }} :
-                  <strong text-wrap>{{order.senderAddress.region}} , {{order.senderAddress.street}} , {{order.senderAddress.building}} , {{order.senderAddress.floor}}
+                  <strong text-wrap>{{order.senderAddress.city}} , {{order.senderAddress.region}} , {{order.senderAddress.street}} , {{order.senderAddress.building}} , {{order.senderAddress.floor}}
                     , {{order.senderAddress.flatNumber}}</strong>
               </p>
               <p *ngIf="order.userOrder.senderPhone != null">
@@ -155,7 +155,7 @@
               </p>
               <p *ngIf="order.reciverAddress != null" (click)="viewLocation(order.reciverAddress)">
                 {{ 'RECIVER_ADDRESS' | translate }} :
-                  <strong text-wrap>{{order.reciverAddress.region}} , {{order.reciverAddress.street}} , {{order.reciverAddress.building}} ,
+                  <strong text-wrap>{{order.reciverAddress.city}} , {{order.reciverAddress.region}} , {{order.reciverAddress.street}} , {{order.reciverAddress.building}} ,
                     {{order.reciverAddress.floor}} , {{order.reciverAddress.flatNumber}}</strong>
               </p>
               <p *ngIf="order.userOrder.reciverPhone != null">

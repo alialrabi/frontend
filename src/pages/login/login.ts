@@ -64,7 +64,7 @@ export class LoginPage {
     public platform: Platform,
     private accountService: AccountService, private captainService: CaptainService, public myApp: MyApp) {
 
-    this.translateService.get(['LOGIN_ERROR', 'PLEASE_WAIT' , 'NO_EMAIL_MESSAGE']).subscribe((values) => {
+    this.translateService.get(['LOGIN_ERROR', 'PLEASE_WAIT', 'NO_EMAIL_MESSAGE']).subscribe((values) => {
       this.loginErrorString = values.LOGIN_ERROR;
       this.pleaseWait = values.PLEASE_WAIT;
       this.noEmailMessage = values.NO_EMAIL_MESSAGE
@@ -282,68 +282,84 @@ export class LoginPage {
   }
   doLoginToFacebook() {
 
+    // if (this.userData.email == null || this.userData.email == '') {
+
+    //   let toast = this.toastCtrl.create({
+    //             message: this.noEmailMessage,
+    //             duration: 20000,
+    //             position: 'top'
+    //           });
+    //           toast.present();
+
+    // } else {
+
+
+    let load = this.loading.create({
+      content: this.pleaseWait
+
+
+    })
+    load.present()
+
+
+    let account = {
+      username: this.userData.email,
+      password: this.socialPassword,
+      rememberMe: true,
+    }
+
     if (this.userData.email == null || this.userData.email == '') {
+      account.username = this.userData.first_name + this.userData.last_name + '@facebook.com';
 
-      let toast = this.toastCtrl.create({
-                message: this.noEmailMessage,
-                duration: 20000,
-                position: 'top'
-              });
-              toast.present();
+      console.log('nullllllllllllllllll' , account.username );
 
-    } else {
+    }
+    this.loginService.login(account).then((response) => {
 
+      load.dismiss();
+      this.myApp.checkAccess();
 
-      let load = this.loading.create({
-        content: this.pleaseWait
+      this.validateUser();
 
 
-      })
-      load.present()
 
 
-      let account = {
-        username: this.userData.email,
-        password: this.socialPassword,
-        rememberMe: true,
+    }, (err) => {
+      // Unable to log in
+      this.account.password = '';
+      console.log(err);
+
+
+      if (err.error.status == 400 && err.error.title == "Incorrect password") {
+        this.faceBookSignUp(account);
       }
 
-
-      this.loginService.login(account).then((response) => {
-
-        load.dismiss();
-        this.myApp.checkAccess();
-
-        this.validateUser();
-
-
-
-
-      }, (err) => {
-        // Unable to log in
-        this.account.password = '';
-        console.log(err);
-
-
-        if (err.error.status == 400 && err.error.title == "Incorrect password") {
-          this.faceBookSignUp(account);
-        }
-
-        load.dismiss();
-      });
-    }
+      load.dismiss();
+    });
+    // }
   }
 
   faceBookSignUp(loginAccount) {
 
+    this.loginService.logout();
+
     let signUpAccount = {
       login: this.userData.email,
       email: this.userData.email,
-      firstName: this.userData.first_name+' '+this.userData.last_name,
+      firstName: this.userData.first_name + ' ' + this.userData.last_name,
       lastName: '',
       password: this.socialPassword,
       langKey: MyApp.language,
       activated: true
+    }
+
+    if (this.userData.email == null || this.userData.email == '') {
+      
+      signUpAccount.login = this.userData.first_name + this.userData.last_name + '@facebook.com';
+      signUpAccount.email = this.userData.first_name + this.userData.last_name + '@facebook.com';
+
+      console.log('nullllllllllllllllll' , signUpAccount.login );
+
     }
 
     // Attempt to login in through our User service
