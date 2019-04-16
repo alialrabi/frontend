@@ -43,7 +43,7 @@ export class CaptainService  {
         return this.http.put(Api.API_URL_login + '/tlabatac/api/unAssignCaptains/'+captainId+'/'+day+'?access_token=' +this.authservice.getToken() , null);
     }
     
-    getAll(pageNum) : Observable<any>{
+    getAllToAdmin(pageNum) : Observable<any>{
 
         return this.http.get(Api.API_URL_login + '/tlabatac/api/allcaptains/'+pageNum+'?access_token=' +this.authservice.getToken());
     }

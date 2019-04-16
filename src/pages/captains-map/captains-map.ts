@@ -159,7 +159,7 @@ export class CaptainsMapPage {
 
 
     this.deletemarkers();
-    this.captainService.captainsPickList().subscribe(res => {
+    this.captainService.captainsPickListByAgencyId(0).subscribe(res => {
       console.log(res, 'res');
       res.forEach(element => {
 

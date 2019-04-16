@@ -101,11 +101,11 @@ export class AssignOrderPage {
       }else if(account.authorities[0]== 'ROLE_AGENCY'){
         this.account = account;
         this.userType = 'Agency'
-        this.getAllCaptains();
+        this.getAllCaptains(this.account.id);
       }else{
         this.account = account;
         this.userType = 'Admin'
-        this.getAllCaptains();
+        this.getAllCaptains(0);
 
       }
        
@@ -121,14 +121,14 @@ export class AssignOrderPage {
     console.log('ionViewDidLoad AssignOrderPage');
   }
 
-  getAllCaptains(){
+  getAllCaptains(id){
     let load = this.loading.create({
       content: this.pleaseWait
   
   
     })
     load.present()
-    this.captainService.captainsPickListByAgencyId(this.account.id).subscribe(
+    this.captainService.captainsPickListByAgencyId(id).subscribe(
       res =>{
 
         console.log(res , "res");
