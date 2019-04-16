@@ -31,8 +31,10 @@
 <ion-content class="auth-page">
   <div class="login-content">
 
-    <form class="list-form" [formGroup]="myForm1" *ngIf="!reciverData">
-      <p style="width: 100%" text-center><strong>{{ 'PRODUCT_DATA' | translate }}</strong></p>
+    <form class="list-form" [formGroup]="myForm1">
+      <p style="width: 100%" text-center>
+        <strong>{{ 'PRODUCT_DATA' | translate }}</strong>
+      </p>
 
       <ion-item>
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
@@ -93,6 +95,10 @@
       <p class="validationHint" *ngIf="hasError('description', 'required' , myForm1)">{{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('description', 'maxlength' , myForm1)">{{ 'MAX_LENGTH' | translate }} </p>
 
+      <p style="width: 100%" text-center>
+        <strong>{{ 'RECIVER_DATA' | translate }}</strong>
+      </p>
+      <!-- 
     </form>
 
     <div margin-top style="margin-bottom: 40px;" *ngIf="!reciverData">
@@ -102,7 +108,7 @@
     </div>
 
       <div [ngClass]="language == 'en' ?  'circle-pic-div' : 'circle-pic-div-ar'" style="width:100%" text-center *ngIf="reciverData">
-          <p style="width: 100%" text-center><strong>{{ 'RECIVER_DATA' | translate }}</strong></p>
+          
 
         <ion-grid class="grid-image" style="width: 50%;max-width: 200px;">
           <ion-row class="grid-image">
@@ -130,31 +136,31 @@
       </div>
 
       <!-- Login form -->
-      <form class="list-form" style="margin-top: 25px" [formGroup]="myForm2" *ngIf="reciverData">
+      <!-- <form class="list-form" style="margin-top: 25px" [formGroup]="myForm2" *ngIf="reciverData"> -->
 
-        <ion-item>
-          <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
-            <ion-icon name="pin" item-start class="text-primary"></ion-icon>
-            {{ 'RECIVER_ADDRESS' | translate }}
-          </ion-label>
-          <ion-input type="text" [(ngModel)]="address" formControlName="address" name="address" [lang]="language" [dir]="direction"
-            (click)="openAddressesSelector()" readonly></ion-input>
-        </ion-item>
+      <ion-item>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+          <ion-icon name="pin" item-start class="text-primary"></ion-icon>
+          {{ 'RECIVER_ADDRESS' | translate }}
+        </ion-label>
+        <ion-input type="text" [(ngModel)]="address" formControlName="address" name="address" [lang]="language" [dir]="direction"
+          (click)="openAddressesSelector()" readonly></ion-input>
+      </ion-item>
 
-        <p class="validationHint" *ngIf="hasError('address', 'required' , myForm2)"> {{ 'REQURIED' | translate }} </p>
-        <p text-wrap (click)="newAddressModal()">
-          <strong> {{ 'NEW_ADDRESS_QUESTION' | translate }} </strong>
-        </p>
-      </form>
+      <p class="validationHint" *ngIf="hasError('address', 'required' , myForm1)"> {{ 'REQURIED' | translate }} </p>
+      <p text-wrap (click)="newAddressModal()">
+        <strong> {{ 'NEW_ADDRESS_QUESTION' | translate }} </strong>
+      </p>
+    </form>
 
-      <div margin-top style="margin-bottom: 40px;" *ngIf="reciverData">
-        <button ion-button block color="dark" tappable (click)="addOrder()" [disabled]="!myForm2.valid || order.reciverImage == null || order.reciverImage == '' || order.reciverImage == 'O'">
-          {{ 'ADD_ORDER_BUTTON' | translate }}
-        </button>
-      </div>
+    <div margin-top style="margin-bottom: 40px;">
+      <button ion-button block color="dark" tappable (click)="addOrder()" [disabled]="!myForm1.valid">
+        {{ 'ADD_ORDER_BUTTON' | translate }}
+      </button>
+    </div>
 
 
-    
+
   </div>
 
 </ion-content>

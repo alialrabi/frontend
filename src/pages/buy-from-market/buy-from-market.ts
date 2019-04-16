@@ -30,7 +30,7 @@ import { UserOrdersPage } from '../user-orders/user-orders';
 export class BuyFromMarketPage {
 
   myForm1: FormGroup;
-  myForm2: FormGroup;
+ // myForm2: FormGroup;
 
   order = {
     marketName:'',
@@ -101,10 +101,11 @@ export class BuyFromMarketPage {
       'marketPhone': ['', [ Validators.pattern("(01)[0-9]{9}")]],
       'priceRange': ['', [Validators.required]],
       'description': ['', [Validators.required, Validators.maxLength(999)]],
-    });
-    this.myForm2 = builder.group({
       'address': ['', [Validators.required ]],
     });
+    // this.myForm2 = builder.group({
+    //   'address': ['', [Validators.required ]],
+    // });
 
     this.platform.registerBackButtonAction(() => {
       if(this.reciverData){

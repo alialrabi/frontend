@@ -98,6 +98,8 @@ export class SignupPage {
     })
     loading.present()
 
+    this.loginService.logout();
+
     // set login to same as email
     this.account.login = this.account.email;
     this.account.activated = true;
@@ -204,17 +206,18 @@ export class SignupPage {
 
   faceBookSignUp() {
 
-    if (this.userData.email == null || this.userData.email == '') {
+    // if (this.userData.email == null || this.userData.email == '') {
 
-      let toast = this.toastCtrl.create({
-                message: this.noEmailMessage,
-                duration: 20000,
-                position: 'top'
-              });
-              toast.present();
+    //   let toast = this.toastCtrl.create({
+    //             message: this.noEmailMessage,
+    //             duration: 20000,
+    //             position: 'top'
+    //           });
+    //           toast.present();
 
-    } else {
+    // } else {
 
+      this.loginService.logout();
 
     let signUpAccount = {
       login: this.userData.email,
@@ -229,6 +232,13 @@ export class SignupPage {
       username: signUpAccount.login,
       password: signUpAccount.password,
       rememberMe: true,
+    }
+    if (this.userData.email == null || this.userData.email == '') {
+      signUpAccount.login = this.userData.first_name + this.userData.last_name + '@facebook.com';
+      signUpAccount.email = this.userData.first_name + this.userData.last_name + '@facebook.com';
+      loginAccount.username = this.userData.first_name + this.userData.last_name + '@facebook.com';
+
+      console.log('nullllllllllllllllll' , signUpAccount.login );
     }
 
     // Attempt to login in through our User service
@@ -270,7 +280,7 @@ export class SignupPage {
 
     })
 
-  }
+ // }
 
   }
   fbSignUp() {
