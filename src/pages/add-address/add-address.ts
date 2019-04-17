@@ -189,7 +189,10 @@ export class AddAddressPage {
           this.loadMap()
         }
         ,
-        error => console.log('Error requesting location permissions', error)
+        error => {
+          this.loadMapWithOutLocation();
+          console.log('Error requesting location permissions', error)
+        }
       );
       // }else{
       //   this.loadMap() 
@@ -209,21 +212,24 @@ export class AddAddressPage {
   }
   save() {
 
-    console.log(this.locationDisable);
+    // console.log(this.locationDisable);
 
 
-    if (this.locationDisable) {
-      this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
-        () => {
-          console.log("success");
+    // if (this.locationDisable) {
+    //   this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
+    //     () => {
+    //       console.log("success");
 
-          this.loadMap()
-        }
-        ,
-        error => console.log('Error requesting location permissions', error)
-      );
+    //       this.loadMap()
+    //     }
+    //     ,
+    //     error => console.log('Error requesting location permissions', error)
+    //   );
+    // }
+
+    if(this.map == null || this.map == undefined){
+      this.loadMapWithOutLocation();
     }
-
 
     this.mapStyle.height = "100%";
     this.mapStyle.width = "100%";
@@ -281,7 +287,7 @@ export class AddAddressPage {
           superclass.mainMarker = newmarker;
           superclass.address.latitude = event.latLng.lat();
           superclass.address.longitude = event.latLng.lng();
-        } 
+        }
       });
 
       mainClass.locationDisable = false;
@@ -290,15 +296,7 @@ export class AddAddressPage {
 
     }, function (err) {
       console.log(err, 'errrrrrrrrrrrrrrrrrrrrrrrrrrror');
-      this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
-        () => {
-          console.log("success");
-
-          this.loadMap()
-        }
-        ,
-        error => console.log('Error requesting location permissions', error)
-      );
+      this.loadMapWithOutLocation();
 
       // let toast = mainClass.toastCtrl.create({
       //   message: "error " + err.message,
@@ -309,6 +307,44 @@ export class AddAddressPage {
 
     }
     );
+
+  }
+  loadMapWithOutLocation() {
+
+    var mainClass = this;
+
+    let latLng = new google.maps.LatLng(31.214262511126286, 29.98716374830485);
+    mainClass.address.latitude = 31.214262511126286 + '';
+    mainClass.address.longitude = 29.98716374830485 + '';
+
+    let mapOptions = {
+      center: latLng,
+      zoom: 15
+    }
+
+
+    mainClass.map = new google.maps.Map(mainClass.elementRef.nativeElement, mapOptions);
+
+
+    var superclass = mainClass;
+    google.maps.event.addListener(mainClass.map, 'click', function (event) {
+
+      if (superclass.checkLocation(event.latLng.lat(), event.latLng.lng(), false)) {
+
+        if (superclass.mainMarker != null) {
+          superclass.mainMarker.setMap(null);
+        }
+        var newmarker = new google.maps.Marker({
+          position: event.latLng,
+          map: superclass.map
+        });
+        superclass.mainMarker = newmarker;
+        superclass.address.latitude = event.latLng.lat();
+        superclass.address.longitude = event.latLng.lng();
+      }
+    });
+
+    mainClass.locationDisable = false;
 
   }
 

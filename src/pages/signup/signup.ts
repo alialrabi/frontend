@@ -12,6 +12,8 @@ import { MyApp } from '../../app/app.component';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 import { TwitterConnect } from '@ionic-native/twitter-connect';
 import { AuthService, FacebookLoginProvider } from 'angular4-social-login';
+import { DeviceTockenService } from '../../providers/auth/deviceToken.service';
+import { FCM } from '@ionic-native/fcm';
 
 @IonicPage()
 @Component({
@@ -65,6 +67,8 @@ export class SignupPage {
     private loading: LoadingController,
     public translateService: TranslateService ,
   public loginService:LoginService ,
+  public fcm:FCM,
+  public deviceTokenService:DeviceTockenService,
   private builder: FormBuilder) {
 
     this.translateService.get(['SIGNUP_ERROR', 'SIGNUP_SUCCESS',
@@ -117,6 +121,7 @@ export class SignupPage {
 
       //localStorage.setItem("userId" , id+"");
         this.loginService.login(loginAccount).then((response) => {
+          this.addToken(res);
           this.myApp.checkAccessToSignUp();
           let toast = this.toastCtrl.create({
             message: this.signupSuccessString,
@@ -251,6 +256,7 @@ export class SignupPage {
 
       //localStorage.setItem("userId" , id+"");
       this.loginService.login(loginAccount).then((response) => {
+        this.addToken(res);
         this.myApp.checkAccessToSignUp();
           let toast = this.toastCtrl.create({
             message: this.signupSuccessString,
@@ -355,7 +361,27 @@ export class SignupPage {
     }
 
   }
-
+  addToken(id){
+    if(this.platform.is("cordova")){
+    this.fcm.getToken().then(token=>{
+      console.log(token);
+      let deviceToken = {
+        token:token,
+        userType:'User',
+        userId: id,
+        deviceType:'cordova'
+      }
+      this.deviceTokenService.save(deviceToken).subscribe(
+        res =>{
+          console.log("added successfully in login ");
+        },err =>{
+          console.log("error in add token in login " , err);
+          
+        }
+      )
+  })
+}
+  }
 
 
 }

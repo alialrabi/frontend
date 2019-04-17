@@ -14,6 +14,7 @@ import { AddressesSelectorComponent } from '../../components/addresses-selector/
 import { NewAddressComponent } from '../../components/new-address/new-address';
 import { UserOrderService } from '../../providers/auth/userOrders.service';
 import { UserOrdersPage } from '../user-orders/user-orders';
+import { DeviceTockenService } from '../../providers/auth/deviceToken.service';
 
 /**
  * Generated class for the BuyFromMarketPage page.
@@ -73,6 +74,7 @@ export class BuyFromMarketPage {
     public principal:Principal,
     public addressService:AddressService,
     public poverCtrl: PopoverController,
+    public deviceTokenService:DeviceTockenService,
     public userOrderService: UserOrderService,
     public translateService: TranslateService, private app: App, private builder: FormBuilder) {
 
@@ -360,6 +362,41 @@ export class BuyFromMarketPage {
     }
     this.userOrderService.save(this.order).subscribe(
       res =>{
+        console.log("order res "+res);
+        if (this.platformType == 'cordova') {
+          this.deviceTokenService.getAdminTokens().subscribe(
+            res1 => {
+              console.log("res1", res1);
+
+              res1.forEach(element => {
+                let body = {
+                  "notification":{
+                    "title":"طلب جديد",
+                    "body":"لقد تم اضافه طلب جديد برقم تعريفى " +" "+ res.identifyNumber,
+                    "sound":"default",
+                    "click_action":"FCM_PLUGIN_ACTIVITY",
+                    "icon":"fcm_push_icon"
+                  },
+                  "data":{
+                    "title":"طلب جديد",
+                    "body":"لقد تم اضافه طلب جديد برقم تعريفى " +" "+ res.identifyNumber
+                  },
+                    "to":element,
+                    "priority":"high",
+                    "restricted_package_name":""
+                }
+  
+                this.deviceTokenService.sendNotification(body);
+                
+              });
+
+            }, err1 => {
+              console.log("errrrr  11111", err1);
+
+            }
+          )
+        }
+
         let toast = this.toastCtrl.create({
           message: this.orderSuccess,
           duration: 3000,

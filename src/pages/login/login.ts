@@ -22,6 +22,8 @@ import { User } from '../../providers/user/user';
 
 import { AuthService } from "angular4-social-login";
 import { FacebookLoginProvider, GoogleLoginProvider } from "angular4-social-login";
+import { DeviceTockenService } from '../../providers/auth/deviceToken.service';
+import { FCM } from '@ionic-native/fcm';
 
 
 @IonicPage()
@@ -62,6 +64,8 @@ export class LoginPage {
     private authService: AuthService,
     private fb: Facebook,
     public platform: Platform,
+    public fcm:FCM,
+    public deviceTokenService:DeviceTockenService,
     private accountService: AccountService, private captainService: CaptainService, public myApp: MyApp) {
 
     this.translateService.get(['LOGIN_ERROR', 'PLEASE_WAIT', 'NO_EMAIL_MESSAGE']).subscribe((values) => {
@@ -69,7 +73,7 @@ export class LoginPage {
       this.pleaseWait = values.PLEASE_WAIT;
       this.noEmailMessage = values.NO_EMAIL_MESSAGE
     })
-    this.validateUser();
+    this.validateUser(false);
 
     this.myForm = builder.group({
       'username': ['', [Validators.required]],
@@ -103,7 +107,7 @@ export class LoginPage {
       load.dismiss();
       this.myApp.checkAccess();
 
-      this.validateUser();
+      this.validateUser(true);
 
 
 
@@ -123,7 +127,7 @@ export class LoginPage {
       load.dismiss();
     });
   }
-  validateUser() {
+  validateUser(flag) {
     let load = this.loading.create({
       content: this.pleaseWait
 
@@ -142,25 +146,49 @@ export class LoginPage {
         this.account = account;
 
         console.log(this.account, '555555555555');
-
-
+        if(flag){
         if (account.authorities[0] === 'ROLE_CAPTAIN') {
-
+          this.addToken('Captain' , account)
           //this.app.getRootNavs()[0].setRoot(CaptainOrdersPage);
 
         } else if (account.authorities[0] == 'ROLE_AGENCY') {
           // this.app.getRootNavs()[0].setRoot(OrdersPage);
+          this.addToken('Agency' , account)
+        }else if (account.authorities[0] == 'ROLE_USER' && account.authorities.length == 1){
+          this.addToken('User' , account) 
         }
         else {
           //this.app.getRootNavs()[0].setRoot(AgenciesPage);
+          this.addToken('Admin' , account)
         }
-
+      }
 
       }
     }).catch((err) => {
       load.dismiss();
     });
 
+  }
+  addToken(userType , account){
+    if(this.platform.is("cordova")){
+    this.fcm.getToken().then(token=>{
+      console.log(token);
+      let deviceToken = {
+        token:token,
+        userType:userType,
+        userId: account.id,
+        deviceType:'cordova'
+      }
+      this.deviceTokenService.save(deviceToken).subscribe(
+        res =>{
+          console.log("added successfully in login ");
+        },err =>{
+          console.log("error in add token in login " , err);
+          
+        }
+      )
+  })
+}
   }
 
   register() {
@@ -320,7 +348,7 @@ export class LoginPage {
       load.dismiss();
       this.myApp.checkAccess();
 
-      this.validateUser();
+      this.validateUser(true);
 
 
 
@@ -372,6 +400,7 @@ export class LoginPage {
 
       //localStorage.setItem("userId" , id+"");
       this.loginService.login(loginAccount).then((response) => {
+        this.validateUser(true);
         this.myApp.checkAccess()
       });
 

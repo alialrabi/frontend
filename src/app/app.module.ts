@@ -87,7 +87,11 @@ import { NewAddressComponent } from '../components/new-address/new-address';
 import { BuyFromMarketPageModule } from '../pages/buy-from-market/buy-from-market.module';
 import { DeliverFromToPage } from '../pages/deliver-from-to/deliver-from-to';
 import { DeliverFromToPageModule } from '../pages/deliver-from-to/deliver-from-to.module';
- 
+
+import { FCM } from '@ionic-native/fcm';
+
+import { DeviceTockenService } from '../providers/auth/deviceToken.service';
+import { HttpModule } from '@angular/http';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -127,6 +131,7 @@ let config = new AuthServiceConfig([
   imports: [
     SocialLoginModule.initialize(config),
     BrowserModule,
+    HttpModule,
     HttpClientModule,
     DatePickerModule,
     TranslateModule.forRoot({
@@ -204,10 +209,12 @@ let config = new AuthServiceConfig([
     ImagePicker,
     Keyboard,
     Facebook,
+    FCM,
     TwitterConnect,
     LocationAccuracy ,
     Geolocation,
     //Printer,
+    DeviceTockenService,
     Device,
     DatePicker,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
