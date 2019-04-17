@@ -80,10 +80,10 @@
         <ion-icon item-left name="bicycle" color="primary"></ion-icon>
         <span ion-text color="primary">{{'CAPTAINS' | translate}}</span>
       </button>
-      <button ion-item menuClose class="text-1x" (click)="openPage('AgencyCaptainsPage')" *ngIf="userType == 'Admin'">
+      <!-- <button ion-item menuClose class="text-1x" (click)="openPage('AgencyCaptainsPage')" *ngIf="userType == 'Admin'">
         <ion-icon item-left name="bicycle" color="primary"></ion-icon>
         <span ion-text color="primary">{{'YOUR_CAPTAINS' | translate}}</span>
-      </button>
+      </button> -->
       <button ion-item menuClose class="text-1x" (click)="openPage('UserOrdersPage')" *ngIf="userType == 'Admin' || userType == 'Captain'">
         <ion-icon item-left name="basket" color="primary"></ion-icon>
         <span ion-text color="primary">{{'USER_ORDERS' | translate}}</span>

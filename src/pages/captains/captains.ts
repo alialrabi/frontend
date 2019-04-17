@@ -96,7 +96,7 @@ export class CaptainsPage {
     }
 
     //this.captainsList = [];
-    this.captainService.getAll(pageNum).subscribe(res => {
+    this.captainService.getAllToAdmin(pageNum).subscribe(res => {
       console.log(res);
 
 

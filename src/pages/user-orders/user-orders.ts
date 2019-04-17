@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, App, ToastController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, App, ToastController, AlertController, Platform } from 'ionic-angular';
 import { AddOrderPage } from '../add-order/add-order';
 import { FirstRunPage } from '../pages';
 import { TranslateService } from '@ngx-translate/core';
@@ -9,6 +9,7 @@ import { ChooseAddressPage } from '../choose-address/choose-address';
 import { CaptainService } from '../../providers/auth/captain.service';
 import { OrderKindPage } from '../order-kind/order-kind';
 import { UserOrderService } from '../../providers/auth/userOrders.service';
+import { DeviceTockenService } from '../../providers/auth/deviceToken.service';
 
 /**
  * Generated class for the UserOrdersPage page.
@@ -47,7 +48,7 @@ export class UserOrdersPage {
   deliverFromTo = '';
   buyFromMarket = '';
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,  public _alert: AlertController , public toastCtrl: ToastController, private captainService: CaptainService, private loading: LoadingController, public translateService: TranslateService, private app: App, private principal: Principal, public orderService: UserOrderService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public platform:Platform ,private deviceTokenService:DeviceTockenService ,  public _alert: AlertController , public toastCtrl: ToastController, private captainService: CaptainService, private loading: LoadingController, public translateService: TranslateService, private app: App, private principal: Principal, public orderService: UserOrderService) {
 
     this.translateService.get(['DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT', 'MORE_DATA' , 'ADD_ORDER_TITLE' , 'ORDER_KIND_MESSAGE' , 'BUY_FROM_MARKET' , 'DELIVER_FROM_LOCATION_TO_LOCATION']).subscribe((values) => {
 
@@ -302,6 +303,45 @@ export class UserOrdersPage {
 
     this.orderService.finishOrder(item.userOrder.id).subscribe(
       res => {
+
+        if (this.platform.is('cordova')) {
+          this.deviceTokenService.getAdminTokens().subscribe(
+            res1 => {
+              console.log("res1", res1);
+
+              res1.forEach(element => {
+                let body = {
+                  "notification":{
+                    "title":"طلب جديد",
+                    "body":"لقد تم توصيل الطلب  " +" "+item.userOrder.identifyNumber,
+                    "sound":"default",
+                    "click_action":"FCM_PLUGIN_ACTIVITY",
+                    "icon":"fcm_push_icon"
+                  },
+                  "data":{
+                    "title":"طلب جديد",
+                    "body":"لقد تم توصيل الطلب  " +" "+item.userOrder.identifyNumber
+                  },
+                    "to":element,
+                    "priority":"high",
+                    "restricted_package_name":""
+                }
+  
+                this.deviceTokenService.sendNotification(body);
+  
+                
+              });
+
+              
+
+            }, err1 => {
+              console.log("errrrr  11111", err1);
+
+            }
+          )
+        }
+
+
         let toast = this.toastCtrl.create({
           message: this.deliverOrderSuccess,
           duration: 3000,

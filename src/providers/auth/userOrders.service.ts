@@ -9,7 +9,7 @@ export class UserOrderService {
     
     constructor(private http: HttpClient, private authservice: AuthServerProvider) { }
 
-    save(captain: any): Observable<Object> {
+    save(captain: any): Observable<any> {
 
         return this.http.post(Api.API_URL_login + '/tlabatac/api/user-orders?access_token=' + this.authservice.getToken(), captain);
     }

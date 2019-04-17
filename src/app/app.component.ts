@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
-import { Config, Nav, Platform, App, MenuController, ToastController } from 'ionic-angular';
+import { Config, Nav, Platform, App, MenuController, ToastController, AlertController } from 'ionic-angular';
 import { Settings } from '../providers/providers';
 import { LandingPage } from '../pages/landing/landing';
 import { HomePage } from '../pages/home/home';
@@ -28,6 +28,9 @@ import { AddCaptainPage } from '../pages/add-captain/add-captain';
 import { LocationAccuracy } from '@ionic-native/location-accuracy';
 
 import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
+
+import { FCM } from '@ionic-native/fcm';
+import { DeviceTockenService } from '../providers/auth/deviceToken.service';
 
 export interface MenuItem {
   title: string;
@@ -75,17 +78,62 @@ export class MyApp {
   public autoAssignInternal = null;
 
 
-  constructor(private translate: TranslateService,  private device: Device, public admobFree: AdMobFree , private backgroundMode: BackgroundMode, public menu: MenuController, public platform: Platform, settings: Settings, private config: Config,
+  constructor(private translate: TranslateService, private fcm: FCM, public _alert : AlertController , private deviceTokenService: DeviceTockenService, private device: Device, public admobFree: AdMobFree, private backgroundMode: BackgroundMode, public menu: MenuController, public platform: Platform, settings: Settings, private config: Config,
     private statusBar: StatusBar, public locationAccuracy: LocationAccuracy, public toastCtrl: ToastController, private loginService: LoginService, private captainService: CaptainService, private app: App, private principal: Principal, private splashScreen: SplashScreen, private keyboard: Keyboard) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
-      this.splashScreen.hide();
       this.keyboard.disableScroll(false);
       if (this.platform.is("android")) {
         this.showBannerAd();
+        fcm.subscribeToTopic('all');
+       fcm.onNotification().subscribe(data => {
+          console.log(JSON.stringify(data) , 'notification');
+          
+          if (data.wasTapped) {
+            console.log("Received in background");
+          } else {
+            console.log("Received in foreground");
+
+            let alert = this._alert.create({
+              title: data.title,
+              message:data.body,
+              buttons: [
+                {
+                  text: 'حسنا',
+                  handler: () => {
+
+                  }
+                }
+              ]
+            });
+            alert.present();
+
+
+          };
+        })
+        fcm.onTokenRefresh().subscribe(token => {
+          console.log(token);
+          if (this.account != null) {
+            let deviceToken = {
+              token: token,
+              userType: this.userType,
+              userId: this.account.id,
+              deviceType: 'cordova'
+            }
+            this.deviceTokenService.save(deviceToken).subscribe(
+              res => {
+                console.log("added successfully in refresh token");
+              }, err => {
+                console.log("error in add token in refresh", err);
+
+              }
+            )
+          }
+        });
       }
+      this.splashScreen.hide();
 
     });
     this.initTranslate();
@@ -105,7 +153,7 @@ export class MyApp {
 
   showBannerAd() {
     let bannerConfig: AdMobFreeBannerConfig = {
-     // isTesting: true, // Remove in production
+      // isTesting: true, // Remove in production
       autoShow: true,
       id: "ca-app-pub-3499153975001140/3738705665"
     };
@@ -113,8 +161,8 @@ export class MyApp {
 
     this.admobFree.banner.prepare().then(() => {
       console.log("banner success");
-      
-    }).catch(e => console.log("baner erroooor",e));
+
+    }).catch(e => console.log("baner erroooor", e));
   }
 
   ngOnInit() {
@@ -434,28 +482,86 @@ export class MyApp {
     //this.menu.close("authenticated");
   }
   logout() {
-    this.menu.close().then(
-      res => {
-        if (this.internal != null) {
-          console.log("unsubscribe");
 
-          this.internal.unsubscribe();
-          this.backgroundMode.disable();
-          this.internal = null;
+    if (this.platform.is("cordova")) {
+      this.fcm.getToken().then(token => {
+        this.deviceTokenService.deleteToken(token, this.account.id).subscribe(
+          res1 => {
+            console.log(res1 , 'delete token success');
+            
+            this.menu.close().then(
+              res => {
+                if (this.internal != null) {
+                  console.log("unsubscribe");
+
+                  this.internal.unsubscribe();
+                  this.backgroundMode.disable();
+                  this.internal = null;
+                }
+
+                this.loginService.logout();
+                //this.userType = '';
+                //this.account = null;
+
+
+                this.checkAccess();
+                this.isLogOut = true;
+                // this.app.getRootNavs()[0].setRoot(FirstRunPage);
+
+              }
+            );
+
+          }, err => {
+            console.log("deleting error ", err);
+
+            this.menu.close().then(
+              res => {
+                if (this.internal != null) {
+                  console.log("unsubscribe");
+
+                  this.internal.unsubscribe();
+                  this.backgroundMode.disable();
+                  this.internal = null;
+                }
+
+                this.loginService.logout();
+                //this.userType = '';
+                //this.account = null;
+
+
+                this.checkAccess();
+                this.isLogOut = true;
+                // this.app.getRootNavs()[0].setRoot(FirstRunPage);
+
+              }
+            );
+
+          }
+        )
+      })
+    } else {
+      this.menu.close().then(
+        res => {
+          if (this.internal != null) {
+            console.log("unsubscribe");
+
+            this.internal.unsubscribe();
+            this.backgroundMode.disable();
+            this.internal = null;
+          }
+
+          this.loginService.logout();
+          //this.userType = '';
+          //this.account = null;
+
+
+          this.checkAccess();
+          this.isLogOut = true;
+          // this.app.getRootNavs()[0].setRoot(FirstRunPage);
+
         }
-
-        this.loginService.logout();
-        //this.userType = '';
-        //this.account = null;
-
-
-        this.checkAccess();
-        this.isLogOut = true;
-        // this.app.getRootNavs()[0].setRoot(FirstRunPage);
-
-      }
-    );
-
+      );
+    }
 
   }
 

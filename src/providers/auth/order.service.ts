@@ -8,7 +8,7 @@ import { AuthServerProvider } from './auth-jwt.service';
 export class OrderService  {
     constructor(private http: HttpClient , private authservice : AuthServerProvider) { }
 
-    save(captain: any): Observable<Object> {
+    save(captain: any): Observable<any> {
 
         return this.http.post(Api.API_URL_login + '/tlabatac/api/orders?access_token=' +this.authservice.getToken() ,captain);
     }

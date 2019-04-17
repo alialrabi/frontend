@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "552442221691",
+    "firebase_url": "https://tlabatac-27363.firebaseio.com",
+    "project_id": "tlabatac-27363",
+    "storage_bucket": "tlabatac-27363.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:552442221691:android:6c852d4010cf2a01",
+        "android_client_info": {
+          "package_name": "com.tlabatac.ionic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "552442221691-eb522mk8ordugtntu2dr5l9fin8n6gsq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-xCgS38ZioYAmJ8_O5cipeojIFAH7lZs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "552442221691-eb522mk8ordugtntu2dr5l9fin8n6gsq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

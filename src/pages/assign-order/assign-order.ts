@@ -10,6 +10,7 @@ import { Principal } from '../../providers/auth/principal.service';
 import { UserOrdersPage } from '../user-orders/user-orders';
 import { MyApp } from '../../app/app.component';
 import { UserOrderService } from '../../providers/auth/userOrders.service';
+import { DeviceTockenService } from '../../providers/auth/deviceToken.service';
 
 /**
  * Generated class for the AssignOrderPage page.
@@ -47,7 +48,7 @@ export class AssignOrderPage {
   from = ''
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams , public platform:Platform , public userOrderService:UserOrderService,
+  constructor(public navCtrl: NavController, public navParams: NavParams , private deviceTokenService:DeviceTockenService , public platform:Platform , public userOrderService:UserOrderService,
     private builder: FormBuilder , public captainService:CaptainService  ,private loading: LoadingController , private app: App, private principal: Principal, public toastCtrl: ToastController , public translateService: TranslateService , public orderService:OrderService ) {
 
       this.order = this.navParams.get("item");
@@ -101,11 +102,11 @@ export class AssignOrderPage {
       }else if(account.authorities[0]== 'ROLE_AGENCY'){
         this.account = account;
         this.userType = 'Agency'
-        this.getAllCaptains();
+        this.getAllCaptains(this.account.id);
       }else{
         this.account = account;
         this.userType = 'Admin'
-        this.getAllCaptains();
+        this.getAllCaptains(0);
 
       }
        
@@ -121,14 +122,14 @@ export class AssignOrderPage {
     console.log('ionViewDidLoad AssignOrderPage');
   }
 
-  getAllCaptains(){
+  getAllCaptains(id){
     let load = this.loading.create({
       content: this.pleaseWait
   
   
     })
     load.present()
-    this.captainService.captainsPickListByAgencyId(this.account.id).subscribe(
+    this.captainService.captainsPickListByAgencyId(id).subscribe(
       res =>{
 
         console.log(res , "res");
@@ -156,10 +157,47 @@ export class AssignOrderPage {
 
     if(this.from == 'userOrder'){
 
-      
-
-    this.userOrderService.assign(this.myForm.get('captainId').value , this.order.id).subscribe(
+    this.userOrderService.assign(this.myForm.get('captainId').value.id , this.order.id).subscribe(
       res =>{
+
+        if (this.platform.is('cordova')) {
+          this.deviceTokenService.getUserTokens(this.myForm.get('captainId').value.userId).subscribe(
+            res1 => {
+              console.log("res1", res1);
+
+              res1.forEach(element => {
+
+                let body = {
+                  "notification":{
+                    "title":"طلب جديد",
+                    "body":" لقد تم الحاقك بطلب جديد برقم تعريفى"+" "+ this.order.identifyNumber ,
+                    "sound":"default",
+                    "click_action":"FCM_PLUGIN_ACTIVITY",
+                    "icon":"fcm_push_icon"
+                  },
+                  "data":{
+                    "title":"طلب جديد",
+                    "body":" لقد تم الحاقك بطلب جديد برقم تعريفى"+" "+ this.order.identifyNumber
+                  },
+                    "to":element,
+                    "priority":"high",
+                    "restricted_package_name":""
+                }
+  
+                this.deviceTokenService.sendNotification(body);
+  
+                
+              });
+
+             
+
+            }, err1 => {
+              console.log("errrrr  11111", err1);
+
+            }
+          )
+        }
+
         let toast = this.toastCtrl.create({
           message: this.assingOrderSuccess,
           duration: 3000,
@@ -196,7 +234,7 @@ export class AssignOrderPage {
     }else{
 
 
-    this.orderService.assign(this.myForm.get('captainId').value , this.order.id).subscribe(
+    this.orderService.assign(this.myForm.get('captainId').value.id , this.order.id).subscribe(
       res =>{
         let toast = this.toastCtrl.create({
           message: this.assingOrderSuccess,
