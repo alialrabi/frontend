@@ -1,4 +1,6 @@
 {
+  "USER_ORDER_DETAILS":"تفاصيل الطلب",
+  "USER_ORDER_NOT_ASSIGNED":"قيد الاعداد",
   "OK":"حسنا",
   "LOCATION_ALERT_MESSAGE":"هذا الموقع غير مدعم حاليا",
   "LOCATION_ALERT_TITLE":"الموقع",

@@ -92,6 +92,7 @@ import { FCM } from '@ionic-native/fcm';
 
 import { DeviceTockenService } from '../providers/auth/deviceToken.service';
 import { HttpModule } from '@angular/http';
+import { UserOrderDetailPageModule } from '../pages/user-order-detail/user-order-detail.module';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -182,7 +183,8 @@ let config = new AuthServiceConfig([
     OrderKindPageModule,
     EditAddressPageModule,
     BuyFromMarketPageModule,
-    DeliverFromToPageModule
+    DeliverFromToPageModule,
+    UserOrderDetailPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

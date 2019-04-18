@@ -1,0 +1,142 @@
+<!--
+  Generated template for the UserOrderDetailPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+
+    <ion-grid style="width: 100%">
+      <ion-row>
+        <ion-col col-1 style="max-width: 25px;">
+          <ion-buttons style="margin-block-start: 2px;padding-bottom: 0px;padding-top: 0px" class="btn-style">
+            <button ion-button (click)="back()">
+              <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
+            </button>
+          </ion-buttons>
+        </ion-col>
+        <ion-col col-11 [style.margin-top]="language == 'en' ? '5px' : '2px'">
+          <ion-title>{{ 'USER_ORDER_DETAILS' | translate }}</ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+
+
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="auth-page-captain">
+
+
+  <div class="account-info info-div" style="margin-top: 30px;padding-right: 10px;margin-bottom: 60px;">
+
+    <ion-item class="item-background">
+      <p>
+        {{ 'IDENTIFY_NUMBER' | translate }} :
+        <strong text-wrap>{{order.userOrder.identifyNumber}}</strong>
+      </p>
+    </ion-item>
+    <ion-item class="item-background">
+      <p>
+        {{ 'STATUS' | translate }} :
+        <strong text-wrap *ngIf="order.userOrder.status == 'not assigned'"> {{ 'USER_ORDER_NOT_ASSIGNED' | translate }}</strong>
+        <strong text-wrap *ngIf="order.userOrder.status == 'assigned'">{{ 'ASSIGNED' | translate }}</strong>
+        <strong text-wrap *ngIf="order.userOrder.status == 'delivered'"> {{ 'DELIVERED' | translate }}</strong>
+      </p>
+    </ion-item>
+    <ion-item class="item-background" *ngIf="order.userOrder.isBuing">
+      <p>
+        {{ 'MARKET_NAME' | translate }} :
+        <strong text-wrap>{{order.userOrder.marketName}}</strong>
+      </p>
+    </ion-item>
+    <ion-item class="item-background" *ngIf="order.userOrder.isBuing">
+      <p>
+        {{ 'MARKET_ADDRESS' | translate }} :
+        <strong text-wrap>{{order.userOrder.marketAddress}}</strong>
+      </p>
+    </ion-item>
+    <ion-item class="item-background" *ngIf="order.userOrder.isBuing">
+      <p>
+        {{ 'MARKET_PHONE' | translate }} :
+        <strong text-wrap>{{order.userOrder.marketPhone}}</strong>
+      </p>
+
+    </ion-item>
+    <ion-item class="item-background" *ngIf="order.userOrder.isBuing">
+      <p>
+        {{ 'PRICE_RANGE' | translate }} :
+        <strong text-wrap>{{order.userOrder.priceRange}}</strong>
+      </p>
+    </ion-item>
+    <ion-item class="item-background">
+      <p>
+        {{ 'PRODUCT_DESCRIPTION' | translate }} :
+        <strong text-wrap>{{order.userOrder.description}}</strong>
+      </p>
+    </ion-item>
+    <ion-item class="item-background" *ngIf="!order.userOrder.isBuing">
+      <p>
+        {{ 'APPROXIMATE_WEIGHT' | translate }} :
+        <strong text-wrap>{{order.userOrder.weight}}</strong>
+      </p>
+    </ion-item>
+    <ion-item class="item-background" *ngIf="!order.userOrder.isBuing && order.senderAddress != null" (click)="viewLocation(order.senderAddress)">
+      <p>
+        {{ 'SENDER_ADDRESS' | translate }} :
+        <strong text-wrap>{{order.senderAddress.city}} , {{order.senderAddress.region}} , {{order.senderAddress.street}} , {{order.senderAddress.building}}
+          , {{order.senderAddress.floor}} , {{order.senderAddress.flatNumber}}</strong>
+      </p>
+    </ion-item>
+    <ion-item class="item-background" *ngIf="order.userOrder.senderPhone != null">
+      <p>
+        {{ 'SENDER_PHONE' | translate }} :
+        <strong text-wrap>{{order.userOrder.senderPhone}}</strong>
+      </p>
+    </ion-item>
+    <ion-item class="item-background" *ngIf="order.userOrder.reciverName != null">
+      <p>
+        {{ 'RECIVER_NAME' | translate }} :
+        <strong text-wrap>{{order.userOrder.reciverName}}</strong>
+      </p>
+    </ion-item>
+    <ion-item class="item-background" *ngIf="order.reciverAddress != null" (click)="viewLocation(order.reciverAddress)">
+      <p>
+        {{ 'RECIVER_ADDRESS' | translate }} :
+        <strong text-wrap>{{order.reciverAddress.city}} , {{order.reciverAddress.region}} , {{order.reciverAddress.street}} , {{order.reciverAddress.building}}
+          , {{order.reciverAddress.floor}} , {{order.reciverAddress.flatNumber}}</strong>
+      </p>
+    </ion-item>
+    <ion-item class="item-background" *ngIf="order.userOrder.reciverPhone != null">
+      <p>
+        {{ 'RECIVER_PHONE' | translate }} :
+        <strong text-wrap>{{order.userOrder.reciverPhone}}</strong>
+      </p>
+    </ion-item>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-buttons end class="btn-style" style="width: 100%" *ngIf="order.userOrder.status != 'delivered' && userType=='Admin'">
+            <button ion-button style="width: 100%" (click)="assingCaptain()">
+              {{ 'ASSIGN_CAPTAIN' | translate }}
+            </button>
+          </ion-buttons>
+
+          <ion-buttons end class="btn-style" style="width: 100%" *ngIf="order.userOrder.status == 'assigned' && userType=='Captain'">
+            <button ion-button style="width: 100%" (click)="finish()">
+              {{ 'DELIVER' | translate }}
+            </button>
+          </ion-buttons>
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
+
+  </div>
+
+</ion-content>

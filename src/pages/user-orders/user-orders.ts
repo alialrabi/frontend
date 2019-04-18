@@ -10,6 +10,7 @@ import { CaptainService } from '../../providers/auth/captain.service';
 import { OrderKindPage } from '../order-kind/order-kind';
 import { UserOrderService } from '../../providers/auth/userOrders.service';
 import { DeviceTockenService } from '../../providers/auth/deviceToken.service';
+import { UserOrderDetailPage } from '../user-order-detail/user-order-detail';
 
 /**
  * Generated class for the UserOrdersPage page.
@@ -332,13 +333,48 @@ export class UserOrdersPage {
                 
               });
 
+            },err1 =>{
+              console.log(err1 , 'errrrrrrrrrrrrrrrrrrrrrrrrrror');
               
-
-            }, err1 => {
-              console.log("errrrr  11111", err1);
-
             }
           )
+
+              
+
+           
+
+          this.deviceTokenService.getUserTokens(item.userOrder.userId).subscribe(
+            res1 => {
+              console.log("res1", res1);
+
+              res1.forEach(element => {
+                let body = {
+                  "notification":{
+                    "title":"طلبك",
+                    "body":"لقد تم توصيل طلبك  " +" "+item.userOrder.identifyNumber,
+                    "sound":"default",
+                    "click_action":"FCM_PLUGIN_ACTIVITY",
+                    "icon":"fcm_push_icon"
+                  },
+                  "data":{
+                    "title":"طلبك",
+                    "body":"لقد تم توصيل طلبك  " +" "+item.userOrder.identifyNumber
+                  },
+                    "to":element,
+                    "priority":"high",
+                    "restricted_package_name":""
+                }
+  
+                this.deviceTokenService.sendNotification(body);
+  
+                
+              });
+            },err1 =>{
+              console.log(err1 , 'errrrrrrrrrrrrrrrrrrrrrrrrrror');
+              
+            }
+          )
+
         }
 
 
@@ -377,6 +413,9 @@ export class UserOrdersPage {
   viewLocation(order) {
 
     this.navCtrl.setRoot('OrdersMapPage', { item: order })
+  }
+  viewDetails(order){
+    this.navCtrl.setRoot(UserOrderDetailPage , {item:order , userType:this.userType});
   }
 
 }

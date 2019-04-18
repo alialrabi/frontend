@@ -1,4 +1,6 @@
 {
+  "USER_ORDER_DETAILS":"Order Details",
+  "USER_ORDER_NOT_ASSIGNED":"Under preparation",
   "OK":"Ok",
   "LOCATION_ALERT_MESSAGE":"this location is not supported now",
   "LOCATION_ALERT_TITLE":"Location",

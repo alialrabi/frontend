@@ -2,6 +2,7 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
 import { UserOrdersPage } from '../user-orders/user-orders';
 import { MyApp } from '../../app/app.component';
+import { UserOrderDetailPage } from '../user-order-detail/user-order-detail';
 
 /**
  * Generated class for the OrdersMapPage page.
@@ -26,11 +27,23 @@ export class OrdersMapPage {
   language = MyApp.language
   direction = MyApp.direction
 
+  from = ''
+
+  userDetailIemParam;
+  userDetailUserTypeParam;
+
   constructor(public navCtrl: NavController, public navParams: NavParams , public platform:Platform) {
     this.order = this.navParams.get("item");
+    this.from = this.navParams.get("from");
+      this.userDetailIemParam = this.navParams.get('order')
+      this.userDetailUserTypeParam = this.navParams.get('userType')
 
     this.platform.registerBackButtonAction(() => {
+      if(this.from == 'UserOrderDetailPage'){
+        this.navCtrl.setRoot(UserOrderDetailPage , {item:this.userDetailIemParam , userType:this.userDetailUserTypeParam});
+      }else{
       this.navCtrl.setRoot(UserOrdersPage);
+      }
 
     });
 
@@ -56,12 +69,16 @@ export class OrdersMapPage {
       position: latLng,
       animation: google.maps.Animation.DROP,
       title: this.order.name,
-      icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+      icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png'
     });
   }
 
   back(){
+    if(this.from == 'UserOrderDetailPage'){
+      this.navCtrl.setRoot(UserOrderDetailPage , {item:this.userDetailIemParam , userType:this.userDetailUserTypeParam});
+    }else{
     this.navCtrl.setRoot(UserOrdersPage);
+    }
   }
 
 
