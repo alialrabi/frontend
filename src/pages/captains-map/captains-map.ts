@@ -170,7 +170,7 @@ export class CaptainsMapPage {
             position: latLng,
             animation: google.maps.Animation.DROP,
             title: element.name,
-            icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+            icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png'
           });
           this.captainsMarkers.push(marker);
         } else {
@@ -179,7 +179,7 @@ export class CaptainsMapPage {
             position: latLng,
             animation: google.maps.Animation.DROP,
             title: element.name,
-            icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+            icon: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png'
           });
           this.captainsMarkers.push(marker);
         }

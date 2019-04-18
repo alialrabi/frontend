@@ -100,7 +100,7 @@
 
 
     <ion-item class="item-background" *ngFor="let order of ordersList">
-      <ion-grid>
+      <ion-grid  (click)="viewDetails(order)">
         <ion-row>
           <ion-col class="img-col" col-3>
             <img class="circle-pic" src="../../assets/img/orders.jpg" *ngIf="!order.userOrder.reciverImage  || order.userOrder.reciverImage == 'O'"
@@ -116,7 +116,17 @@
                 {{ 'IDENTIFY_NUMBER' | translate }} :
                 <strong text-wrap>{{order.userOrder.identifyNumber}}</strong>
               </p>
-              <p *ngIf="order.userOrder.isBuing">
+              <p>
+                {{ 'STATUS' | translate }} :
+                <strong text-wrap *ngIf="order.userOrder.status == 'not assigned'"> {{ 'USER_ORDER_NOT_ASSIGNED' | translate }}</strong>
+                <strong text-wrap *ngIf="order.userOrder.status == 'assigned'">{{ 'ASSIGNED' | translate }}</strong>
+                <strong text-wrap *ngIf="order.userOrder.status == 'delivered'"> {{ 'DELIVERED' | translate }}</strong>
+              </p>
+              <p>
+                {{'CREATION_DATE' | translate}} :
+                <strong text-wrap>{{getFormattedDate(order.userOrder.creationDate)}}</strong>
+              </p>
+              <!-- <p *ngIf="order.userOrder.isBuing">
                 {{ 'MARKET_NAME' | translate }} :
                 <strong text-wrap>{{order.userOrder.marketName}}</strong>
               </p>
@@ -131,7 +141,7 @@
               <p *ngIf="order.userOrder.isBuing">
                 {{ 'PRICE_RANGE' | translate }} :
                 <strong text-wrap>{{order.userOrder.priceRange}}</strong>
-              </p>
+              </p> 
               <p>
                 {{ 'PRODUCT_DESCRIPTION' | translate }} :
                 <strong text-wrap>{{order.userOrder.description}}</strong>
@@ -161,7 +171,7 @@
               <p *ngIf="order.userOrder.reciverPhone != null">
                 {{ 'RECIVER_PHONE' | translate }} :
                 <strong text-wrap>{{order.userOrder.reciverPhone}}</strong>
-              </p>
+              </p> -->
             </div>
           </ion-col>
         </ion-row>
@@ -180,6 +190,13 @@
                 {{ 'DELIVER' | translate }}
               </button>
             </ion-buttons>
+
+            <ion-buttons end class="btn-style" style="width: 100%" *ngIf="userType=='User'">
+                <button ion-button style="width: 100%" (click)="editRating(order)">
+                  {{ 'EDIT_RATING_BUTTON' | translate }}
+                </button>
+              </ion-buttons>
+
           </ion-col>
           <!-- <ion-col col-6>
             <ion-buttons end class="btn-style" style="width: 100%;" *ngIf="myVar != 'delivered' && (userType=='Captain' || userType=='Admin')">

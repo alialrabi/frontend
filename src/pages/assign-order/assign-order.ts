@@ -11,6 +11,7 @@ import { UserOrdersPage } from '../user-orders/user-orders';
 import { MyApp } from '../../app/app.component';
 import { UserOrderService } from '../../providers/auth/userOrders.service';
 import { DeviceTockenService } from '../../providers/auth/deviceToken.service';
+import { UserOrderDetailPage } from '../user-order-detail/user-order-detail';
 
 /**
  * Generated class for the AssignOrderPage page.
@@ -47,12 +48,17 @@ export class AssignOrderPage {
   onWay= ''
   from = ''
 
+  userDetailIemParam;
+  userDetailUserTypeParam;
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams , private deviceTokenService:DeviceTockenService , public platform:Platform , public userOrderService:UserOrderService,
     private builder: FormBuilder , public captainService:CaptainService  ,private loading: LoadingController , private app: App, private principal: Principal, public toastCtrl: ToastController , public translateService: TranslateService , public orderService:OrderService ) {
 
       this.order = this.navParams.get("item");
       this.from = this.navParams.get("from");
+      this.userDetailIemParam = this.navParams.get('order')
+      this.userDetailUserTypeParam = this.navParams.get('userType')
 
 
     this.translateService.get(['ASSIGN_ORDER_ERROR', 'ASSIGN_ORDER_SUCCESS' , 'PLEASE_WAIT' , 'NOT_WORKING' , 'ON_BACK_WAY' , 'AT_MARKET' , 'BUSY']).subscribe((values) => {
@@ -76,7 +82,11 @@ export class AssignOrderPage {
       if(this.userType == 'Agency'){
         this.navCtrl.setRoot(OrdersPage);
         }else{
+          if(this.from == 'UserOrderDetailPage'){
+            this.navCtrl.setRoot(UserOrderDetailPage , {item:this.userDetailIemParam , userType:this.userDetailUserTypeParam});
+          }else{
           this.navCtrl.setRoot(UserOrdersPage);
+          }
         }
     });
 
@@ -155,7 +165,7 @@ export class AssignOrderPage {
     })
     load.present()
 
-    if(this.from == 'userOrder'){
+    if(this.from == 'userOrder' || this.from == 'UserOrderDetailPage'){
 
     this.userOrderService.assign(this.myForm.get('captainId').value.id , this.order.id).subscribe(
       res =>{
@@ -196,6 +206,43 @@ export class AssignOrderPage {
 
             }
           )
+
+          this.deviceTokenService.getUserTokens(this.order.userId).subscribe(
+            res1 => {
+              console.log("res1", res1);
+
+              res1.forEach(element => {
+
+                let body = {
+                  "notification":{
+                    "title":"طلبك",
+                    "body":" طلبك صاحب الرقم التعريفى "+" "+ this.order.identifyNumber+" قيد التنفيذ الان " ,
+                    "sound":"default",
+                    "click_action":"FCM_PLUGIN_ACTIVITY",
+                    "icon":"fcm_push_icon"
+                  },
+                  "data":{
+                    "title":"طلبك",
+                    "body":" طلبك صاحب الرقم التعريفى "+" "+ this.order.identifyNumber+" قيد التنفيذ الان " ,
+                  },
+                    "to":element,
+                    "priority":"high",
+                    "restricted_package_name":""
+                }
+  
+                this.deviceTokenService.sendNotification(body);
+  
+                
+              });
+
+             
+
+            }, err1 => {
+              console.log("errrrr  11111", err1);
+
+            }
+          )
+
         }
 
         let toast = this.toastCtrl.create({
@@ -326,7 +373,11 @@ export class AssignOrderPage {
     if(this.userType == 'Agency'){
     this.navCtrl.setRoot(OrdersPage);
     }else{
+      if(this.from == 'UserOrderDetailPage'){
+        this.navCtrl.setRoot(UserOrderDetailPage , {item:this.userDetailIemParam , userType:this.userDetailUserTypeParam});
+      }else{
       this.navCtrl.setRoot(UserOrdersPage);
+      }
     }
   }
   getStatus(captain){
