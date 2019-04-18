@@ -27,4 +27,9 @@ export class UserOrderService {
         return this.http.put(Api.API_URL_login + '/tlabatac/api/user-orders/finishOrder/orderId/'+orderId+'?access_token=' +this.authservice.getToken(), null);
     }
 
+    editRating( editRatingModel): Observable<Object> {
+
+        return this.http.put(Api.API_URL_login + '/tlabatac/api/user-orders/editRating?access_token=' +this.authservice.getToken(), editRatingModel);
+    }
+
 }

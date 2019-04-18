@@ -49,6 +49,24 @@
         <strong text-wrap *ngIf="order.userOrder.status == 'delivered'"> {{ 'DELIVERED' | translate }}</strong>
       </p>
     </ion-item>
+    <ion-item class="item-background">
+    <p>
+      {{'CREATION_DATE' | translate}} :
+      <strong text-wrap>{{getFormattedDate(order.userOrder.creationDate)}}</strong>
+    </p>
+  </ion-item>
+  <ion-item class="item-background" *ngIf="order.userOrder.assignDate != null">
+    <p>
+      {{'ASSIGN_DATE' | translate}} :
+      <strong text-wrap>{{getFormattedDate(order.userOrder.assignDate)}}</strong>
+    </p>
+  </ion-item>
+  <ion-item class="item-background" *ngIf="order.userOrder.deliverDate != null">
+    <p>
+      {{'DELIVER_DATE' | translate}} :
+      <strong text-wrap>{{getFormattedDate(order.userOrder.deliverDate)}}</strong>
+    </p>
+  </ion-item>
     <ion-item class="item-background" *ngIf="order.userOrder.isBuing">
       <p>
         {{ 'MARKET_NAME' | translate }} :
@@ -132,6 +150,13 @@
               {{ 'DELIVER' | translate }}
             </button>
           </ion-buttons>
+
+          
+          <ion-buttons end class="btn-style" style="width: 100%" *ngIf="userType=='User'">
+              <button ion-button style="width: 100%" (click)="editRating()">
+                {{ 'EDIT_RATING_BUTTON' | translate }}
+              </button>
+            </ion-buttons>
         </ion-col>
       </ion-row>
 

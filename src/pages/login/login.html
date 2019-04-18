@@ -9,15 +9,26 @@
   <div class="login-content">
 
     <!-- Logo -->
-    <div padding-horizontal text-center class="animated fadeInDown">
+    <!-- <div padding-horizontal text-center class="animated fadeInDown">
       <div class="logo"></div>
       <h2 ion-text class="text-primary">
         <strong>{{ 'TLABATAC' | translate }}</strong>
       </h2>
-    </div>
+    </div> -->
 
     <!-- Login form -->
     <form class="list-form" [formGroup]="myForm">
+
+        <p text-center ion-text color="secondary">{{ 'OR_SIGN_IN_WITH' | translate }}</p>
+
+      
+        <button ion-button icon-only block class="btn-facebook" (click)="fbLogin()">
+          <ion-icon name="logo-facebook"></ion-icon>
+          {{ 'LOGIN_FACEBOOK' | translate }}
+        </button>
+
+        <p ion-text color="secondary">{{ 'HAVE_AN_ACCOUNT' | translate }}</p>
+
       <ion-item>
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="mail" item-start class="text-primary"></ion-icon>
@@ -49,14 +60,7 @@
       </button>
 
 
-      <p text-center ion-text color="secondary">{{ 'OR_SIGN_IN_WITH' | translate }}</p>
-
       
-            <button ion-button icon-only block class="btn-facebook" (click)="fbLogin()">
-              <ion-icon name="logo-facebook"></ion-icon>
-              {{ 'LOGIN_FACEBOOK' | translate }}
-            </button>
-         
             <!-- <button ion-button icon-only block class="btn-twitter" (click)="twLogin()" style="margin-top: 10px">
               <ion-icon name="logo-twitter"></ion-icon>
               {{ 'LOGIN_TWITTER' | translate }}

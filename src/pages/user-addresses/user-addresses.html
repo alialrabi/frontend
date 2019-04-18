@@ -7,19 +7,19 @@
 <ion-header>
 
   <ion-navbar>
-    
-      <button ion-button menuToggle>
-        <ion-icon name="menu"></ion-icon>
+
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+
+
+    <ion-title>{{ 'MY_ADDRESSES' | translate }}</ion-title>
+
+    <ion-buttons end class="btn-style">
+      <button ion-button (click)="add()">
+        {{ 'ADD' | translate }}
       </button>
-
-
-      <ion-title>{{ 'MY_ADDRESSES' | translate }}</ion-title>
-
-      <ion-buttons end class="btn-style">
-        <button ion-button (click)="add()">
-            {{ 'ADD' | translate }}
-        </button>
-      </ion-buttons>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
@@ -27,53 +27,72 @@
 
 <ion-content class="auth-page-captain">
 
-    <div text-center *ngIf="addresses.length == 0">
-        <ion-grid>
-          <ion-row>
-            <ion-col>
-              <img src="../../assets/img/sad.png" class="not-found-img">
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>
-    
-              <h3 class="not-found-text"> {{ 'EMPTY_LIST' | translate }}</h3>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-    
-      </div>
-    
+  <div text-center *ngIf="addresses.length == 0">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <img src="../../assets/img/sad.png" class="not-found-img">
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+
+          <h3 class="not-found-text"> {{ 'EMPTY_LIST' | translate }}</h3>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </div>
+
 
 
   <ion-list style="padding-top: 15px;">
 
-      <ion-item-sliding  class="item-background" *ngFor="let address of addresses" [lang]="language" [dir]="direction">
-    <ion-item class="item-background"  >
+    <!-- <ion-item-sliding  class="item-background" *ngFor="let address of addresses" [lang]="language" [dir]="direction"> -->
+    <ion-item class="item-background" *ngFor="let address of addresses">
       <ion-grid>
         <ion-row>
           <ion-col class="img-col" col-3>
             <img class="circle-pic" src="../../assets/img/home.png" />
           </ion-col>
 
-          <ion-col class="btn-col"col-9>
+          <ion-col class="btn-col" col-9>
 
             <div class="account-info info-div">
-                <p style="margin-top: 13px" *ngIf="address.name != null && address.name != ''">
-                    {{'ADDRESS_NAME' | translate}} : <strong text-wrap> {{address.name}}</strong>
-                </p>
-              <p style="margin-top: 13px">
-                  {{'CITY' | translate}} : <strong text-wrap> {{address.city}}</strong>
+              <p style="margin-top: 13px" *ngIf="address.name != null && address.name != ''">
+                {{'ADDRESS_NAME' | translate}} :
+                <strong text-wrap> {{address.name}}</strong>
               </p>
+              <!-- <p style="margin-top: 13px">
+                  {{'CITY' | translate}} : <strong text-wrap> {{address.city}}</strong>
+              </p> -->
 
               <p style="margin-top: 10px">
-                {{'ADDRESS' | translate}} : <strong text-wrap>{{address.region}} , {{address.street}} , {{address.building}} , {{address.floor}} , {{address.flatNumber}}</strong>
+                {{'ADDRESS' | translate}} :
+                <strong text-wrap>{{address.city}} , {{address.region}} , {{address.street}} , {{address.building}} , {{address.floor}} , {{address.flatNumber}}</strong>
               </p>
               <p style="margin-top: 13px" *ngIf="address.otherDetails != null && address.otherDetails != ''">
-                  {{'OTHER_DETAILS' | translate}} : <strong text-wrap> {{address.otherDetails}}</strong>
+                {{'OTHER_DETAILS' | translate}} :
+                <strong text-wrap> {{address.otherDetails}}</strong>
               </p>
 
             </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-6>
+
+            <button style="width: 100%" ion-button class="circul" (click)="EditAddress(address)">
+              {{'EDIT' | translate}}
+              <ion-icon name="ios-pricetag-outline" [style.margin-right]="language == 'en' ? '0px' : '10px'" [style.margin-left]="language == 'en' ? '10px' : '0px'" ></ion-icon>
+            </button>
+          </ion-col>
+          <ion-col col-6>
+            <button style="width: 100%" ion-button class="circul" color="danger" (click)="DeleteAddress(address)">
+              {{'DELETE' | translate}}
+              <ion-icon name="ios-trash" [style.margin-right]="language == 'en' ? '0px' : '10px'" [style.margin-left]="language == 'en' ? '10px' : '0px'" ></ion-icon>
+            </button>
+
           </ion-col>
         </ion-row>
 
@@ -84,7 +103,7 @@
 
 
     </ion-item>
-    <ion-item-options side="left" style="direction:ltr" class="options" *ngIf="language == 'ar'"> 
+    <!-- <ion-item-options side="left" style="direction:ltr" class="options" *ngIf="language == 'ar'"> 
                        
         <button ion-button class="circul" color="danger" (click)="DeleteAddress(address)">
 
@@ -107,14 +126,12 @@
            </button> 
          </ion-item-options>
 
-  </ion-item-sliding>
+  </ion-item-sliding> -->
 
 
   </ion-list>
   <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="addresses.length != 0">
-    <ion-infinite-scroll-content
-      loadingSpinner="bubbles"
-      [loadingText]="moreData">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="moreData">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
 

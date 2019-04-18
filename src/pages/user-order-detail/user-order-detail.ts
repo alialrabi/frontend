@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { DeviceTockenService } from '../../providers/auth/deviceToken.service';
 import { OrderService } from '../../providers/auth/order.service';
 import { UserOrderService } from '../../providers/auth/userOrders.service';
+import { MyApp } from '../../app/app.component';
 
 /**
  * Generated class for the UserOrderDetailPage page.
@@ -40,6 +41,9 @@ export class UserOrderDetailPage {
       userId:0
     }
   }
+
+  language = MyApp.language
+  direction = MyApp.direction
 
   userType = '';
   status = ''
@@ -77,6 +81,9 @@ export class UserOrderDetailPage {
 
   assingCaptain() {
     this.navCtrl.setRoot('AssignOrderPage', { item: this.order.userOrder , from:"UserOrderDetailPage" , order:this.order , userType:this.userType})
+  }
+  editRating(){
+    this.navCtrl.setRoot('EditRatingPage', { item: this.order.userOrder , from:"UserOrderDetailPage" , order:this.order , userType:this.userType})
   }
 
   finish() {
@@ -197,6 +204,20 @@ export class UserOrderDetailPage {
 
     this.navCtrl.setRoot('OrdersMapPage', { item: order , from:"UserOrderDetailPage" , order:this.order , userType:this.userType })
   }
+  getFormattedDate(dateString) {
+    var date = new Date(dateString);
+    var str = date.getFullYear() + "-";
+    str +=  (date.getMonth() + 1) < 10 ? "0"+(date.getMonth() + 1) : (date.getMonth() + 1) ;
+    str += "-";
+    str += date.getDate() < 10 ? "0"+date.getDate() : date.getDate();
+    str += " "
+    str += date.getHours() < 10 ? "0"+ date.getHours() :  date.getHours();
+    str += ":";
+    str += date.getMinutes() < 10 ? "0"+ date.getMinutes() :  date.getMinutes();
+    // str += ":";
+    // str += date.getSeconds() < 10 ? "0"+ date.getSeconds() :  date.getSeconds();
+    return str;
+}
 
 
 }

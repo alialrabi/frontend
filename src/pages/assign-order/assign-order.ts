@@ -216,14 +216,14 @@ export class AssignOrderPage {
                 let body = {
                   "notification":{
                     "title":"طلبك",
-                    "body":" طلبك صاحب الرقم التعريفى "+" "+ this.order.identifyNumber+"قيد التنفيذ الان " ,
+                    "body":" طلبك صاحب الرقم التعريفى "+" "+ this.order.identifyNumber+" قيد التنفيذ الان " ,
                     "sound":"default",
                     "click_action":"FCM_PLUGIN_ACTIVITY",
                     "icon":"fcm_push_icon"
                   },
                   "data":{
                     "title":"طلبك",
-                    "body":" طلبك صاحب الرقم التعريفى "+" "+ this.order.identifyNumber+"قيد التنفيذ الان " ,
+                    "body":" طلبك صاحب الرقم التعريفى "+" "+ this.order.identifyNumber+" قيد التنفيذ الان " ,
                   },
                     "to":element,
                     "priority":"high",

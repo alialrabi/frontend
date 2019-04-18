@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { ViewController, LoadingController, NavParams, App, Platform, ToastController } from 'ionic-angular';
+import { ViewController, LoadingController, NavParams, App, Platform, ToastController, AlertController } from 'ionic-angular';
 import { LocationAccuracy } from '@ionic-native/location-accuracy';
 import { AddressService } from '../../providers/auth/address.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -78,16 +78,20 @@ export class NewAddressComponent {
   homeValue = ''
   officeValue = ''
 
+  dialogTitle = ''
+  dialogMessage = ''
+  ok = ''
+
   locationDisable = true;
 
-  constructor( private loading: LoadingController,public viewCtrl: ViewController ,
+  constructor( private loading: LoadingController,public viewCtrl: ViewController , private _alert:AlertController,
     public navParams: NavParams, public locationAccuracy: LocationAccuracy, public addressService: AddressService, public toastCtrl: ToastController,
     public translateService: TranslateService, private app: App, public platform: Platform, private principal: Principal, private builder: FormBuilder) {
     this.user = this.navParams.get("user");
     console.log(this.user);
     
 
-    this.translateService.get(['ADD_ADDRESS_ERROR', 'ADD_ADDRESS_SUCCESS', 'EGYPT', 'ALEX', 'CAIRO', 'TANTA', 'DAMNHOR', 'SHIPIN_ELKOM', 'BANHA', 'PLEASE_WAIT' , 'OFFICE' , 'HOME' , 'FLAT']).subscribe((values) => {
+    this.translateService.get(['ADD_ADDRESS_ERROR', 'ADD_ADDRESS_SUCCESS', 'EGYPT', 'ALEX', 'CAIRO', 'TANTA', 'DAMNHOR', 'SHIPIN_ELKOM', 'BANHA', 'PLEASE_WAIT' , 'OFFICE' , 'HOME' , 'FLAT', 'LOCATION_ALERT_TITLE', 'LOCATION_ALERT_MESSAGE', 'OK']).subscribe((values) => {
       this.addAddressError = values.ADD_ADDRESS_ERROR;
       this.addAdressSuccessString = values.ADD_ADDRESS_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
@@ -103,6 +107,10 @@ export class NewAddressComponent {
       this.flatValue = values.FLAT
       this.homeValue = values.HOME
       this.officeValue = values.OFFICE
+
+      this.dialogTitle = values.LOCATION_ALERT_TITLE
+      this.dialogMessage = values.LOCATION_ALERT_MESSAGE
+      this.ok = values.OK
     })
 
     this.myForm = builder.group({
@@ -154,7 +162,10 @@ export class NewAddressComponent {
           this.loadMap()
         }
         ,
-        error => console.log('Error requesting location permissions', error)
+        error => {
+          this.loadMapWithOutLocation();
+          console.log('Error requesting location permissions', error)
+        }
       );
       // }else{
       //   this.loadMap() 
@@ -177,16 +188,8 @@ export class NewAddressComponent {
     console.log(this.locationDisable);
 
 
-    if (this.locationDisable) {
-      this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
-        () => {
-          console.log("success");
-
-          this.loadMap()
-        }
-        ,
-        error => console.log('Error requesting location permissions', error)
-      );
+    if(this.map == null || this.map == undefined){
+      this.loadMapWithOutLocation();
     }
 
 
@@ -219,45 +222,45 @@ export class NewAddressComponent {
 
       mainClass.map = new google.maps.Map(mainClass.elementRef.nativeElement, mapOptions);
 
-      let marker = new google.maps.Marker({
-        map: mainClass.map,
-        animation: google.maps.Animation.DROP,
-        position: mainClass.map.getCenter()
-      });
+      if (mainClass.checkLocation(position.coords.latitude, position.coords.longitude, true)) {
 
-      mainClass.mainMarker = marker;
+        let marker = new google.maps.Marker({
+          map: mainClass.map,
+          animation: google.maps.Animation.DROP,
+          position: mainClass.map.getCenter()
+        });
+
+        mainClass.mainMarker = marker;
+
+      }
       //  console.log(this.map , 'map');
       //  console.log(this.mainMarker , "marker");
 
       var superclass = mainClass;
       google.maps.event.addListener(mainClass.map, 'click', function (event) {
-        superclass.mainMarker.setMap(null);
-        var newmarker = new google.maps.Marker({
-          position: event.latLng,
-          map: superclass.map
-        });
-        superclass.mainMarker = newmarker;
-        superclass.address.latitude = event.latLng.lat();
-        superclass.address.longitude = event.latLng.lng();
-        console.log(superclass.address);
+
+        if (superclass.checkLocation(event.latLng.lat(), event.latLng.lng(), false)) {
+
+          if (superclass.mainMarker != null) {
+            superclass.mainMarker.setMap(null);
+          }
+          var newmarker = new google.maps.Marker({
+            position: event.latLng,
+            map: superclass.map
+          });
+          superclass.mainMarker = newmarker;
+          superclass.address.latitude = event.latLng.lat();
+          superclass.address.longitude = event.latLng.lng();
+        }
       });
 
       mainClass.locationDisable = false;
-      console.log(mainClass.locationDisable);
 
 
 
     }, function (err) {
       console.log(err, 'errrrrrrrrrrrrrrrrrrrrrrrrrrror');
-      this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
-        () => {
-          console.log("success");
-
-          this.loadMap()
-        }
-        ,
-        error => console.log('Error requesting location permissions', error)
-      );
+      this.loadMapWithOutLocation();
 
       // let toast = mainClass.toastCtrl.create({
       //   message: "error " + err.message,
@@ -268,6 +271,44 @@ export class NewAddressComponent {
 
     }
     );
+
+  }
+  loadMapWithOutLocation() {
+
+    var mainClass = this;
+
+    let latLng = new google.maps.LatLng(31.214262511126286, 29.98716374830485);
+    mainClass.address.latitude = 31.214262511126286 + '';
+    mainClass.address.longitude = 29.98716374830485 + '';
+
+    let mapOptions = {
+      center: latLng,
+      zoom: 15
+    }
+
+
+    mainClass.map = new google.maps.Map(mainClass.elementRef.nativeElement, mapOptions);
+
+
+    var superclass = mainClass;
+    google.maps.event.addListener(mainClass.map, 'click', function (event) {
+
+      if (superclass.checkLocation(event.latLng.lat(), event.latLng.lng(), false)) {
+
+        if (superclass.mainMarker != null) {
+          superclass.mainMarker.setMap(null);
+        }
+        var newmarker = new google.maps.Marker({
+          position: event.latLng,
+          map: superclass.map
+        });
+        superclass.mainMarker = newmarker;
+        superclass.address.latitude = event.latLng.lat();
+        superclass.address.longitude = event.latLng.lng();
+      }
+    });
+
+    mainClass.locationDisable = false;
 
   }
 
@@ -419,6 +460,51 @@ export class NewAddressComponent {
 
   async chooseAddress(address){
     await this.viewCtrl.dismiss(address);
+  }
+
+  checkLocation(lat, lng, first) {
+    if (this.checkLocationInAlex(lat, lng) || this.checkLocationInCairo(lat, lng) || this.checkLocationInTanta(lat, lng)) {
+      return true;
+    } else {
+      if (!first) {
+        let alert = this._alert.create({
+          title: this.dialogTitle,
+          message: this.dialogMessage,
+          buttons: [
+            {
+              text: this.ok,
+              handler: () => {
+
+              }
+            }
+          ]
+        });
+        alert.present();
+
+      }
+    }
+  }
+
+  checkLocationInAlex(lat, lng) {
+    if (lat < 30.890926697 || lat > 31.3947799 || lng < 29.382800910751712 || lng > 30.290039) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+  checkLocationInTanta(lat, lng) {
+    if (lat < 30.746779369 || lat > 30.829999 || lng < 30.94 || lng > 31.049) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+  checkLocationInCairo(lat, lng) {
+    if (lat < 29.5 || lat > 30.2999999999 || lng < 30.3 || lng > 32.213010999999) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
 }
