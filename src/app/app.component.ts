@@ -59,6 +59,8 @@ export class MyApp {
 
   public static getCaptainImage = false;
 
+  userSettingToggleFlag = false;
+
   public captain;
   public userTypeText = '';
   // public userAdmin = 'Admin';
@@ -483,6 +485,7 @@ export class MyApp {
   }
   logout() {
 
+    this.userSettingToggleFlag = false;
     if (this.platform.is("cordova")) {
       this.fcm.getToken().then(token => {
         this.deviceTokenService.deleteToken(token, this.account.id).subscribe(
@@ -691,6 +694,22 @@ export class MyApp {
 
     })
 
+  }
+
+  userSettingToggle(){
+    this.userSettingToggleFlag = !this.userSettingToggleFlag;
+
+  }
+  getSettingIcon(){
+    if(this.userSettingToggleFlag){
+      return 'arrow-dropdown'
+    }else{
+      if(MyApp.language == 'en'){
+        return 'arrow-dropright'
+      }else{
+        return 'arrow-dropleft'
+      }
+    }
   }
 
 }

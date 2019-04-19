@@ -1,4 +1,11 @@
 {
+  "CHANNGE_PASSWORD":"كلمه المرور",
+  "UPDATE_PASSWORD_SUCCESS":"تم تعديل كلمه المرور",
+  "UPDATE_PASSWORD_ERROR":"كلمه المرور غير صحيحه من فضله تاكد من الكلمه الصحيحيه و اعد المحاوله",
+  "EDIT_PASSWORD_BUTTON":"تعديل كلمه المرور",
+  "NEW_PASSWORD":"كلمه المرور الجديده",
+  "YOUR_PASSWORD":"كلمه المرور الخاصه بك",
+  "CHANGE_PASSWORD":"تغير الرقم السرى",
   "HAVE_AN_ACCOUNT":"لديك حساب ؟",
   "DELETE":"حذف",
   "EDIT_RATING_BUTTON":"تعديل التقيم",

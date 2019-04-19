@@ -94,6 +94,7 @@ import { DeviceTockenService } from '../providers/auth/deviceToken.service';
 import { HttpModule } from '@angular/http';
 import { UserOrderDetailPageModule } from '../pages/user-order-detail/user-order-detail.module';
 import { EditRatingPageModule } from '../pages/edit-rating/edit-rating.module';
+import { ChangePasswordPageModule } from '../pages/change-password/change-password.module';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -186,7 +187,8 @@ let config = new AuthServiceConfig([
     BuyFromMarketPageModule,
     DeliverFromToPageModule,
     UserOrderDetailPageModule,
-    EditRatingPageModule
+    EditRatingPageModule,
+    ChangePasswordPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

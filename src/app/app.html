@@ -96,10 +96,23 @@
         <ion-icon item-left name="basket" color="primary"></ion-icon>
         <span ion-text color="primary">{{'MY_ADDRESSES' | translate}}</span>
       </button>
-      <button ion-item menuClose class="text-1x" (click)="openPage('SettingsPage')">
+      <button ion-item menuClose class="text-1x" (click)="openPage('SettingsPage')" *ngIf="userType != 'User'">
         <ion-icon item-left name="construct" color="primary"></ion-icon>
         <span ion-text color="primary">{{'SETTING' | translate}}</span>
       </button>
+      <button ion-item class="text-1x" (click)="userSettingToggle()" *ngIf="userType == 'User'">
+          <ion-icon item-left name="construct" color="primary"></ion-icon>
+          <span ion-text color="primary">{{'SETTING' | translate}}</span>
+          <ion-icon [name]="getSettingIcon()"  item-right ></ion-icon>
+        </button>
+        <button ion-item menuClose class="text-1x" style="background-color: #9c9c9c4d;" (click)="openPage('SettingsPage')" *ngIf="userSettingToggleFlag">
+            <ion-icon item-left name="paper" style="color: black;font-size: 1.7rem"></ion-icon>
+            <span ion-text style="color: black">{{'LANGUAGE' | translate}}</span>
+          </button>
+          <button ion-item menuClose class="text-1x" style="background-color: #9c9c9c4d;" (click)="openPage('ChangePasswordPage')" *ngIf="userSettingToggleFlag">
+              <ion-icon item-left name="unlock" style="color: black;font-size: 1.7rem"></ion-icon>
+              <span ion-text style="color: black">{{'CHANNGE_PASSWORD' | translate}}</span>
+            </button>
       
 
     </ion-list>
