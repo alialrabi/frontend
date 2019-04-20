@@ -1,4 +1,10 @@
 {
+  "USER_PHONE":"هاتف المستخدم",
+  "FPRGET_PASSWORD_QUESTION":"هل نسيت كلمه المرور ؟",
+  "FORGET_PASSWORD_SUCCESS":"تم ارسال بريد الكترونى اليك",
+  "FORGET_PASSWORD_ERROR":"البريد الالكترونى غير صحيح ",
+  "SEND_EMAIL":"رسال بريد الكترونى",
+  "FORGET_PASSWORD":"استرجاع كلمه المرور",
   "CHANNGE_PASSWORD":"كلمه المرور",
   "UPDATE_PASSWORD_SUCCESS":"تم تعديل كلمه المرور",
   "UPDATE_PASSWORD_ERROR":"كلمه المرور غير صحيحه من فضله تاكد من الكلمه الصحيحيه و اعد المحاوله",

@@ -95,6 +95,7 @@ import { HttpModule } from '@angular/http';
 import { UserOrderDetailPageModule } from '../pages/user-order-detail/user-order-detail.module';
 import { EditRatingPageModule } from '../pages/edit-rating/edit-rating.module';
 import { ChangePasswordPageModule } from '../pages/change-password/change-password.module';
+import { ForgetPasswordPageModule } from '../pages/forget-password/forget-password.module';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -188,7 +189,8 @@ let config = new AuthServiceConfig([
     DeliverFromToPageModule,
     UserOrderDetailPageModule,
     EditRatingPageModule,
-    ChangePasswordPageModule
+    ChangePasswordPageModule,
+    ForgetPasswordPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

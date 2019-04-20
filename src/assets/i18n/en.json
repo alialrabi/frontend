@@ -1,4 +1,10 @@
 {
+  "USER_PHONE":"User Phone",
+  "FPRGET_PASSWORD_QUESTION":"Forget Password ?",
+  "FORGET_PASSWORD_SUCCESS":"Email sent successfully",
+  "FORGET_PASSWORD_ERROR":"Email is incorrect",
+  "SEND_EMAIL":"Send Mail",
+  "FORGET_PASSWORD":"Forget Password",
   "CHANNGE_PASSWORD":"Passward",
   "UPDATE_PASSWORD_SUCCESS":"Password change successfully",
   "UPDATE_PASSWORD_ERROR":"Password is incorrect , please try again",

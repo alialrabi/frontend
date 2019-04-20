@@ -16,6 +16,9 @@ import { UserOrderService } from '../../providers/auth/userOrders.service';
 import { UserOrdersPage } from '../user-orders/user-orders';
 import { DeviceTockenService } from '../../providers/auth/deviceToken.service';
 
+import { AdMobFree, AdMobFreeBannerConfig  , AdMobFreeInterstitialConfig} from '@ionic-native/admob-free';
+
+
 /**
  * Generated class for the BuyFromMarketPage page.
  *
@@ -67,7 +70,7 @@ export class BuyFromMarketPage {
   orderError = '';
 
   constructor(public navCtrl: NavController, public navParams: NavParams , public _alert: AlertController
-    , public imagePicker: ImagePicker, public camera: Camera, public toastCtrl: ToastController,
+    , public imagePicker: ImagePicker, public camera: Camera, public toastCtrl: ToastController,public admobFree: AdMobFree,
     private loading: LoadingController,
     private device: Device,
     private platform: Platform,
@@ -364,6 +367,7 @@ export class BuyFromMarketPage {
       res =>{
         console.log("order res "+res);
         if (this.platformType == 'cordova') {
+          this.launchInterstitial();
           this.deviceTokenService.getAdminTokens().subscribe(
             res1 => {
               console.log("res1", res1);
@@ -421,4 +425,21 @@ export class BuyFromMarketPage {
     )
 
   }
+  launchInterstitial() {
+
+    let interstitialConfig: AdMobFreeInterstitialConfig = {
+        isTesting: true, // Remove in production
+        autoShow: true,
+        id: "ca-app-pub-3499153975001140/4759715666"
+    }; 
+
+    this.admobFree.interstitial.config(interstitialConfig);
+
+    this.admobFree.interstitial.prepare().then(() => {
+        // success
+        console.log("success ads");
+        
+    });
+
+}
 }

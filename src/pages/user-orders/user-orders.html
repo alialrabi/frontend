@@ -116,7 +116,7 @@
                 {{ 'IDENTIFY_NUMBER' | translate }} :
                 <strong text-wrap>{{order.userOrder.identifyNumber}}</strong>
               </p>
-              <p>
+              <p *ngIf="userType == 'User'">
                 {{ 'STATUS' | translate }} :
                 <strong text-wrap *ngIf="order.userOrder.status == 'not assigned'"> {{ 'USER_ORDER_NOT_ASSIGNED' | translate }}</strong>
                 <strong text-wrap *ngIf="order.userOrder.status == 'assigned'">{{ 'ASSIGNED' | translate }}</strong>
@@ -125,6 +125,10 @@
               <p>
                 {{'CREATION_DATE' | translate}} :
                 <strong text-wrap>{{getFormattedDate(order.userOrder.creationDate)}}</strong>
+              </p>
+              <p *ngIf="userType != 'User'">
+                {{'USER_PHONE' | translate}} :
+                <strong text-wrap>{{order.user.phone}}</strong>
               </p>
               <!-- <p *ngIf="order.userOrder.isBuing">
                 {{ 'MARKET_NAME' | translate }} :

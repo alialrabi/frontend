@@ -14,6 +14,9 @@ import { NewAddressComponent } from '../../components/new-address/new-address';
 import { AddressesSelectorComponent } from '../../components/addresses-selector/addresses-selector';
 import { DeviceTockenService } from '../../providers/auth/deviceToken.service';
 
+import { AdMobFree, AdMobFreeBannerConfig  , AdMobFreeInterstitialConfig} from '@ionic-native/admob-free';
+
+
 /**
  * Generated class for the DeliverFromToPage page.
  *
@@ -69,6 +72,7 @@ export class DeliverFromToPage {
     private loading: LoadingController,
     private platform: Platform,
     public principal: Principal,
+    public admobFree: AdMobFree,
     public addressService: AddressService,
     public poverCtrl: PopoverController,
     public userOrderService: UserOrderService,
@@ -265,6 +269,7 @@ export class DeliverFromToPage {
         console.log("order res "+res);
         
         if (this.platformType == 'cordova') {
+          this.launchInterstitial();
           this.deviceTokenService.getAdminTokens().subscribe(
             res1 => {
               console.log("res1", res1);
@@ -321,5 +326,22 @@ export class DeliverFromToPage {
     )
 
   }
+  launchInterstitial() {
+
+    let interstitialConfig: AdMobFreeInterstitialConfig = {
+        isTesting: true, // Remove in production
+        autoShow: true,
+        id: "ca-app-pub-3499153975001140/4759715666"
+    }; 
+
+    this.admobFree.interstitial.config(interstitialConfig);
+
+    this.admobFree.interstitial.prepare().then(() => {
+        // success
+        console.log("success ads");
+        
+    });
+
+}
 
 }

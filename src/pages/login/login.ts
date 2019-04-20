@@ -24,6 +24,7 @@ import { AuthService } from "angular4-social-login";
 import { FacebookLoginProvider, GoogleLoginProvider } from "angular4-social-login";
 import { DeviceTockenService } from '../../providers/auth/deviceToken.service';
 import { FCM } from '@ionic-native/fcm';
+import { ForgetPasswordPage } from '../forget-password/forget-password';
 
 
 @IonicPage()
@@ -196,41 +197,43 @@ export class LoginPage {
   }
 
   forgotPass() {
-    let forgot = this.forgotCtrl.create({
-      title: 'Forgot Password?',
-      message: "Enter you email address to send a reset link password.",
-      inputs: [
-        {
-          name: 'email',
-          placeholder: 'Email',
-          type: 'email'
-        },
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          handler: data => {
-            console.log('Cancel clicked');
-          }
-        },
-        {
-          text: 'Send',
-          handler: data => {
-            console.log('Send clicked');
-            let toast = this.toastCtrl.create({
-              message: 'Email was sended successfully',
-              duration: 3000,
-              position: 'top',
-              cssClass: 'dark-trans',
-              closeButtonText: 'OK',
-              showCloseButton: true
-            });
-            toast.present();
-          }
-        }
-      ]
-    });
-    forgot.present();
+    // let forgot = this.forgotCtrl.create({
+    //   title: 'Forgot Password?',
+    //   message: "Enter you email address to send a reset link password.",
+    //   inputs: [
+    //     {
+    //       name: 'email',
+    //       placeholder: 'Email',
+    //       type: 'email'
+    //     },
+    //   ],
+    //   buttons: [
+    //     {
+    //       text: 'Cancel',
+    //       handler: data => {
+    //         console.log('Cancel clicked');
+    //       }
+    //     },
+    //     {
+    //       text: 'Send',
+    //       handler: data => {
+    //         console.log('Send clicked');
+    //         let toast = this.toastCtrl.create({
+    //           message: 'Email was sended successfully',
+    //           duration: 3000,
+    //           position: 'top',
+    //           cssClass: 'dark-trans',
+    //           closeButtonText: 'OK',
+    //           showCloseButton: true
+    //         });
+    //         toast.present();
+    //       }
+    //     }
+    //   ]
+    // });
+    // forgot.present();
+
+    this.navCtrl.setRoot(ForgetPasswordPage);
   }
   hasError(field: string, error: string) {
     const ctrl = this.myForm.get(field);
