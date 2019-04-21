@@ -87,7 +87,9 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.keyboard.disableScroll(false);
-      if (this.platform.is("android")) {
+      if (this.platform.is("android") && this.platform.is("cordova")) {
+        console.log("cordova ", "android ");
+        
         this.showBannerAd();
         fcm.subscribeToTopic('all');
        fcm.onNotification().subscribe(data => {
