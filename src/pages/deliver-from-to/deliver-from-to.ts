@@ -329,7 +329,7 @@ export class DeliverFromToPage {
   launchInterstitial() {
 
     let interstitialConfig: AdMobFreeInterstitialConfig = {
-        isTesting: true, // Remove in production
+        //isTesting: true, // Remove in production
         autoShow: true,
         id: "ca-app-pub-3499153975001140/4759715666"
     }; 

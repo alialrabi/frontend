@@ -5,6 +5,7 @@ import { MyApp } from '../../app/app.component';
 import { TranslateService } from '@ngx-translate/core';
 import { LoginPage } from '../login/login';
 import { AccountService } from '../../providers/auth/account.service';
+import { LoginService } from '../../providers/login/login.service';
 
 /**
  * Generated class for the ForgetPasswordPage page.
@@ -30,7 +31,7 @@ export class ForgetPasswordPage {
 
   pleaseWait
 
-  constructor(public navCtrl: NavController, public navParams: NavParams , private builder: FormBuilder,private accountService:AccountService,
+  constructor(public navCtrl: NavController, public navParams: NavParams , private builder: FormBuilder,private accountService:AccountService, private loginService:LoginService,
      private translateService:TranslateService, private loading: LoadingController,  private platform: Platform, public toastCtrl: ToastController) {
  
       this.platform.registerBackButtonAction(() => {
@@ -65,6 +66,7 @@ export class ForgetPasswordPage {
 
     })
     load.present()
+    this.loginService.logout();
 
     let mailModel = {
       mail:this.myForm.get("email").value
@@ -79,6 +81,7 @@ export class ForgetPasswordPage {
           position: 'top'
         });
         toast.present();
+        this.navCtrl.setRoot(LoginPage);
 
       }, err =>{
         console.log(err , 'errrrror');
@@ -92,6 +95,7 @@ export class ForgetPasswordPage {
             position: 'top'
           });
           toast.present();
+          this.navCtrl.setRoot(LoginPage);
         }else{
 
         let toast = this.toastCtrl.create({
