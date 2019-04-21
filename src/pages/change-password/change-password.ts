@@ -1,0 +1,133 @@
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams, App, LoadingController, ToastController, Platform } from 'ionic-angular';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { MyApp } from '../../app/app.component';
+import { TranslateService } from '@ngx-translate/core';
+import { AccountService } from '../../providers/auth/account.service';
+
+/**
+ * Generated class for the ChangePasswordPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+
+@IonicPage()
+@Component({
+  selector: 'page-change-password',
+  templateUrl: 'change-password.html',
+})
+export class ChangePasswordPage {
+
+  passwordModel = {
+    currentPassword:"",
+    newPassword:''
+  }
+
+  private signupErrorString: string;
+  private signupSuccessString: string;
+ 
+  public pleaseWait;
+
+  language = MyApp.language
+  direction = MyApp.direction
+
+  myForm: FormGroup;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    public toastCtrl: ToastController,
+    public translateService: TranslateService,
+    private loading: LoadingController,
+    public app:App,
+    public platform:Platform,
+    public accountService: AccountService,
+    public builder: FormBuilder) {
+
+      
+    this.translateService.get(['UPDATE_PASSWORD_ERROR', 'UPDATE_PASSWORD_SUCCESS','PLEASE_WAIT']).subscribe((values) => {
+        this.signupErrorString = values.UPDATE_PASSWORD_ERROR;
+        this.signupSuccessString = values.UPDATE_PASSWORD_SUCCESS;
+        this.pleaseWait = values.PLEASE_WAIT;
+      })
+
+    this.myForm = builder.group({
+      'oldpassword': ['', [Validators.required ,Validators.minLength(6)]],
+      'password': ['', [Validators.required ,Validators.minLength(6)]],
+      'passwordConfirm': ['', []]
+    });
+
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad ChangePasswordPage');
+  }
+
+  notMathces(){
+    const ctrl = this.myForm.get("passwordConfirm");
+    return ctrl.dirty && ctrl.value != this.myForm.get("password").value
+  }
+  EditPassword(){
+    let load = this.loading.create({
+      content: this.pleaseWait
+    })
+    load.present()
+    this.accountService.changePassword(this.passwordModel).subscribe(
+      res =>{
+        console.log(res);
+        // var id = res;
+  
+        let toast = this.toastCtrl.create({
+          message: this.signupSuccessString,
+          duration: 3000,
+          position: 'top'
+        });
+        toast.present();
+        load.dismiss();
+        this.passwordModel.currentPassword = ''
+        this.passwordModel.newPassword = ''
+        // this.myForm.get("oldpassword").setValue('')
+        // this.myForm.get("oldpassword").markAsUntouched()
+        // this.myForm.get("password").setValue('')
+        // this.myForm.get("password").markAsUntouched()
+        // this.myForm.get("passwordConfirm").setValue('')
+        this.myForm.reset()
+        this.myForm = this.builder.group({
+          'oldpassword': ['', [Validators.required ,Validators.minLength(6)]],
+          'password': ['', [Validators.required ,Validators.minLength(6)]],
+          'passwordConfirm': ['', []]
+        });
+    
+      }, err =>{
+        console.log(err , 'errrrrrrrrrrrrrror');
+        // var id = res;
+  
+        let toast = this.toastCtrl.create({
+          message: this.signupErrorString,
+          duration: 3000,
+          position: 'top'
+        });
+        toast.present();
+        load.dismiss();
+        this.passwordModel.currentPassword = ''
+        this.passwordModel.newPassword = ''
+        // this.myForm.get("oldpassword").setValue('')
+        // this.myForm.get("password").setValue('')
+        // this.myForm.get("passwordConfirm").setValue('')
+
+        this.myForm.reset();
+        this.myForm = this.builder.group({
+          'oldpassword': ['', [Validators.required ,Validators.minLength(6)]],
+          'password': ['', [Validators.required ,Validators.minLength(6)]],
+          'passwordConfirm': ['', []]
+        });
+    
+     
+      }
+    )
+  }
+  hasError(field: string, error: string) {
+    const ctrl = this.myForm.get(field);
+    return ctrl.dirty && ctrl.hasError(error);
+  }
+
+}

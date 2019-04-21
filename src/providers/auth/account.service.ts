@@ -75,4 +75,12 @@ export class AccountService  {
         return this.http.put(Api.API_URL_login + '/uaa/api/updateLanguage?access_token=' +this.authservice.getToken(), updateLanguageModel);
  
       }
+      changePassword(changePasswordModel){
+        return this.http.post(Api.API_URL_login + '/uaa/api/account/change-password?access_token=' +this.authservice.getToken(), changePasswordModel);
+
+      }
+      forgetPassword(mailModel){
+        return this.http.post(Api.API_URL_login + '/uaa/api/users/forgetPassword', mailModel);
+
+      }
 }

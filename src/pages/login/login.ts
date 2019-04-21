@@ -24,6 +24,7 @@ import { AuthService } from "angular4-social-login";
 import { FacebookLoginProvider, GoogleLoginProvider } from "angular4-social-login";
 import { DeviceTockenService } from '../../providers/auth/deviceToken.service';
 import { FCM } from '@ionic-native/fcm';
+import { ForgetPasswordPage } from '../forget-password/forget-password';
 
 
 @IonicPage()
@@ -64,8 +65,8 @@ export class LoginPage {
     private authService: AuthService,
     private fb: Facebook,
     public platform: Platform,
-    public fcm:FCM,
-    public deviceTokenService:DeviceTockenService,
+    public fcm: FCM,
+    public deviceTokenService: DeviceTockenService,
     private accountService: AccountService, private captainService: CaptainService, public myApp: MyApp) {
 
     this.translateService.get(['LOGIN_ERROR', 'PLEASE_WAIT', 'NO_EMAIL_MESSAGE']).subscribe((values) => {
@@ -86,7 +87,7 @@ export class LoginPage {
     email: '',
     first_name: '',
     last_name: '',
-    id:'0'
+    id: '0'
   }
   // Attempt to login in through our User service
   doLogin() {
@@ -146,22 +147,22 @@ export class LoginPage {
         this.account = account;
 
         console.log(this.account, '555555555555');
-        if(flag){
-        if (account.authorities[0] === 'ROLE_CAPTAIN') {
-          this.addToken('Captain' , account)
-          //this.app.getRootNavs()[0].setRoot(CaptainOrdersPage);
+        if (flag) {
+          if (account.authorities[0] === 'ROLE_CAPTAIN') {
+            this.addToken('Captain', account)
+            //this.app.getRootNavs()[0].setRoot(CaptainOrdersPage);
 
-        } else if (account.authorities[0] == 'ROLE_AGENCY') {
-          // this.app.getRootNavs()[0].setRoot(OrdersPage);
-          this.addToken('Agency' , account)
-        }else if (account.authorities[0] == 'ROLE_USER' && account.authorities.length == 1){
-          this.addToken('User' , account) 
+          } else if (account.authorities[0] == 'ROLE_AGENCY') {
+            // this.app.getRootNavs()[0].setRoot(OrdersPage);
+            this.addToken('Agency', account)
+          } else if (account.authorities[0] == 'ROLE_USER' && account.authorities.length == 1) {
+            this.addToken('User', account)
+          }
+          else {
+            //this.app.getRootNavs()[0].setRoot(AgenciesPage);
+            this.addToken('Admin', account)
+          }
         }
-        else {
-          //this.app.getRootNavs()[0].setRoot(AgenciesPage);
-          this.addToken('Admin' , account)
-        }
-      }
 
       }
     }).catch((err) => {
@@ -169,26 +170,26 @@ export class LoginPage {
     });
 
   }
-  addToken(userType , account){
-    if(this.platform.is("cordova")){
-    this.fcm.getToken().then(token=>{
-      console.log(token);
-      let deviceToken = {
-        token:token,
-        userType:userType,
-        userId: account.id,
-        deviceType:'cordova'
-      }
-      this.deviceTokenService.save(deviceToken).subscribe(
-        res =>{
-          console.log("added successfully in login ");
-        },err =>{
-          console.log("error in add token in login " , err);
-          
+  addToken(userType, account) {
+    if (this.platform.is("cordova")) {
+      this.fcm.getToken().then(token => {
+        console.log(token);
+        let deviceToken = {
+          token: token,
+          userType: userType,
+          userId: account.id,
+          deviceType: 'cordova'
         }
-      )
-  })
-}
+        this.deviceTokenService.save(deviceToken).subscribe(
+          res => {
+            console.log("added successfully in login ");
+          }, err => {
+            console.log("error in add token in login ", err);
+
+          }
+        )
+      })
+    }
   }
 
   register() {
@@ -196,41 +197,43 @@ export class LoginPage {
   }
 
   forgotPass() {
-    let forgot = this.forgotCtrl.create({
-      title: 'Forgot Password?',
-      message: "Enter you email address to send a reset link password.",
-      inputs: [
-        {
-          name: 'email',
-          placeholder: 'Email',
-          type: 'email'
-        },
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          handler: data => {
-            console.log('Cancel clicked');
-          }
-        },
-        {
-          text: 'Send',
-          handler: data => {
-            console.log('Send clicked');
-            let toast = this.toastCtrl.create({
-              message: 'Email was sended successfully',
-              duration: 3000,
-              position: 'top',
-              cssClass: 'dark-trans',
-              closeButtonText: 'OK',
-              showCloseButton: true
-            });
-            toast.present();
-          }
-        }
-      ]
-    });
-    forgot.present();
+    // let forgot = this.forgotCtrl.create({
+    //   title: 'Forgot Password?',
+    //   message: "Enter you email address to send a reset link password.",
+    //   inputs: [
+    //     {
+    //       name: 'email',
+    //       placeholder: 'Email',
+    //       type: 'email'
+    //     },
+    //   ],
+    //   buttons: [
+    //     {
+    //       text: 'Cancel',
+    //       handler: data => {
+    //         console.log('Cancel clicked');
+    //       }
+    //     },
+    //     {
+    //       text: 'Send',
+    //       handler: data => {
+    //         console.log('Send clicked');
+    //         let toast = this.toastCtrl.create({
+    //           message: 'Email was sended successfully',
+    //           duration: 3000,
+    //           position: 'top',
+    //           cssClass: 'dark-trans',
+    //           closeButtonText: 'OK',
+    //           showCloseButton: true
+    //         });
+    //         toast.present();
+    //       }
+    //     }
+    //   ]
+    // });
+    // forgot.present();
+
+    this.navCtrl.setRoot(ForgetPasswordPage);
   }
   hasError(field: string, error: string) {
     const ctrl = this.myForm.get(field);
@@ -261,7 +264,7 @@ export class LoginPage {
 
 
             classlIn.fb.api('me?fields=id,name,email,first_name,last_name', []).then(profile => {
-              classlIn.userData = {id: profile['id'] , email: profile['email'], first_name: profile['first_name'], last_name: profile['last_name'] }
+              classlIn.userData = { id: profile['id'], email: profile['email'], first_name: profile['first_name'], last_name: profile['last_name'] }
               //load.dismiss()
               // let toast1 = classlIn.toastCtrl.create({
               //   message: '*****************************',
@@ -275,7 +278,7 @@ export class LoginPage {
               //   position: 'top'
               // });
               // toast.present();
-              classlIn.doLoginToFacebook();
+              classlIn.doLoginToFacebook(true);
             }).catch(e => {
 
               console.log('Error logging into Facebook', e)
@@ -301,15 +304,15 @@ export class LoginPage {
     } else {
 
       this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then(data => {
-        this.userData = { id: data.id , email: data.email, first_name: data.firstName, last_name: data.lastName }
-        this.doLoginToFacebook();
+        this.userData = { id: data.id, email: data.email, first_name: data.firstName, last_name: data.lastName }
+        this.doLoginToFacebook(true);
       }).catch(err => {
         console.log(err, 'errr 222222222222');
 
       })
     }
   }
-  doLoginToFacebook() {
+  doLoginToFacebook(first) {
 
     // if (this.userData.email == null || this.userData.email == '') {
 
@@ -338,10 +341,12 @@ export class LoginPage {
     }
 
     if (this.userData.email == null || this.userData.email == '') {
-      account.username = this.userData.id+ 't@facebook.com';
+      account.username = this.userData.id + 't@facebook.com';
 
-      console.log('nullllllllllllllllll' , account.username );
+      console.log('nullllllllllllllllll', account.username);
 
+    } else {
+      this.userData.email.toLowerCase();
     }
     this.loginService.login(account).then((response) => {
 
@@ -360,7 +365,11 @@ export class LoginPage {
 
 
       if (err.error.status == 400 && err.error.title == "Incorrect password") {
-        this.faceBookSignUp(account);
+        this.faceBookSignUp(account, first);
+      } else {
+        if (first) {
+          this.doLoginToFacebook(false);
+        }
       }
 
       load.dismiss();
@@ -368,7 +377,7 @@ export class LoginPage {
     // }
   }
 
-  faceBookSignUp(loginAccount) {
+  faceBookSignUp(loginAccount, first) {
 
     this.loginService.logout();
 
@@ -383,11 +392,11 @@ export class LoginPage {
     }
 
     if (this.userData.email == null || this.userData.email == '') {
-      
-      signUpAccount.login = this.userData.id+ 't@facebook.com';
-      signUpAccount.email = this.userData.id+ 't@facebook.com';
 
-      console.log('nullllllllllllllllll' , signUpAccount.login );
+      signUpAccount.login = this.userData.id + 't@facebook.com';
+      signUpAccount.email = this.userData.id + 't@facebook.com';
+
+      console.log('nullllllllllllllllll', signUpAccount.login);
 
     }
 
@@ -407,6 +416,9 @@ export class LoginPage {
     }, (err) => {
       // Unable to sign up
       console.log(err);
+      if (first) {
+        this.doLoginToFacebook(false);
+      }
 
     })
 
@@ -443,7 +455,7 @@ export class LoginPage {
             this.userData.first_name = name.substr(0, spaceIndex);
             this.userData.last_name = name.substr(name.indexOf(' ') + 1);
             loading.dismiss();
-            this.doLoginToFacebook();
+            this.doLoginToFacebook(true);
           }, err => {
             console.log(err, 'errrror');
             // default twitter image is too small https://developer.twitter.com/en/docs/accounts-and-users/user-profile-images-and-banners
