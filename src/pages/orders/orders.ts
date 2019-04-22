@@ -5,6 +5,7 @@ import { OrderService } from '../../providers/auth/order.service';
 import { Principal } from '../../providers/auth/principal.service';
 import { FirstRunPage } from '../pages';
 import { TranslateService } from '@ngx-translate/core';
+import { AddCheckOrderPage } from '../add-check-order/add-check-order';
 
 /**
  * Generated class for the OrdersPage page.
@@ -182,6 +183,9 @@ export class OrdersPage {
     console.log(items, 'mmmmmmmmmmmmmmm');
 
     return items;
+  }
+  addCheck(){
+    this.navCtrl.setRoot(AddCheckOrderPage);
   }
 
   assingCaptain(order) {

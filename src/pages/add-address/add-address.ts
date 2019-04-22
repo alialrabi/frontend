@@ -121,7 +121,7 @@ export class AddAddressPage {
 
     this.myForm = builder.group({
       //'country': ['', [Validators.required, Validators.maxLength(45)]],
-      'city': ['Alexandria', []],
+      //'city': ['Alexandria', []],
       'livingType': ['Flat', []],
       'name': ['', [Validators.maxLength(45)]],
       'region': ['', [Validators.required, Validators.maxLength(45)]],
@@ -134,11 +134,11 @@ export class AddAddressPage {
       // 'homePhoneNumber': ['', []],
     });
 
-    this.myForm.get('city').setValue('Alexandria');
-    this.myForm.get('city').updateValueAndValidity();
-    this.myForm.get('city').markAsDirty();
-    this.myForm.get('city').markAsTouched();
-    this.myForm.get('city').markAsPristine();
+    // this.myForm.get('city').setValue('Alexandria');
+    // this.myForm.get('city').updateValueAndValidity();
+    // this.myForm.get('city').markAsDirty();
+    // this.myForm.get('city').markAsTouched();
+    // this.myForm.get('city').markAsPristine();
 
     if (this.to != null && this.to != undefined) {
 
@@ -360,7 +360,7 @@ export class AddAddressPage {
     load.present()
 
     this.address.userId = this.user.id;
-    this.address.city = this.getCity(this.myForm.get("city").value);
+    this.address.city = this.alexValue;
     this.address.livingType = this.getLivingType(this.myForm.get("livingType").value)
     this.address.country = this.egyptText;
     console.log(this.address, 'sssssssssssssssss');
@@ -466,7 +466,7 @@ export class AddAddressPage {
     this.address.longitude = '0'
 
     this.address.userId = this.user.id;
-    this.address.city = this.getCity(this.myForm.get("city").value);
+    this.address.city = this.alexValue;
     this.address.livingType = this.getLivingType(this.myForm.get("livingType").value)
     this.address.country = this.egyptText;
     console.log(this.address, 'sssssssssssssssss');
@@ -509,7 +509,7 @@ export class AddAddressPage {
 
   }
   checkLocation(lat, lng, first) {
-    if (this.checkLocationInAlex(lat, lng) || this.checkLocationInCairo(lat, lng) || this.checkLocationInTanta(lat, lng)) {
+    if (this.checkLocationInAlex(lat, lng)) {
       return true;
     } else {
       if (!first) {

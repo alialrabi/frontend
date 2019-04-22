@@ -1,0 +1,14 @@
+{
+  "ios": {
+    "latest": "2.4.1",
+    "minimum": "2.1.0",
+    "url": "http://example.com/myAppUpdate",
+    "enabled": true
+  },
+  "android": {
+    "latest": "1.1.8",
+    "minimum": "1.1.8",
+    "url": "https://play.google.com/store/apps/details?id=com.tlabatac.ionic",
+    "enabled": true
+  }
+}

@@ -74,7 +74,15 @@
 
     <ion-item class="item-background" *ngFor="let order of ordersList">
       <ion-grid>
-        <ion-row>
+          <ion-row *ngIf="order.checkImage != null && order.checkImage != 'O'">
+              <ion-col col-12>
+                <img style="height: 90%;
+                    width: 90%;margin-left: 5%;margin-right: 5%;" *ngIf="order.checkImage  && order.checkImage != 'O'" [src]="['data:image/jpg;base64',order.checkImage]"
+                />
+              </ion-col>
+    
+            </ion-row>
+            <ion-row *ngIf="order.checkImage == null || order.checkImage == 'O'">
           <ion-col class="img-col" col-3>
             <img class="circle-pic" src="../../assets/img/orders.jpg" />
           </ion-col>
@@ -109,7 +117,7 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-      <div class="account-info info-div2">
+      <div class="account-info info-div2" *ngIf="order.checkImage == null || order.checkImage == 'O'">
           <ion-item class="item-background2">
             <ion-grid style="padding: 0px">
               <ion-row style="padding: 0px">

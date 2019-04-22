@@ -31,6 +31,7 @@ import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
 
 import { FCM } from '@ionic-native/fcm';
 import { DeviceTockenService } from '../providers/auth/deviceToken.service';
+import { ManUpService } from 'ionic-manup/lib/main';
 
 export interface MenuItem {
   title: string;
@@ -80,14 +81,17 @@ export class MyApp {
   public autoAssignInternal = null;
 
 
-  constructor(private translate: TranslateService, private fcm: FCM, public _alert : AlertController , private deviceTokenService: DeviceTockenService, private device: Device, public admobFree: AdMobFree, private backgroundMode: BackgroundMode, public menu: MenuController, public platform: Platform, settings: Settings, private config: Config,
+  constructor(private translate: TranslateService ,private manup: ManUpService , private fcm: FCM, public _alert : AlertController , private deviceTokenService: DeviceTockenService, private device: Device, public admobFree: AdMobFree, private backgroundMode: BackgroundMode, public menu: MenuController, public platform: Platform, settings: Settings, private config: Config,
     private statusBar: StatusBar, public locationAccuracy: LocationAccuracy, public toastCtrl: ToastController, private loginService: LoginService, private captainService: CaptainService, private app: App, private principal: Principal, private splashScreen: SplashScreen, private keyboard: Keyboard) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.keyboard.disableScroll(false);
-      if (this.platform.is("android")) {
+      if (this.platform.is("android") && this.platform.is("cordova")) {
+        console.log("cordova ", "android ");
+        
+       
         this.showBannerAd();
         fcm.subscribeToTopic('all');
        fcm.onNotification().subscribe(data => {
@@ -134,8 +138,15 @@ export class MyApp {
             )
           }
         });
+        manup.validate().then(() => {
+          // app initialisation
+          console.log("version validation done");
+          
+        });
+        
       }
-      this.splashScreen.hide();
+      this.splashScreen.hide();      
+
 
     });
     this.initTranslate();

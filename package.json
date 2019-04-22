@@ -29,6 +29,7 @@
     "@angular/platform-browser-dynamic": "5.2.11",
     "@ionic-native/admob-free": "^4.20.0",
     "@ionic-native/android-permissions": "^5.0.0",
+    "@ionic-native/app-version": "^4.20.0",
     "@ionic-native/background-mode": "^4.0.0",
     "@ionic-native/camera": "^4.6.0",
     "@ionic-native/core": "~4.15.0",
@@ -38,6 +39,7 @@
     "@ionic-native/fcm": "^4.20.0",
     "@ionic-native/geolocation": "^5.0.0-beta.14",
     "@ionic-native/image-picker": "^4.0.0",
+    "@ionic-native/in-app-browser": "^4.20.0",
     "@ionic-native/keyboard": "^4.12.0",
     "@ionic-native/location-accuracy": "^4.3.0",
     "@ionic-native/onesignal": "^4.20.0",
@@ -45,7 +47,7 @@
     "@ionic-native/splash-screen": "~4.15.0",
     "@ionic-native/status-bar": "~4.15.0",
     "@ionic-native/twitter-connect": "^4.2.0",
-    "@ionic/storage": "2.2.0",
+    "@ionic/storage": "^2.2.0",
     "@ngx-translate/core": "8.0.0",
     "@ngx-translate/http-loader": "2.0.0",
     "angular4-social-login": "^1.1.1",
@@ -53,6 +55,7 @@
     "cordova-admob-sdk": "0.24.1",
     "cordova-android": "7.1.4",
     "cordova-plugin-admob-free": "0.26.0",
+    "cordova-plugin-app-version": "0.1.9",
     "cordova-plugin-background-mode": "0.7.2",
     "cordova-plugin-camera": "^4.0.3",
     "cordova-plugin-datepicker": "0.9.3",
@@ -60,6 +63,7 @@
     "cordova-plugin-facebook4": "4.2.1",
     "cordova-plugin-fcm": "2.1.2",
     "cordova-plugin-geolocation": "4.0.1",
+    "cordova-plugin-inappbrowser": "3.0.0",
     "cordova-plugin-ionic-keyboard": "^2.0.5",
     "cordova-plugin-ionic-webview": "^3.1.2",
     "cordova-plugin-request-location-accuracy": "2.2.3",
@@ -71,6 +75,7 @@
     "ionic": "^4.10.2",
     "ionic-angular": "3.9.2",
     "ionic-calendar-date-picker": "^0.1.2",
+    "ionic-manup": "^0.4.1",
     "ionicons": "3.0.0",
     "moots-datetime-picker": "0.0.33",
     "ng-jhipster": "0.4.5",
@@ -134,7 +139,9 @@
       "cordova-plugin-admob-free": {
         "ADMOB_APP_ID": "ca-app-pub-3499153975001140~6459048402"
       },
-      "cordova-plugin-fcm": {}
+      "cordova-plugin-fcm": {},
+      "cordova-plugin-app-version": {},
+      "cordova-plugin-inappbrowser": {}
     },
     "platforms": [
       "android"
