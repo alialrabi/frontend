@@ -5,7 +5,7 @@ import { Camera } from '@ionic-native/camera';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { IonicStorageModule, Storage } from '@ionic/storage';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { Api, Settings, User } from '../providers/providers';
@@ -97,6 +97,11 @@ import { EditRatingPageModule } from '../pages/edit-rating/edit-rating.module';
 import { ChangePasswordPageModule } from '../pages/change-password/change-password.module';
 import { ForgetPasswordPageModule } from '../pages/forget-password/forget-password.module';
 
+import { ManUpModule, TRANSLATE_SERVICE, ManUpService } from 'ionic-manup';
+import { AddCheckOrderPageModule } from '../pages/add-check-order/add-check-order.module';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { AppVersion } from '@ionic-native/app-version';
+
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
 export function createTranslateLoader(http: HttpClient) {
@@ -138,6 +143,10 @@ let config = new AuthServiceConfig([
     HttpModule,
     HttpClientModule,
     DatePickerModule,
+    ManUpModule.forRoot({
+      url: 'https://tlabatac-saas.com/assets/manup.json',
+      externalTranslations: true
+    }),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -190,7 +199,8 @@ let config = new AuthServiceConfig([
     UserOrderDetailPageModule,
     EditRatingPageModule,
     ChangePasswordPageModule,
-    ForgetPasswordPageModule
+    ForgetPasswordPageModule,
+    AddCheckOrderPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -225,10 +235,14 @@ let config = new AuthServiceConfig([
     DeviceTockenService,
     Device,
     DatePicker,
+    InAppBrowser,
+    AppVersion,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler },
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: TRANSLATE_SERVICE, useClass: TranslateService },
+        ManUpService,
   ]
 })
 export class AppModule { }

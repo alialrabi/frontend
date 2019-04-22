@@ -1,0 +1,67 @@
+<!--
+  Generated template for the AddCheckOrderPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-grid style="width: 100%">
+      <ion-row>
+        <ion-col col-1 style="max-width: 25px;">
+          <ion-buttons style="margin-block-start: 2px" class="btn-style">
+            <button ion-button (click)="back()">
+              <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
+            </button>
+          </ion-buttons>
+        </ion-col>
+        <ion-col col-11 [style.margin-top]="language == 'en' ? '5px' : '2px'">
+          <ion-title>{{ 'ADD_ORDER' | translate }}</ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-navbar>
+
+</ion-header>
+<ion-content class="auth-page">
+  <div class="login-content">
+    <div style="width:100%;height: 70%;" text-center>
+
+      <!-- <ion-grid class="grid-image" style="width: 50%;max-width: 200px;">
+        <ion-row class="grid-image">
+          <ion-col class="grid-image" class="btn-col" col-9> -->
+
+            <img class="circle-pic" style="height: 65%;
+            width: 100%;margin-top: 15%;" *ngIf="!order.check || order.check == 'O'" src="../../assets/img/orders.jpg"
+            />
+            <img class="circle-pic" style="height: 70%;
+            width: 100%;margin-top: 15%;" *ngIf="order.check  && order.check != 'O'  && order.checkContentType != 'fromBrowser'"
+              [src]="['data:image/jpg;base64',order.check]" />
+            <img class="circle-pic" style="height: 70%;
+            width: 100%;margin-top: 15%;" *ngIf="order.check  && order.check != 'O' && order.checkContentType == 'fromBrowser'"
+              [src]="order.check" />
+          <!-- </ion-col> -->
+
+          <!-- <ion-col class="btn-col" col-3 text-center> -->
+            <button ion-button icon-only clear class="icon-btn" float-left (click)="showDialog()" *ngIf="platformType == 'cordova'">
+              <ion-icon name="camera"></ion-icon>
+            </button>
+            <input id="imageInput" type="file" accept="image/*" style="visibility:hidden" [(ngModel)]="browserImage" (change)="uploadBrowserImage($event)"
+              *ngIf="platformType != 'cordova'" />
+            <button ion-button icon-only clear class="icon-btn" float-left (click)="openFileSelector()" *ngIf="platformType != 'cordova'">
+              <ion-icon name="camera"></ion-icon>
+            </button>
+          <!-- </ion-col>
+        </ion-row>
+      </ion-grid> -->
+    </div>
+
+
+    <div margin-top style="margin-bottom: 40px;">
+      <button ion-button block color="dark" tappable (click)="addOrder()" [disabled]="order.check == null || order.check == 'O'">
+        {{ 'ADD_ORDER_BUTTON' | translate }}
+    </button>
+    </div>
+  </div>
+</ion-content>

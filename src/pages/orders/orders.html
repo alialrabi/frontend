@@ -13,9 +13,14 @@
     </button>
 
     <ion-title>{{ 'ORDERS' | translate }}</ion-title>
-    <ion-buttons end class="btn-style" >
+    <ion-buttons end class="btn-style">
       <button ion-button (click)="add()" *ngIf="userType == 'Agency'">
-          {{ 'ADD' | translate }}
+        {{ 'ADD' | translate }}
+      </button>
+    </ion-buttons>
+    <ion-buttons end class="btn-style">
+      <button ion-button (click)="addCheck()" *ngIf="userType == 'Agency'">
+        {{ 'ADD_CHECK' | translate }}
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -77,7 +82,15 @@
 
     <ion-item class="item-background" *ngFor="let order of ordersList">
       <ion-grid>
-        <ion-row>
+        <ion-row *ngIf="order.checkImage != null && order.checkImage != 'O'">
+          <ion-col col-12>
+            <img style="height: 90%;
+                width: 90%;margin-left: 5%;margin-right: 5%;" *ngIf="order.checkImage  && order.checkImage != 'O'" [src]="['data:image/jpg;base64',order.checkImage]"
+            />
+          </ion-col>
+
+        </ion-row>
+        <ion-row *ngIf="order.checkImage == null || order.checkImage == 'O'">
           <ion-col class="img-col" col-3>
             <img class="circle-pic" src="../../assets/img/orders.jpg" />
           </ion-col>
@@ -118,7 +131,7 @@
                   {{item.index}}- <strong text-wrap>{{item.name}}</strong>
                 </p>
               </div> -->
-      <div class="account-info info-div2">
+      <div class="account-info info-div2" *ngIf="order.checkImage == null || order.checkImage == 'O'">
         <ion-item class="item-background2">
           <ion-grid style="padding: 0px">
             <ion-row style="padding: 0px">
@@ -128,10 +141,10 @@
                 </p>
               </ion-col>
               <ion-col col-1 style="padding: 0px">
-                  <p>
-                    <strong text-wrap>|</strong>
-                  </p>
-                </ion-col>
+                <p>
+                  <strong text-wrap>|</strong>
+                </p>
+              </ion-col>
               <ion-col col-5 style="padding: 0px">
                 <p text-center>
                   {{'PRICE' | translate}}
@@ -149,10 +162,10 @@
                 </p>
               </ion-col>
               <ion-col col-1 style="padding: 0px">
-                  <p>
-                    <strong text-wrap>|</strong>
-                  </p>
-                </ion-col>
+                <p>
+                  <strong text-wrap>|</strong>
+                </p>
+              </ion-col>
               <ion-col col-5 style="padding: 0px">
                 <p text-center>
                   <strong text-wrap>{{sub.price}}</strong>
@@ -170,10 +183,10 @@
                 </p>
               </ion-col>
               <ion-col col-1 style="padding: 0px">
-                  <p>
-                    <strong text-wrap>|</strong>
-                  </p>
-                </ion-col>
+                <p>
+                  <strong text-wrap>|</strong>
+                </p>
+              </ion-col>
               <ion-col col-5 style="padding: 0px">
                 <p text-center>
                   <strong text-wrap>10.0</strong>
@@ -191,10 +204,10 @@
                 </p>
               </ion-col>
               <ion-col col-1 style="padding: 0px">
-                  <p>
-                    <strong text-wrap>|</strong>
-                  </p>
-                </ion-col>
+                <p>
+                  <strong text-wrap>|</strong>
+                </p>
+              </ion-col>
               <ion-col col-5 style="padding: 0px">
                 <p text-center>
                   <strong text-wrap>{{order.total}}</strong>

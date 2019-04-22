@@ -147,7 +147,7 @@ export class EditAddressPage {
 
     this.myForm = builder.group({
       //'country': ['', [Validators.required, Validators.maxLength(45)]],
-      'city': ['Alexandria', []],
+      //'city': ['Alexandria', []],
       'livingType': ['Flat', []],
       'name': ['', [Validators.maxLength(45)]],
       'region': ['', [Validators.required, Validators.maxLength(45)]],
@@ -160,11 +160,11 @@ export class EditAddressPage {
       // 'homePhoneNumber': ['', [Validators.pattern("(0)[0-9]{9}")]],
     });
 
-    this.myForm.get('city').setValue('Alexandria');
-    this.myForm.get('city').updateValueAndValidity();
-    this.myForm.get('city').markAsDirty();
-    this.myForm.get('city').markAsTouched();
-    this.myForm.get('city').markAsPristine();
+    // this.myForm.get('city').setValue('Alexandria');
+    // this.myForm.get('city').updateValueAndValidity();
+    // this.myForm.get('city').markAsDirty();
+    // this.myForm.get('city').markAsTouched();
+    // this.myForm.get('city').markAsPristine();
 
     if (this.to != null && this.to != undefined) {
 
@@ -417,7 +417,7 @@ export class EditAddressPage {
 
   }
   checkLocation(lat, lng, first) {
-    if (this.checkLocationInAlex(lat, lng) || this.checkLocationInCairo(lat, lng) || this.checkLocationInTanta(lat, lng)) {
+    if (this.checkLocationInAlex(lat, lng)) {
       return true;
     } else {
       if (!first) {
@@ -543,7 +543,7 @@ export class EditAddressPage {
   }
   notChanges() {
     
-    if (this.address.name != this.nameValue || this.address.building != this.buildingValue || this.myForm.get("city").value != this.cityValue  || this.address.flatNumber != this.flatNumberValue || this.address.floor != this.floorValue || this.address.latitude != this.latitudeValue || this.address.longitude != this.longitudeValue || this.myForm.get("livingType").value != this.livingTypeValue || this.address.otherDetails != this.otherDetailsValue || this.address.region != this.regionValue || this.address.street != this.streetValue) {
+    if (this.address.name != this.nameValue || this.address.building != this.buildingValue || this.address.flatNumber != this.flatNumberValue || this.address.floor != this.floorValue || this.address.latitude != this.latitudeValue || this.address.longitude != this.longitudeValue || this.myForm.get("livingType").value != this.livingTypeValue || this.address.otherDetails != this.otherDetailsValue || this.address.region != this.regionValue || this.address.street != this.streetValue) {
      
       return false;
     } else {
@@ -562,7 +562,7 @@ export class EditAddressPage {
     })
     load.present()
 
-    this.address.city = this.getCityValue(this.myForm.get("city").value);
+    this.address.city = this.alexValue;
     this.address.livingType = this.getLivingTypeValue(this.myForm.get("livingType").value)
     console.log(this.address, 'sssssssssssssssss');
 
@@ -648,7 +648,7 @@ export class EditAddressPage {
     this.address.latitude = '0';
     this.address.longitude = '0'
 
-    this.address.city = this.getCityValue(this.myForm.get("city").value);
+    this.address.city = this.alexValue;
     this.address.livingType = this.getLivingTypeValue(this.myForm.get("livingType").value)
     console.log(this.address, 'sssssssssssssssss');
 
