@@ -107,7 +107,7 @@
     <ion-item class="item-background" *ngIf="!order.userOrder.isBuing && order.senderAddress != null" (click)="viewLocation(order.senderAddress)">
       <p>
         {{ 'SENDER_ADDRESS' | translate }} :
-        <strong text-wrap>{{getStringNumer(order.senderAddress.flatNumber)}} , {{order.senderAddress.floor}} , {{order.senderAddress.building}} , {{order.senderAddress.street}} , {{order.senderAddress.region}} , {{order.senderAddress.city}} </strong>
+        <strong text-wrap>{{order.senderAddress.region}} , {{order.senderAddress.street}} , {{'TOWER' | translate}}/{{order.senderAddress.building}} , {{'FLOOR' | translate}}/{{order.senderAddress.floor}} , {{'FLAT' | translate}}/{{order.senderAddress.flatNumber}} , {{order.senderAddress.city}}</strong>
         </p>
     </ion-item>
     <ion-item class="item-background" *ngIf="order.userOrder.senderPhone != null">
@@ -125,7 +125,7 @@
     <ion-item class="item-background" *ngIf="order.reciverAddress != null" (click)="viewLocation(order.reciverAddress)">
       <p>
         {{ 'RECIVER_ADDRESS' | translate }} :
-        <strong text-wrap>{{getStringNumer(order.reciverAddress.flatNumber)}} , {{order.reciverAddress.floor}} , {{order.reciverAddress.building}} , {{order.reciverAddress.street}} , {{order.reciverAddress.region}} , {{order.reciverAddress.city}} </strong>
+        <strong text-wrap>{{order.reciverAddress.region}} , {{order.reciverAddress.street}} , {{'TOWER' | translate}}/{{order.reciverAddress.building}} , {{'FLOOR' | translate}}/{{order.reciverAddress.floor}} , {{'FLAT' | translate}}/{{order.reciverAddress.flatNumber}} , {{order.reciverAddress.city}} </strong>
       </p>
     </ion-item>
     <ion-item class="item-background" *ngIf="order.userOrder.reciverPhone != null">
