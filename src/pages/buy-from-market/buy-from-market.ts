@@ -314,7 +314,7 @@ export class BuyFromMarketPage {
       if (dataReturned !== null) {
         console.log('Modal Sent Data :', dataReturned);
 
-       this.address = dataReturned.city + ' , '+dataReturned.region + ' , '+dataReturned.street + ' , '+dataReturned.building + ' , '+dataReturned.floor + ' , '+dataReturned.flatNumber
+       this.address = dataReturned.flatNumber + ' , ' + dataReturned.floor + ' , ' + dataReturned.building + ' , ' + dataReturned.street + ' , ' + dataReturned.region + ' , ' + dataReturned.city
        this.order.reciverAddressId = dataReturned.id
       }
     });
@@ -335,7 +335,7 @@ export class BuyFromMarketPage {
         console.log(this.addressList);
         
 
-       this.address = dataReturned.city + ' , '+dataReturned.region + ' , '+dataReturned.street + ' , '+dataReturned.building + ' , '+dataReturned.floor + ' , '+dataReturned.flatNumber
+       this.address = dataReturned.flatNumber + ' , ' + dataReturned.floor + ' , ' + dataReturned.building + ' , ' + dataReturned.street + ' , ' + dataReturned.region + ' , ' + dataReturned.city
        this.order.reciverAddressId = dataReturned.id
       }
     });
