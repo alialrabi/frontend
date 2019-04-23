@@ -138,9 +138,22 @@ export class MyApp {
             )
           }
         });
-        manup.validate().then(() => {
-          // app initialisation
-          console.log("version validation done");
+        manup.validate().then((data) => {
+          // // app initialisation
+          // console.log("version validation done" , data);
+          // // manup.metadata().then((data2) =>{
+          // //   console.log(data2 , data2);
+
+          //  let platformData = {
+          //   "latest": "1.1.7",
+          //   "minimum": "1.1.7",
+          //   "url": "https://play.google.com/store/apps/details?id=com.tlabatac.ionic",
+          //   "enabled": true
+          //  }
+          //  this.manup.loadTranslations();
+          //  manup.presentOptionalUpdate(platformData);
+            
+          // // } )
           
         });
         
@@ -463,6 +476,8 @@ export class MyApp {
 
         this.updateLocationTimer(this);
 
+        this.updateAssign(this)
+
 
       }, err => {
         console.log(err, 'errror');
@@ -510,7 +525,13 @@ export class MyApp {
 
                   this.internal.unsubscribe();
                   this.backgroundMode.disable();
+                 
                   this.internal = null;
+
+                }
+                if(this.autoAssignInternal != null){
+                 this.autoAssignInternal.unsubscribe();
+                 this.autoAssignInternal = null; 
                 }
 
                 this.loginService.logout();
@@ -534,9 +555,14 @@ export class MyApp {
                   console.log("unsubscribe");
 
                   this.internal.unsubscribe();
+                  
                   this.backgroundMode.disable();
                   this.internal = null;
                 }
+                if(this.autoAssignInternal != null){
+                  this.autoAssignInternal.unsubscribe();
+                  this.autoAssignInternal = null; 
+                 }
 
                 this.loginService.logout();
                 //this.userType = '';
@@ -561,9 +587,13 @@ export class MyApp {
 
             this.internal.unsubscribe();
             this.backgroundMode.disable();
+            
             this.internal = null;
           }
-
+          if(this.autoAssignInternal != null){
+            this.autoAssignInternal.unsubscribe();
+            this.autoAssignInternal = null; 
+           }
           this.loginService.logout();
           //this.userType = '';
           //this.account = null;
@@ -659,9 +689,25 @@ export class MyApp {
     })
   }
 
+  updateAssign(classIn ) {
 
+    console.log('ssssssssssssssssssssssssssssssssssssssssssssssssssssssss');
+    
 
-  updateLocationTimer(classIn) {
+    classIn.captainService.updateAssign(classIn.captain.id).subscribe(
+      res => {
+        console.log(res, 'sssssssssss');
+
+      }, err => {
+        console.log(err, 'errrrrrpr');
+
+      }
+    )
+   
+
+  }
+
+  updateLocationTimer(classIn ) {
     if (this.platform.is('android')) {
       if (this.device.platform.toLowerCase() == 'android' && parseInt(this.device.version, 10) < 8) {
 
@@ -670,13 +716,16 @@ export class MyApp {
     } else {
       this.backgroundMode.enable();
     }
-    this.internal = Observable.interval(1000 * 60 * 10).subscribe(x => {
+    this.internal = Observable.interval(1000 * 60 * 5).subscribe(x => {
       console.log(x, 'eeeeeeeeeeeeeeee');
+     
       classIn.updateLocation(classIn);
+      classIn.updateAssign(classIn);
 
     });
 
   }
+
   autoAssignRedunduncy() {
     this.autoAssignInternal = Observable.interval(1000 * 60 * 60).subscribe(x => {
       console.log(x, 'eeeeeeeeeeeeeeee');

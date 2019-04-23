@@ -124,7 +124,8 @@ export class UserOrdersPage {
             this.getUserOrders(this.myVar , 0);
           },
           err => {
-            console.log(err, 'errrrror');;
+            console.log(err, 'errrrror');
+            load.dismiss()
 
           })
 
