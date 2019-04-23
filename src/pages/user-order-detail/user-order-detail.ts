@@ -200,9 +200,14 @@ export class UserOrderDetailPage {
     )
 
   }
+  getStringNumer(number){
+    return ""+number +"";
+  }
   viewLocation(order) {
+    if(order.latitude != "0"){
 
     this.navCtrl.setRoot('OrdersMapPage', { item: order , from:"UserOrderDetailPage" , order:this.order , userType:this.userType })
+    }
   }
   getFormattedDate(dateString) {
     var date = new Date(dateString);

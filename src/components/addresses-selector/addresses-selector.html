@@ -36,7 +36,7 @@
               </p> -->
 
               <p style="margin-top: 10px">
-                {{'ADDRESS' | translate}} : <strong text-wrap>{{address.region}} , {{address.street}} , {{address.building}} , {{address.floor}} , {{address.flatNumber}}</strong>
+                {{'ADDRESS' | translate}} : <strong text-wrap>{{address.flatNumber}} , {{address.floor}} , {{address.building}} , {{address.street}} , {{address.region}} , {{address.city}} </strong>
               </p>
               <p style="margin-top: 13px" *ngIf="address.otherDetails != null && address.otherDetails != ''">
                   {{'OTHER_DETAILS' | translate}} : <strong text-wrap> {{address.otherDetails}}</strong>

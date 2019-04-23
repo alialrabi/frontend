@@ -63,13 +63,13 @@
         <strong>{{ 'SENDER_DATA' | translate }}</strong>
       </p>
 
-      <ion-item>
+      <ion-item (click)="openAddressesSelectorSender()">
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
           {{ 'SENDER_ADDRESS' | translate }}
         </ion-label>
-        <ion-input type="text" [(ngModel)]="senderAddress" readonly formControlName="senderAddress" name="senderAddress" [lang]="language"
-          [dir]="direction" (click)="openAddressesSelectorSender()" readonly></ion-input>
+        <ion-input type="text" [(ngModel)]="senderAddress" formControlName="senderAddress" name="senderAddress" [lang]="language"
+          [dir]="direction"  readonly></ion-input>
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('senderAddress', 'required')"> {{ 'REQURIED' | translate }} </p>
@@ -106,13 +106,13 @@
   
   
 
-      <ion-item>
+      <ion-item  (click)="openAddressesSelector()">
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
           {{ 'RECIVER_ADDRESS' | translate }}
         </ion-label>
         <ion-input type="text" [(ngModel)]="address" formControlName="address" name="address" [lang]="language" [dir]="direction"
-          (click)="openAddressesSelector()" readonly></ion-input>
+         readonly></ion-input>
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('address', 'required')"> {{ 'REQURIED' | translate }} </p>

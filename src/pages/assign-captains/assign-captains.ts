@@ -31,6 +31,7 @@ export class AssignCaptainsPage {
 
   assingOrderSuccess = null;
   assignOrderError = null;
+  notFreeMessage = null;
   public pleaseWait;
 
 
@@ -75,10 +76,11 @@ export class AssignCaptainsPage {
     this.maxDate = CurrentYear + 1;
     this.minDate = CurrentYear;
 
-    this.translateService.get(['ASSIGN_CAPTAIN_ERROR', 'ASSIGN_CAPTAIN_SUCCESS', 'PLEASE_WAIT']).subscribe((values) => {
+    this.translateService.get(['ASSIGN_CAPTAIN_ERROR', 'NOT_FREE_ON_TIME', 'ASSIGN_CAPTAIN_SUCCESS', 'PLEASE_WAIT']).subscribe((values) => {
       this.assignOrderError = values.ASSIGN_CAPTAIN_ERROR;
       this.assingOrderSuccess = values.ASSIGN_CAPTAIN_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
+      this.notFreeMessage = values.NOT_FREE_ON_TIME
     })
 
 
@@ -217,7 +219,7 @@ export class AssignCaptainsPage {
     load.present()
 
 
-    this.captainService.getNotAssigned().subscribe(
+    this.captainService.captainsPickList().subscribe(
       res => {
 
         console.log(res, "res");
@@ -295,15 +297,38 @@ export class AssignCaptainsPage {
 
       }, err => {
 
-        let displayError = this.assignOrderError;
+        console.log('errrrrrrrrrrror', err);
 
-        let toast = this.toastCtrl.create({
-          message: displayError,
-          duration: 3000,
-          position: 'middle'
-        });
-        toast.present();
-        load.dismiss()
+        if (err.error == 'captain is not free in this time') {
+
+          this.myForm.get("startTime").setValue("00:00");
+          this.myForm.get("endTime").setValue("00:00");
+          this.startTime = '00:00'
+          this.endTime = '00:00'
+          this.timeValue = '2002-09-23T00:00:00.000';
+
+          this.dates = [];
+
+          let toast = this.toastCtrl.create({
+            message: this.notFreeMessage,
+            duration: 3000,
+            position: 'top'
+          });
+          toast.present();
+          load.dismiss()
+        } else {
+
+
+          let displayError = this.assignOrderError;
+
+          let toast = this.toastCtrl.create({
+            message: displayError,
+            duration: 3000,
+            position: 'middle'
+          });
+          toast.present();
+          load.dismiss()
+        }
 
       }
     )

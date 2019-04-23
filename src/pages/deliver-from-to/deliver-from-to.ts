@@ -186,7 +186,7 @@ export class DeliverFromToPage {
       if (dataReturned !== null) {
         console.log('Modal Sent Data :', dataReturned);
 
-        this.address = dataReturned.city + ' , ' + dataReturned.region + ' , ' + dataReturned.street + ' , ' + dataReturned.building + ' , ' + dataReturned.floor + ' , ' + dataReturned.flatNumber
+        this.address = dataReturned.flatNumber + ' , ' + dataReturned.floor + ' , ' + dataReturned.building + ' , ' + dataReturned.street + ' , ' + dataReturned.region + ' , ' + dataReturned.city
         this.order.reciverAddressId = dataReturned.id
       }
     });
@@ -207,7 +207,7 @@ export class DeliverFromToPage {
         console.log(this.addressList);
 
 
-        this.address = dataReturned.city + ' , ' + dataReturned.region + ' , ' + dataReturned.street + ' , ' + dataReturned.building + ' , ' + dataReturned.floor + ' , ' + dataReturned.flatNumber
+        this.address = dataReturned.flatNumber + ' , ' + dataReturned.floor + ' , ' + dataReturned.building + ' , ' + dataReturned.street + ' , ' + dataReturned.region + ' , ' + dataReturned.city
         this.order.reciverAddressId = dataReturned.id
       }
     });
@@ -223,7 +223,7 @@ export class DeliverFromToPage {
       if (dataReturned !== null) {
         console.log('Modal Sent Data :', dataReturned);
 
-        this.senderAddress = dataReturned.city + ' , ' + dataReturned.region + ' , ' + dataReturned.street + ' , ' + dataReturned.building + ' , ' + dataReturned.floor + ' , ' + dataReturned.flatNumber
+        this.senderAddress = dataReturned.flatNumber + ' , ' + dataReturned.floor + ' , ' + dataReturned.building + ' , ' + dataReturned.street + ' , ' + dataReturned.region + ' , ' + dataReturned.city
         this.order.senderAddressId = dataReturned.id
       }
     });
@@ -244,7 +244,7 @@ export class DeliverFromToPage {
         console.log(this.addressList);
 
 
-        this.senderAddress = dataReturned.city + ' , ' + dataReturned.region + ' , ' + dataReturned.street + ' , ' + dataReturned.building + ' , ' + dataReturned.floor + ' , ' + dataReturned.flatNumber
+        this.senderAddress = dataReturned.flatNumber + ' , ' + dataReturned.floor + ' , ' + dataReturned.building + ' , ' + dataReturned.street + ' , ' + dataReturned.region + ' , ' + dataReturned.city
         this.order.senderAddressId = dataReturned.id
       }
     });

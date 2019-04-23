@@ -111,7 +111,7 @@
         <variable name="ADMOB_APP_ID" value="ca-app-pub-3499153975001140~6459048402" />
     </plugin>
     <plugin name="cordova-plugin-fcm" spec="2.1.2" />
-    <engine name="android" spec="7.1.4" />
     <plugin name="cordova-plugin-app-version" spec="0.1.9" />
     <plugin name="cordova-plugin-inappbrowser" spec="3.0.0" />
+    <engine name="android" spec="7.1.4" />
 </widget>

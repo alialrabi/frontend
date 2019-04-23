@@ -18,6 +18,7 @@
             "later": "ليس الان"
         }
     },
+    "NOT_FREE_ON_TIME":"! هذا الطيار ملحق لعميل اخر فى هذا الوقت",
   "USER_PHONE":"هاتف المستخدم",
   "FPRGET_PASSWORD_QUESTION":"هل نسيت كلمه المرور ؟",
   "FORGET_PASSWORD_SUCCESS":"تم ارسال بريد الكترونى اليك",
