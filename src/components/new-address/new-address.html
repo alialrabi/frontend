@@ -161,7 +161,7 @@
               </ion-col>
           <ion-col col-8>
             <div margin-top *ngIf="openMap">
-              <button ion-button block color="dark" tappable (click)="chooseLocation()" [disabled]="locationDisable">
+              <button ion-button block color="dark" tappable (click)="chooseLocation()" [disabled]="mainMarker == null">
                 {{ 'CHOOSE_LOCATION' | translate }}
               </button>
             </div>

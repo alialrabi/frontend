@@ -260,7 +260,7 @@ export class NewAddressComponent {
 
     }, function (err) {
       console.log(err, 'errrrrrrrrrrrrrrrrrrrrrrrrrrror');
-      this.loadMapWithOutLocation();
+      mainClass.loadMapWithOutLocation();
 
       // let toast = mainClass.toastCtrl.create({
       //   message: "error " + err.message,
