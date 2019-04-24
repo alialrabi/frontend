@@ -133,7 +133,7 @@
     </form>
 
     <ion-buttons end class="btn-style">
-      <button ion-button (click)="add()" [disabled]="!this.myForm.get('startTime').value.length>0 || !this.myForm.get('endTime').value.length>0">
+      <button ion-button (click)="add()" [disabled]="checkEqualTimes()">
         <ion-icon name="add"></ion-icon>
       </button>
     </ion-buttons>

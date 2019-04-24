@@ -69,6 +69,10 @@ export class BuyFromMarketPage {
   orderSuccess = '';
   orderError = '';
 
+  towerText = ''
+  floorText = ''
+  flatText = ''
+
   constructor(public navCtrl: NavController, public navParams: NavParams , public _alert: AlertController
     , public imagePicker: ImagePicker, public camera: Camera, public toastCtrl: ToastController,public admobFree: AdMobFree,
     private loading: LoadingController,
@@ -87,7 +91,7 @@ export class BuyFromMarketPage {
         this.platformType = "notCordova"
       }
 
-    this.translateService.get(['ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS','CHOOSE_PHOTO', 'CHOOSE_FROM_GALARY', 'TAKE_A_PHOTO', 'PLEASE_WAIT' , 'OTHER']).subscribe((values) => {
+    this.translateService.get(['TOWER' , 'FLOOR' , 'FLAT', 'ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS','CHOOSE_PHOTO', 'CHOOSE_FROM_GALARY', 'TAKE_A_PHOTO', 'PLEASE_WAIT' , 'OTHER']).subscribe((values) => {
       
       this.orderError = values.ADD_ORDER_ERROR;
       this.orderSuccess = values.ADD_ORDER_SUCCESS;
@@ -98,6 +102,9 @@ export class BuyFromMarketPage {
      
       this.choosePhoto = values.CHOOSE_PHOTO
       this.otherText = values.OTHER
+      this.floorText = values.FLOOR
+      this.flatText = values.FLAT
+      this.towerText = values.TOWER
     })
 
     this.myForm1 = builder.group({
@@ -314,7 +321,7 @@ export class BuyFromMarketPage {
       if (dataReturned !== null) {
         console.log('Modal Sent Data :', dataReturned);
 
-       this.address = dataReturned.flatNumber + ' , ' + dataReturned.floor + ' , ' + dataReturned.building + ' , ' + dataReturned.street + ' , ' + dataReturned.region + ' , ' + dataReturned.city
+       this.address =  dataReturned.region + ' , '  +  dataReturned.street + ' , ' + this.towerText + '/' +dataReturned.building + ' , ' + this.floorText + '/' + dataReturned.floor + ' , ' + this.flatText + '/' +  dataReturned.flatNumber + ' , '+ dataReturned.city 
        this.order.reciverAddressId = dataReturned.id
       }
     });
@@ -335,7 +342,7 @@ export class BuyFromMarketPage {
         console.log(this.addressList);
         
 
-       this.address = dataReturned.flatNumber + ' , ' + dataReturned.floor + ' , ' + dataReturned.building + ' , ' + dataReturned.street + ' , ' + dataReturned.region + ' , ' + dataReturned.city
+       this.address = dataReturned.region + ' , '  +  dataReturned.street + ' , ' + this.towerText + '/' +dataReturned.building + ' , ' + this.floorText + '/' + dataReturned.floor + ' , ' + this.flatText + '/' +  dataReturned.flatNumber + ' , '+ dataReturned.city 
        this.order.reciverAddressId = dataReturned.id
       }
     });

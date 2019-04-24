@@ -17,11 +17,11 @@
             </button>
           </ion-buttons>
         </ion-col>
-        <ion-col col-10 [style.margin-top] ="language == 'en' ? '5px' : '2px'">
+        <ion-col col-8 [style.margin-top] ="language == 'en' ? '5px' : '2px'">
           <ion-title>{{ 'CAPTAIN_DETAILS' | translate }}</ion-title>
         </ion-col>
-        <ion-col col-1 text-center *ngIf="userType=='admin'">
-            <ion-buttons style="padding-bottom: 0px;padding-top: 0px" class="btn-style" >
+        <ion-col col-3 text-right *ngIf="userType=='admin'">
+            <ion-buttons style="padding:0px" class="btn-style" >
               <button ion-button (click)="editCaptain()">
                   {{ 'EDIT' | translate }}
               </button>

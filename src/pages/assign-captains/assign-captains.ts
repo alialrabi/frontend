@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, App, LoadingController, Platform, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, App, LoadingController, Platform, ModalController, AlertController } from 'ionic-angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { CaptainService } from '../../providers/auth/captain.service';
@@ -32,6 +32,8 @@ export class AssignCaptainsPage {
   assingOrderSuccess = null;
   assignOrderError = null;
   notFreeMessage = null;
+  captainBusyTitle = null
+  ok = ''
   public pleaseWait;
 
 
@@ -59,7 +61,7 @@ export class AssignCaptainsPage {
 
   isCordova = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public datePicker: DatePicker, public platform: Platform, private principal: Principal, private app: App, private loading: LoadingController, private builder: FormBuilder, public captainService: CaptainService, public toastCtrl: ToastController, public translateService: TranslateService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public _alert:AlertController , public datePicker: DatePicker, public platform: Platform, private principal: Principal, private app: App, private loading: LoadingController, private builder: FormBuilder, public captainService: CaptainService, public toastCtrl: ToastController, public translateService: TranslateService) {
 
     this.isCordova = this.platform.is("cordova");
     console.log(this.isCordova);
@@ -76,11 +78,13 @@ export class AssignCaptainsPage {
     this.maxDate = CurrentYear + 1;
     this.minDate = CurrentYear;
 
-    this.translateService.get(['ASSIGN_CAPTAIN_ERROR', 'NOT_FREE_ON_TIME', 'ASSIGN_CAPTAIN_SUCCESS', 'PLEASE_WAIT']).subscribe((values) => {
+    this.translateService.get(['OK' , 'CAPTAIN_BUSY' ,'ASSIGN_CAPTAIN_ERROR', 'NOT_FREE_ON_TIME', 'ASSIGN_CAPTAIN_SUCCESS', 'PLEASE_WAIT']).subscribe((values) => {
       this.assignOrderError = values.ASSIGN_CAPTAIN_ERROR;
       this.assingOrderSuccess = values.ASSIGN_CAPTAIN_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
       this.notFreeMessage = values.NOT_FREE_ON_TIME
+      this.captainBusyTitle = values.CAPTAIN_BUSY
+      this.ok = values.OK
     })
 
 
@@ -250,7 +254,7 @@ export class AssignCaptainsPage {
     let ids = this.myForm.get("captainIds").value;
     console.log(ids, 'ids');
 
-    if (this.myForm.get("startTime").value != null && this.myForm.get("startTime").value != '') {
+    if (this.myForm.get("startTime").value != null && this.myForm.get("startTime").value != '' && !this.checkEqualTimes()) {
       let date = {
         date: this.formatDate(this.selectedDate),
         startTime: this.myForm.get("startTime").value,
@@ -309,12 +313,26 @@ export class AssignCaptainsPage {
 
           this.dates = [];
 
-          let toast = this.toastCtrl.create({
+          let alert = this._alert.create({
+            title: this.captainBusyTitle,
             message: this.notFreeMessage,
-            duration: 3000,
-            position: 'top'
+            buttons: [
+              {
+                text: this.ok,
+                handler: () => {
+  
+                }
+              }
+            ]
           });
-          toast.present();
+          alert.present();
+
+          // let toast = this.toastCtrl.create({
+          //   message: this.notFreeMessage,
+          //   duration: 3000,
+          //   position: 'top'
+          // });
+          // toast.present();
           load.dismiss()
         } else {
 
@@ -355,6 +373,15 @@ export class AssignCaptainsPage {
     } else {
       return true;
     }
+  }
+  checkEqualTimes(){
+
+    if(this.myForm.get("startTime").value == this.myForm.get("endTime").value){
+      return true;
+    }else{
+      return false;
+    }
+
   }
 
   showDateTimePicker(event) {
