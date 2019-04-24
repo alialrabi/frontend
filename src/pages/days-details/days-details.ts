@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform, LoadingController, AlertController, ToastController } from 'ionic-angular';
 import { MyApp } from '../../app/app.component';
 import { TranslateService } from '@ngx-translate/core';
 import { AccountService } from '../../providers/auth/account.service';
@@ -32,6 +32,13 @@ export class DaysDetailsPage {
   pageNum = 1;
   moreData = 'Loading more data...'
 
+  deleteSubTitle = '';
+  deleteSubMessage = '';
+  ok = '';
+  cancel = '';
+  deleteSuccess = '';
+  deleteError = ''
+
   from = null;
   captain = null;
   agency = null;
@@ -40,7 +47,7 @@ export class DaysDetailsPage {
   agencyId = 0;
   captainId = 0;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public platform: Platform, private loading: LoadingController, public translateService: TranslateService, public accountService: AccountService, public captainService: CaptainService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController, public _alert: AlertController , public platform: Platform, private loading: LoadingController, public translateService: TranslateService, public accountService: AccountService, public captainService: CaptainService) {
 
     this.from = navParams.get("from");
     this.captain = navParams.get("captain");
@@ -48,10 +55,17 @@ export class DaysDetailsPage {
     this.agencyId = navParams.get("agencyId");
     this.captainId = navParams.get("captainId");
 
-    this.translateService.get(['PLEASE_WAIT', 'MORE_DATA']).subscribe((values) => {
+    this.translateService.get(['PLEASE_WAIT', 'MORE_DATA' , 'DELETE_SUB_TITLE' , 'DELETE_SUB_MESSAGE' , 'DONE' , 'CANCEL' , 'DELETE_SUBASSIGN_SUCCESS' , 'DELETE_SUBASSIGN_ERROR']).subscribe((values) => {
 
       this.pleaseWait = values.PLEASE_WAIT
       this.moreData = values.MORE_DATA
+
+      this.deleteSubTitle = values.DELETE_SUB_TITLE
+      this.deleteSubMessage  =values.DELETE_SUB_MESSAGE
+      this.ok = values.DONE
+      this.cancel = values.CANCEL
+      this.deleteSuccess = values.DELETE_SUBASSIGN_SUCCESS
+      this.deleteError = values.DELETE_SUBASSIGN_ERROR
     })
 
     this.platform.registerBackButtonAction(() => {
@@ -120,6 +134,60 @@ export class DaysDetailsPage {
     let minutesStr = (minutes < 10) ? "0" + minutes : minutes;
 
     return hoursStr + ":" + minutesStr;
+  }
+
+  DeleteSub(sub) {
+
+    let alert = this._alert.create({
+      title: this.deleteSubTitle,
+      message: this.deleteSubMessage,
+      buttons: [
+        {
+          text: this.ok,
+          handler: () => {
+            this.deleteSubAssign(sub)
+          }
+        },
+        {
+          text: this.cancel,
+          handler: () => {
+            
+          }
+        }
+      ]
+    });
+    alert.present();
+
+
+
+  }
+  deleteSubAssign(assign){
+    let load = this.loading.create({
+      content: this.pleaseWait
+
+
+    })
+    load.present()
+    this.captainService.deleteSubAssign(assign.id).subscribe(res =>{
+      load.dismiss();
+      let toast = this.toastCtrl.create({
+        message: this.deleteSuccess,
+        duration: 3000,
+        position: 'top'
+      });
+      toast.present();
+      this.getSubAssign();
+    },err =>{
+      console.log(err , 'errror');
+      let toast = this.toastCtrl.create({
+        message: this.deleteError,
+        duration: 3000,
+        position: 'middle'
+      });
+      toast.present();
+      load.dismiss();
+      
+    })
   }
 
 }

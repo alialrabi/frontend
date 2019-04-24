@@ -80,6 +80,16 @@
             </div>
           </ion-col>
         </ion-row>
+        <ion-row>
+         
+          <ion-col col-12>
+            <button style="width: 100%" ion-button class="circul" color="danger" (click)="DeleteSub(assign)">
+              {{'DELETE' | translate}}
+              <ion-icon name="ios-trash" [style.margin-right]="language == 'en' ? '0px' : '10px'" [style.margin-left]="language == 'en' ? '10px' : '0px'" ></ion-icon>
+            </button>
+
+          </ion-col>
+        </ion-row>
       </ion-grid>
     </ion-item>
 
