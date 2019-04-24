@@ -101,6 +101,7 @@ import { ManUpModule, TRANSLATE_SERVICE, ManUpService } from 'ionic-manup';
 import { AddCheckOrderPageModule } from '../pages/add-check-order/add-check-order.module';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { AppVersion } from '@ionic-native/app-version';
+import { AddUserPhonePageModule } from '../pages/add-user-phone/add-user-phone.module';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -144,7 +145,7 @@ let config = new AuthServiceConfig([
     HttpClientModule,
     DatePickerModule,
     ManUpModule.forRoot({
-      url: 'https://tlabatac-saas.com/assets/manup.json',
+      url: 'https://d3rgr96gwzty3y.cloudfront.net/tlabatac/api/getPlatformData',
       externalTranslations: true
     }),
     TranslateModule.forRoot({
@@ -200,7 +201,8 @@ let config = new AuthServiceConfig([
     EditRatingPageModule,
     ChangePasswordPageModule,
     ForgetPasswordPageModule,
-    AddCheckOrderPageModule
+    AddCheckOrderPageModule,
+    AddUserPhonePageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

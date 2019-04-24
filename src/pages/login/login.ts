@@ -25,6 +25,7 @@ import { FacebookLoginProvider, GoogleLoginProvider } from "angular4-social-logi
 import { DeviceTockenService } from '../../providers/auth/deviceToken.service';
 import { FCM } from '@ionic-native/fcm';
 import { ForgetPasswordPage } from '../forget-password/forget-password';
+import { AddUserPhonePage } from '../add-user-phone/add-user-phone';
 
 
 @IonicPage()
@@ -42,6 +43,8 @@ export class LoginPage {
   socialPassword = "FaceBook855Twitter2555LinkedIn1578";
   // Our translated text strings
   private loginErrorString: string;
+  private existingUserError: string;
+
   public pleaseWait;
   language = MyApp.language
   direction = MyApp.direction
@@ -69,10 +72,11 @@ export class LoginPage {
     public deviceTokenService: DeviceTockenService,
     private accountService: AccountService, private captainService: CaptainService, public myApp: MyApp) {
 
-    this.translateService.get(['LOGIN_ERROR', 'PLEASE_WAIT', 'NO_EMAIL_MESSAGE']).subscribe((values) => {
+    this.translateService.get(['LOGIN_ERROR', 'PLEASE_WAIT', 'NO_EMAIL_MESSAGE' , 'EXISTING_USER_ERROR']).subscribe((values) => {
       this.loginErrorString = values.LOGIN_ERROR;
       this.pleaseWait = values.PLEASE_WAIT;
       this.noEmailMessage = values.NO_EMAIL_MESSAGE
+      this.existingUserError = values.EXISTING_USER_ERROR;
     })
     this.validateUser(false);
 
@@ -410,15 +414,30 @@ export class LoginPage {
       //localStorage.setItem("userId" , id+"");
       this.loginService.login(loginAccount).then((response) => {
         this.validateUser(true);
-        this.myApp.checkAccess()
+        this.myApp.checkAccessToSignUp()
+        this.navCtrl.setRoot(AddUserPhonePage);
       });
 
     }, (err) => {
+
+
+      const error = JSON.parse(err.error);
+      if (err.status === 400 && error.type.includes('already-used')) {
+          let toast = this.toastCtrl.create({
+            message: this.existingUserError,
+            duration: 3000,
+            position: 'top'
+        });
+        toast.present();
+
+      }else{
+
       // Unable to sign up
       console.log(err);
       if (first) {
         this.doLoginToFacebook(false);
       }
+    }
 
     })
 

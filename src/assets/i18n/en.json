@@ -1,4 +1,8 @@
 {
+    "ADD_PHONE_SUCCESS":"Done add phone",
+    "ADD_PHONE_ERROR":"Error in add phone",
+    "ADD_PHONE":"Add Phone",
+    "INTER_VALID_PHONE":"please Inter your mobile phone number",
     "CAPTAIN_BUSY":"Captain Busy",
     "TOWER":"Building",
     "NOT_FREE_ON_TIME":"This Captain is assigned to another captain in this time !",

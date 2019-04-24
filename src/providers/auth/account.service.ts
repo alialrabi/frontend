@@ -83,4 +83,8 @@ export class AccountService  {
         return this.http.post(Api.API_URL_login + '/uaa/api/users/forgetPassword', mailModel);
 
       }
+      addUserPhone(phoneModel){
+        return this.http.post(Api.API_URL_login + '/uaa/api/users/addUserPhone?access_token=' +this.authservice.getToken(), phoneModel);
+
+      }
 }
