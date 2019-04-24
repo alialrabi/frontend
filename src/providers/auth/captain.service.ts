@@ -17,6 +17,10 @@ export class CaptainService  {
 
         return this.http.put(Api.API_URL_login + '/tlabatac/api/assignCaptains?access_token=' +this.authservice.getToken() ,assignCaptains);
     }
+    checkAssignCaptains(assignCaptains: any): Observable<any> {
+
+        return this.http.put(Api.API_URL_login + '/tlabatac/api/checkAssignCaptains?access_token=' +this.authservice.getToken() ,assignCaptains);
+    }
     editAssignCaptains(assignCaptains: any): Observable<Object> {
 
         return this.http.put(Api.API_URL_login + '/tlabatac/api/updateSubAssign?access_token=' +this.authservice.getToken() ,assignCaptains);

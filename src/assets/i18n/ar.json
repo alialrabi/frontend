@@ -1,4 +1,8 @@
 {
+    "ADD_PHONE_SUCCESS":"تم اضافه الهاتف",
+    "ADD_PHONE_ERROR":"خطأ فى اضافه الهاتف",
+    "ADD_PHONE":"اضافه الهاتف",
+    "INTER_VALID_PHONE":"من فضلك ادخل رقم الهاتف المحمول الخاص بك",
     "CAPTAIN_BUSY":"الطيار مشغول",
     "TOWER":"عماره",
   "ADD_CHECK":"اضافه فاتوره",

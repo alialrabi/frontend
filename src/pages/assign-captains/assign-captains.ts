@@ -61,7 +61,7 @@ export class AssignCaptainsPage {
 
   isCordova = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public _alert:AlertController , public datePicker: DatePicker, public platform: Platform, private principal: Principal, private app: App, private loading: LoadingController, private builder: FormBuilder, public captainService: CaptainService, public toastCtrl: ToastController, public translateService: TranslateService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public _alert: AlertController, public datePicker: DatePicker, public platform: Platform, private principal: Principal, private app: App, private loading: LoadingController, private builder: FormBuilder, public captainService: CaptainService, public toastCtrl: ToastController, public translateService: TranslateService) {
 
     this.isCordova = this.platform.is("cordova");
     console.log(this.isCordova);
@@ -78,7 +78,7 @@ export class AssignCaptainsPage {
     this.maxDate = CurrentYear + 1;
     this.minDate = CurrentYear;
 
-    this.translateService.get(['OK' , 'CAPTAIN_BUSY' ,'ASSIGN_CAPTAIN_ERROR', 'NOT_FREE_ON_TIME', 'ASSIGN_CAPTAIN_SUCCESS', 'PLEASE_WAIT']).subscribe((values) => {
+    this.translateService.get(['OK', 'CAPTAIN_BUSY', 'ASSIGN_CAPTAIN_ERROR', 'NOT_FREE_ON_TIME', 'ASSIGN_CAPTAIN_SUCCESS', 'PLEASE_WAIT']).subscribe((values) => {
       this.assignOrderError = values.ASSIGN_CAPTAIN_ERROR;
       this.assingOrderSuccess = values.ASSIGN_CAPTAIN_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
@@ -132,20 +132,76 @@ export class AssignCaptainsPage {
 
   add() {
 
+    let load = this.loading.create({
+      content: this.pleaseWait
+
+
+    })
+    load.present()
+
     let date = {
       date: this.formatDate(this.selectedDate),
       startTime: this.myForm.get("startTime").value,
       endTime: this.myForm.get("endTime").value
     }
-    this.dates.push(date)
-    console.log(this.dates, 'dates');
 
-    this.myForm.get("startTime").setValue("00:00");
-    this.myForm.get("endTime").setValue("00:00");
-    this.startTime = '00:00'
-    this.endTime = '00:00'
-    this.timeValue = '2002-09-23T00:00:00.000';
-    console.log(this.dates, 'dartes');
+    let ids = this.myForm.get("captainIds").value;
+
+    let assignCaptains = {
+      agencyId: 0,
+      captainsIds: ids,
+      adminAssign: false,
+      subAssignModel: date,
+      subAssignModels: this.dates
+    }
+
+    this.captainService.checkAssignCaptains(assignCaptains).subscribe(
+      res => {
+        console.log("res ",res);
+        
+        load.dismiss();
+
+        this.dates.push(date)
+
+        this.myForm.get("startTime").setValue("00:00");
+        this.myForm.get("endTime").setValue("00:00");
+        this.startTime = '00:00'
+        this.endTime = '00:00'
+        this.timeValue = '2002-09-23T00:00:00.000';
+        console.log(this.dates, 'dartes');
+
+      } , err => {
+        load.dismiss();
+
+        console.log("errrrrrrror" , err);
+        
+
+        let alert = this._alert.create({
+          title: this.captainBusyTitle,
+          message: this.notFreeMessage,
+          buttons: [
+            {
+              text: this.ok,
+              handler: () => {
+
+              }
+            }
+          ]
+        });
+        alert.present();
+
+        this.myForm.get("startTime").setValue("00:00");
+        this.myForm.get("endTime").setValue("00:00");
+        this.startTime = '00:00'
+        this.endTime = '00:00'
+        this.timeValue = '2002-09-23T00:00:00.000';
+        console.log(this.dates, 'dartes');
+      }
+    )
+
+
+
+
 
   }
 
@@ -260,8 +316,85 @@ export class AssignCaptainsPage {
         startTime: this.myForm.get("startTime").value,
         endTime: this.myForm.get("endTime").value
       }
-      this.dates.push(date)
+
+
+      let ids = this.myForm.get("captainIds").value;
+
+      let assignCaptains = {
+        agencyId: 0,
+        captainsIds: ids,
+        adminAssign: false,
+        subAssignModel: date,
+        subAssignModels: this.dates
+      }
+
+      this.captainService.checkAssignCaptains(assignCaptains).subscribe(
+        res => {
+          load.dismiss()
+
+          this.dates.push(date)
+
+          this.myForm.get("startTime").setValue("00:00");
+          this.myForm.get("endTime").setValue("00:00");
+          this.startTime = '00:00'
+          this.endTime = '00:00'
+          this.timeValue = '2002-09-23T00:00:00.000';
+          console.log(this.dates, 'dartes');
+
+          this.doAssignCaptains();
+
+        }, err => {
+          load.dismiss()
+
+          let alert = this._alert.create({
+            title: this.captainBusyTitle,
+            message: this.notFreeMessage,
+            buttons: [
+              {
+                text: this.ok,
+                handler: () => {
+
+                }
+              }
+            ]
+          });
+          alert.present();
+
+          this.myForm.get("startTime").setValue("00:00");
+          this.myForm.get("endTime").setValue("00:00");
+          this.startTime = '00:00'
+          this.endTime = '00:00'
+          this.timeValue = '2002-09-23T00:00:00.000';
+          console.log(this.dates, 'dartes');
+        }
+      )
+
+
+
+
+
+
+    } else {
+      load.dismiss();
+      this.doAssignCaptains();
+
     }
+
+
+
+
+  }
+
+  doAssignCaptains() {
+
+    let load = this.loading.create({
+      content: this.pleaseWait
+
+
+    })
+    load.present()
+
+    let ids = this.myForm.get("captainIds").value;
 
 
     let assignCaptains = {
@@ -303,54 +436,20 @@ export class AssignCaptainsPage {
 
         console.log('errrrrrrrrrrror', err);
 
-        if (err.error == 'captain is not free in this time') {
 
-          this.myForm.get("startTime").setValue("00:00");
-          this.myForm.get("endTime").setValue("00:00");
-          this.startTime = '00:00'
-          this.endTime = '00:00'
-          this.timeValue = '2002-09-23T00:00:00.000';
+        let displayError = this.assignOrderError;
 
-          this.dates = [];
-
-          let alert = this._alert.create({
-            title: this.captainBusyTitle,
-            message: this.notFreeMessage,
-            buttons: [
-              {
-                text: this.ok,
-                handler: () => {
-  
-                }
-              }
-            ]
-          });
-          alert.present();
-
-          // let toast = this.toastCtrl.create({
-          //   message: this.notFreeMessage,
-          //   duration: 3000,
-          //   position: 'top'
-          // });
-          // toast.present();
-          load.dismiss()
-        } else {
-
-
-          let displayError = this.assignOrderError;
-
-          let toast = this.toastCtrl.create({
-            message: displayError,
-            duration: 3000,
-            position: 'middle'
-          });
-          toast.present();
-          load.dismiss()
-        }
-
+        let toast = this.toastCtrl.create({
+          message: displayError,
+          duration: 3000,
+          position: 'middle'
+        });
+        toast.present();
+        load.dismiss()
       }
-    )
 
+
+    )
 
   }
 
@@ -374,11 +473,11 @@ export class AssignCaptainsPage {
       return true;
     }
   }
-  checkEqualTimes(){
-
-    if(this.myForm.get("startTime").value == this.myForm.get("endTime").value){
+  checkEqualTimes() {
+    let ids = this.myForm.get("captainIds").value;
+    if (this.myForm.get("startTime").value == this.myForm.get("endTime").value || ids.length == 0 ) {
       return true;
-    }else{
+    } else {
       return false;
     }
 

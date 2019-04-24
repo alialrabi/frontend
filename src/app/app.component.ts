@@ -259,7 +259,11 @@ export class MyApp {
         // this.appMenuItems = [
         //   { title: this.userOrdersText, component: UserOrdersPage, icon: 'basket' }
         // ];
+        if (account.phone == null || account.phone == ''){
+          this.nav.setRoot("AddUserPhonePage")
+        }else{
         this.nav.setRoot("UserOrdersPage")
+        }
 
       } else if (account.authorities[0] == 'ROLE_CAPTAIN') {
 
