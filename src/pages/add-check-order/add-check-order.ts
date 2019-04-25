@@ -44,9 +44,17 @@ export class AddCheckOrderPage {
   public choosePhoto = '';
   public chooseFromGalary = '';
   public takePhoto = '';
+  platformType="cordova";
 
   constructor(public navCtrl: NavController, public navParams: NavParams,private app:App,private principal:Principal, public camera: Camera, public _alert: AlertController
     , public imagePicker: ImagePicker, private loading: LoadingController, public toastCtrl: ToastController, public orderService: OrderService, public platform: Platform, public translateService: TranslateService) {
+
+      if(platform.is("cordova")){
+        this.platformType = "cordova";
+      }else{
+        this.platformType = "notCordova"
+      }
+
 
     this.translateService.get(['ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS', 'PLEASE_WAIT', 'CHOOSE_PHOTO', 'CHOOSE_FROM_GALARY', 'TAKE_A_PHOTO']).subscribe((values) => {
       console.log(values);
@@ -207,14 +215,14 @@ export class AddCheckOrderPage {
       }, function (error) {
         console.log(error);
 
-        let toast = this.toastCtrl.create({
-          message: error,
-          duration: 3000,
-          position: 'top'
-        });
-        toast.present();
+      //   let toast = this.toastCtrl.create({
+      //     message: error,
+      //     duration: 3000,
+      //     position: 'top'
+      //   });
+      //   toast.present();
 
-      });
+       });
 
   }
   uploadBrowserImage(event: any) {

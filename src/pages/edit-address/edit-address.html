@@ -69,7 +69,7 @@
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
           {{ 'ADDRESS_NAME' | translate }}
         </ion-label>
-        <ion-input type="text" [(ngModel)]="address.name" formControlName="name" name="name" [lang]="language" [dir]="direction"></ion-input>
+        <ion-input type="text" [(ngModel)]="address.name" formControlName="name" name="name" [dir]="direction"></ion-input>
       </ion-item>
       <p class="validationHint" *ngIf="hasError('name', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
 
@@ -99,7 +99,7 @@
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
           {{ 'LIVINF_TYPE' | translate }}
         </ion-label>
-        <ion-select formControlName="livingType" [placeholder]="getalaivingPlaceholder()" [(ngModel)]="flat" [lang]="language" [dir]="direction">
+        <ion-select formControlName="livingType" [placeholder]="getalaivingPlaceholder()" [(ngModel)]="flat" [dir]="direction">
           <ion-option [selected]="flat == item" [value]="'Flat'" [dir]="direction">{{'FLAT' | translate}} </ion-option>
           <ion-option [selected]="flat == item" [value]="'Home'" [dir]="direction">{{'HOME' | translate}} </ion-option>
           <ion-option [selected]="flat == item" [value]="'Office'" [dir]="direction">{{'OFFICE' | translate}} </ion-option>
@@ -115,7 +115,7 @@
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
           {{ 'REGION' | translate }}
         </ion-label>
-        <ion-input type="text" [(ngModel)]="address.region" formControlName="region" name="region" [lang]="language" [dir]="direction"></ion-input>
+        <ion-input type="text" [(ngModel)]="address.region" formControlName="region" name="region" [dir]="direction"></ion-input>
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('region', 'required')">{{ 'REQURIED' | translate }} </p>
@@ -127,7 +127,7 @@
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
           {{ 'STREET' | translate }}
         </ion-label>
-        <ion-input type="text" [(ngModel)]="address.street" formControlName="street" name="street" [lang]="language" [dir]="direction"></ion-input>
+        <ion-input type="text" [(ngModel)]="address.street" formControlName="street" name="street" [dir]="direction"></ion-input>
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('street', 'required')">{{ 'REQURIED' | translate }} </p>
@@ -138,7 +138,7 @@
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
           {{ 'BUILDING' | translate }}
         </ion-label>
-        <ion-input type="text" [(ngModel)]="address.building" formControlName="building" name="building" [lang]="language" [dir]="direction"></ion-input>
+        <ion-input type="text" [(ngModel)]="address.building" formControlName="building" name="building" [dir]="direction"></ion-input>
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('building', 'required')">{{ 'REQURIED' | translate }} </p>
@@ -149,7 +149,7 @@
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
           {{ 'FLOOR' | translate }}
         </ion-label>
-        <ion-input type="text" [(ngModel)]="address.floor" formControlName="floor" name="floor" [lang]="language" [dir]="direction"></ion-input>
+        <ion-input type="text" [(ngModel)]="address.floor" formControlName="floor" name="floor" [dir]="direction"></ion-input>
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('floor', 'required')">{{ 'REQURIED' | translate }} </p>
@@ -160,7 +160,7 @@
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
           {{ 'FLAT_NUMBER' | translate }}
         </ion-label>
-        <ion-input type="text" [(ngModel)]="address.flatNumber" formControlName="flatNumber" name="flatNumber" [lang]="language"
+        <ion-input type="text" [(ngModel)]="address.flatNumber" formControlName="flatNumber" name="flatNumber"
           [dir]="direction"></ion-input>
       </ion-item>
 
@@ -173,7 +173,7 @@
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
           {{ 'OTHER_DETAILS' | translate }}
         </ion-label>
-        <ion-input type="text" [(ngModel)]="address.otherDetails" formControlName="otherDetails" name="otherDetails" [lang]="language"
+        <ion-input type="text" [(ngModel)]="address.otherDetails" formControlName="otherDetails" name="otherDetails"
           [dir]="direction"></ion-input>
       </ion-item>
 

@@ -275,12 +275,12 @@ export class SignupPage {
       if (err.status === 400 && error.type.includes('already-used')) {
         this.loginService.login(loginAccount).then((response) => {
           this.myApp.checkAccess();
-          let toast = this.toastCtrl.create({
-            message: this.signupSuccessString,
-            duration: 3000,
-            position: 'top'
-          });
-          toast.present();
+          // let toast = this.toastCtrl.create({
+          //   message: this.signupSuccessString,
+          //   duration: 3000,
+          //   position: 'top'
+          // });
+          // toast.present();
           //this.navCtrl.setRoot(AddAddressPage);
         }, err => {
           if (err.error.status == 400 && err.error.title == "Incorrect password") {

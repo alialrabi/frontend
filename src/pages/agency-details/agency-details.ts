@@ -27,6 +27,7 @@ export class AgencyDetailsPage {
     lastName:"",
     email:"",
     orderCount:'',
+    phone:'',
     creationDate:'2019-01-01T00:00:00.000Z',
     password:"",
     captains:[]

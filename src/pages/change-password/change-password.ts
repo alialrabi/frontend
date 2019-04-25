@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, App, LoadingController, ToastController, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, App, LoadingController, ToastController, Platform, AlertController } from 'ionic-angular';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { MyApp } from '../../app/app.component';
 import { TranslateService } from '@ngx-translate/core';
@@ -34,20 +34,26 @@ export class ChangePasswordPage {
 
   myForm: FormGroup;
 
+  ok = '';
+  dialogTitle = '';
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public toastCtrl: ToastController,
     public translateService: TranslateService,
     private loading: LoadingController,
     public app:App,
     public platform:Platform,
+    public _alert:AlertController,
     public accountService: AccountService,
     public builder: FormBuilder) {
 
       
-    this.translateService.get(['UPDATE_PASSWORD_ERROR', 'UPDATE_PASSWORD_SUCCESS','PLEASE_WAIT']).subscribe((values) => {
+    this.translateService.get(['UPDATE_PASSWORD_ERROR', 'UPDATE_PASSWORD_SUCCESS','PLEASE_WAIT' , 'OK' , 'INCORRECT_PASSWORD_TITLE']).subscribe((values) => {
         this.signupErrorString = values.UPDATE_PASSWORD_ERROR;
         this.signupSuccessString = values.UPDATE_PASSWORD_SUCCESS;
         this.pleaseWait = values.PLEASE_WAIT;
+        this.ok = values.OK
+        this.dialogTitle = values.INCORRECT_PASSWORD_TITLE
       })
 
     this.myForm = builder.group({
@@ -100,13 +106,21 @@ export class ChangePasswordPage {
       }, err =>{
         console.log(err , 'errrrrrrrrrrrrrror');
         // var id = res;
-  
-        let toast = this.toastCtrl.create({
+
+        let alert = this._alert.create({
+          title: this.dialogTitle,
           message: this.signupErrorString,
-          duration: 3000,
-          position: 'top'
+          buttons: [
+            {
+              text: this.ok,
+              handler: () => {
+
+              }
+            }
+          ]
         });
-        toast.present();
+        alert.present();
+
         load.dismiss();
         this.passwordModel.currentPassword = ''
         this.passwordModel.newPassword = ''

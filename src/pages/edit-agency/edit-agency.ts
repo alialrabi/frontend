@@ -27,6 +27,7 @@ export class EditAgencyPage {
     firstName: '',
     lastName: '',
     password: '',
+    phone:'',
     id:0
   };
 
@@ -44,6 +45,7 @@ export class EditAgencyPage {
   firstName = '';
   lastName = '';
   password = '';  
+  phone = ''
 
   myForm: FormGroup;
 
@@ -67,6 +69,7 @@ export class EditAgencyPage {
       this.password = this.account.password;
       this.firstName = this.account.firstName;
       this.lastName = this.account.lastName;
+      this.phone = this.account.phone;
       
     this.translateService.get(['UPDATE_AGENCY_ERROR', 'UPDATE_AGENCY_SUCCESS',
       'EXISTING_USER_ERROR', 'INVALID_PASSWORD_ERROR' , 'PLEASE_WAIT']).subscribe((values) => {
@@ -80,6 +83,7 @@ export class EditAgencyPage {
     this.myForm = builder.group({
       'firstName': ['', [Validators.required, Validators.maxLength(45)]],
       'lastName': ['', [Validators.required, Validators.maxLength(45)]],
+      'phone': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
       'email': ['', [Validators.required, Validators.email]],
       'password': ['', [Validators.minLength(6)]],
       'passwordConfirm': ['', []]
@@ -109,7 +113,8 @@ export class EditAgencyPage {
       lastName:this.myForm.get("lastName").value,
       email:this.myForm.get("email").value,
       password:this.myForm.get("password").value,
-      emailChanged:this.email != this.myForm.get("email").value
+      emailChanged:this.email != this.myForm.get("email").value,
+      phone : this.myForm.get("phone").value
     } 
     console.log(this.myForm.get("password").value != this.password , this.password);
     
@@ -170,7 +175,7 @@ export class EditAgencyPage {
     this.navCtrl.setRoot(AgencyDetailsPage , {item:this.agency});
   }
   valuesChanges(){
-    if(this.firstName != this.account.firstName || this.lastName != this.account.lastName || this.email != this.account.email || (this.password != this.myForm.get("password").value && this.myForm.get("password").value != '' && this.myForm.get("password").value != null)){  
+    if(this.firstName != this.account.firstName || this.phone != this.account.phone || this.lastName != this.account.lastName || this.email != this.account.email || (this.password != this.myForm.get("password").value && this.myForm.get("password").value != '' && this.myForm.get("password").value != null)){  
       return true;
     }else{
       return false;

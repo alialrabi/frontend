@@ -309,7 +309,7 @@ export class UserOrdersPage {
     this.orderService.finishOrder(item.userOrder.id).subscribe(
       res => {
 
-        if (this.platform.is('cordova')) {
+       // if (this.platform.is('cordova')) {
           this.deviceTokenService.getAdminTokens().subscribe(
             res1 => {
               console.log("res1", res1);
@@ -375,7 +375,7 @@ export class UserOrdersPage {
             }
           )
 
-        }
+       // }
 
 
         let toast = this.toastCtrl.create({

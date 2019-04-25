@@ -20,7 +20,7 @@
         <ion-col col-8 [style.margin-top]="language == 'en' ? '5px' : '2px'">
           <ion-title>{{ 'AGENCY_DETAILS' | translate }}</ion-title>
         </ion-col>
-        <ion-col col-3 text-right>
+        <ion-col col-3 [style.text-align] = "language == 'en' ? 'right' : 'left'">
           <ion-buttons style="padding:0px" class="btn-style">
             <button ion-button (click)="editAgency()">
                 {{ 'EDIT' | translate }}
@@ -53,6 +53,12 @@
       <p>
         {{'EMAIL' | translate}} :
         <strong text-wrap>{{agencyDetail.email}}</strong>
+      </p>
+    </ion-item>
+    <ion-item class="item-background">
+      <p>
+        {{'PHONE' | translate}} :
+        <strong text-wrap>{{agencyDetail.phone}}</strong>
       </p>
     </ion-item>
     <ion-item class="item-background">

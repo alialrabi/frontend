@@ -20,7 +20,7 @@
         <ion-col col-8 [style.margin-top] ="language == 'en' ? '5px' : '2px'">
           <ion-title>{{ 'CAPTAIN_DETAILS' | translate }}</ion-title>
         </ion-col>
-        <ion-col col-3 text-right *ngIf="userType=='admin'">
+        <ion-col col-3 [style.text-align] = "language == 'en' ? 'right' : 'left'" *ngIf="userType=='admin'">
             <ion-buttons style="padding:0px" class="btn-style" >
               <button ion-button (click)="editCaptain()">
                   {{ 'EDIT' | translate }}

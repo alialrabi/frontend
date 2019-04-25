@@ -73,6 +73,9 @@ export class EditCaptainPage {
   oldCaptain
 
   captainDetails;
+
+  platformType="cordova";
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public _alert: AlertController
     , public imagePicker: ImagePicker, public camera: Camera, public toastCtrl: ToastController,
     public captainService: CaptainService,
@@ -82,6 +85,13 @@ export class EditCaptainPage {
     private platform: Platform,
     public storage: LocalStorageService,
     public translateService: TranslateService, private app: App, private builder: FormBuilder, public user: User, private accountService: AccountService) {
+
+
+      if(platform.is("cordova")){
+        this.platformType = "cordova";
+      }else{
+        this.platformType = "notCordova"
+      }
 
       this.oldCaptain = this.navParams.get("captain");
       this.captainDetails = this.navParams.get("item");
@@ -227,6 +237,7 @@ export class EditCaptainPage {
       id:this.account.id,
       firstName:this.captain.name,
       lastName:this.captain.name,
+      phone:this.captain.phone,
       email:this.myForm.get("email").value,
       password:this.myForm.get("password").value,
       emailChanged:this.email != this.myForm.get("email").value
