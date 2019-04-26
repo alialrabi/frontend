@@ -1,4 +1,7 @@
 {
+    "NO_LOCATION_AVILABLE":"لا يوجد موقع لهذا العنوان على الخريطه",
+    "NOT_SUPPORTED":"غير مدعم",
+    "INCORRECT_PASSWORD_TITLE":"غير صحيح",
     "ADD_PHONE_SUCCESS":"تم اضافه الهاتف",
     "ADD_PHONE_ERROR":"خطأ فى اضافه الهاتف",
     "ADD_PHONE":"اضافه الهاتف",

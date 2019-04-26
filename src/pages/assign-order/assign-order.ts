@@ -170,7 +170,7 @@ export class AssignOrderPage {
     this.userOrderService.assign(this.myForm.get('captainId').value.id , this.order.id).subscribe(
       res =>{
 
-        if (this.platform.is('cordova')) {
+        //if (this.platform.is('cordova')) {
           this.deviceTokenService.getUserTokens(this.myForm.get('captainId').value.userId).subscribe(
             res1 => {
               console.log("res1", res1);
@@ -243,7 +243,7 @@ export class AssignOrderPage {
             }
           )
 
-        }
+        //}
 
         let toast = this.toastCtrl.create({
           message: this.assingOrderSuccess,

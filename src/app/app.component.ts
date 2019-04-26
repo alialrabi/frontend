@@ -81,7 +81,7 @@ export class MyApp {
   public autoAssignInternal = null;
 
 
-  constructor(private translate: TranslateService ,private manup: ManUpService , private fcm: FCM, public _alert : AlertController , private deviceTokenService: DeviceTockenService, private device: Device, public admobFree: AdMobFree, private backgroundMode: BackgroundMode, public menu: MenuController, public platform: Platform, settings: Settings, private config: Config,
+  constructor(private translate: TranslateService, private manup: ManUpService, private fcm: FCM, public _alert: AlertController, private deviceTokenService: DeviceTockenService, private device: Device, public admobFree: AdMobFree, private backgroundMode: BackgroundMode, public menu: MenuController, public platform: Platform, settings: Settings, private config: Config,
     private statusBar: StatusBar, public locationAccuracy: LocationAccuracy, public toastCtrl: ToastController, private loginService: LoginService, private captainService: CaptainService, private app: App, private principal: Principal, private splashScreen: SplashScreen, private keyboard: Keyboard) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -90,13 +90,13 @@ export class MyApp {
       this.keyboard.disableScroll(false);
       if (this.platform.is("android") && this.platform.is("cordova")) {
         console.log("cordova ", "android ");
-        
-       
+
+
         this.showBannerAd();
         fcm.subscribeToTopic('all');
-       fcm.onNotification().subscribe(data => {
-          console.log(JSON.stringify(data) , 'notification');
-          
+        fcm.onNotification().subscribe(data => {
+          console.log(JSON.stringify(data), 'notification');
+
           if (data.wasTapped) {
             console.log("Received in background");
           } else {
@@ -104,7 +104,7 @@ export class MyApp {
 
             let alert = this._alert.create({
               title: data.title,
-              message:data.body,
+              message: data.body,
               buttons: [
                 {
                   text: 'حسنا',
@@ -152,13 +152,13 @@ export class MyApp {
           //  }
           //  this.manup.loadTranslations();
           //  manup.presentOptionalUpdate(platformData);
-            
+
           // // } )
-          
+
         });
-        
+
       }
-      this.splashScreen.hide();      
+      this.splashScreen.hide();
 
 
     });
@@ -259,10 +259,10 @@ export class MyApp {
         // this.appMenuItems = [
         //   { title: this.userOrdersText, component: UserOrdersPage, icon: 'basket' }
         // ];
-        if (account.phone == null || account.phone == ''){
+        if (account.phone == null || account.phone == '') {
           this.nav.setRoot("AddUserPhonePage")
-        }else{
-        this.nav.setRoot("UserOrdersPage")
+        } else {
+          this.nav.setRoot("UserOrdersPage")
         }
 
       } else if (account.authorities[0] == 'ROLE_CAPTAIN') {
@@ -520,8 +520,8 @@ export class MyApp {
       this.fcm.getToken().then(token => {
         this.deviceTokenService.deleteToken(token, this.account.id).subscribe(
           res1 => {
-            console.log(res1 , 'delete token success');
-            
+            console.log(res1, 'delete token success');
+
             this.menu.close().then(
               res => {
                 if (this.internal != null) {
@@ -529,13 +529,13 @@ export class MyApp {
 
                   this.internal.unsubscribe();
                   this.backgroundMode.disable();
-                 
+
                   this.internal = null;
 
                 }
-                if(this.autoAssignInternal != null){
-                 this.autoAssignInternal.unsubscribe();
-                 this.autoAssignInternal = null; 
+                if (this.autoAssignInternal != null) {
+                  this.autoAssignInternal.unsubscribe();
+                  this.autoAssignInternal = null;
                 }
 
                 this.loginService.logout();
@@ -559,14 +559,14 @@ export class MyApp {
                   console.log("unsubscribe");
 
                   this.internal.unsubscribe();
-                  
+
                   this.backgroundMode.disable();
                   this.internal = null;
                 }
-                if(this.autoAssignInternal != null){
+                if (this.autoAssignInternal != null) {
                   this.autoAssignInternal.unsubscribe();
-                  this.autoAssignInternal = null; 
-                 }
+                  this.autoAssignInternal = null;
+                }
 
                 this.loginService.logout();
                 //this.userType = '';
@@ -591,13 +591,13 @@ export class MyApp {
 
             this.internal.unsubscribe();
             this.backgroundMode.disable();
-            
+
             this.internal = null;
           }
-          if(this.autoAssignInternal != null){
+          if (this.autoAssignInternal != null) {
             this.autoAssignInternal.unsubscribe();
-            this.autoAssignInternal = null; 
-           }
+            this.autoAssignInternal = null;
+          }
           this.loginService.logout();
           //this.userType = '';
           //this.account = null;
@@ -693,10 +693,10 @@ export class MyApp {
     })
   }
 
-  updateAssign(classIn ) {
+  updateAssign(classIn) {
 
     console.log('ssssssssssssssssssssssssssssssssssssssssssssssssssssssss');
-    
+
 
     classIn.captainService.updateAssign(classIn.captain.id).subscribe(
       res => {
@@ -707,22 +707,31 @@ export class MyApp {
 
       }
     )
-   
+
 
   }
 
-  updateLocationTimer(classIn ) {
+  updateLocationTimer(classIn) {
+    console.log("updateLocationTimer");
+
     if (this.platform.is('android')) {
+      console.log("android");
+      console.log("device version ", this.device.version);
+      console.log("pltform ", this.device.platform.toLowerCase());
+      
       if (this.device.platform.toLowerCase() == 'android' && parseInt(this.device.version, 10) < 8) {
+        console.log("if");
 
         this.backgroundMode.enable();
       }
     } else {
+      console.log("else");
+
       this.backgroundMode.enable();
     }
     this.internal = Observable.interval(1000 * 60 * 5).subscribe(x => {
       console.log(x, 'eeeeeeeeeeeeeeee');
-     
+
       classIn.updateLocation(classIn);
       classIn.updateAssign(classIn);
 
@@ -760,17 +769,17 @@ export class MyApp {
 
   }
 
-  userSettingToggle(){
+  userSettingToggle() {
     this.userSettingToggleFlag = !this.userSettingToggleFlag;
 
   }
-  getSettingIcon(){
-    if(this.userSettingToggleFlag){
+  getSettingIcon() {
+    if (this.userSettingToggleFlag) {
       return 'arrow-dropdown'
-    }else{
-      if(MyApp.language == 'en'){
+    } else {
+      if (MyApp.language == 'en') {
         return 'arrow-dropright'
-      }else{
+      } else {
         return 'arrow-dropleft'
       }
     }

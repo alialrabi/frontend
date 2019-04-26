@@ -29,7 +29,7 @@
             <ion-icon name="person" item-start class="text-primary"></ion-icon>
             {{ 'FIRST_NAME' | translate }}
           </ion-label>
-          <ion-input type="text" [(ngModel)]="account.firstName" name="firstName" formControlName="firstName" [lang]="language" [dir]="direction"></ion-input>
+          <ion-input type="text" [(ngModel)]="account.firstName" name="firstName" formControlName="firstName" [dir]="direction"></ion-input>
         </ion-item>
   
         <p class="validationHint" *ngIf="hasError('firstName', 'required')"> {{ 'REQURIED' | translate }} </p>
@@ -40,7 +40,7 @@
             <ion-icon name="person" item-start class="text-primary"></ion-icon>
             {{ 'LAST_NAME' | translate }}
           </ion-label>
-          <ion-input type="text" [(ngModel)]="account.lastName" name="lastName" formControlName="lastName" [lang]="language" [dir]="direction"></ion-input>
+          <ion-input type="text" [(ngModel)]="account.lastName" name="lastName" formControlName="lastName" [dir]="direction"></ion-input>
         </ion-item>
   
         <p class="validationHint" *ngIf="hasError('lastName', 'required')"> {{ 'REQURIED' | translate }} </p>
@@ -48,10 +48,22 @@
   
         <ion-item>
           <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+            <ion-icon name="call" item-start class="text-primary"></ion-icon>
+            {{ 'PHONE' | translate }}
+          </ion-label>
+          <ion-input type="number" [(ngModel)]="account.phone" formControlName="phone" name="phone" [dir]="direction"></ion-input>
+        </ion-item>
+  
+        <p class="validationHint" *ngIf="hasError('phone', 'required')"> {{ 'REQURIED' | translate }} </p>
+        <p class="validationHint" *ngIf="hasError('phone', 'pattern')">{{ 'PHONE_NUMBER' | translate }} </p>
+  
+
+        <ion-item>
+          <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
             <ion-icon name="mail" item-start class="text-primary"></ion-icon>
             {{ 'EMAIL' | translate }}
           </ion-label>
-          <ion-input type="email" [(ngModel)]="account.email" name="email" formControlName="email" [lang]="language" [dir]="direction"></ion-input>
+          <ion-input type="email" [(ngModel)]="account.email" name="email" formControlName="email" [dir]="direction"></ion-input>
         </ion-item>
   
         <p class="validationHint" *ngIf="hasError('email', 'required')"> {{ 'REQURIED' | translate }} </p>
@@ -62,7 +74,7 @@
             <ion-icon name="lock" item-start class="text-primary"></ion-icon>
             {{ 'PASSWORD' | translate }}
           </ion-label>
-          <ion-input type="password" name="password" formControlName="password" [lang]="language" [dir]="direction"></ion-input>
+          <ion-input type="password" name="password" formControlName="password" [dir]="direction"></ion-input>
         </ion-item>
   
         <p class="validationHint" *ngIf="hasError('password', 'minlength')">{{ 'MIN_LENGTH' | translate }} </p>

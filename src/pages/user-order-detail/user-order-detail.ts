@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform, ToastController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform, ToastController, LoadingController, AlertController } from 'ionic-angular';
 import { UserOrdersPage } from '../user-orders/user-orders';
 import { TranslateService } from '@ngx-translate/core';
 import { DeviceTockenService } from '../../providers/auth/deviceToken.service';
@@ -52,8 +52,11 @@ export class UserOrderDetailPage {
   deliverOrderError = null;
 
   pleaseWait;
+  ok = ''
+  notSupported = ''
+  noLocationAvilable = ''
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private orderService:UserOrderService , public toastCtrl: ToastController , private deviceTokenService:DeviceTockenService , private loading: LoadingController  ,private platform:Platform , private translateService:TranslateService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private _alert:AlertController , private orderService:UserOrderService , public toastCtrl: ToastController , private deviceTokenService:DeviceTockenService , private loading: LoadingController  ,private platform:Platform , private translateService:TranslateService) {
     this.order = navParams.get('item');
     this.userType = navParams.get('userType');
 
@@ -61,12 +64,15 @@ export class UserOrderDetailPage {
       this.navCtrl.setRoot(UserOrdersPage);
     });
 
-    this.translateService.get(['DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT']).subscribe((values) => {
+    this.translateService.get(['DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT' , 'OK' , 'NOT_SUPPORTED' , 'NO_LOCATION_AVILABLE']).subscribe((values) => {
 
       this.deliverOrderError = values.DELIVER_ORDER_ERROR;
       this.deliverOrderSuccess = values.DELIVER_ORDER_SUCCESS;
 
       this.pleaseWait = values.PLEASE_WAIT
+      this.ok = values.OK
+      this.notSupported = values.NOT_SUPPORTED
+      this.noLocationAvilable = values.NO_LOCATION_AVILABLE
      
     })
 
@@ -207,6 +213,20 @@ export class UserOrderDetailPage {
     if(order.latitude != "0"){
 
     this.navCtrl.setRoot('OrdersMapPage', { item: order , from:"UserOrderDetailPage" , order:this.order , userType:this.userType })
+    }else{
+      let alert = this._alert.create({
+        title: this.notSupported,
+        message: this.noLocationAvilable,
+        buttons: [
+          {
+            text: this.ok,
+            handler: () => {
+
+            }
+          }
+        ]
+      });
+      alert.present();
     }
   }
   getFormattedDate(dateString) {

@@ -1,4 +1,7 @@
 {
+    "NO_LOCATION_AVILABLE":"No Location avilale for this address on the map",
+    "NOT_SUPPORTED":"Not Supported",
+    "INCORRECT_PASSWORD_TITLE":"Incorrect",
     "ADD_PHONE_SUCCESS":"Done add phone",
     "ADD_PHONE_ERROR":"Error in add phone",
     "ADD_PHONE":"Add Phone",

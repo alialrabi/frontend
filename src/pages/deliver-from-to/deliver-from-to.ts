@@ -14,7 +14,7 @@ import { NewAddressComponent } from '../../components/new-address/new-address';
 import { AddressesSelectorComponent } from '../../components/addresses-selector/addresses-selector';
 import { DeviceTockenService } from '../../providers/auth/deviceToken.service';
 
-import { AdMobFree, AdMobFreeBannerConfig  , AdMobFreeInterstitialConfig} from '@ionic-native/admob-free';
+import { AdMobFree, AdMobFreeBannerConfig, AdMobFreeInterstitialConfig } from '@ionic-native/admob-free';
 
 
 /**
@@ -89,7 +89,7 @@ export class DeliverFromToPage {
       this.platformType = "notCordova"
     }
 
-    this.translateService.get([ 'TOWER' , 'FLOOR' , 'FLAT','ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS', 'CHOOSE_PHOTO', 'CHOOSE_FROM_GALARY', 'TAKE_A_PHOTO', 'PLEASE_WAIT', 'OTHER']).subscribe((values) => {
+    this.translateService.get(['TOWER', 'FLOOR', 'FLAT', 'ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS', 'CHOOSE_PHOTO', 'CHOOSE_FROM_GALARY', 'TAKE_A_PHOTO', 'PLEASE_WAIT', 'OTHER']).subscribe((values) => {
 
       this.orderError = values.ADD_ORDER_ERROR;
       this.orderSuccess = values.ADD_ORDER_SUCCESS;
@@ -193,8 +193,8 @@ export class DeliverFromToPage {
       if (dataReturned !== null) {
         console.log('Modal Sent Data :', dataReturned);
 
-        this.address = dataReturned.region + ' , '  +  dataReturned.street + ' , ' + this.towerText + '/' +dataReturned.building + ' , ' + this.floorText + '/' + dataReturned.floor + ' , ' + this.flatText + '/' +  dataReturned.flatNumber + ' , '+ dataReturned.city 
-       
+        this.address = dataReturned.region + ' , ' + dataReturned.street + ' , ' + this.towerText + '/' + dataReturned.building + ' , ' + this.floorText + '/' + dataReturned.floor + ' , ' + this.flatText + '/' + dataReturned.flatNumber + ' , ' + dataReturned.city
+
         this.order.reciverAddressId = dataReturned.id
       }
     });
@@ -215,7 +215,7 @@ export class DeliverFromToPage {
         console.log(this.addressList);
 
 
-        this.address = dataReturned.region + ' , '  +  dataReturned.street + ' , ' + this.towerText + '/' +dataReturned.building + ' , ' + this.floorText + '/' + dataReturned.floor + ' , ' + this.flatText + '/' +  dataReturned.flatNumber + ' , '+ dataReturned.city 
+        this.address = dataReturned.region + ' , ' + dataReturned.street + ' , ' + this.towerText + '/' + dataReturned.building + ' , ' + this.floorText + '/' + dataReturned.floor + ' , ' + this.flatText + '/' + dataReturned.flatNumber + ' , ' + dataReturned.city
         this.order.reciverAddressId = dataReturned.id
       }
     });
@@ -231,7 +231,7 @@ export class DeliverFromToPage {
       if (dataReturned !== null) {
         console.log('Modal Sent Data :', dataReturned);
 
-        this.senderAddress = dataReturned.region + ' , '  +  dataReturned.street + ' , ' + this.towerText + '/' +dataReturned.building + ' , ' + this.floorText + '/' + dataReturned.floor + ' , ' + this.flatText + '/' +  dataReturned.flatNumber + ' , '+ dataReturned.city
+        this.senderAddress = dataReturned.region + ' , ' + dataReturned.street + ' , ' + this.towerText + '/' + dataReturned.building + ' , ' + this.floorText + '/' + dataReturned.floor + ' , ' + this.flatText + '/' + dataReturned.flatNumber + ' , ' + dataReturned.city
         this.order.senderAddressId = dataReturned.id
       }
     });
@@ -252,7 +252,7 @@ export class DeliverFromToPage {
         console.log(this.addressList);
 
 
-        this.senderAddress =  dataReturned.region + ' , '  +  dataReturned.street + ' , ' + this.towerText + '/' +dataReturned.building + ' , ' + this.floorText + '/' + dataReturned.floor + ' , ' + this.flatText + '/' +  dataReturned.flatNumber + ' , '+ dataReturned.city
+        this.senderAddress = dataReturned.region + ' , ' + dataReturned.street + ' , ' + this.towerText + '/' + dataReturned.building + ' , ' + this.floorText + '/' + dataReturned.floor + ' , ' + this.flatText + '/' + dataReturned.flatNumber + ' , ' + dataReturned.city
         this.order.senderAddressId = dataReturned.id
       }
     });
@@ -274,42 +274,43 @@ export class DeliverFromToPage {
 
     this.userOrderService.save(this.order).subscribe(
       res => {
-        console.log("order res "+res);
-        
+        console.log("order res " + res);
+
         if (this.platformType == 'cordova') {
           this.launchInterstitial();
-          this.deviceTokenService.getAdminTokens().subscribe(
-            res1 => {
-              console.log("res1", res1);
-
-              res1.forEach(element => {
-                let body = {
-                  "notification":{
-                    "title":"طلب جديد",
-                    "body":"لقد تم اضافه طلب جديد برقم تعريفى "+" "+ res.identifyNumber,
-                    "sound":"default",
-                    "click_action":"FCM_PLUGIN_ACTIVITY",
-                    "icon":"fcm_push_icon"
-                  },
-                  "data":{
-                    "title":"طلب جديد",
-                    "body":"لقد تم اضافه طلب جديد برقم تعريفى "+" "+ res.identifyNumber
-                  },
-                    "to":element,
-                    "priority":"high",
-                    "restricted_package_name":""
-                }
-  
-                this.deviceTokenService.sendNotification(body);
-                
-              });
-
-            }, err1 => {
-              console.log("errrrr  11111", err1);
-
-            }
-          )
         }
+        this.deviceTokenService.getAdminTokens().subscribe(
+          res1 => {
+            console.log("res1", res1);
+
+            res1.forEach(element => {
+              let body = {
+                "notification": {
+                  "title": "طلب جديد",
+                  "body": "لقد تم اضافه طلب جديد برقم تعريفى " + " " + res.identifyNumber,
+                  "sound": "default",
+                  "click_action": "FCM_PLUGIN_ACTIVITY",
+                  "icon": "fcm_push_icon"
+                },
+                "data": {
+                  "title": "طلب جديد",
+                  "body": "لقد تم اضافه طلب جديد برقم تعريفى " + " " + res.identifyNumber
+                },
+                "to": element,
+                "priority": "high",
+                "restricted_package_name": ""
+              }
+
+              this.deviceTokenService.sendNotification(body);
+
+            });
+
+          }, err1 => {
+            console.log("errrrr  11111", err1);
+
+          }
+        )
+        //}
         let toast = this.toastCtrl.create({
           message: this.orderSuccess,
           duration: 3000,
@@ -337,19 +338,19 @@ export class DeliverFromToPage {
   launchInterstitial() {
 
     let interstitialConfig: AdMobFreeInterstitialConfig = {
-        //isTesting: true, // Remove in production
-        autoShow: true,
-        id: "ca-app-pub-3499153975001140/4759715666"
-    }; 
+      //isTesting: true, // Remove in production
+      autoShow: true,
+      id: "ca-app-pub-3499153975001140/4759715666"
+    };
 
     this.admobFree.interstitial.config(interstitialConfig);
 
     this.admobFree.interstitial.prepare().then(() => {
-        // success
-        console.log("success ads");
-        
+      // success
+      console.log("success ads");
+
     });
 
-}
+  }
 
 }
