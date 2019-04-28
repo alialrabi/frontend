@@ -8,6 +8,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 import { ImagePicker } from '@ionic-native/image-picker';
 import { Principal } from '../../providers/auth/principal.service';
 import { FirstRunPage } from '../pages';
+import { Ng2ImgMaxService } from 'ng2-img-max';
 
 /**
  * Generated class for the AddCheckOrderPage page.
@@ -44,16 +45,16 @@ export class AddCheckOrderPage {
   public choosePhoto = '';
   public chooseFromGalary = '';
   public takePhoto = '';
-  platformType="cordova";
+  platformType = "cordova";
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private app:App,private principal:Principal, public camera: Camera, public _alert: AlertController
+  constructor(public navCtrl: NavController, public navParams: NavParams, private ng2ImgMaxService: Ng2ImgMaxService, private app: App, private principal: Principal, public camera: Camera, public _alert: AlertController
     , public imagePicker: ImagePicker, private loading: LoadingController, public toastCtrl: ToastController, public orderService: OrderService, public platform: Platform, public translateService: TranslateService) {
 
-      if(platform.is("cordova")){
-        this.platformType = "cordova";
-      }else{
-        this.platformType = "notCordova"
-      }
+    if (platform.is("cordova")) {
+      this.platformType = "cordova";
+    } else {
+      this.platformType = "notCordova"
+    }
 
 
     this.translateService.get(['ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS', 'PLEASE_WAIT', 'CHOOSE_PHOTO', 'CHOOSE_FROM_GALARY', 'TAKE_A_PHOTO']).subscribe((values) => {
@@ -90,10 +91,10 @@ export class AddCheckOrderPage {
       if (account === null || account.authorities[0] != 'ROLE_AGENCY') {
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
       } else if (account.authorities[0] == 'ROLE_AGENCY') {
-        this.account=account
+        this.account = account
 
-        
-      } 
+
+      }
     }).catch((err) => {
       load.dismiss();
     });
@@ -198,10 +199,12 @@ export class AddCheckOrderPage {
     // }
 
     const options: CameraOptions = {
-      quality: 100,
+      quality: 65,
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
+      targetWidth: 600,
+      targetHeight: 600
     }
     //this.backgroundMode.enable();
 
@@ -215,14 +218,14 @@ export class AddCheckOrderPage {
       }, function (error) {
         console.log(error);
 
-      //   let toast = this.toastCtrl.create({
-      //     message: error,
-      //     duration: 3000,
-      //     position: 'top'
-      //   });
-      //   toast.present();
+        //   let toast = this.toastCtrl.create({
+        //     message: error,
+        //     duration: 3000,
+        //     position: 'top'
+        //   });
+        //   toast.present();
 
-       });
+      });
 
   }
   uploadBrowserImage(event: any) {
@@ -246,19 +249,27 @@ export class AddCheckOrderPage {
     element.click()
   }
   readThis(inputValue: any): void {
+    console.log("**************************");
+
     var file: File = inputValue.files[0];
-    var myReader: FileReader = new FileReader();
-
-    myReader.onloadend = (e) => {
-
-      this.order.check = myReader.result.substr(myReader.result.indexOf(',') + 1);
-      //this..imageContentType = 'fromBrowser'
-      console.log(myReader);
-
-    }
-    myReader.readAsDataURL(file);
+    this.ng2ImgMaxService.resize([file], 300, 300).subscribe((result) => {
+      console.log("result", result);
 
 
+      var myReader: FileReader = new FileReader();
+
+      myReader.onloadend = (e) => {
+        console.log("--------------------");
+
+        this.order.check = myReader.result.substr(myReader.result.indexOf(',') + 1)
+
+        //this..imageContentType = 'fromBrowser'
+        console.log(myReader);
+
+      }
+      myReader.readAsDataURL(result);
+
+    })
   }
 
 }
