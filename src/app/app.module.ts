@@ -103,6 +103,8 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { AppVersion } from '@ionic-native/app-version';
 import { AddUserPhonePageModule } from '../pages/add-user-phone/add-user-phone.module';
 
+import { Ng2ImgMaxModule } from 'ng2-img-max'; 
+
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
 export function createTranslateLoader(http: HttpClient) {
@@ -144,6 +146,7 @@ let config = new AuthServiceConfig([
     HttpModule,
     HttpClientModule,
     DatePickerModule,
+    Ng2ImgMaxModule ,
     ManUpModule.forRoot({
       url: 'https://d3rgr96gwzty3y.cloudfront.net/tlabatac/api/getPlatformData',
       externalTranslations: true

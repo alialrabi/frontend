@@ -73,9 +73,9 @@
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('senderAddress', 'required')"> {{ 'REQURIED' | translate }} </p>
-      <p text-wrap (click)="newAddressModalSender()">
+      <!-- <p text-wrap (click)="newAddressModalSender()">
         <strong> {{ 'NEW_ADDRESS_QUESTION' | translate }} </strong>
-      </p>
+      </p> -->
 
       <ion-item>
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
@@ -116,9 +116,9 @@
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('address', 'required')"> {{ 'REQURIED' | translate }} </p>
-      <p text-wrap (click)="newAddressModal()">
+      <!-- <p text-wrap (click)="newAddressModal()">
         <strong> {{ 'NEW_ADDRESS_QUESTION' | translate }} </strong>
-      </p>
+      </p> -->
       <ion-item>
           <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
             <ion-icon name="call" item-start class="text-primary"></ion-icon>

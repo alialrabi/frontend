@@ -50,23 +50,23 @@
       </p>
     </ion-item>
     <ion-item class="item-background">
-    <p>
-      {{'CREATION_DATE' | translate}} :
-      <strong text-wrap>{{getFormattedDate(order.userOrder.creationDate)}}</strong>
-    </p>
-  </ion-item>
-  <ion-item class="item-background" *ngIf="order.userOrder.assignDate != null">
-    <p>
-      {{'ASSIGN_DATE' | translate}} :
-      <strong text-wrap>{{getFormattedDate(order.userOrder.assignDate)}}</strong>
-    </p>
-  </ion-item>
-  <ion-item class="item-background" *ngIf="order.userOrder.deliverDate != null">
-    <p>
-      {{'DELIVER_DATE' | translate}} :
-      <strong text-wrap>{{getFormattedDate(order.userOrder.deliverDate)}}</strong>
-    </p>
-  </ion-item>
+      <p>
+        {{'CREATION_DATE' | translate}} :
+        <strong text-wrap>{{getFormattedDate(order.userOrder.creationDate)}}</strong>
+      </p>
+    </ion-item>
+    <ion-item class="item-background" *ngIf="order.userOrder.assignDate != null">
+      <p>
+        {{'ASSIGN_DATE' | translate}} :
+        <strong text-wrap>{{getFormattedDate(order.userOrder.assignDate)}}</strong>
+      </p>
+    </ion-item>
+    <ion-item class="item-background" *ngIf="order.userOrder.deliverDate != null">
+      <p>
+        {{'DELIVER_DATE' | translate}} :
+        <strong text-wrap>{{getFormattedDate(order.userOrder.deliverDate)}}</strong>
+      </p>
+    </ion-item>
     <ion-item class="item-background" *ngIf="order.userOrder.isBuing">
       <p>
         {{ 'MARKET_NAME' | translate }} :
@@ -104,11 +104,22 @@
         <strong text-wrap>{{order.userOrder.weight}}</strong>
       </p>
     </ion-item>
-    <ion-item class="item-background" *ngIf="!order.userOrder.isBuing && order.senderAddress != null" (click)="viewLocation(order.senderAddress)">
-      <p>
-        {{ 'SENDER_ADDRESS' | translate }} :
-        <strong text-wrap>{{order.senderAddress.region}} , {{order.senderAddress.street}} , {{'TOWER' | translate}}/{{order.senderAddress.building}} , {{'FLOOR' | translate}}/{{order.senderAddress.floor}} , {{'FLAT' | translate}}/{{order.senderAddress.flatNumber}} , {{order.senderAddress.city}}</strong>
-        </p>
+    <ion-item class="item-background" *ngIf="!order.userOrder.isBuing && order.senderAddress != null">
+      <ion-grid>
+        <ion-row>
+          <ion-col col-11>
+            <p>
+              {{ 'SENDER_ADDRESS' | translate }} :
+              <strong text-wrap>{{order.senderAddress.region}} , {{order.senderAddress.street}} , {{'TOWER' | translate}}/{{order.senderAddress.building}}
+                , {{'FLOOR' | translate}}/{{order.senderAddress.floor}} , {{'FLAT' | translate}}/{{order.senderAddress.flatNumber}}
+                , {{order.senderAddress.city}}</strong>
+            </p>
+          </ion-col>
+          <ion-col col-1>
+            <ion-icon name="map" style="color: black" (click)="viewLocation(order.senderAddress)" *ngIf="order.senderAddress.latitude != '0'"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-item>
     <ion-item class="item-background" *ngIf="order.userOrder.senderPhone != null">
       <p>
@@ -122,11 +133,22 @@
         <strong text-wrap>{{order.userOrder.reciverName}}</strong>
       </p>
     </ion-item>
-    <ion-item class="item-background" *ngIf="order.reciverAddress != null" (click)="viewLocation(order.reciverAddress)">
-      <p>
-        {{ 'RECIVER_ADDRESS' | translate }} :
-        <strong text-wrap>{{order.reciverAddress.region}} , {{order.reciverAddress.street}} , {{'TOWER' | translate}}/{{order.reciverAddress.building}} , {{'FLOOR' | translate}}/{{order.reciverAddress.floor}} , {{'FLAT' | translate}}/{{order.reciverAddress.flatNumber}} , {{order.reciverAddress.city}} </strong>
-      </p>
+    <ion-item class="item-background" *ngIf="order.reciverAddress != null">
+      <ion-grid>
+        <ion-row>
+          <ion-col col-11>
+            <p>
+              {{ 'RECIVER_ADDRESS' | translate }} :
+              <strong text-wrap>{{order.reciverAddress.region}} , {{order.reciverAddress.street}} , {{'TOWER' | translate}}/{{order.reciverAddress.building}}
+                , {{'FLOOR' | translate}}/{{order.reciverAddress.floor}} , {{'FLAT' | translate}}/{{order.reciverAddress.flatNumber}}
+                , {{order.reciverAddress.city}} </strong>
+            </p>
+          </ion-col>
+          <ion-col col-1>
+            <ion-icon name="map" style="color: black" (click)="viewLocation(order.reciverAddress)" *ngIf="order.reciverAddress.latitude != '0'"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-item>
     <ion-item class="item-background" *ngIf="order.userOrder.reciverPhone != null">
       <p>
@@ -149,12 +171,12 @@
             </button>
           </ion-buttons>
 
-          
+
           <ion-buttons end class="btn-style" style="width: 100%" *ngIf="userType=='User'">
-              <button ion-button style="width: 100%" (click)="editRating()">
-                {{ 'EDIT_RATING_BUTTON' | translate }}
-              </button>
-            </ion-buttons>
+            <button ion-button style="width: 100%" (click)="editRating()">
+              {{ 'EDIT_RATING_BUTTON' | translate }}
+            </button>
+          </ion-buttons>
         </ion-col>
       </ion-row>
 

@@ -257,8 +257,18 @@ export class AddOrderPage {
       }
     });
 
+    let ev = {
+      target : {
+        getBoundingClientRect : () => {
+          return {
+            top: 100
+          };
+        }
+      }
+    };
+
     return await modal.present({
-      ev: event
+      ev
     });
 
 

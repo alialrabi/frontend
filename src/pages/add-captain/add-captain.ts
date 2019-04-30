@@ -13,6 +13,7 @@ import { MyApp } from '../../app/app.component';
 import { BackgroundMode } from '@ionic-native/background-mode';
 import { Device } from '@ionic-native/device'
 import { LocalStorageService } from 'ngx-webstorage';
+import { Ng2ImgMaxService } from 'ng2-img-max';
 
 
 /**
@@ -74,7 +75,7 @@ export class AddCaptainPage {
   public takePhoto = '';
   platformType="cordova";
   browserImage;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public _alert: AlertController
+  constructor(public navCtrl: NavController, public navParams: NavParams, private ng2ImgMaxService: Ng2ImgMaxService , public _alert: AlertController
     , public imagePicker: ImagePicker, public camera: Camera, public toastCtrl: ToastController,
     public captainService: CaptainService,
     private loading: LoadingController,
@@ -215,11 +216,15 @@ export class AddCaptainPage {
     // }
 
     const options: CameraOptions = {
-      quality: 100,
+      quality: 65,
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
+      targetWidth: 600,
+      targetHeight: 600
     }
+    console.log(options);
+    
     //this.backgroundMode.enable();
 
     this.camera.getPicture(options)
@@ -232,12 +237,12 @@ export class AddCaptainPage {
       }, function (error) {
         console.log(error);
 
-        let toast = this.toastCtrl.create({
-          message: error,
-          duration: 3000,
-          position: 'top'
-        });
-        toast.present();
+        // let toast = this.toastCtrl.create({
+        //   message: error,
+        //   duration: 3000,
+        //   position: 'top'
+        // });
+        // toast.present();
 
       });
 
@@ -356,19 +361,26 @@ export class AddCaptainPage {
     element.click()
   }
   readThis(inputValue: any): void {
-    var file:File = inputValue.files[0];
-    var myReader:FileReader = new FileReader();
-  
-    myReader.onloadend = (e) => {
-     
-      this.captain.image = myReader.result.substr(myReader.result.indexOf(',')+1);
-      //this.captain.imageContentType = 'fromBrowser'
-      console.log(myReader);
-      
-      console.log(this.captain.image);
-    }
-    myReader.readAsDataURL(file);
-    
-    
+    console.log("**************************");
+
+    var file: File = inputValue.files[0];
+    this.ng2ImgMaxService.resize([file], 300, 300).subscribe((result) => {
+      console.log("result", result);
+
+
+      var myReader: FileReader = new FileReader();
+
+      myReader.onloadend = (e) => {
+        console.log("--------------------");
+
+        this.captain.image = myReader.result.substr(myReader.result.indexOf(',') + 1)
+
+        //this..imageContentType = 'fromBrowser'
+        console.log(myReader);
+
+      }
+      myReader.readAsDataURL(result);
+
+    })
   }
 }

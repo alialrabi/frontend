@@ -38,24 +38,26 @@ export class NewAddressComponent {
   public alex = 'Alexandria';
   flat = 'Flat'
 
-  address: { country: string, city: string, street: string, userId: Number, latitude: String, longitude: String ,
-    livingType:string , building:string , floor:string , flatNumber:string , otherDetails:string , name:string , region:string } = {
-    country: 'Egypt',
-    city: '',
-    street: '',
-    userId: 0,
-    latitude: '26.555555555555',
-    longitude: '12.5824526',
-    region:'',
-    livingType:'',
-    building:'',
-    floor:'',
-    flatNumber:'',
-    otherDetails:'',
-    // mobilePhoneNumber:'',
-    // homePhoneNumber:'',
-    name:''
-  }
+  address: {
+    country: string, city: string, street: string, userId: Number, latitude: String, longitude: String,
+    livingType: string, building: string, floor: string, flatNumber: string, otherDetails: string, name: string, region: string
+  } = {
+      country: 'Egypt',
+      city: '',
+      street: '',
+      userId: 0,
+      latitude: '26.555555555555',
+      longitude: '12.5824526',
+      region: '',
+      livingType: '',
+      building: '',
+      floor: '',
+      flatNumber: '',
+      otherDetails: '',
+      // mobilePhoneNumber:'',
+      // homePhoneNumber:'',
+      name: ''
+    }
 
   private addAddressError: string;
   private addAdressSuccessString: string;
@@ -84,14 +86,17 @@ export class NewAddressComponent {
 
   locationDisable = true;
 
-  constructor( private loading: LoadingController,public viewCtrl: ViewController , private _alert:AlertController,
+  constructor(private loading: LoadingController, public viewCtrl: ViewController, private _alert: AlertController,
     public navParams: NavParams, public locationAccuracy: LocationAccuracy, public addressService: AddressService, public toastCtrl: ToastController,
     public translateService: TranslateService, private app: App, public platform: Platform, private principal: Principal, private builder: FormBuilder) {
     this.user = this.navParams.get("user");
     console.log(this.user);
-    
 
-    this.translateService.get(['ADD_ADDRESS_ERROR', 'ADD_ADDRESS_SUCCESS', 'EGYPT', 'ALEX', 'CAIRO', 'TANTA', 'DAMNHOR', 'SHIPIN_ELKOM', 'BANHA', 'PLEASE_WAIT' , 'OFFICE' , 'HOME' , 'FLAT', 'LOCATION_ALERT_TITLE', 'LOCATION_ALERT_MESSAGE', 'OK']).subscribe((values) => {
+    this.platform.registerBackButtonAction(() => {
+      this.back();
+    });
+
+    this.translateService.get(['ADD_ADDRESS_ERROR', 'ADD_ADDRESS_SUCCESS', 'EGYPT', 'ALEX', 'CAIRO', 'TANTA', 'DAMNHOR', 'SHIPIN_ELKOM', 'BANHA', 'PLEASE_WAIT', 'OFFICE', 'HOME', 'FLAT', 'LOCATION_ALERT_TITLE', 'LOCATION_ALERT_MESSAGE', 'OK']).subscribe((values) => {
       this.addAddressError = values.ADD_ADDRESS_ERROR;
       this.addAdressSuccessString = values.ADD_ADDRESS_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
@@ -123,7 +128,7 @@ export class NewAddressComponent {
       'building': ['', [Validators.required, Validators.maxLength(45)]],
       'floor': ['', [Validators.required, Validators.maxLength(45)]],
       'flatNumber': ['', [Validators.required, Validators.maxLength(45)]],
-      'otherDetails': ['', [ Validators.maxLength(45)]],
+      'otherDetails': ['', [Validators.maxLength(45)]],
       // 'mobilePhoneNumber': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
       // 'homePhoneNumber': ['', []],
     });
@@ -134,8 +139,8 @@ export class NewAddressComponent {
     // this.myForm.get('city').markAsTouched();
     // this.myForm.get('city').markAsPristine();
 
-   
-    
+
+
   }
 
 
@@ -188,14 +193,14 @@ export class NewAddressComponent {
     console.log(this.locationDisable);
 
 
-    if(this.map == null || this.map == undefined){
+    if (this.map == null || this.map == undefined) {
       this.loadMapWithOutLocation();
     }
 
 
-    this.mapStyle.height = "370px";
+    this.mapStyle.height = "100%";
     this.mapStyle.width = "100%";
-    this.submapStyle.height = '290px';
+    this.submapStyle.height = '100%';
     this.submapStyle.width = '100%'
 
     this.openMap = true;
@@ -341,7 +346,7 @@ export class NewAddressComponent {
       load.dismiss();
 
       this.chooseAddress(res);
-      
+
     }, (err) => {
       console.log('error', err);
 
@@ -388,13 +393,13 @@ export class NewAddressComponent {
     return city;
 
   }
-  getLivingType(livingTypeValue){
+  getLivingType(livingTypeValue) {
     let livingType = '';
-    if(livingTypeValue == 'Flat'){
+    if (livingTypeValue == 'Flat') {
       livingType = this.flatValue
-    }else if(livingTypeValue == 'Home'){
+    } else if (livingTypeValue == 'Home') {
       livingType = this.homeValue
-    }else if(livingTypeValue == 'Office'){
+    } else if (livingTypeValue == 'Office') {
       livingType = this.officeValue
     }
     return livingType;
@@ -405,8 +410,8 @@ export class NewAddressComponent {
     const ctrl = this.myForm.get(field);
     return ctrl.dirty && ctrl.hasError(error);
   }
-  
-  skip(){
+
+  skip() {
 
     let load = this.loading.create({
       content: this.pleaseWait
@@ -458,7 +463,7 @@ export class NewAddressComponent {
 
   }
 
-  async chooseAddress(address){
+  async chooseAddress(address) {
     await this.viewCtrl.dismiss(address);
   }
 
@@ -505,6 +510,10 @@ export class NewAddressComponent {
     } else {
       return true;
     }
+  }
+
+  async back() {
+    this.viewCtrl.dismiss(null);
   }
 
 }

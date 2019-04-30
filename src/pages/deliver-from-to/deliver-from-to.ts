@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, ToastController, LoadingController, Platform, PopoverController, App } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ToastController, LoadingController, Platform, PopoverController, App, ModalController } from 'ionic-angular';
 import { FirstRunPage } from '../pages';
 import { OrderKindPage } from '../order-kind/order-kind';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
@@ -80,6 +80,7 @@ export class DeliverFromToPage {
     public addressService: AddressService,
     public poverCtrl: PopoverController,
     public userOrderService: UserOrderService,
+    public modalController: ModalController,
     public deviceTokenService: DeviceTockenService,
     public translateService: TranslateService, private app: App, private builder: FormBuilder) {
 
@@ -187,36 +188,19 @@ export class DeliverFromToPage {
   }
 
   async openAddressesSelector(event) {
-    const modal = await this.poverCtrl.create(AddressesSelectorComponent, { addresses: this.addressList });
+    const modal = await this.modalController.create(AddressesSelectorComponent, { addresses: this.addressList ,  user: this.account  });
 
     modal.onDidDismiss((dataReturned) => {
       if (dataReturned !== null) {
         console.log('Modal Sent Data :', dataReturned);
-
-        this.address = dataReturned.region + ' , ' + dataReturned.street + ' , ' + this.towerText + '/' + dataReturned.building + ' , ' + this.floorText + '/' + dataReturned.floor + ' , ' + this.flatText + '/' + dataReturned.flatNumber + ' , ' + dataReturned.city
-
-        this.order.reciverAddressId = dataReturned.id
-      }
-    });
-
-    return await modal.present({
-      ev: event
-    });
-  }
-
-  async newAddressModal(event) {
-    const modal = await this.poverCtrl.create(NewAddressComponent, { user: this.account });
-
-    modal.onDidDismiss((dataReturned) => {
-      if (dataReturned !== null) {
-        console.log('Modal Sent Data :', dataReturned);
-
-        this.addressList.push(dataReturned);
+        this.addressList = dataReturned.addresses;
         console.log(this.addressList);
 
 
-        this.address = dataReturned.region + ' , ' + dataReturned.street + ' , ' + this.towerText + '/' + dataReturned.building + ' , ' + this.floorText + '/' + dataReturned.floor + ' , ' + this.flatText + '/' + dataReturned.flatNumber + ' , ' + dataReturned.city
-        this.order.reciverAddressId = dataReturned.id
+        this.address = dataReturned.address.region + ' , ' + dataReturned.address.street + ' , ' + this.towerText + '/' + dataReturned.address.building + ' , ' + this.floorText + '/' + dataReturned.address.floor + ' , ' + this.flatText + '/' + dataReturned.address.flatNumber + ' , ' + dataReturned.address.city
+        this.myForm.get("address").clearValidators();
+        this.myForm.get("address").updateValueAndValidity();
+        this.order.reciverAddressId = dataReturned.address.id
       }
     });
 
@@ -224,36 +208,43 @@ export class DeliverFromToPage {
       ev: event
     });
   }
+
+  // async newAddressModal(event) {
+  //   const modal = await this.poverCtrl.create(NewAddressComponent, { user: this.account });
+
+  //   modal.onDidDismiss((dataReturned) => {
+  //     if (dataReturned !== null) {
+  //       console.log('Modal Sent Data :', dataReturned);
+
+  //       this.addressList.push(dataReturned);
+  //       console.log(this.addressList);
+
+
+  //       this.address = dataReturned.region + ' , ' + dataReturned.street + ' , ' + this.towerText + '/' + dataReturned.building + ' , ' + this.floorText + '/' + dataReturned.floor + ' , ' + this.flatText + '/' + dataReturned.flatNumber + ' , ' + dataReturned.city
+  //       this.order.reciverAddressId = dataReturned.id
+  //     }
+  //   });
+
+  //   return await modal.present({
+  //     ev: event
+  //   });
+  // }
   async openAddressesSelectorSender(event) {
-    const modal = await this.poverCtrl.create(AddressesSelectorComponent, { addresses: this.addressList });
+    const modal = await this.modalController.create(AddressesSelectorComponent, { addresses: this.addressList , user: this.account  });
 
     modal.onDidDismiss((dataReturned) => {
       if (dataReturned !== null) {
         console.log('Modal Sent Data :', dataReturned);
-
-        this.senderAddress = dataReturned.region + ' , ' + dataReturned.street + ' , ' + this.towerText + '/' + dataReturned.building + ' , ' + this.floorText + '/' + dataReturned.floor + ' , ' + this.flatText + '/' + dataReturned.flatNumber + ' , ' + dataReturned.city
-        this.order.senderAddressId = dataReturned.id
-      }
-    });
-
-    return await modal.present({
-      ev: event
-    });
-  }
-
-  async newAddressModalSender(event) {
-    const modal = await this.poverCtrl.create(NewAddressComponent, { user: this.account });
-
-    modal.onDidDismiss((dataReturned) => {
-      if (dataReturned !== null) {
-        console.log('Modal Sent Data :', dataReturned);
-
-        this.addressList.push(dataReturned);
+        this.addressList = dataReturned.addresses;
         console.log(this.addressList);
 
 
-        this.senderAddress = dataReturned.region + ' , ' + dataReturned.street + ' , ' + this.towerText + '/' + dataReturned.building + ' , ' + this.floorText + '/' + dataReturned.floor + ' , ' + this.flatText + '/' + dataReturned.flatNumber + ' , ' + dataReturned.city
-        this.order.senderAddressId = dataReturned.id
+        this.senderAddress = dataReturned.address.region + ' , ' + dataReturned.address.street + ' , ' + this.towerText + '/' + dataReturned.address.building + ' , ' + this.floorText + '/' + dataReturned.address.floor + ' , ' + this.flatText + '/' + dataReturned.address.flatNumber + ' , ' + dataReturned.address.city
+        
+        this.myForm.get("senderAddress").clearValidators()
+        this.myForm.get("senderAddress").updateValueAndValidity();
+        
+        this.order.senderAddressId = dataReturned.address.id
       }
     });
 
@@ -261,6 +252,27 @@ export class DeliverFromToPage {
       ev: event
     });
   }
+
+  // async newAddressModalSender(event) {
+  //   const modal = await this.poverCtrl.create(NewAddressComponent, { user: this.account });
+
+  //   modal.onDidDismiss((dataReturned) => {
+  //     if (dataReturned !== null) {
+  //       console.log('Modal Sent Data :', dataReturned);
+
+  //       this.addressList.push(dataReturned);
+  //       console.log(this.addressList);
+
+
+  //       this.senderAddress = dataReturned.region + ' , ' + dataReturned.street + ' , ' + this.towerText + '/' + dataReturned.building + ' , ' + this.floorText + '/' + dataReturned.floor + ' , ' + this.flatText + '/' + dataReturned.flatNumber + ' , ' + dataReturned.city
+  //       this.order.senderAddressId = dataReturned.id
+  //     }
+  //   });
+
+  //   return await modal.present({
+  //     ev: event
+  //   });
+  // }
   addOrder() {
 
     let load = this.loading.create({
