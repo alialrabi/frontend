@@ -26,6 +26,9 @@ import { UserOrderDetailPage } from '../user-order-detail/user-order-detail';
 })
 export class UserOrdersPage {
 
+  isLoading = false;
+
+
   space = "  ";
   public account = null;
   public myVar = '';
@@ -185,6 +188,10 @@ export class UserOrdersPage {
   // }
 
   getUserOrders(status, pageNum) {
+
+    if (!this.isLoading) {
+      this.isLoading = true;
+
     this.myVar = status;
     let load;
     if (pageNum == 0) {
@@ -211,12 +218,15 @@ export class UserOrdersPage {
 
         });
       }
+      this.isLoading = false;
+
     }, err => {
       console.log(err);
       if (pageNum == 0) {
         load.dismiss();
       }
     })
+  }
   }
 
   add() {

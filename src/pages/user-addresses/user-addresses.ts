@@ -23,6 +23,8 @@ import { EditAddressPage } from '../edit-address/edit-address';
 })
 export class UserAddressesPage {
 
+  isLoading = false;
+
   
   public addresses = [];
 
@@ -93,6 +95,9 @@ export class UserAddressesPage {
     console.log('ionViewDidLoad UserAddressesPage');
   }
   getAllAddresses(pageNum) {
+    if (!this.isLoading) {
+      this.isLoading = true;
+
     let load;
     if (pageNum == 0) {
       load = this.loading.create({
@@ -119,6 +124,7 @@ export class UserAddressesPage {
           this.addresses.push(element);
         });
       }
+      this.isLoading = false;
     }, err => {
       console.log(err);
       if (pageNum == 0) {
@@ -126,6 +132,7 @@ export class UserAddressesPage {
       }
 
     })
+  }
   }
 
   doInfinite(infiniteScroll) {

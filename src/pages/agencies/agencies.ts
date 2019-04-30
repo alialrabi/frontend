@@ -22,6 +22,9 @@ import { AgencyDetailsPage } from '../agency-details/agency-details';
 })
 export class AgenciesPage {
 
+  isLoading = false;
+
+
   public agenciesList = [];
 
   public pleaseWait;
@@ -46,6 +49,8 @@ export class AgenciesPage {
   }
 
   getAllAgincies(pageNum) {
+    if (!this.isLoading) {
+      this.isLoading = true;
     let load;
     if (pageNum == 0) {
       load = this.loading.create({
@@ -72,6 +77,7 @@ export class AgenciesPage {
           this.agenciesList.push(element);
         });
       }
+      this.isLoading = false;
     }, err => {
       console.log(err);
       if (pageNum == 0) {
@@ -79,6 +85,7 @@ export class AgenciesPage {
       }
 
     })
+  }
   }
 
   doInfinite(infiniteScroll) {

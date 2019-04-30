@@ -24,6 +24,8 @@ import { CaptainDetailsPage } from '../captain-details/captain-details';
 })
 export class CaptainsPage {
 
+  isLoading = false;
+
   public captainsList = [];
   userType = '';
   public account = null;
@@ -34,7 +36,7 @@ export class CaptainsPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private loading: LoadingController, public translateService: TranslateService, private app: App, private principal: Principal, public captainService: CaptainService) {
     //this.getAllCaptains();
 
-    this.translateService.get(['PLEASE_WAIT' , 'MORE_DATA']).subscribe((values) => {
+    this.translateService.get(['PLEASE_WAIT', 'MORE_DATA']).subscribe((values) => {
 
       this.pleaseWait = values.PLEASE_WAIT
       this.moreData = values.MORE_DATA
@@ -83,46 +85,50 @@ export class CaptainsPage {
   }
 
   getAllCaptains(pageNum) {
-    let load;
-    if (pageNum == 0) {
+    if (!this.isLoading) {
+      this.isLoading = true;
+      let load;
+      if (pageNum == 0) {
 
-      load = this.loading.create({
-        content: this.pleaseWait
+        load = this.loading.create({
+          content: this.pleaseWait
+
+
+        })
+        load.present()
+        this.captainsList = [];
+      }
+
+      //this.captainsList = [];
+      this.captainService.getAllToAdmin(pageNum).subscribe(res => {
+        console.log(res);
+
+
+        if (pageNum == 0) {
+          this.captainsList = res;
+        } else {
+          if (res.length > 0) {
+            this.pageNum++;
+          }
+
+          res.forEach(element => {
+            this.captainsList.push(element);
+
+          });
+        }
+        this.isLoading = false;
+        if (pageNum == 0) {
+          load.dismiss();
+        }
+      }, err => {
+        console.log(err);
+        if (pageNum == 0) {
+          load.dismiss();
+        }
 
 
       })
-      load.present()
-      this.captainsList = [];
     }
-
-    //this.captainsList = [];
-    this.captainService.getAllToAdmin(pageNum).subscribe(res => {
-      console.log(res);
-
-
-      if (pageNum == 0) {
-        this.captainsList = res;
-      } else {
-        if (res.length > 0) {
-          this.pageNum++;
-        }
-
-        res.forEach(element => {
-          this.captainsList.push(element);
-
-        });
-      }
-      if (pageNum == 0) {
-        load.dismiss();
-      }
-    }, err => {
-      console.log(err);
-      if (pageNum == 0) {
-        load.dismiss();
-      }
-
-
-    })
   }
   getAgencyCaptains(pageNum) {
     let load;
@@ -202,7 +208,7 @@ export class CaptainsPage {
   viewAssignDetails(captain) {
     this.navCtrl.setRoot(CaptainAssignDetailsPage, { item: captain });
   }
-  captainDetails(captain){
+  captainDetails(captain) {
     this.navCtrl.setRoot(CaptainDetailsPage, { item: captain });
   }
 

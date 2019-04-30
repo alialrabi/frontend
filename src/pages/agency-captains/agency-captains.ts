@@ -24,6 +24,8 @@ import { SubAssignDetailsPage } from '../sub-assign-details/sub-assign-details';
 })
 export class AgencyCaptainsPage {
 
+  isLoading = false;
+
   public captainsList = [];
 
   public agency = null;
@@ -124,6 +126,8 @@ export class AgencyCaptainsPage {
   }
 
   getAgencyCaptains(pageNum) {
+    if (!this.isLoading) {
+      this.isLoading = true;
     let load;
     if (pageNum == 0) {
 
@@ -160,6 +164,8 @@ export class AgencyCaptainsPage {
         load.dismiss();
       }
 
+      this.isLoading = false;
+
     }, err => {
       console.log(err);
       if (pageNum == 0) {
@@ -167,6 +173,7 @@ export class AgencyCaptainsPage {
       }
 
     })
+  }
   }
 
   unAssingCaptain(captain) {
