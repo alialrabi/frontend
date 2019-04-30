@@ -23,6 +23,9 @@ import { SubAssignDetailsPage } from '../sub-assign-details/sub-assign-details';
 })
 export class CaptainAssignDetailsPage {
 
+  isLoading = false;
+
+
   assingCaptains = [];
   pleaseWait = null;
   captain;
@@ -173,6 +176,8 @@ export class CaptainAssignDetailsPage {
 
   getCaptainAssignes(pageNum) {
 
+    if (!this.isLoading) {
+      this.isLoading = true;
     let load;
     if (pageNum == 0) {
 
@@ -231,6 +236,7 @@ export class CaptainAssignDetailsPage {
             this.assingCaptains.push(element);
           });
         }
+        this.isLoading = false;
 
       }, err => {
 
@@ -242,6 +248,7 @@ export class CaptainAssignDetailsPage {
 
       }
     )
+  }
 
   }
 

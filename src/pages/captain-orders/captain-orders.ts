@@ -25,6 +25,9 @@ import 'rxjs/add/observable/interval';
 })
 export class CaptainOrdersPage {
 
+  isLoading = false;
+
+
   public ordersList = [];
 
   deliverOrderSuccess = null;
@@ -209,6 +212,10 @@ export class CaptainOrdersPage {
 
 
   getNotAssigned(status, pageNum) {
+
+    if (!this.isLoading) {
+      this.isLoading = true;
+
     this.myVar = status;
     let load;
     if (pageNum == 0) {
@@ -242,6 +249,7 @@ export class CaptainOrdersPage {
 
         });
       }
+      this.isLoading = false;
     }, err => {
       console.log(err);
       if (pageNum == 0) {
@@ -249,10 +257,13 @@ export class CaptainOrdersPage {
       }
     })
   }
+  }
 
 
   getAllOrders(status, pageNum) {
 
+    if (!this.isLoading) {
+      this.isLoading = true;
     this.myVar = status;
     let load;
     if (pageNum == 0) {
@@ -280,7 +291,7 @@ export class CaptainOrdersPage {
       if (pageNum == 0) {
         load.dismiss();
       }
-
+      this.isLoading = false;
     }, err => {
       console.log(err);
       if (pageNum == 0) {
@@ -289,6 +300,7 @@ export class CaptainOrdersPage {
 
     })
   }
+}
 
   viewOrder(orders) {
     let items = [];
@@ -393,7 +405,7 @@ export class CaptainOrdersPage {
         });
         toast.present();
         load.dismiss();
-        this.getAllOrders(this.myVar, 0);
+        this.getNotAssigned(this.myVar, 0);
 
       }, err => {
         console.log(err);

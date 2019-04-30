@@ -21,6 +21,9 @@ import { AddCheckOrderPage } from '../add-check-order/add-check-order';
 })
 export class OrdersPage {
 
+  isLoading = false;
+
+
   public account = null;
   public myVar = '';
 
@@ -99,6 +102,11 @@ export class OrdersPage {
   }
 
   getAllOrders(status, pageNum) {
+
+    if (!this.isLoading) {
+      this.isLoading = true;
+
+
     this.myVar = status;
     let load;
     if (pageNum == 0) {
@@ -127,12 +135,14 @@ export class OrdersPage {
 
         });
       }
+      this.isLoading = false;
     }, err => {
       console.log(err);
       if (pageNum == 0) {
         load.dismiss();
       }
     })
+  }
   }
 
   add() {
