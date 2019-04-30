@@ -1,47 +1,73 @@
+<ion-header>
+
+  <ion-navbar>
+
+    <ion-grid style="width: 100%">
+      <ion-row>
+        <ion-col col-1 style="max-width: 25px;">
+          <ion-buttons style="margin-block-start: 2px" class="btn-style">
+            <button ion-button (click)="back()">
+              <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
+            </button>
+          </ion-buttons>
+        </ion-col>
+        <ion-col col-11 [style.margin-top]="language == 'en' ? '10px' : '10px'">
+          <ion-title>{{ 'CHOOSE_ADDRESS' | translate }}</ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-navbar>
+
+</ion-header>
+
 <!-- Generated template for the AddressesSelectorComponent component -->
 <ion-content class="auth-page-captain">
+  <button ion-button block color="dark" tappable (click)="addAddress()">
+    {{ 'NEW_ADDRESS' | translate }}
+  </button>
+  <div text-center *ngIf="addresses.length == 0">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <img src="../../assets/img/sad.png" class="not-found-img">
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
 
-  <p text-center> <strong text-wrap> {{'CHOOSE_ADDRESS' | translate}} </strong> </p>
+          <h3 class="not-found-text"> {{ 'EMPTY_LIST' | translate }}</h3>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
 
-    <div text-center *ngIf="addresses.length == 0">
-        <ion-grid>
-          <ion-row>
-            <ion-col>
-              <img src="../../assets/img/sad.png" class="not-found-img">
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>
-    
-              <h3 class="not-found-text"> {{ 'EMPTY_LIST' | translate }}</h3>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-    
-      </div>
-    
+  </div>
+
   <ion-list>
 
-    <ion-item class="item-background"  *ngFor="let address of addresses" (click) = "chooseAddress(address)" >
+    <ion-item class="item-background" *ngFor="let address of addresses" (click)="chooseAddress(address)">
       <ion-grid>
         <ion-row>
           <ion-col class="btn-col" col-12>
 
             <div class="account-info info-div">
-                <p style="margin-top: 13px" *ngIf="address.name != null && address.name != ''">
-                    {{'ADDRESS_NAME' | translate}} : <strong text-wrap> {{address.name}}</strong>
-                </p>
+              <p style="margin-top: 13px" *ngIf="address.name != null && address.name != ''">
+                {{'ADDRESS_NAME' | translate}} :
+                <strong text-wrap> {{address.name}}</strong>
+              </p>
               <!-- <p style="margin-top: 13px">
                   {{'CITY' | translate}} : <strong text-wrap> {{address.city}}</strong>
               </p> -->
 
               <p style="margin-top: 10px">
-                {{'ADDRESS' | translate}} : <strong text-wrap>{{address.region}} , {{address.street}} , {{'TOWER' | translate}}/{{address.building}} , {{'FLOOR' | translate}}/{{address.floor}} , {{'FLAT' | translate}}/{{address.flatNumber}} , {{address.city}}</strong>
+                {{'ADDRESS' | translate}} :
+                <strong text-wrap>{{address.region}} , {{address.street}} , {{'TOWER' | translate}}/{{address.building}} , {{'FLOOR' | translate}}/{{address.floor}}
+                  , {{'FLAT' | translate}}/{{address.flatNumber}} , {{address.city}}</strong>
               </p>
               <p style="margin-top: 13px" *ngIf="address.otherDetails != null && address.otherDetails != ''">
-                  {{'OTHER_DETAILS' | translate}} : <strong text-wrap> {{address.otherDetails}}</strong>
+                {{'OTHER_DETAILS' | translate}} :
+                <strong text-wrap> {{address.otherDetails}}</strong>
               </p>
-              
+
             </div>
           </ion-col>
         </ion-row>
@@ -49,7 +75,7 @@
       </ion-grid>
 
     </ion-item>
-    
+
 
   </ion-list>
 
