@@ -86,7 +86,11 @@ export class MyApp {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
+      if(this.platform.is('android')) {
+        this.statusBar.styleLightContent();
+      }else{
       this.statusBar.styleDefault();
+      }
       this.keyboard.disableScroll(false);
       if (this.platform.is("android") && this.platform.is("cordova")) {
         console.log("cordova ", "android ");
