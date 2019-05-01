@@ -10,9 +10,9 @@
 
     <ion-grid style="width: 100%">
       <ion-row>
-        <ion-col col-1 style="max-width: 25px;">
+        <ion-col col-1 style="max-width: 25px;" (click)="back()">
           <ion-buttons style="margin-block-start: 2px;padding-bottom: 0px;padding-top: 0px" class="btn-style">
-            <button ion-button (click)="back()">
+            <button ion-button >
               <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
             </button>
           </ion-buttons>
@@ -157,6 +157,23 @@
         <strong text-wrap>{{order.userOrder.reciverPhone}}</strong>
       </p>
     </ion-item>
+    <ion-item class="item-background" *ngIf="order.userOrder.rating != 0">
+        <p>
+          {{ 'RATING' | translate }} :
+          <ion-icon [style.margin-right]="language == 'en' ? '0px' : '10px'" [style.margin-left]="language == 'en' ? '10px' : '0px'" style="color: rgb(87, 76, 233);font-size: 1.5em;" [name]="order.userOrder.rating < 1 ? 'star-outline' : 'star'"></ion-icon>
+          <ion-icon style="color: rgb(87, 76, 233);font-size: 1.5em;" [name]="order.userOrder.rating < 2 ? 'star-outline' : 'star'"></ion-icon>
+          <ion-icon style="color: rgb(87, 76, 233);font-size: 1.5em;" [name]="order.userOrder.rating < 3 ? 'star-outline' : 'star'"></ion-icon>
+          <ion-icon style="color: rgb(87, 76, 233);font-size: 1.5em;" [name]="order.userOrder.rating < 4 ? 'star-outline' : 'star'" ></ion-icon>
+          <ion-icon style="color: rgb(87, 76, 233);font-size: 1.5em;" [name]="order.userOrder.rating < 5 ? 'star-outline' : 'star'" ></ion-icon>
+      
+        </p>
+      </ion-item>
+      <ion-item class="item-background" *ngIf="order.userOrder.ratingComment != null && order.userOrder.ratingComment != ''">
+          <p>
+            {{ 'RATING_COMMENT' | translate }} :
+            <strong text-wrap>{{order.userOrder.ratingComment}}</strong>
+          </p>
+        </ion-item>
     <ion-grid>
       <ion-row>
         <ion-col>
