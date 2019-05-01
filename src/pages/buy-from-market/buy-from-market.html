@@ -138,13 +138,14 @@
       <!-- Login form -->
       <!-- <form class="list-form" style="margin-top: 25px" [formGroup]="myForm2" *ngIf="reciverData"> -->
 
-      <ion-item  (click)="openAddressesSelector()">
-        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
-          <ion-icon name="pin" item-start class="text-primary"></ion-icon>
-          {{ 'RECIVER_ADDRESS' | translate }}
-        </ion-label>
-        <ion-input type="text" [(ngModel)]="address" formControlName="address" name="address" [lang]="language" [dir]="direction"
-          readonly></ion-input>
+      
+      <ion-item >
+          <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+              <ion-icon name="pin" item-start class="text-primary"></ion-icon>
+              {{ 'RECIVER_ADDRESS' | translate }}
+            </ion-label>
+        <ion-input type="text" [(ngModel)]="address" (ionFocus)="openAddressesSelector()" formControlName="address" name="address" [lang]="language"
+          [dir]="direction" readonly></ion-input>
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('address', 'required' , myForm1)"> {{ 'REQURIED' | translate }} </p>

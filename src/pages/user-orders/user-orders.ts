@@ -417,6 +417,117 @@ export class UserOrdersPage {
 
   }
 
+  takeOrder(item) {
+
+    let load = this.loading.create({
+      content: this.pleaseWait
+
+
+    })
+    load.present()
+
+
+    this.orderService.takeOrder(item.userOrder.id).subscribe(
+      res => {
+
+       // if (this.platform.is('cordova')) {
+          this.deviceTokenService.getAdminTokens().subscribe(
+            res1 => {
+              console.log("res1", res1);
+
+              res1.forEach(element => {
+                let body = {
+                  "notification":{
+                    "title":"طلب جديد",
+                    "body":"لقد تم الاستلام من المرسل للطلب  " +" "+item.userOrder.identifyNumber,
+                    "sound":"default",
+                    "click_action":"FCM_PLUGIN_ACTIVITY",
+                    "icon":"fcm_push_icon"
+                  },
+                  "data":{
+                    "title":"طلب جديد",
+                    "body":"لقد تم الاستلام من المرسل للطلب  "+" "+item.userOrder.identifyNumber
+                  },
+                    "to":element,
+                    "priority":"high",
+                    "restricted_package_name":""
+                }
+  
+                this.deviceTokenService.sendNotification(body);
+  
+                
+              });
+
+            },err1 =>{
+              console.log(err1 , 'errrrrrrrrrrrrrrrrrrrrrrrrrror');
+              
+            }
+          )
+
+          this.deviceTokenService.getUserTokens(item.userOrder.userId).subscribe(
+            res1 => {
+              console.log("res1", res1);
+
+              res1.forEach(element => {
+                let body = {
+                  "notification":{
+                    "title":"طلبك",
+                    "body":"لقد تم الاستلام من المرسل لطلبك  " +" "+item.userOrder.identifyNumber,
+                    "sound":"default",
+                    "click_action":"FCM_PLUGIN_ACTIVITY",
+                    "icon":"fcm_push_icon"
+                  },
+                  "data":{
+                    "title":"طلبك",
+                    "body":"لقد تم الاستلام من المرسل لطلبك  " +" "+item.userOrder.identifyNumber
+                  },
+                    "to":element,
+                    "priority":"high",
+                    "restricted_package_name":""
+                }
+  
+                this.deviceTokenService.sendNotification(body);
+  
+                
+              });
+            },err1 =>{
+              console.log(err1 , 'errrrrrrrrrrrrrrrrrrrrrrrrrror');
+              
+            }
+          )
+
+       // }
+
+
+        let toast = this.toastCtrl.create({
+          message: this.deliverOrderSuccess,
+          duration: 3000,
+          position: 'top'
+        });
+        toast.present();
+        console.log("success");
+
+        load.dismiss();
+        this.getUserOrders(this.myVar , 0);
+
+      }, err => {
+        console.log(err);
+
+
+        let displayError = this.deliverOrderError;
+
+        let toast = this.toastCtrl.create({
+          message: displayError,
+          duration: 3000,
+          position: 'middle'
+        });
+        toast.present();
+        load.dismiss();
+      }
+    )
+
+  }
+
   getFormattedDate(dateString) {
     var date = new Date(dateString);
     var str = date.getFullYear() + "-";

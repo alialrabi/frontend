@@ -45,7 +45,8 @@
       <p>
         {{ 'STATUS' | translate }} :
         <strong text-wrap *ngIf="order.userOrder.status == 'not assigned'"> {{ 'USER_ORDER_NOT_ASSIGNED' | translate }}</strong>
-        <strong text-wrap *ngIf="order.userOrder.status == 'assigned'">{{ 'ASSIGNED' | translate }}</strong>
+        <strong text-wrap *ngIf="order.userOrder.status == 'assigned' && !order.userOrder.isTaken">{{ 'ASSIGNED' | translate }}</strong>
+        <strong text-wrap *ngIf="order.userOrder.status == 'assigned' && order.userOrder.isTaken">{{ 'RECIVED_FROM_SENDER' | translate }}</strong>
         <strong text-wrap *ngIf="order.userOrder.status == 'delivered'"> {{ 'DELIVERED' | translate }}</strong>
       </p>
     </ion-item>
@@ -101,7 +102,7 @@
     <ion-item class="item-background" *ngIf="!order.userOrder.isBuing">
       <p>
         {{ 'APPROXIMATE_WEIGHT' | translate }} :
-        <strong text-wrap>{{order.userOrder.weight}}</strong>
+        <strong text-wrap>{{order.userOrder.weight}} {{ 'KG' | translate }}</strong>
       </p>
     </ion-item>
     <ion-item class="item-background" *ngIf="!order.userOrder.isBuing && order.senderAddress != null">

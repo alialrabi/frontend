@@ -1,4 +1,9 @@
 {
+    "WEIGHT_PLACEHOLDER":"ادخل الوزن بالكيلو جرام",
+    "KG":"كجم",
+    "RECIVED_FROM_SENDER":"تم الاستلام من المرسل",
+    "TAKE_ORDER_FROM_SENDER":"استلام الطلب",
+    "CHOOSE_ADDRESS_CLICK":"اضغط هنا لاختيار عنوان",
     "NO_LOCATION_AVILABLE":"لا يوجد موقع لهذا العنوان على الخريطه",
     "NOT_SUPPORTED":"غير مدعم",
     "INCORRECT_PASSWORD_TITLE":"غير صحيح",

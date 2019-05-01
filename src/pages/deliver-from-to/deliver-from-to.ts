@@ -71,6 +71,15 @@ export class DeliverFromToPage {
   floorText = ''
   flatText = ''
 
+  chooseAddress = ''
+
+  kg = ''
+  kgValue = ''
+
+  weightText = ''
+  modelSenderOpen = false;
+  modelReciverOpen = false;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public _alert: AlertController
     , public toastCtrl: ToastController,
     private loading: LoadingController,
@@ -90,7 +99,7 @@ export class DeliverFromToPage {
       this.platformType = "notCordova"
     }
 
-    this.translateService.get(['TOWER', 'FLOOR', 'FLAT', 'ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS', 'CHOOSE_PHOTO', 'CHOOSE_FROM_GALARY', 'TAKE_A_PHOTO', 'PLEASE_WAIT', 'OTHER']).subscribe((values) => {
+    this.translateService.get(['TOWER', 'FLOOR', 'FLAT', 'ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS', 'CHOOSE_PHOTO', 'CHOOSE_FROM_GALARY', 'TAKE_A_PHOTO', 'PLEASE_WAIT', 'OTHER', 'CHOOSE_ADDRESS_CLICK', 'KG', 'WEIGHT_PLACEHOLDER']).subscribe((values) => {
 
       this.orderError = values.ADD_ORDER_ERROR;
       this.orderSuccess = values.ADD_ORDER_SUCCESS;
@@ -104,6 +113,10 @@ export class DeliverFromToPage {
       this.floorText = values.FLOOR
       this.flatText = values.FLAT
       this.towerText = values.TOWER
+
+      this.chooseAddress = values.CHOOSE_ADDRESS_CLICK
+      this.kg = values.KG
+      this.weightText = values.WEIGHT_PLACEHOLDER
     })
 
     this.myForm = builder.group({
@@ -188,25 +201,31 @@ export class DeliverFromToPage {
   }
 
   async openAddressesSelector(event) {
-    const modal = await this.modalController.create(AddressesSelectorComponent, { addresses: this.addressList ,  user: this.account  });
+    if (!this.modelReciverOpen) {
+      this.modelReciverOpen = true;
+      console.log("11111111111111111111111111111");
 
-    modal.onDidDismiss((dataReturned) => {
-      if (dataReturned !== null) {
-        console.log('Modal Sent Data :', dataReturned);
-        this.addressList = dataReturned.addresses;
-        console.log(this.addressList);
+      const modal = await this.modalController.create(AddressesSelectorComponent, { addresses: this.addressList, user: this.account });
 
+      modal.onDidDismiss((dataReturned) => {
+        if (dataReturned !== null) {
+          console.log('Modal Sent Data :', dataReturned);
+          this.addressList = dataReturned.addresses;
+          console.log(this.addressList);
 
-        this.address = dataReturned.address.region + ' , ' + dataReturned.address.street + ' , ' + this.towerText + '/' + dataReturned.address.building + ' , ' + this.floorText + '/' + dataReturned.address.floor + ' , ' + this.flatText + '/' + dataReturned.address.flatNumber + ' , ' + dataReturned.address.city
-        this.myForm.get("address").clearValidators();
-        this.myForm.get("address").updateValueAndValidity();
-        this.order.reciverAddressId = dataReturned.address.id
-      }
-    });
+          this.modelReciverOpen = false;
 
-    return await modal.present({
-      ev: event
-    });
+          this.address = dataReturned.address.region + ' , ' + dataReturned.address.street + ' , ' + this.towerText + '/' + dataReturned.address.building + ' , ' + this.floorText + '/' + dataReturned.address.floor + ' , ' + this.flatText + '/' + dataReturned.address.flatNumber + ' , ' + dataReturned.address.city
+          this.myForm.get("address").clearValidators();
+          this.myForm.get("address").updateValueAndValidity();
+          this.order.reciverAddressId = dataReturned.address.id
+        }
+      });
+
+      return await modal.present({
+        ev: event
+      });
+    }
   }
 
   // async newAddressModal(event) {
@@ -230,27 +249,33 @@ export class DeliverFromToPage {
   //   });
   // }
   async openAddressesSelectorSender(event) {
-    const modal = await this.modalController.create(AddressesSelectorComponent, { addresses: this.addressList , user: this.account  });
+    if (!this.modelSenderOpen) {
+      this.modelSenderOpen = true;
+      console.log("222222222222222222222222");
 
-    modal.onDidDismiss((dataReturned) => {
-      if (dataReturned !== null) {
-        console.log('Modal Sent Data :', dataReturned);
-        this.addressList = dataReturned.addresses;
-        console.log(this.addressList);
+      const modal = await this.modalController.create(AddressesSelectorComponent, { addresses: this.addressList, user: this.account });
 
+      modal.onDidDismiss((dataReturned) => {
+        if (dataReturned !== null) {
+          console.log('Modal Sent Data :', dataReturned);
+          this.addressList = dataReturned.addresses;
+          console.log(this.addressList);
 
-        this.senderAddress = dataReturned.address.region + ' , ' + dataReturned.address.street + ' , ' + this.towerText + '/' + dataReturned.address.building + ' , ' + this.floorText + '/' + dataReturned.address.floor + ' , ' + this.flatText + '/' + dataReturned.address.flatNumber + ' , ' + dataReturned.address.city
-        
-        this.myForm.get("senderAddress").clearValidators()
-        this.myForm.get("senderAddress").updateValueAndValidity();
-        
-        this.order.senderAddressId = dataReturned.address.id
-      }
-    });
+          this.modelSenderOpen = false;
 
-    return await modal.present({
-      ev: event
-    });
+          this.senderAddress = dataReturned.address.region + ' , ' + dataReturned.address.street + ' , ' + this.towerText + '/' + dataReturned.address.building + ' , ' + this.floorText + '/' + dataReturned.address.floor + ' , ' + this.flatText + '/' + dataReturned.address.flatNumber + ' , ' + dataReturned.address.city
+
+          this.myForm.get("senderAddress").clearValidators()
+          this.myForm.get("senderAddress").updateValueAndValidity();
+
+          this.order.senderAddressId = dataReturned.address.id
+        }
+      });
+
+      return await modal.present({
+        ev: event
+      });
+    }
   }
 
   // async newAddressModalSender(event) {
@@ -364,5 +389,6 @@ export class DeliverFromToPage {
     });
 
   }
+
 
 }
