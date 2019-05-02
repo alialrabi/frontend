@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, App, ToastController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, App, ToastController, LoadingController, Platform } from 'ionic-angular';
 import { MyApp } from '../../app/app.component';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
@@ -39,7 +39,7 @@ export class AddUserPhonePage {
 
   account = null; 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams , private principal:Principal , private app: App, public toastCtrl: ToastController, public translateService: TranslateService, private loading: LoadingController, private builder: FormBuilder , private accountSirvice:AccountService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams ,public platform:Platform , private principal:Principal , private app: App, public toastCtrl: ToastController, public translateService: TranslateService, private loading: LoadingController, private builder: FormBuilder , private accountSirvice:AccountService) {
 
     this.translateService.get(['ADD_PHONE_ERROR', 'ADD_PHONE_SUCCESS', 'PLEASE_WAIT']).subscribe((values) => {
       console.log(values);

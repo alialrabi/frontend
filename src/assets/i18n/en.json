@@ -1,4 +1,13 @@
 {
+    "TAKE_ORDER_SUCCESS":"Order recived successfully",
+    "TAKE_ORDER_ERROR":"Error in receive order",
+    "DELIVER_FROM_LOCATION_TO_LOCATION_TITLE":"Shipping order",
+    "RATING_COMMENT":"Rating Comment",
+    "WEIGHT_PLACEHOLDER":"Enter the weight in kilogram",
+    "KG":"Kg",
+    "RECIVED_FROM_SENDER":"Received from sender",
+    "TAKE_ORDER_FROM_SENDER":"Receive Order",
+    "CHOOSE_ADDRESS_CLICK":"Click here to choose address",
     "NO_LOCATION_AVILABLE":"No Location avilale for this address on the map",
     "NOT_SUPPORTED":"Not Supported",
     "INCORRECT_PASSWORD_TITLE":"Incorrect",

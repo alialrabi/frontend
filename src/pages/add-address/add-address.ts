@@ -139,16 +139,27 @@ export class AddAddressPage {
     // this.myForm.get('city').markAsDirty();
     // this.myForm.get('city').markAsTouched();
     // this.myForm.get('city').markAsPristine();
+    console.log(this.to , 'to');
+    
 
     if (this.to != null && this.to != undefined) {
+      console.log("/*/*/*/*/*/*");
+      
 
       this.platform.registerBackButtonAction(() => {
-        if (this.to == 'UserAddressesPage') {
-          this.navCtrl.setRoot(UserAddressesPage);
-        } else {
-          this.navCtrl.setRoot(ChooseAddressPage);
-        }
+        if (this.openMap) {
+          this.mapStyle.height = "0%";
+          this.mapStyle.width = "0%";
 
+          this.openMap = false;
+
+        } else {
+          if (this.to == 'UserAddressesPage') {
+            this.navCtrl.setRoot(UserAddressesPage);
+          } else {
+            this.navCtrl.setRoot(ChooseAddressPage);
+          }
+        }
       });
     }
   }
@@ -227,7 +238,7 @@ export class AddAddressPage {
     //   );
     // }
 
-    if(this.map == null || this.map == undefined){
+    if (this.map == null || this.map == undefined) {
       this.loadMapWithOutLocation();
     }
 
@@ -447,10 +458,18 @@ export class AddAddressPage {
     return ctrl.dirty && ctrl.hasError(error);
   }
   back() {
-    if (this.to == 'UserAddressesPage') {
-      this.navCtrl.setRoot(UserAddressesPage);
+    if (this.openMap) {
+      this.mapStyle.height = "0%";
+      this.mapStyle.width = "0%";
+
+      this.openMap = false;
+
     } else {
-      this.navCtrl.setRoot(ChooseAddressPage);
+      if (this.to == 'UserAddressesPage') {
+        this.navCtrl.setRoot(UserAddressesPage);
+      } else {
+        this.navCtrl.setRoot(ChooseAddressPage);
+      }
     }
   }
   skip() {

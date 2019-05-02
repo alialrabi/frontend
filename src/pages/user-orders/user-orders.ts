@@ -36,6 +36,9 @@ export class UserOrdersPage {
   deliverOrderSuccess = null;
   deliverOrderError = null;
 
+  takeOrderSuccess = null;
+  takeOrderErroe = null;
+
   public ordersList = [];
 
   public pleaseWait;
@@ -54,7 +57,7 @@ export class UserOrdersPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public platform:Platform ,private deviceTokenService:DeviceTockenService ,  public _alert: AlertController , public toastCtrl: ToastController, private captainService: CaptainService, private loading: LoadingController, public translateService: TranslateService, private app: App, private principal: Principal, public orderService: UserOrderService) {
 
-    this.translateService.get(['DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT', 'MORE_DATA' , 'ADD_ORDER_TITLE' , 'ORDER_KIND_MESSAGE' , 'BUY_FROM_MARKET' , 'DELIVER_FROM_LOCATION_TO_LOCATION']).subscribe((values) => {
+    this.translateService.get(['TAKE_ORDER_ERROR', 'TAKE_ORDER_SUCCESS' , 'DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT', 'MORE_DATA' , 'ADD_ORDER_TITLE' , 'ORDER_KIND_MESSAGE' , 'BUY_FROM_MARKET' , 'DELIVER_FROM_LOCATION_TO_LOCATION']).subscribe((values) => {
 
       this.deliverOrderError = values.DELIVER_ORDER_ERROR;
       this.deliverOrderSuccess = values.DELIVER_ORDER_SUCCESS;
@@ -65,6 +68,8 @@ export class UserOrdersPage {
       this.addOrderTitle = values.ADD_ORDER_TITLE;
       this.deliverFromTo = values.DELIVER_FROM_LOCATION_TO_LOCATION;
       this.buyFromMarket = values.BUY_FROM_MARKET;
+      this.takeOrderSuccess = values.TAKE_ORDER_SUCCESS
+      this.takeOrderErroe = values.TAKE_ORDER_ERROR
     })
 
   }
@@ -404,6 +409,117 @@ export class UserOrdersPage {
 
 
         let displayError = this.deliverOrderError;
+
+        let toast = this.toastCtrl.create({
+          message: displayError,
+          duration: 3000,
+          position: 'middle'
+        });
+        toast.present();
+        load.dismiss();
+      }
+    )
+
+  }
+
+  takeOrder(item) {
+
+    let load = this.loading.create({
+      content: this.pleaseWait
+
+
+    })
+    load.present()
+
+
+    this.orderService.takeOrder(item.userOrder.id).subscribe(
+      res => {
+
+       // if (this.platform.is('cordova')) {
+          this.deviceTokenService.getAdminTokens().subscribe(
+            res1 => {
+              console.log("res1", res1);
+
+              res1.forEach(element => {
+                let body = {
+                  "notification":{
+                    "title":"طلب جديد",
+                    "body":"لقد تم الاستلام من المرسل للطلب  " +" "+item.userOrder.identifyNumber,
+                    "sound":"default",
+                    "click_action":"FCM_PLUGIN_ACTIVITY",
+                    "icon":"fcm_push_icon"
+                  },
+                  "data":{
+                    "title":"طلب جديد",
+                    "body":"لقد تم الاستلام من المرسل للطلب  "+" "+item.userOrder.identifyNumber
+                  },
+                    "to":element,
+                    "priority":"high",
+                    "restricted_package_name":""
+                }
+  
+                this.deviceTokenService.sendNotification(body);
+  
+                
+              });
+
+            },err1 =>{
+              console.log(err1 , 'errrrrrrrrrrrrrrrrrrrrrrrrrror');
+              
+            }
+          )
+
+          this.deviceTokenService.getUserTokens(item.userOrder.userId).subscribe(
+            res1 => {
+              console.log("res1", res1);
+
+              res1.forEach(element => {
+                let body = {
+                  "notification":{
+                    "title":"طلبك",
+                    "body":"لقد تم الاستلام من المرسل لطلبك  " +" "+item.userOrder.identifyNumber,
+                    "sound":"default",
+                    "click_action":"FCM_PLUGIN_ACTIVITY",
+                    "icon":"fcm_push_icon"
+                  },
+                  "data":{
+                    "title":"طلبك",
+                    "body":"لقد تم الاستلام من المرسل لطلبك  " +" "+item.userOrder.identifyNumber
+                  },
+                    "to":element,
+                    "priority":"high",
+                    "restricted_package_name":""
+                }
+  
+                this.deviceTokenService.sendNotification(body);
+  
+                
+              });
+            },err1 =>{
+              console.log(err1 , 'errrrrrrrrrrrrrrrrrrrrrrrrrror');
+              
+            }
+          )
+
+       // }
+
+
+        let toast = this.toastCtrl.create({
+          message: this.takeOrderSuccess,
+          duration: 3000,
+          position: 'top'
+        });
+        toast.present();
+        console.log("success");
+
+        load.dismiss();
+        this.getUserOrders(this.myVar , 0);
+
+      }, err => {
+        console.log(err);
+
+
+        let displayError = this.takeOrderErroe;
 
         let toast = this.toastCtrl.create({
           message: displayError,

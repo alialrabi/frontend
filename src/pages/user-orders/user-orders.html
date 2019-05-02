@@ -119,7 +119,8 @@
               <p *ngIf="userType == 'User'">
                 {{ 'STATUS' | translate }} :
                 <strong text-wrap *ngIf="order.userOrder.status == 'not assigned'"> {{ 'USER_ORDER_NOT_ASSIGNED' | translate }}</strong>
-                <strong text-wrap *ngIf="order.userOrder.status == 'assigned'">{{ 'ASSIGNED' | translate }}</strong>
+                <strong text-wrap *ngIf="order.userOrder.status == 'assigned' && !order.userOrder.isTaken">{{ 'ASSIGNED' | translate }}</strong>
+                <strong text-wrap *ngIf="order.userOrder.status == 'assigned' && order.userOrder.isTaken">{{ 'RECIVED_FROM_SENDER' | translate }}</strong>
                 <strong text-wrap *ngIf="order.userOrder.status == 'delivered'"> {{ 'DELIVERED' | translate }}</strong>
               </p>
               <p>
@@ -181,8 +182,8 @@
         </ion-row>
       </ion-grid>
       <ion-grid>
-        <ion-row>
-          <ion-col>
+        <ion-row *ngIf=" userType!='Captain'">
+          <ion-col >
             <ion-buttons end class="btn-style" style="width: 100%" *ngIf="myVar != 'delivered' && userType=='Admin'">
               <button ion-button style="width: 100%" (click)="assingCaptain(order)">
                 {{ 'ASSIGN_CAPTAIN' | translate }}
@@ -209,6 +210,48 @@
               </button>
             </ion-buttons>
           </ion-col> -->
+        </ion-row>
+        <ion-row *ngIf=" userType =='Captain' && !order.userOrder.isTaken && !order.userOrder.isBuing">
+          
+            <ion-col col-6>
+
+                <ion-buttons end class="btn-style" style="width: 100%" *ngIf="myVar == 'assigned' && userType=='Captain' && !order.userOrder.isTaken">
+                  <button ion-button style="width: 100%" (click)="takeOrder(order)">
+                    {{ 'TAKE_ORDER_FROM_SENDER' | translate }}
+                  </button>
+                </ion-buttons>
+    
+              </ion-col>
+
+          <ion-col col-6>
+
+            <ion-buttons end class="btn-style" style="width: 100%" *ngIf="myVar == 'assigned' && userType=='Captain'">
+              <button ion-button style="width: 100%" (click)="finish(order)">
+                {{ 'DELIVER' | translate }}
+              </button>
+            </ion-buttons>
+
+          </ion-col>
+         
+          <!-- <ion-col col-6>
+            <ion-buttons end class="btn-style" style="width: 100%;" *ngIf="myVar != 'delivered' && (userType=='Captain' || userType=='Admin')">
+              <button ion-button (click)="viewLocation(order)" style="width: 100%;">
+                {{ 'VIEW_LOCATION' | translate }}
+              </button>
+            </ion-buttons>
+          </ion-col> -->
+        </ion-row>
+        <ion-row *ngIf=" userType =='Captain' && (order.userOrder.isTaken || order.userOrder.isBuing)">
+          <ion-col col-12>
+
+            <ion-buttons end class="btn-style" style="width: 100%" *ngIf="myVar == 'assigned' && userType=='Captain'">
+              <button ion-button style="width: 100%" (click)="finish(order)">
+                {{ 'DELIVER' | translate }}
+              </button>
+            </ion-buttons>
+
+          </ion-col>
+
         </ion-row>
 
       </ion-grid>

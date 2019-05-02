@@ -128,6 +128,8 @@ export class EditRatingPage {
         toast.present();
 
         if(this.from == 'UserOrderDetailPage'){
+          this.userDetailIemParam.userOrder.rating = this.editOrder.rating
+          this.userDetailIemParam.userOrder.ratingComment = this.editOrder.ratingComment
           this.navCtrl.setRoot(UserOrderDetailPage , {item:this.userDetailIemParam , userType:this.userDetailUserTypeParam});
         }else{
         this.navCtrl.setRoot(UserOrdersPage);

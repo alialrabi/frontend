@@ -71,7 +71,11 @@ export class BuyFromMarketPage {
 
   towerText = ''
   floorText = ''
-  flatText = ''
+  flatText = '' 
+
+  chooseAddress = ''
+
+  modelReciverOpen = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public _alert: AlertController
     , public imagePicker: ImagePicker, public camera: Camera, public toastCtrl: ToastController, public admobFree: AdMobFree,
@@ -92,7 +96,7 @@ export class BuyFromMarketPage {
       this.platformType = "notCordova"
     }
 
-    this.translateService.get(['TOWER', 'FLOOR', 'FLAT', 'ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS', 'CHOOSE_PHOTO', 'CHOOSE_FROM_GALARY', 'TAKE_A_PHOTO', 'PLEASE_WAIT', 'OTHER']).subscribe((values) => {
+    this.translateService.get(['TOWER', 'FLOOR', 'FLAT', 'ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS', 'CHOOSE_PHOTO', 'CHOOSE_FROM_GALARY', 'TAKE_A_PHOTO', 'PLEASE_WAIT', 'OTHER' , 'CHOOSE_ADDRESS_CLICK']).subscribe((values) => {
 
       this.orderError = values.ADD_ORDER_ERROR;
       this.orderSuccess = values.ADD_ORDER_SUCCESS;
@@ -106,6 +110,7 @@ export class BuyFromMarketPage {
       this.floorText = values.FLOOR
       this.flatText = values.FLAT
       this.towerText = values.TOWER
+      this.chooseAddress = values.CHOOSE_ADDRESS_CLICK
     })
 
     this.myForm1 = builder.group({
@@ -316,6 +321,9 @@ export class BuyFromMarketPage {
   }
 
   async openAddressesSelector(event) {
+    if (!this.modelReciverOpen) {
+      this.modelReciverOpen = true;
+
     const modal = await this.modalControllre.create(AddressesSelectorComponent, { addresses: this.addressList ,  user: this.account });
 
     modal.onDidDismiss((dataReturned) => {
@@ -324,18 +332,23 @@ export class BuyFromMarketPage {
 
         this.addressList = dataReturned.addresses;
         console.log(this.addressList);
+        this.modelReciverOpen = false;
 
         this.myForm1.get("address").clearValidators();
         this.myForm1.get("address").updateValueAndValidity();
 
         this.address = dataReturned.address.region + ' , ' + dataReturned.address.street + ' , ' + this.towerText + '/' + dataReturned.address.building + ' , ' + this.floorText + '/' + dataReturned.address.floor + ' , ' + this.flatText + '/' + dataReturned.address.flatNumber + ' , ' + dataReturned.address.city
         this.order.reciverAddressId = dataReturned.address.id
+      }else{
+        console.log("else");
+        this.modelReciverOpen = false;   
       }
     });
 
     return await modal.present({
       ev: event
     });
+  }
   }
 
   // async newAddressModal(event) {

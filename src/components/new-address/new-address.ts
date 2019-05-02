@@ -513,7 +513,14 @@ export class NewAddressComponent {
   }
 
   async back() {
+    if(this.openMap){
+      this.mapStyle.height = "0%";
+      this.mapStyle.width = "0%";
+
+      this.openMap = false;
+    }else{
     this.viewCtrl.dismiss(null);
+    }
   }
 
 }
