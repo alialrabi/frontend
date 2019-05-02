@@ -505,7 +505,7 @@ export class UserOrdersPage {
 
 
         let toast = this.toastCtrl.create({
-          message: this.deliverOrderSuccess,
+          message: this.takeOrderSuccess,
           duration: 3000,
           position: 'top'
         });
@@ -519,7 +519,7 @@ export class UserOrdersPage {
         console.log(err);
 
 
-        let displayError = this.deliverOrderError;
+        let displayError = this.takeOrderErroe;
 
         let toast = this.toastCtrl.create({
           message: displayError,
