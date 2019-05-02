@@ -467,7 +467,7 @@ export class AssignCaptainsPage {
   }
 
   validateTimes() {
-    if ((this.myForm.get("startTime").value != '' && this.myForm.get("endTime").value != '') || ((this.myForm.get("startTime").value == '' && this.myForm.get("endTime").value == '') && this.dates.length != 0)) {
+    if ((this.myForm.get("startTime").value != '' && this.myForm.get("endTime").value != '' && this.myForm.get("startTime").value != this.myForm.get("endTime").value) || (((this.myForm.get("startTime").value == '' && this.myForm.get("endTime").value == '') || this.myForm.get("startTime").value == this.myForm.get("endTime").value) && this.dates.length != 0)) {
       return false;
     } else {
       return true;

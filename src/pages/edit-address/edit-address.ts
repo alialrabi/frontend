@@ -99,13 +99,13 @@ export class EditAddressPage {
   dialogMessage = ''
   ok = ''
 
-  constructor(public navCtrl: NavController, private loading: LoadingController,public _alert: AlertController,
+  constructor(public navCtrl: NavController, private loading: LoadingController, public _alert: AlertController,
     public navParams: NavParams, public locationAccuracy: LocationAccuracy, public addressService: AddressService, public toastCtrl: ToastController,
-    public translateService: TranslateService, private app: App, public platform: Platform, private principal: Principal,private builder: FormBuilder) {
+    public translateService: TranslateService, private app: App, public platform: Platform, private principal: Principal, private builder: FormBuilder) {
     this.address = this.navParams.get("item");
     this.alex = this.getCity(this.address.city);
-    console.log(this.alex , 'ssssssss');
-    
+    console.log(this.alex, 'ssssssss');
+
     this.flat = this.getLivingType(this.address.livingType)
 
     this.cityValue = this.getCity(this.address.city);
@@ -123,7 +123,7 @@ export class EditAddressPage {
     this.nameValue = this.address.name
 
 
-    this.translateService.get(['EDIT_ADDRESS_ERROR', 'EDIT_ADDRESS_SUCCESS', 'LOCATION_ALERT_TITLE', 'LOCATION_ALERT_MESSAGE', 'OK' , 'ALEX', 'CAIRO', 'TANTA', 'DAMNHOR', 'SHIPIN_ELKOM', 'BANHA', 'PLEASE_WAIT', 'OFFICE', 'HOME', 'FLAT']).subscribe((values) => {
+    this.translateService.get(['EDIT_ADDRESS_ERROR', 'EDIT_ADDRESS_SUCCESS', 'LOCATION_ALERT_TITLE', 'LOCATION_ALERT_MESSAGE', 'OK', 'ALEX', 'CAIRO', 'TANTA', 'DAMNHOR', 'SHIPIN_ELKOM', 'BANHA', 'PLEASE_WAIT', 'OFFICE', 'HOME', 'FLAT']).subscribe((values) => {
       this.addAddressError = values.EDIT_ADDRESS_ERROR;
       this.addAdressSuccessString = values.EDIT_ADDRESS_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
@@ -141,8 +141,8 @@ export class EditAddressPage {
       this.officeValue = values.OFFICE
 
       this.dialogTitle = values.LOCATION_ALERT_TITLE
-        this.dialogMessage = values.LOCATION_ALERT_MESSAGE
-        this.ok = values.OK
+      this.dialogMessage = values.LOCATION_ALERT_MESSAGE
+      this.ok = values.OK
     })
 
     this.myForm = builder.group({
@@ -166,8 +166,6 @@ export class EditAddressPage {
     // this.myForm.get('city').markAsTouched();
     // this.myForm.get('city').markAsPristine();
 
-    if (this.to != null && this.to != undefined) {
-
       this.platform.registerBackButtonAction(() => {
         if (this.openMap) {
           this.mapStyle.height = "0%";
@@ -180,12 +178,12 @@ export class EditAddressPage {
         }
 
       });
-    }
   }
 
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad EditAddressPage');
+    console.log(this.address.latitude, '');
     if (this.platform.is("android") || this.platform.is("ios")) {
       console.log("---------------------------");
       // this.locationAccuracy.canRequest().then((canRequest: any) => {
@@ -198,32 +196,37 @@ export class EditAddressPage {
 
       // if(canRequest == 0) {
       // the accuracy option will be ignored by iOS
-      this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
-        () => {
-          console.log("success");
 
-          this.loadMap()
-        }
-        ,
-        error => {
-          this.loadMapWithOutLocation();
-          console.log('Error requesting location permissions', error)
-        }
-      );
-      // }else{
-      //   this.loadMap() 
-      // }
 
-      // }).catch(
-      //   err =>{
-      //     console.log('error' , err);
+      if (this.address.latitude == '0') {
+        this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
+          () => {
+            console.log("success");
 
-      //   }
-      // );
+            this.loadMap()
+          }
+          ,
+          error => {
+            this.loadMapWithOutLocation();
+            console.log('Error requesting location permissions', error)
+          }
+        );
+        // }else{
+        //   this.loadMap() 
+        // }
+
+        // }).catch(
+        //   err =>{
+        //     console.log('error' , err);
+
+        //   }
+        // );
+      } else {
+        this.loadMap();
+      }
     } else {
       this.loadMap();
     }
-
 
   }
   next() {
@@ -243,7 +246,7 @@ export class EditAddressPage {
     //   );
     // }
 
-    if(this.map == null || this.map == undefined){
+    if (this.map == null || this.map == undefined) {
       this.loadMapWithOutLocation();
     }
 
@@ -270,15 +273,15 @@ export class EditAddressPage {
       mainClass.map = new google.maps.Map(mainClass.elementRef.nativeElement, mapOptions);
 
 
-        let marker = new google.maps.Marker({
-          map: mainClass.map,
-          animation: google.maps.Animation.DROP,
-          position: mainClass.map.getCenter()
-        });
+      let marker = new google.maps.Marker({
+        map: mainClass.map,
+        animation: google.maps.Animation.DROP,
+        position: mainClass.map.getCenter()
+      });
 
-        mainClass.mainMarker = marker;
+      mainClass.mainMarker = marker;
 
-      
+
       //  console.log(this.map , 'map');
       //  console.log(this.mainMarker , "marker");
 
@@ -330,29 +333,29 @@ export class EditAddressPage {
         //     animation: google.maps.Animation.DROP,
         //     position: mainClass.map.getCenter()
         //   });
-  
+
         //   mainClass.mainMarker = marker;
-  
+
         // }
         //  console.log(this.map , 'map');
         //  console.log(this.mainMarker , "marker");
 
         var superclass = mainClass;
         google.maps.event.addListener(mainClass.map, 'click', function (event) {
-         
-        if (superclass.checkLocation(event.latLng.lat(), event.latLng.lng(), false)) {
 
-          if (superclass.mainMarker != null) {
-            superclass.mainMarker.setMap(null);
+          if (superclass.checkLocation(event.latLng.lat(), event.latLng.lng(), false)) {
+
+            if (superclass.mainMarker != null) {
+              superclass.mainMarker.setMap(null);
+            }
+            var newmarker = new google.maps.Marker({
+              position: event.latLng,
+              map: superclass.map
+            });
+            superclass.mainMarker = newmarker;
+            superclass.address.latitude = event.latLng.lat();
+            superclass.address.longitude = event.latLng.lng();
           }
-          var newmarker = new google.maps.Marker({
-            position: event.latLng,
-            map: superclass.map
-          });
-          superclass.mainMarker = newmarker;
-          superclass.address.latitude = event.latLng.lat();
-          superclass.address.longitude = event.latLng.lng();
-        }
           console.log(superclass.address);
         });
 
@@ -478,7 +481,7 @@ export class EditAddressPage {
     }
     return cityValue;
   }
-  getCityPlaceHolder(){
+  getCityPlaceHolder() {
 
     let city = ''
     if (this.alex == 'Alexandria') {
@@ -502,7 +505,7 @@ export class EditAddressPage {
     }
     return city;
   }
-  getalaivingPlaceholder(){
+  getalaivingPlaceholder() {
 
     let livingType = '';
     if (this.flat == 'Flat') {
@@ -542,9 +545,9 @@ export class EditAddressPage {
     }
   }
   notChanges() {
-    
+
     if (this.address.name != this.nameValue || this.address.building != this.buildingValue || this.address.flatNumber != this.flatNumberValue || this.address.floor != this.floorValue || this.address.latitude != this.latitudeValue || this.address.longitude != this.longitudeValue || this.myForm.get("livingType").value != this.livingTypeValue || this.address.otherDetails != this.otherDetailsValue || this.address.region != this.regionValue || this.address.street != this.streetValue) {
-     
+
       return false;
     } else {
       return true;
@@ -684,6 +687,14 @@ export class EditAddressPage {
     });
 
 
+  }
+  notChangesSkip(){
+    if (this.address.name != this.nameValue || this.address.building != this.buildingValue || this.address.flatNumber != this.flatNumberValue || this.address.floor != this.floorValue || this.myForm.get("livingType").value != this.livingTypeValue || this.address.otherDetails != this.otherDetailsValue || this.address.region != this.regionValue || this.address.street != this.streetValue) {
+
+      return false;
+    } else {
+      return true;
+    }
   }
 
 }

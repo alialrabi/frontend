@@ -170,7 +170,19 @@ export class CaptainsMapPage {
             position: latLng,
             animation: google.maps.Animation.DROP,
             title: element.name,
-            icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png'
+            label: {
+              color: 'black',
+              fontWeight: 'bold',
+              text: element.name,
+            },
+            icon: {
+              labelOrigin: new google.maps.Point(11, 50),
+              url: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
+              size: new google.maps.Size(22, 40),
+              origin: new google.maps.Point(0, 0),
+              anchor: new google.maps.Point(11, 40),
+            },
+            //icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png'
           });
           this.captainsMarkers.push(marker);
         } else {
@@ -179,7 +191,19 @@ export class CaptainsMapPage {
             position: latLng,
             animation: google.maps.Animation.DROP,
             title: element.name,
-            icon: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png'
+            label: {
+              color: 'black',
+              fontWeight: 'bold',
+              text: element.name,
+            },
+            icon: {
+              labelOrigin: new google.maps.Point(11, 50),
+              url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
+              size: new google.maps.Size(22, 40),
+              origin: new google.maps.Point(0, 0),
+              anchor: new google.maps.Point(11, 40),
+            },
+           // icon: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png'
           });
           this.captainsMarkers.push(marker);
         }
@@ -219,7 +243,19 @@ export class CaptainsMapPage {
             position: latLng,
             animation: google.maps.Animation.DROP,
             title: element.name,
-            icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+            label: {
+              color: 'black',
+              fontWeight: 'bold',
+              text: element.name,
+            },
+            icon: {
+              labelOrigin: new google.maps.Point(11, 50),
+              url: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+              size: new google.maps.Size(22, 40),
+              origin: new google.maps.Point(0, 0),
+              anchor: new google.maps.Point(11, 40),
+            },
+            //icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
           });
           this.captainsMarkers.push(marker);
         } else {
@@ -228,7 +264,19 @@ export class CaptainsMapPage {
             position: latLng,
             animation: google.maps.Animation.DROP,
             title: element.name,
-            icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+            label: {
+              color: 'black',
+              fontWeight: 'bold',
+              text: element.name,
+            },
+            icon: {
+              labelOrigin: new google.maps.Point(11, 50),
+              url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
+              size: new google.maps.Size(22, 40),
+              origin: new google.maps.Point(0, 0),
+              anchor: new google.maps.Point(11, 40),
+            },
+            //icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
           });
           this.captainsMarkers.push(marker);
         }

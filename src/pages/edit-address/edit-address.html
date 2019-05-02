@@ -222,14 +222,14 @@
       <ion-row *ngIf="latitudeValue == '0'">
         <ion-col col-6 >
           <div margin-top *ngIf="openMap">
-            <button ion-button block color="dark" tappable (click)="skip()" [disabled]="notChanges()">
+            <button ion-button block color="dark" tappable text-wrap (click)="skip()" [disabled]="notChangesSkip()">
               {{ 'SAVE_WITHOUT_LOCATION' | translate }}
             </button>
           </div>
         </ion-col>
         <ion-col col-6>
           <div margin-top *ngIf="openMap">
-            <button ion-button block color="dark" tappable (click)="chooseLocation()" [disabled]="notChanges() ||  mainMarker == null">
+            <button ion-button block color="dark" tappable text-wrap (click)="chooseLocation()" [disabled]="notChanges() ||  mainMarker == null">
               {{ 'SAVE_CHANGES' | translate }}
             </button>
           </div>
@@ -238,7 +238,7 @@
       <ion-row *ngIf="latitudeValue != '0'">
           <ion-col col-12>
               <div margin-top *ngIf="openMap">
-                <button ion-button block color="dark" tappable (click)="chooseLocation()" [disabled]="notChanges() ||  mainMarker == null">
+                <button ion-button block color="dark" tappable text-wrap (click)="chooseLocation()" [disabled]="notChanges() ||  mainMarker == null">
                   {{ 'SAVE_CHANGES' | translate }}
                 </button>
               </div>

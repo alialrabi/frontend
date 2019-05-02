@@ -339,6 +339,9 @@ export class BuyFromMarketPage {
 
         this.address = dataReturned.address.region + ' , ' + dataReturned.address.street + ' , ' + this.towerText + '/' + dataReturned.address.building + ' , ' + this.floorText + '/' + dataReturned.address.floor + ' , ' + this.flatText + '/' + dataReturned.address.flatNumber + ' , ' + dataReturned.address.city
         this.order.reciverAddressId = dataReturned.address.id
+      }else{
+        console.log("else");
+        this.modelReciverOpen = false;   
       }
     });
 

@@ -1,4 +1,7 @@
 {
+    "TAKE_ORDER_SUCCESS":"تم استلام الطلب بنجاح",
+    "TAKE_ORDER_ERROR":"خطأ فى استلام الطلب",
+    "DELIVER_FROM_LOCATION_TO_LOCATION_TITLE":"طلب شحن",
     "RATING_COMMENT":"تعليق التقيم",
     "WEIGHT_PLACEHOLDER":"ادخل الوزن بالكيلو جرام",
     "KG":"كجم",

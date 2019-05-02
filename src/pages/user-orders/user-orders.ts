@@ -36,6 +36,9 @@ export class UserOrdersPage {
   deliverOrderSuccess = null;
   deliverOrderError = null;
 
+  takeOrderSuccess = null;
+  takeOrderErroe = null;
+
   public ordersList = [];
 
   public pleaseWait;
@@ -54,7 +57,7 @@ export class UserOrdersPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public platform:Platform ,private deviceTokenService:DeviceTockenService ,  public _alert: AlertController , public toastCtrl: ToastController, private captainService: CaptainService, private loading: LoadingController, public translateService: TranslateService, private app: App, private principal: Principal, public orderService: UserOrderService) {
 
-    this.translateService.get(['DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT', 'MORE_DATA' , 'ADD_ORDER_TITLE' , 'ORDER_KIND_MESSAGE' , 'BUY_FROM_MARKET' , 'DELIVER_FROM_LOCATION_TO_LOCATION']).subscribe((values) => {
+    this.translateService.get(['TAKE_ORDER_ERROR', 'TAKE_ORDER_SUCCESS' , 'DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT', 'MORE_DATA' , 'ADD_ORDER_TITLE' , 'ORDER_KIND_MESSAGE' , 'BUY_FROM_MARKET' , 'DELIVER_FROM_LOCATION_TO_LOCATION']).subscribe((values) => {
 
       this.deliverOrderError = values.DELIVER_ORDER_ERROR;
       this.deliverOrderSuccess = values.DELIVER_ORDER_SUCCESS;
@@ -65,6 +68,8 @@ export class UserOrdersPage {
       this.addOrderTitle = values.ADD_ORDER_TITLE;
       this.deliverFromTo = values.DELIVER_FROM_LOCATION_TO_LOCATION;
       this.buyFromMarket = values.BUY_FROM_MARKET;
+      this.takeOrderSuccess = values.TAKE_ORDER_SUCCESS
+      this.takeOrderErroe = values.TAKE_ORDER_ERROR
     })
 
   }

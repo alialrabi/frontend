@@ -1,4 +1,7 @@
 {
+    "TAKE_ORDER_SUCCESS":"Order recived successfully",
+    "TAKE_ORDER_ERROR":"Error in receive order",
+    "DELIVER_FROM_LOCATION_TO_LOCATION_TITLE":"Shipping order",
     "RATING_COMMENT":"Rating Comment",
     "WEIGHT_PLACEHOLDER":"Enter the weight in kilogram",
     "KG":"Kg",

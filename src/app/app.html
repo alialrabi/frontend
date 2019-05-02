@@ -6,10 +6,10 @@
         <ion-row> 
           <ion-col col-4>
               <div class="user-avatar" *ngIf = "userType == 'Admin' || userType == 'User' || userType == 'Agency' || (userType == 'Captain' && !captain)  || (userType == 'Captain' && captain && !captain.image)">
-                <img src="../assets/img/person.png"  style="height: 62px;">
+                <img src="../assets/img/person.png"  style="height: 62px;width: 62px">
               </div>
               <div class="user-avatar" *ngIf = "userType == 'Captain' && captain && captain.image">
-                <img [src]="['data:image/jpg;base64',captain.image]"  style="height: 62px;">
+                <img [src]="['data:image/jpg;base64',captain.image]"  style="height: 62px;width: 62px">
               </div>
 
           </ion-col>
