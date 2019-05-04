@@ -61,7 +61,11 @@ export class LandingPage {
         } else if(account.authorities[0] == 'ROLE_AGENCY') {
           this.app.getRootNavs()[0].setRoot(OrdersPage);
         } else if (account.authorities[0] == 'ROLE_USER'  && account.authorities.length == 1){
-          this.app.getRootNavs()[0].setRoot(UserOrdersPage);
+          if (account.phone == null || account.phone == '') {
+            this.navCtrl.setRoot("AddUserPhonePage")
+          } else {
+            this.navCtrl.setRoot("UserOrdersPage")
+          }
         }
         else {
           this.app.getRootNavs()[0].setRoot(AdminDashboardPage);
