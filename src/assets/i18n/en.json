@@ -1,4 +1,6 @@
 {
+    "EQUAL_ADDRESSES_MESSAGE":"You Can't choose the same address to the sender and reciver",
+    "EQUAL_ADDRESSES_TITLE":"Equal Addresses",
     "TAKE_ORDER_SUCCESS":"Order recived successfully",
     "TAKE_ORDER_ERROR":"Error in receive order",
     "DELIVER_FROM_LOCATION_TO_LOCATION_TITLE":"Shipping order",

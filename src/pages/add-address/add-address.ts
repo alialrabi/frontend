@@ -161,7 +161,21 @@ export class AddAddressPage {
           }
         }
       });
+    }else{
+      this.platform.registerBackButtonAction(() => {
+        if (this.openMap) {
+          this.mapStyle.height = "0%";
+          this.mapStyle.width = "0%";
+
+          this.openMap = false;
+
+        }
+        else {
+            this.navCtrl.setRoot(UserOrdersPage);
+        }
+      });
     }
+
   }
 
   ngOnInit() {

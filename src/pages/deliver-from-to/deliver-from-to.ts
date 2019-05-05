@@ -80,6 +80,10 @@ export class DeliverFromToPage {
   modelSenderOpen = false;
   modelReciverOpen = false;
 
+  equalAddressesTitle = ''
+  equalAddressesMessage = ''
+  ok = ''
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public _alert: AlertController
     , public toastCtrl: ToastController,
     private loading: LoadingController,
@@ -99,7 +103,7 @@ export class DeliverFromToPage {
       this.platformType = "notCordova"
     }
 
-    this.translateService.get(['TOWER', 'FLOOR', 'FLAT', 'ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS', 'CHOOSE_PHOTO', 'CHOOSE_FROM_GALARY', 'TAKE_A_PHOTO', 'PLEASE_WAIT', 'OTHER', 'CHOOSE_ADDRESS_CLICK', 'KG', 'WEIGHT_PLACEHOLDER']).subscribe((values) => {
+    this.translateService.get(['EQUAL_ADDRESSES_TITLE', 'EQUAL_ADDRESSES_MESSAGE', 'OK', 'TOWER', 'FLOOR', 'FLAT', 'ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS', 'CHOOSE_PHOTO', 'CHOOSE_FROM_GALARY', 'TAKE_A_PHOTO', 'PLEASE_WAIT', 'OTHER', 'CHOOSE_ADDRESS_CLICK', 'KG', 'WEIGHT_PLACEHOLDER']).subscribe((values) => {
 
       this.orderError = values.ADD_ORDER_ERROR;
       this.orderSuccess = values.ADD_ORDER_SUCCESS;
@@ -117,6 +121,9 @@ export class DeliverFromToPage {
       this.chooseAddress = values.CHOOSE_ADDRESS_CLICK
       this.kg = values.KG
       this.weightText = values.WEIGHT_PLACEHOLDER
+      this.equalAddressesTitle = values.EQUAL_ADDRESSES_TITLE
+      this.equalAddressesMessage = values.EQUAL_ADDRESSES_MESSAGE
+      this.ok = values.OK
     })
 
     this.myForm = builder.group({
@@ -214,14 +221,31 @@ export class DeliverFromToPage {
           console.log(this.addressList);
 
           this.modelReciverOpen = false;
+          if (this.order.senderAddressId != dataReturned.address.id) {
 
-          this.address = dataReturned.address.region + ' , ' + dataReturned.address.street + ' , ' + this.towerText + '/' + dataReturned.address.building + ' , ' + this.floorText + '/' + dataReturned.address.floor + ' , ' + this.flatText + '/' + dataReturned.address.flatNumber + ' , ' + dataReturned.address.city
-          this.myForm.get("address").clearValidators();
-          this.myForm.get("address").updateValueAndValidity();
-          this.order.reciverAddressId = dataReturned.address.id
-        }else{
+            this.address = dataReturned.address.region + ' , ' + dataReturned.address.street + ' , ' + this.towerText + '/' + dataReturned.address.building + ' , ' + this.floorText + '/' + dataReturned.address.floor + ' , ' + this.flatText + '/' + dataReturned.address.flatNumber + ' , ' + dataReturned.address.city
+            this.myForm.get("address").clearValidators();
+            this.myForm.get("address").updateValueAndValidity();
+            this.order.reciverAddressId = dataReturned.address.id
+          } else {
+            let alert = this._alert.create({
+              title: this.equalAddressesTitle,
+              message: this.equalAddressesMessage,
+              buttons: [
+                {
+                  text: this.ok,
+                  handler: () => {
+
+                  }
+                }
+              ]
+            });
+            alert.present();
+          }
+
+        } else {
           console.log("else");
-          
+
           this.modelReciverOpen = false;
         }
       });
@@ -267,15 +291,31 @@ export class DeliverFromToPage {
 
           this.modelSenderOpen = false;
 
-          this.senderAddress = dataReturned.address.region + ' , ' + dataReturned.address.street + ' , ' + this.towerText + '/' + dataReturned.address.building + ' , ' + this.floorText + '/' + dataReturned.address.floor + ' , ' + this.flatText + '/' + dataReturned.address.flatNumber + ' , ' + dataReturned.address.city
+          if (this.order.reciverAddressId != dataReturned.address.id) {
+            this.senderAddress = dataReturned.address.region + ' , ' + dataReturned.address.street + ' , ' + this.towerText + '/' + dataReturned.address.building + ' , ' + this.floorText + '/' + dataReturned.address.floor + ' , ' + this.flatText + '/' + dataReturned.address.flatNumber + ' , ' + dataReturned.address.city
 
-          this.myForm.get("senderAddress").clearValidators()
-          this.myForm.get("senderAddress").updateValueAndValidity();
+            this.myForm.get("senderAddress").clearValidators()
+            this.myForm.get("senderAddress").updateValueAndValidity();
 
-          this.order.senderAddressId = dataReturned.address.id
-        }else{
+            this.order.senderAddressId = dataReturned.address.id
+          } else {
+            let alert = this._alert.create({
+              title: this.equalAddressesTitle,
+              message: this.equalAddressesMessage,
+              buttons: [
+                {
+                  text: this.ok,
+                  handler: () => {
+
+                  }
+                }
+              ]
+            });
+            alert.present();
+          }
+        } else {
           console.log("else");
-          
+
           this.modelSenderOpen = false;
         }
       });
