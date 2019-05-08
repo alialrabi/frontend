@@ -1,4 +1,6 @@
 {
+    "NO_INTERNET_MESSAGE":"You can't continue while you are not connected to the internet , please check your connection",
+    "NO_INTERNET_TITLE":"Not Connected",
     "EQUAL_ADDRESSES_MESSAGE":"You Can't choose the same address to the sender and reciver",
     "EQUAL_ADDRESSES_TITLE":"Equal Addresses",
     "TAKE_ORDER_SUCCESS":"Order recived successfully",

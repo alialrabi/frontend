@@ -37,12 +37,12 @@
 <ion-content class="auth-page">
   <div class="login-content" *ngIf="!openMap">
 
-    <div padding text-center>
+    <!-- <div padding text-center>
       <div class="logo"></div>
       <h2 ion-text class="text-primary">
         {{ 'TLABATAC' | translate }}
       </h2>
-    </div>
+    </div> -->
 
 
     <form class="list-form" [formGroup]="myForm">
@@ -214,20 +214,25 @@
           <div #map id="map" [ngStyle]="mapStyle"></div>
         </ion-col>
       </ion-row>
-      <ion-row>
+      <ion-row  *ngIf="openMap">
           <ion-col col-4>
-              <div margin-top *ngIf="openMap">
+              <div margin-top>
                 <button ion-button block color="dark" tappable (click)="skip()" text-wrap >
                   {{ 'SKIP' | translate }}
                 </button>
               </div>
             </ion-col>
         <ion-col col-8>
-          <div margin-top *ngIf="openMap">
-            <button ion-button block color="dark" tappable text-wrap (click)="chooseLocation()" [disabled]="mainMarker == null">
-              {{ 'CHOOSE_LOCATION' | translate }}
-            </button>
-          </div>
+            <div margin-top *ngIf="!loadWithOutLocation">
+              <button ion-button block color="dark" tappable (click)="chooseLocation()" [disabled]="mainMarkerCheck()">
+                {{ 'CHOOSE_LOCATION' | translate }}
+              </button>
+            </div>
+            <div margin-top *ngIf="loadWithOutLocation">
+              <button ion-button block #chooseLocation id="chooseLocation" color="dark" tappable [disabled]="mainMarkerCheck()">
+                {{ 'CHOOSE_LOCATION' | translate }}
+              </button>
+            </div>
         </ion-col>
       </ion-row>
     </ion-grid>

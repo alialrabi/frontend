@@ -1,4 +1,6 @@
 {
+    "NO_INTERNET_MESSAGE":"لا يمكنك الاستمرار و انت غير متصل بالانترنت , من فضلك تاكد من اتصالك بالانترنت",
+    "NO_INTERNET_TITLE":"غير متصل",
     "EQUAL_ADDRESSES_MESSAGE":"لا يمكن اختيار نفس العنوان للمرسل و المستلم",
     "EQUAL_ADDRESSES_TITLE":"العناوين متشابهه",
     "TAKE_ORDER_SUCCESS":"تم استلام الطلب بنجاح",
