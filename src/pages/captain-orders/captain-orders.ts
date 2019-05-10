@@ -213,94 +213,154 @@ export class CaptainOrdersPage {
 
   getNotAssigned(status, pageNum) {
 
-    if (!this.isLoading) {
-      this.isLoading = true;
-
-    this.myVar = status;
-    let load;
     if (pageNum == 0) {
-      load = this.loading.create({
+      
+      this.myVar = status;
+
+      let load = this.loading.create({
         content: this.pleaseWait
 
 
       })
       load.present()
+
       this.ordersList = [];
       this.pageNum = 1;
-    }
 
-
-    console.log("orders");
-    console.log(this.captain);
-
-
-    this.orderService.getAllByStatus(status, this.captain.agencyId, false, pageNum).subscribe(res => {
-      console.log(res);
-      console.log("*************");
-      if (pageNum == 0) {
+      this.orderService.getAllByStatus(status, this.captain.agencyId, false, pageNum).subscribe(res => {
+        console.log(res);
+        console.log("*************");
         this.ordersList = res;
         load.dismiss();
-      } else {
-        if (res.length > 0) {
-          this.pageNum++;
-        }
-        res.forEach(element => {
-          this.ordersList.push(element);
-
-        });
-      }
-      this.isLoading = false;
-    }, err => {
-      console.log(err);
-      if (pageNum == 0) {
+      }, err => {
+        console.log(err);
         load.dismiss();
+
+      })
+
+
+
+    } else {
+
+
+
+      if (!this.isLoading) {
+        this.isLoading = true;
+
+        this.myVar = status;
+        let load;
+        if (pageNum == 0) {
+          load = this.loading.create({
+            content: this.pleaseWait
+
+
+          })
+          load.present()
+          this.ordersList = [];
+          this.pageNum = 1;
+        }
+
+
+        console.log("orders");
+        console.log(this.captain);
+
+
+        this.orderService.getAllByStatus(status, this.captain.agencyId, false, pageNum).subscribe(res => {
+          console.log(res);
+          console.log("*************");
+          if (pageNum == 0) {
+            this.ordersList = res;
+            load.dismiss();
+          } else {
+            if (res.length > 0) {
+              this.pageNum++;
+            }
+            res.forEach(element => {
+              this.ordersList.push(element);
+
+            });
+          }
+          this.isLoading = false;
+        }, err => {
+          console.log(err);
+          if (pageNum == 0) {
+            load.dismiss();
+          }
+        })
       }
-    })
-  }
+    }
   }
 
 
   getAllOrders(status, pageNum) {
 
+    if(pageNum == 0){
+
+      this.myVar = status;
+        let load = this.loading.create({
+          content: this.pleaseWait
+
+
+        })
+        load.present()
+        this.ordersList = [];
+        this.pageNum = 1;
+
+        this.orderService.getCaptainOrders(this.captain.id, status, pageNum).subscribe(res => {
+            this.ordersList = res;
+          
+            load.dismiss();
+          
+        }, err => {
+          console.log(err);
+            load.dismiss();
+          
+  
+        })
+      
+
+    }else{
+
     if (!this.isLoading) {
       this.isLoading = true;
-    this.myVar = status;
-    let load;
-    if (pageNum == 0) {
-      load = this.loading.create({
-        content: this.pleaseWait
+      this.myVar = status;
+      let load;
+      if (pageNum == 0) {
+        load = this.loading.create({
+          content: this.pleaseWait
 
+
+        })
+        load.present()
+        this.ordersList = [];
+        this.pageNum = 1;
+      }
+      this.orderService.getCaptainOrders(this.captain.id, status, pageNum).subscribe(res => {
+        if (pageNum == 0) {
+          this.ordersList = res;
+        } else {
+          if (res.length > 0) {
+            this.pageNum++;
+          }
+          res.forEach(element => {
+            this.ordersList.push(element);
+
+          });
+        }
+        if (pageNum == 0) {
+          load.dismiss();
+        }
+        this.isLoading = false;
+      }, err => {
+        console.log(err);
+        if (pageNum == 0) {
+          load.dismiss();
+        }
 
       })
-      load.present()
-      this.ordersList = [];
-      this.pageNum = 1;
     }
-    this.orderService.getCaptainOrders(this.captain.id, status, pageNum).subscribe(res => {
-      if (pageNum == 0) {
-        this.ordersList = res;
-      } else {
-        if (res.length > 0) {
-          this.pageNum++;
-        }
-        res.forEach(element => {
-          this.ordersList.push(element);
-
-        });
-      }
-      if (pageNum == 0) {
-        load.dismiss();
-      }
-      this.isLoading = false;
-    }, err => {
-      console.log(err);
-      if (pageNum == 0) {
-        load.dismiss();
-      }
-
-    })
+    }
   }
-}
 
   viewOrder(orders) {
     let items = [];

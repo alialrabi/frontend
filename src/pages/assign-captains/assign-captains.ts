@@ -60,6 +60,10 @@ export class AssignCaptainsPage {
   timeValue = '2002-09-23T00:00:00.000';
 
   isCordova = false;
+  cancel = ''
+
+  startTimePickerDialogOpen = false;
+  endTimePickerDialogOpen = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public _alert: AlertController, public datePicker: DatePicker, public platform: Platform, private principal: Principal, private app: App, private loading: LoadingController, private builder: FormBuilder, public captainService: CaptainService, public toastCtrl: ToastController, public translateService: TranslateService) {
 
@@ -78,13 +82,14 @@ export class AssignCaptainsPage {
     this.maxDate = CurrentYear + 1;
     this.minDate = CurrentYear;
 
-    this.translateService.get(['OK', 'CAPTAIN_BUSY', 'ASSIGN_CAPTAIN_ERROR', 'NOT_FREE_ON_TIME', 'ASSIGN_CAPTAIN_SUCCESS', 'PLEASE_WAIT']).subscribe((values) => {
+    this.translateService.get(['CANCEL', 'OK', 'CAPTAIN_BUSY', 'ASSIGN_CAPTAIN_ERROR', 'NOT_FREE_ON_TIME', 'ASSIGN_CAPTAIN_SUCCESS', 'PLEASE_WAIT']).subscribe((values) => {
       this.assignOrderError = values.ASSIGN_CAPTAIN_ERROR;
       this.assingOrderSuccess = values.ASSIGN_CAPTAIN_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
       this.notFreeMessage = values.NOT_FREE_ON_TIME
       this.captainBusyTitle = values.CAPTAIN_BUSY
       this.ok = values.OK
+      this.cancel = values.CANCEL
     })
 
 
@@ -157,8 +162,8 @@ export class AssignCaptainsPage {
 
     this.captainService.checkAssignCaptains(assignCaptains).subscribe(
       res => {
-        console.log("res ",res);
-        
+        console.log("res ", res);
+
         load.dismiss();
 
         this.dates.push(date)
@@ -170,11 +175,11 @@ export class AssignCaptainsPage {
         this.timeValue = '2002-09-23T00:00:00.000';
         console.log(this.dates, 'dartes');
 
-      } , err => {
+      }, err => {
         load.dismiss();
 
-        console.log("errrrrrrror" , err);
-        
+        console.log("errrrrrrror", err);
+
 
         let alert = this._alert.create({
           title: this.captainBusyTitle,
@@ -475,7 +480,7 @@ export class AssignCaptainsPage {
   }
   checkEqualTimes() {
     let ids = this.myForm.get("captainIds").value;
-    if (this.myForm.get("startTime").value == this.myForm.get("endTime").value || ids.length == 0 ) {
+    if (this.myForm.get("startTime").value == this.myForm.get("endTime").value || ids.length == 0) {
       return true;
     } else {
       return false;
@@ -484,48 +489,75 @@ export class AssignCaptainsPage {
   }
 
   showDateTimePicker(event) {
-    this.datePicker.show({
-      date: new Date(),
-      mode: 'time',
-      is24Hour: false,
-      androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
-    }).then(
-      date => {
-        console.log(date);
-        this.startDate = '';
-        this.startDate += date.getHours() > 9 ? date.getHours() : '0' + date.getHours()
-        this.startDate += ":";
-        this.startDate += date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes()
-        console.log(this.startDate);
+    console.log("222222888888");
+    if (!this.startTimePickerDialogOpen && !this.endTimePickerDialogOpen) {
+      console.log('6666666666');
+      this.startTimePickerDialogOpen = true;
 
+      this.datePicker.show({
+        date: new Date(),
+        mode: 'time',
+        is24Hour: false,
+        cancelText: this.cancel,
+        okText: this.ok,
+        androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
+      }).then(
+        date => {
+          console.log(date);
+          this.startDate = '';
+          this.startDate += date.getHours() > 9 ? date.getHours() : '0' + date.getHours()
+          this.startDate += ":";
+          this.startDate += date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes()
+          console.log(this.startDate);
+          this.startTimePickerDialogOpen = false;
 
-        //event.target.value = date 
+          //event.target.value = date 
 
-      },
-      err => console.log('Error occurred while getting date: ' + err)
-    )
+        },
+        err => {
+          this.startTimePickerDialogOpen = false;
+          console.log('Error occurred while getting date: ' + err)
+        }
+      )
+    }
   }
   showDateTimePickerEnd(event) {
-    this.datePicker.show({
-      date: new Date(),
-      mode: 'time',
-      is24Hour: false,
-      androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
-    }).then(
-      date => {
-        console.log(date);
-        this.endDate = '';
-        this.endDate += date.getHours() > 9 ? date.getHours() : '0' + date.getHours()
-        this.endDate += ":";
-        this.endDate += date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes()
-        console.log(this.endDate);
+    console.log("222222888888");
+    
+    if (!this.endTimePickerDialogOpen && !this.startTimePickerDialogOpen) {
+      console.log('5555555555555');
+      
+      this.endTimePickerDialogOpen = true;
 
+      this.datePicker.show({
+        date: new Date(),
+        mode: 'time',
+        is24Hour: false,
+        cancelButtonLabel: this.cancel,
+        cancelText: this.cancel,
+        okText: this.ok,
+        androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
+      }).then(
+        date => {
+          console.log(date);
+          this.endDate = '';
+          this.endDate += date.getHours() > 9 ? date.getHours() : '0' + date.getHours()
+          this.endDate += ":";
+          this.endDate += date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes()
+          console.log(this.endDate);
 
-        //event.target.value = date 
+          this.endTimePickerDialogOpen = false;
 
-      },
-      err => console.log('Error occurred while getting date: ' + err)
-    )
+          //event.target.value = date 
+
+        },
+        err => {
+          this.endTimePickerDialogOpen = false;
+          console.log('Error occurred while getting date: ' + err)
+
+        }
+      )
+    }
   }
 
 

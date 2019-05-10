@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, Renderer } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, App, Platform, ToastController, AlertController } from 'ionic-angular';
 import { UserAddressesPage } from '../user-addresses/user-addresses';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
@@ -23,6 +23,8 @@ declare var google;
 export class EditAddressPage {
 
   @ViewChild('map') elementRef: ElementRef;
+  @ViewChild('chooseLocation') chooseLocationelementRef: ElementRef;
+
 
   mapStyle = {
     height: "0%",
@@ -94,12 +96,14 @@ export class EditAddressPage {
   cityPlaceHolder = ''
 
   locationDisable = true;
+  loadWithOutLocation = false;
+  haveMarkerToLocation = false;
 
   dialogTitle = ''
   dialogMessage = ''
   ok = ''
 
-  constructor(public navCtrl: NavController, private loading: LoadingController, public _alert: AlertController,
+  constructor(public navCtrl: NavController, private loading: LoadingController, public renderer: Renderer , public _alert: AlertController,
     public navParams: NavParams, public locationAccuracy: LocationAccuracy, public addressService: AddressService, public toastCtrl: ToastController,
     public translateService: TranslateService, private app: App, public platform: Platform, private principal: Principal, private builder: FormBuilder) {
     this.address = this.navParams.get("item");
@@ -184,7 +188,7 @@ export class EditAddressPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad EditAddressPage');
     console.log(this.address.latitude, '');
-    if (this.platform.is("android") || this.platform.is("ios")) {
+    if (this.platform.is("cordova") && (this.platform.is("android") || this.platform.is("ios"))) {
       console.log("---------------------------");
       // this.locationAccuracy.canRequest().then((canRequest: any) => {
 
@@ -203,11 +207,11 @@ export class EditAddressPage {
           () => {
             console.log("success");
 
-            this.loadMap()
+            this.loadMap(this)
           }
           ,
           error => {
-            this.loadMapWithOutLocation();
+            this.loadMapWithOutLocation(this);
             console.log('Error requesting location permissions', error)
           }
         );
@@ -222,10 +226,10 @@ export class EditAddressPage {
         //   }
         // );
       } else {
-        this.loadMap();
+        this.loadMap(this);
       }
     } else {
-      this.loadMap();
+      this.loadMap(this);
     }
 
   }
@@ -247,7 +251,7 @@ export class EditAddressPage {
     // }
 
     if (this.map == null || this.map == undefined) {
-      this.loadMapWithOutLocation();
+      this.loadMapWithOutLocation(this);
     }
 
     this.mapStyle.height = "100%";
@@ -257,10 +261,10 @@ export class EditAddressPage {
 
   }
 
-  loadMap() {
+  loadMap(mainClass) {
 
     if (this.address.latitude != '0') {
-      var mainClass = this;
+     // var mainClass = this;
 
       let latLng = new google.maps.LatLng(Number.parseFloat(this.address.latitude), Number.parseFloat(this.address.longitude));
 
@@ -308,44 +312,50 @@ export class EditAddressPage {
 
     } else {
 
-      var mainClass = this;
       let options = { timeout: 30000, enableHighAccuracy: true };
 
       navigator.geolocation.getCurrentPosition(function (position) {
-
-
+  
+  
         let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         // mainClass.address.latitude = position.coords.latitude + '';
         // mainClass.address.longitude = position.coords.longitude + '';
-
+  
         let mapOptions = {
           center: latLng,
           zoom: 15
         }
-
-
+  
+  
         mainClass.map = new google.maps.Map(mainClass.elementRef.nativeElement, mapOptions);
-
+  
         // if (mainClass.checkLocation(position.coords.latitude, position.coords.longitude, true)) {
-
+  
         //   let marker = new google.maps.Marker({
         //     map: mainClass.map,
         //     animation: google.maps.Animation.DROP,
         //     position: mainClass.map.getCenter()
         //   });
-
+  
         //   mainClass.mainMarker = marker;
-
+        //   mainClass.haveMarkerToLocation = true;
+  
+        // }else{
+        //   mainClass.loadWithOutLocation = true;
         // }
         //  console.log(this.map , 'map');
         //  console.log(this.mainMarker , "marker");
 
+        mainClass.loadWithOutLocation = true;  
+
         var superclass = mainClass;
         google.maps.event.addListener(mainClass.map, 'click', function (event) {
-
+  
           if (superclass.checkLocation(event.latLng.lat(), event.latLng.lng(), false)) {
-
+  
+            let flag = true;
             if (superclass.mainMarker != null) {
+              flag = false;
               superclass.mainMarker.setMap(null);
             }
             var newmarker = new google.maps.Marker({
@@ -353,49 +363,60 @@ export class EditAddressPage {
               map: superclass.map
             });
             superclass.mainMarker = newmarker;
+            superclass.haveMarkerToLocation = true;
             superclass.address.latitude = event.latLng.lat();
             superclass.address.longitude = event.latLng.lng();
+            
+            superclass.chooseLocationelementRef._elementRef.nativeElement.disabled = false
+            if (flag) {
+              superclass.renderer.listen(superclass.chooseLocationelementRef._elementRef.nativeElement, 'click', (event) => {
+                superclass.chooseLocation()
+              })
+            }
           }
-          console.log(superclass.address);
         });
-
+  
         mainClass.locationDisable = false;
-        console.log(mainClass.locationDisable);
-
-
-
+  
+  
+  
       }, function (err) {
         console.log(err, 'errrrrrrrrrrrrrrrrrrrrrrrrrrror');
-        mainClass.loadMapWithOutLocation();
-
+        mainClass.loadMapWithOutLocation(mainClass);
+  
         // let toast = mainClass.toastCtrl.create({
         //   message: "error " + err.message,
         //   duration: 10000,
         //   position: 'top'
         // });
         // toast.present();
-
+  
       }
       );
-    }
+      }
 
   }
 
-  loadMapWithOutLocation() {
+  loadMapWithOutLocation(mainClass) {
+    console.log("************************");
 
-    var mainClass = this;
+    mainClass.loadWithOutLocation = true;
 
     let latLng = new google.maps.LatLng(31.214262511126286, 29.98716374830485);
-    // mainClass.address.latitude = 31.214262511126286 + '';
-    // mainClass.address.longitude = 29.98716374830485 + '';
+    mainClass.address.latitude = 31.214262511126286 + '';
+    mainClass.address.longitude = 29.98716374830485 + '';
 
     let mapOptions = {
       center: latLng,
       zoom: 15
     }
+    console.log("2222222222222222222222");
+
 
 
     mainClass.map = new google.maps.Map(mainClass.elementRef.nativeElement, mapOptions);
+    console.log("333333333333333333333");
+
 
 
     var superclass = mainClass;
@@ -403,7 +424,10 @@ export class EditAddressPage {
 
       if (superclass.checkLocation(event.latLng.lat(), event.latLng.lng(), false)) {
 
+        let flag = true;
+
         if (superclass.mainMarker != null) {
+          flag = false;
           superclass.mainMarker.setMap(null);
         }
         var newmarker = new google.maps.Marker({
@@ -411,8 +435,18 @@ export class EditAddressPage {
           map: superclass.map
         });
         superclass.mainMarker = newmarker;
+        superclass.haveMarkerToLocation = true
+
+        superclass.chooseLocationelementRef._elementRef.nativeElement.disabled = false
+        if (flag) {
+          superclass.renderer.listen(superclass.chooseLocationelementRef._elementRef.nativeElement, 'click', (event) => {
+            superclass.chooseLocation()
+          })
+        }
+
         superclass.address.latitude = event.latLng.lat();
         superclass.address.longitude = event.latLng.lng();
+
       }
     });
 
@@ -694,6 +728,13 @@ export class EditAddressPage {
       return false;
     } else {
       return true;
+    }
+  }
+  mainMarkerCheck() {
+    if (this.mainMarker == null) {
+      return true;
+    } else {
+      return false;
     }
   }
 

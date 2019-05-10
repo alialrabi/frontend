@@ -12,6 +12,7 @@ import { User } from '../../providers/user/user';
 import { AccountService } from '../../providers/auth/account.service';
 import { CaptainDetailsPage } from '../captain-details/captain-details';
 import { MyApp } from '../../app/app.component';
+import { Ng2ImgMaxService } from 'ng2-img-max';
 
 /**
  * Generated class for the EditCaptainPage page.
@@ -80,6 +81,7 @@ export class EditCaptainPage {
     , public imagePicker: ImagePicker, public camera: Camera, public toastCtrl: ToastController,
     public captainService: CaptainService,
     private loading: LoadingController,
+    private ng2ImgMaxService: Ng2ImgMaxService ,
     private backgroundMode: BackgroundMode,
     private device: Device,
     private platform: Platform,
@@ -195,10 +197,12 @@ export class EditCaptainPage {
     // }
 
     const options: CameraOptions = {
-      quality: 100,
+      quality: 65,
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
+      targetWidth: 600,
+      targetHeight: 600
     }
     //this.backgroundMode.enable();
 
@@ -365,19 +369,27 @@ export class EditCaptainPage {
     element.click()
   }
   readThis(inputValue: any): void {
-    var file:File = inputValue.files[0];
-    var myReader:FileReader = new FileReader();
-  
-    myReader.onloadend = (e) => {
-      this.captain.image =myReader.result.substr(myReader.result.indexOf(',')+1);
-      //this.captain.imageContentType = 'fromBrowser'
-      console.log(myReader);
-      
-      console.log(this.captain.image);
-    }
-    myReader.readAsDataURL(file);
-    
-    
+    console.log("**************************");
+
+    var file: File = inputValue.files[0];
+    this.ng2ImgMaxService.resize([file], 300, 300).subscribe((result) => {
+      console.log("result", result);
+
+
+      var myReader: FileReader = new FileReader();
+
+      myReader.onloadend = (e) => {
+        console.log("--------------------");
+
+        this.captain.image = myReader.result.substr(myReader.result.indexOf(',') + 1)
+
+        //this..imageContentType = 'fromBrowser'
+        console.log(myReader);
+
+      }
+      myReader.readAsDataURL(result);
+
+    })
   }
 
 }

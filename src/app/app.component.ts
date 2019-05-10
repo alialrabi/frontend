@@ -625,7 +625,7 @@ export class MyApp {
   updateLocation(classIn) {
 
 
-    if (this.platform.is("android") || this.platform.is("ios")) {
+    if (this.platform.is("cordova") && (this.platform.is("android") || this.platform.is("ios"))) {
       console.log("---------------------------");
 
       // this.locationAccuracy.canRequest().then((canRequest: any) => {
@@ -718,7 +718,7 @@ export class MyApp {
   updateLocationTimer(classIn) {
     console.log("updateLocationTimer");
 
-    if (this.platform.is('android')) {
+    if (this.platform.is('android') && this.platform.is('cordova')) {
       console.log("android");
       console.log("device version ", this.device.version);
       console.log("pltform ", this.device.platform.toLowerCase());

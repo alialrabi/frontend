@@ -96,20 +96,21 @@
         <ion-label stacked color="primary">End</ion-label>
         <ion-input [(ngModel)]="endDate" formControlName="endTime" type="text" placeholder="Enter end date" readonly="readonly" (focus)="$event.stopPropagation(); showDateTimePicker($event)"></ion-input>
       </ion-item> -->
-      <ion-item *ngIf="isCordova">
+      <!-- $event.stopPropagation(); -->
+      <ion-item *ngIf="isCordova" (click)="showDateTimePicker($event)">
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="calendar" item-start class="text-primary"></ion-icon>
           {{ 'START_TIME' | translate }}
         </ion-label>
-        <ion-input [(ngModel)]="startDate" [lang]="language" [dir]="direction" formControlName="startTime" type="text" readonly (focus)="$event.stopPropagation(); showDateTimePicker($event)"></ion-input>
+        <ion-input [(ngModel)]="startDate" [lang]="language" [dir]="direction" formControlName="startTime" type="text" readonly (ionFocus)="showDateTimePicker($event)"></ion-input>
       </ion-item>
       <p class="validationHint" *ngIf="isCordova && hasError('startTime', 'required')"> {{ 'REQURIED' | translate }} </p>
-      <ion-item *ngIf="isCordova">
+      <ion-item *ngIf="isCordova" (click)="showDateTimePickerEnd($event)">
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="calendar" item-start class="text-primary"></ion-icon>
           {{ 'END_TIME' | translate }}
         </ion-label>
-        <ion-input [(ngModel)]="endDate" [lang]="language" [dir]="direction" formControlName="endTime" type="text" readonly (focus)="$event.stopPropagation(); showDateTimePickerEnd($event)"></ion-input>
+        <ion-input [(ngModel)]="endDate" [lang]="language" [dir]="direction" formControlName="endTime" type="text" readonly  (ionFocus)="showDateTimePickerEnd($event)"></ion-input>
       </ion-item>
       <p class="validationHint" *ngIf="isCordova && hasError('endTime', 'required')"> {{ 'REQURIED' | translate }} </p>
 

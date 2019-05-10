@@ -26,6 +26,7 @@ import { DeviceTockenService } from '../../providers/auth/deviceToken.service';
 import { FCM } from '@ionic-native/fcm';
 import { ForgetPasswordPage } from '../forget-password/forget-password';
 import { AddUserPhonePage } from '../add-user-phone/add-user-phone';
+import { AdminDashboardPage } from '../admin-dashboard/admin-dashboard';
 
 
 @IonicPage()
@@ -72,7 +73,7 @@ export class LoginPage {
     public deviceTokenService: DeviceTockenService,
     private accountService: AccountService, private captainService: CaptainService, public myApp: MyApp) {
 
-    this.translateService.get(['LOGIN_ERROR', 'PLEASE_WAIT', 'NO_EMAIL_MESSAGE' , 'EXISTING_USER_ERROR']).subscribe((values) => {
+    this.translateService.get(['LOGIN_ERROR', 'PLEASE_WAIT', 'NO_EMAIL_MESSAGE', 'EXISTING_USER_ERROR']).subscribe((values) => {
       this.loginErrorString = values.LOGIN_ERROR;
       this.pleaseWait = values.PLEASE_WAIT;
       this.noEmailMessage = values.NO_EMAIL_MESSAGE
@@ -166,6 +167,25 @@ export class LoginPage {
             //this.app.getRootNavs()[0].setRoot(AgenciesPage);
             this.addToken('Admin', account)
           }
+        } else {
+          // if (account.authorities[0] === 'ROLE_CAPTAIN') {
+
+          //   this.app.getRootNavs()[0].setRoot(CaptainOrdersPage);
+
+          // } else if (account.authorities[0] == 'ROLE_AGENCY') {
+          //   this.app.getRootNavs()[0].setRoot(OrdersPage);
+          // } else if (account.authorities[0] == 'ROLE_USER' && account.authorities.length == 1) {
+          //   if (account.phone == null || account.phone == '') {
+          //     this.navCtrl.setRoot("AddUserPhonePage")
+          //   } else {
+          //     this.navCtrl.setRoot("UserOrdersPage")
+          //   }
+          // }
+          // else {
+          //   this.app.getRootNavs()[0].setRoot(AdminDashboardPage);
+          // }
+          this.myApp.checkAccess();
+          
         }
 
       }
@@ -425,21 +445,21 @@ export class LoginPage {
 
       const error = JSON.parse(err.error);
       if (err.status === 400 && error.type.includes('already-used')) {
-          let toast = this.toastCtrl.create({
-            message: this.existingUserError,
-            duration: 3000,
-            position: 'top'
+        let toast = this.toastCtrl.create({
+          message: this.existingUserError,
+          duration: 3000,
+          position: 'top'
         });
         toast.present();
 
-      }else{
+      } else {
 
-      // Unable to sign up
-      console.log(err);
-      if (first) {
-        this.doLoginToFacebook(false);
+        // Unable to sign up
+        console.log(err);
+        if (first) {
+          this.doLoginToFacebook(false);
+        }
       }
-    }
 
     })
 
