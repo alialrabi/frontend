@@ -39,6 +39,7 @@ export class SignupPage {
   private signupSuccessString: string;
   private existingUserError: string;
   private invalidPasswordError: string;
+  public phoneNumberExists = '';
 
   language = MyApp.language
   direction = MyApp.direction
@@ -73,13 +74,14 @@ export class SignupPage {
     private builder: FormBuilder) {
 
     this.translateService.get(['SIGNUP_ERROR', 'SIGNUP_SUCCESS',
-      'EXISTING_USER_ERROR', 'INVALID_PASSWORD_ERROR', 'PLEASE_WAIT', 'NO_EMAIL_MESSAGE']).subscribe((values) => {
+      'EXISTING_USER_ERROR', 'INVALID_PASSWORD_ERROR', 'PLEASE_WAIT', 'NO_EMAIL_MESSAGE' , 'PHONE_NUMBER_USED']).subscribe((values) => {
         this.signupErrorString = values.SIGNUP_ERROR;
         this.signupSuccessString = values.SIGNUP_SUCCESS;
         this.existingUserError = values.EXISTING_USER_ERROR;
         this.invalidPasswordError = values.INVALID_PASSWORD_ERROR;
         this.pleaseWait = values.PLEASE_WAIT;
         this.noEmailMessage = values.NO_EMAIL_MESSAGE
+        this.phoneNumberExists = values.PHONE_NUMBER_USED
       })
 
     this.myForm = builder.group({
@@ -141,6 +143,9 @@ export class SignupPage {
 
       const error = JSON.parse(err.error);
       let displayError = this.signupErrorString;
+     if (err.status === 400 && error.errorKey.includes("phoneexists")) {
+        displayError = this.phoneNumberExists;
+      }else
       if (err.status === 400 && error.type.includes('already-used')) {
         displayError = this.existingUserError;
       } else if (err.status === 400 && error.message === 'error.validation'

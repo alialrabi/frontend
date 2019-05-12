@@ -94,11 +94,18 @@ export class AddAddressPage {
   dialogMessage = ''
   ok = ''
 
+  isCordova = false;
+
+
   constructor(public navCtrl: NavController, private loading: LoadingController, public renderer: Renderer , public _alert: AlertController,
     public navParams: NavParams, public locationAccuracy: LocationAccuracy, public addressService: AddressService, public toastCtrl: ToastController,
     public translateService: TranslateService, private app: App, public platform: Platform, private principal: Principal, private builder: FormBuilder) {
     this.to = this.navParams.get("address");
 
+    if (this.platform.is("cordova") && this.platform.is("android")) {
+      this.isCordova = true;
+    }
+    
     this.translateService.get(['ADD_ADDRESS_ERROR', 'ADD_ADDRESS_SUCCESS',
       'EGYPT', 'ALEX', 'CAIRO', 'TANTA', 'DAMNHOR', 'SHIPIN_ELKOM',
       'BANHA', 'PLEASE_WAIT',

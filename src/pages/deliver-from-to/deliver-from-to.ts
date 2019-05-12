@@ -84,6 +84,8 @@ export class DeliverFromToPage {
   equalAddressesMessage = ''
   ok = ''
 
+  isCordova = false;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public _alert: AlertController
     , public toastCtrl: ToastController,
     private loading: LoadingController,
@@ -96,6 +98,10 @@ export class DeliverFromToPage {
     public modalController: ModalController,
     public deviceTokenService: DeviceTockenService,
     public translateService: TranslateService, private app: App, private builder: FormBuilder) {
+
+      if (this.platform.is("cordova") && this.platform.is("android")) {
+        this.isCordova = true;
+      }
 
     if (platform.is("cordova")) {
       this.platformType = "cordova";

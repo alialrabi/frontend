@@ -21,8 +21,13 @@ export class OrderKindPage {
 
   language = MyApp.language
   direction = MyApp.direction
+  isCordova = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams ,  public platform:Platform) {
+
+    if(this.platform.is("cordova") && this.platform.is("android")){
+      this.isCordova = true;
+    }
 
     this.platform.registerBackButtonAction(() => {
       this.navCtrl.setRoot(UserOrdersPage);

@@ -24,10 +24,18 @@ export class AddressesSelectorComponent {
 
   account;
 
+  isCordova = false;
+
+  
+
   constructor(public viewCtrl: ViewController, public navParams: NavParams, public platform:Platform, public modalController: ModalController) {
 
     this.addresses = navParams.get("addresses");
     this.account = navParams.get("user");
+
+    if (this.platform.is("cordova") && this.platform.is("android")) {
+      this.isCordova = true;
+    }
 
     this.platform.registerBackButtonAction(() => {
         this.back();

@@ -103,12 +103,19 @@ export class EditAddressPage {
   dialogMessage = ''
   ok = ''
 
+  isCordova = false;
+
+
   constructor(public navCtrl: NavController, private loading: LoadingController, public renderer: Renderer , public _alert: AlertController,
     public navParams: NavParams, public locationAccuracy: LocationAccuracy, public addressService: AddressService, public toastCtrl: ToastController,
     public translateService: TranslateService, private app: App, public platform: Platform, private principal: Principal, private builder: FormBuilder) {
     this.address = this.navParams.get("item");
     this.alex = this.getCity(this.address.city);
     console.log(this.alex, 'ssssssss');
+
+    if (this.platform.is("cordova") && this.platform.is("android")) {
+      this.isCordova = true;
+    }
 
     this.flat = this.getLivingType(this.address.livingType)
 

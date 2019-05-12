@@ -12,8 +12,8 @@
           </ion-buttons>
         </ion-col>
         <ion-col col-11 [style.margin-top]="language == 'en' ? '5px' : '2px'">
-          <ion-title *ngIf="!openMap">{{ 'ADD_ADDRESS' | translate }}</ion-title>
-          <ion-title *ngIf="openMap">{{ 'MAP' | translate }}</ion-title>
+          <ion-title *ngIf="!openMap" [style.margin-top]="!isCordova && language != 'en' ? '3px' : '0px'">{{ 'ADD_ADDRESS' | translate }}</ion-title>
+          <ion-title *ngIf="openMap" [style.margin-top]="!isCordova && language != 'en' ? '3px' : '0px'">{{ 'MAP' | translate }}</ion-title>
         </ion-col>
       </ion-row>
     </ion-grid>

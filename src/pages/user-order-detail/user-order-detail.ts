@@ -56,9 +56,15 @@ export class UserOrderDetailPage {
   notSupported = ''
   noLocationAvilable = ''
 
+  isCordova = false;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private _alert:AlertController , private orderService:UserOrderService , public toastCtrl: ToastController , private deviceTokenService:DeviceTockenService , private loading: LoadingController  ,private platform:Platform , private translateService:TranslateService) {
     this.order = navParams.get('item');
     this.userType = navParams.get('userType');
+
+    if(this.platform.is("cordova") && this.platform.is("android")){
+      this.isCordova = true;
+    }
 
     this.platform.registerBackButtonAction(() => {
       this.navCtrl.setRoot(UserOrdersPage);

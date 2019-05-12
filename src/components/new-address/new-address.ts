@@ -89,11 +89,18 @@ export class NewAddressComponent {
   locationDisable = true;
   haveMarkerToLocation = false;
 
+  isCordova = false;
+
+
   constructor(private loading: LoadingController, public viewCtrl: ViewController, public renderer: Renderer, private _alert: AlertController,
     public navParams: NavParams, public locationAccuracy: LocationAccuracy, public addressService: AddressService, public toastCtrl: ToastController,
     public translateService: TranslateService, private app: App, public platform: Platform, private principal: Principal, private builder: FormBuilder) {
     this.user = this.navParams.get("user");
     console.log(this.user);
+
+    if (this.platform.is("cordova") && this.platform.is("android")) {
+      this.isCordova = true;
+    }
 
     this.platform.registerBackButtonAction(() => {
       this.back();
