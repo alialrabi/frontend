@@ -37,12 +37,18 @@ export class CaptainEvaluationPage {
   language = MyApp.language
   direction = MyApp.direction
 
+  isCordova = false;
+
   constructor(public navCtrl: NavController, public navParams: NavParams , public toastCtrl: ToastController, 
     public captainService:CaptainService ,private loading: LoadingController , private app:App , public platform:Platform,
      public translateService: TranslateService , private builder: FormBuilder ) {
 
       this.captain = this.navParams.get("item");
       this.getEvaluation(this.captain.id);
+
+      if (this.platform.is("cordova") && this.platform.is("android")) {
+        this.isCordova = true;
+      }
 
       this.translateService.get(['EDIT_EVALUATION_ERROR', 'EDIT_EVALUATION_SUCCESS' , 'PLEASE_WAIT']).subscribe((values) => {
          this.editEvaluationError = values.EDIT_EVALUATION_ERROR;

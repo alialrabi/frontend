@@ -22,8 +22,8 @@
             </button>
           </ion-buttons>
         </ion-col>
-        <ion-col col-11 [style.margin-top]="agency != null && agency != undefined  && language == 'en' ? '10px' : '0px'">
-          <ion-title *ngIf="agency != null" [style.margin-top]="language == 'ar' ? '7px' : '0px'">{{ 'AGENCY_CAPTAINS' | translate }}</ion-title>
+        <ion-col col-11 [style.margin-top]="agency != null && agency != undefined  && language == 'en' ? '10px' : '7px'">
+          <ion-title *ngIf="agency != null" [style.margin-top]="!isCordova && language != 'en' ? '2px' : '0px'">{{ 'AGENCY_CAPTAINS' | translate }}</ion-title>
           <ion-title *ngIf="agency == null">{{ 'YOUR_CAPTAINS' | translate }}</ion-title>
         </ion-col>
       </ion-row>
@@ -89,12 +89,17 @@
                 <strong text-wrap>{{captain.code}}</strong>
               </p>
 
+              <p *ngIf="captain.unAssignDetails == 'This Captain is unAssigned because the Admin is unassign him'">
+                {{'STATUS' | translate}} :
+                <strong text-wrap>{{'UN_ASSIGNED_FROM_TOMMROW' | translate}}</strong>
+              </p>
+
             </div>
           </ion-col>
         </ion-row>
 
 
-        <ion-row>
+        <ion-row *ngIf="captain.unAssignDetails == undefined || captain.unAssignDetails == null || captain.unAssignDetails == ''">
           <ion-col col-12>
             <ion-buttons class="btn-style" style="width: 100%;padding: 0px;">
               <button ion-button (click)="unAssingCaptain(captain)" style="width: 100%;padding: 0px;">

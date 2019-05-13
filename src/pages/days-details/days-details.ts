@@ -47,7 +47,13 @@ export class DaysDetailsPage {
   agencyId = 0;
   captainId = 0;
 
+  isCordova = false;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController, public _alert: AlertController , public platform: Platform, private loading: LoadingController, public translateService: TranslateService, public accountService: AccountService, public captainService: CaptainService) {
+
+    if (this.platform.is("cordova") && this.platform.is("android")) {
+      this.isCordova = true;
+    }
 
     this.from = navParams.get("from");
     this.captain = navParams.get("captain");

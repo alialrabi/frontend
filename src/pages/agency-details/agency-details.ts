@@ -41,8 +41,14 @@ export class AgencyDetailsPage {
   item;
   togglePassword=true;
 
+  isCordova = false;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public platform:Platform
     , private loading: LoadingController, public translateService: TranslateService, public accountService: AccountService) {
+
+      if (this.platform.is("cordova") && this.platform.is("android")) {
+        this.isCordova = true;
+      }
 
     this.item = navParams.get("item");
 

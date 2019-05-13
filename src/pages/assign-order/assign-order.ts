@@ -51,6 +51,8 @@ export class AssignOrderPage {
   userDetailIemParam;
   userDetailUserTypeParam;
 
+  isCordova = false;
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams , private deviceTokenService:DeviceTockenService , public platform:Platform , public userOrderService:UserOrderService,
     private builder: FormBuilder , public captainService:CaptainService  ,private loading: LoadingController , private app: App, private principal: Principal, public toastCtrl: ToastController , public translateService: TranslateService , public orderService:OrderService ) {
@@ -60,6 +62,9 @@ export class AssignOrderPage {
       this.userDetailIemParam = this.navParams.get('order')
       this.userDetailUserTypeParam = this.navParams.get('userType')
 
+      if (this.platform.is("cordova") && this.platform.is("android")) {
+        this.isCordova = true;
+      }
 
     this.translateService.get(['ASSIGN_ORDER_ERROR', 'ASSIGN_ORDER_SUCCESS' , 'PLEASE_WAIT' , 'NOT_WORKING' , 'ON_BACK_WAY' , 'AT_MARKET' , 'BUSY']).subscribe((values) => {
       this.assignOrderError = values.ASSIGN_ORDER_ERROR;

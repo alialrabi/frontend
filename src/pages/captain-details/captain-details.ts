@@ -48,10 +48,16 @@ export class CaptainDetailsPage {
   user;
   userType="agency";
 
+  isCordova = false;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public app:App , public principal:Principal , public platform: Platform,
     private loading: LoadingController, public translateService: TranslateService, public captainService: CaptainService) {
 
     this.item = navParams.get("item");
+
+    if (this.platform.is("cordova") && this.platform.is("android")) {
+      this.isCordova = true;
+    }
 
     this.translateService.get(['PLEASE_WAIT']).subscribe((values) => {
 

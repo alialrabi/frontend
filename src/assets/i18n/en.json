@@ -1,4 +1,5 @@
 {
+    "UN_ASSIGNED_FROM_TOMMROW":"Admin unassign him from tommorow",
     "ADD_PHONE_NUMBER_ERROR":"Error in adding phone number",
     "ADD_PHONE_NUMBER_SUCCESS":"Phone Number added successfully",
     "PHONE_NUMBER_USED":"This Phone number is used with another user",

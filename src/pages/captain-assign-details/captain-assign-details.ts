@@ -59,9 +59,16 @@ export class CaptainAssignDetailsPage {
   periodFinishMessage = ''
   adminDeletedAllDays = ''
 
+  isCordova = false;
+
   constructor(public navCtrl: NavController,  public toastCtrl: ToastController, public _alert: AlertController , public navParams: NavParams, private builder: FormBuilder, public platform: Platform, private loading: LoadingController, public translateService: TranslateService, public accountService: AccountService, public captainService: CaptainService) {
 
     this.captain = navParams.get("item");
+
+    if (this.platform.is("cordova") && this.platform.is("android")) {
+      this.isCordova = true;
+    }
+
     if(this.language == 'en'){
       this.side = "right";
     }else{

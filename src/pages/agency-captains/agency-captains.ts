@@ -50,9 +50,16 @@ export class AgencyCaptainsPage {
   todayMessage = '';
   tommorowMessage = '';
 
+  isCordova = false;
+
+
   constructor(public navCtrl: NavController, public _alert: AlertController , public navParams: NavParams, public platform: Platform, private principal: Principal, private app: App, private loading: LoadingController, public toastCtrl: ToastController, public captainService: CaptainService, public translateService: TranslateService) {
 
     this.agency = this.navParams.get("item");
+
+    if (this.platform.is("cordova") && this.platform.is("android")) {
+      this.isCordova = true;
+    }
 
     console.log('agency 3', this.agency);
 

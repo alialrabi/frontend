@@ -30,6 +30,10 @@ export class EditAddressPage {
     height: "0%",
     width: "0%"
   }
+  mapStyle1 = {
+    height: "0%",
+    width: "0%"
+  }
   map: any;
   openMap = false;
   mainMarker = null;
@@ -181,6 +185,8 @@ export class EditAddressPage {
         if (this.openMap) {
           this.mapStyle.height = "0%";
           this.mapStyle.width = "0%";
+          this.mapStyle1.height = "0%";
+          this.mapStyle1.width = "0%";
 
           this.openMap = false;
 
@@ -263,6 +269,9 @@ export class EditAddressPage {
 
     this.mapStyle.height = "100%";
     this.mapStyle.width = "100%";
+
+    this.mapStyle1.height = "95%";
+    this.mapStyle1.width = "100%";
 
     this.openMap = true;
 
@@ -579,6 +588,8 @@ export class EditAddressPage {
     if (this.openMap) {
       this.mapStyle.height = "0%";
       this.mapStyle.width = "0%";
+      this.mapStyle1.height = "0%";
+      this.mapStyle1.width = "0%";
       this.openMap = false;
 
     } else {
