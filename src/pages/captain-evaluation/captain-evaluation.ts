@@ -44,7 +44,7 @@ export class CaptainEvaluationPage {
      public translateService: TranslateService , private builder: FormBuilder ) {
 
       this.captain = this.navParams.get("item");
-      this.getEvaluation(this.captain.id);
+      
 
       if (this.platform.is("cordova") && this.platform.is("android")) {
         this.isCordova = true;
@@ -55,6 +55,8 @@ export class CaptainEvaluationPage {
          this.editEvaluationSuccess = values.EDIT_EVALUATION_SUCCESS;
          this.pleaseWait = values.PLEASE_WAIT
       })
+
+      this.getEvaluation(this.captain.id);
 
       this.myForm = builder.group({
         'moral': ['', [Validators.required , Validators.pattern("[1-5]{1}")]],
