@@ -25,9 +25,12 @@ export class ForgetPasswordPage {
   direction = MyApp.direction
 
   myForm: FormGroup;
+  myForm1: FormGroup;
 
   private forgetEroor: string;
   private forgetSuccess: string;
+  private forgetEroorPhone: string;
+  private forgetSuccessPhone: string;
 
   pleaseWait
 
@@ -40,16 +43,22 @@ export class ForgetPasswordPage {
         
       })  
       
-      this.translateService.get(['PLEASE_WAIT', 'FORGET_PASSWORD_ERROR' , 'FORGET_PASSWORD_SUCCESS' ]).subscribe((values) => {
+      this.translateService.get(['PLEASE_WAIT', 'FORGET_PASSWORD_ERROR' , 'FORGET_PASSWORD_SUCCESS' , 'FORGET_PASSWORD_BY_PHONE_ERROR' , 'FORGET_PASSWORD_BY_PHONE_SUCCESS' ]).subscribe((values) => {
        
         this.pleaseWait = values.PLEASE_WAIT
         this.forgetEroor = values.FORGET_PASSWORD_ERROR
         this.forgetSuccess = values.FORGET_PASSWORD_SUCCESS
+        this.forgetEroorPhone = values.FORGET_PASSWORD_BY_PHONE_ERROR
+        this.forgetSuccessPhone = values.FORGET_PASSWORD_BY_PHONE_SUCCESS
         
       })
   
       this.myForm = builder.group({
         'email': ['', [ Validators.required , Validators.email]],
+        
+      });
+      this.myForm1 = builder.group({
+        'phone': ['', [ Validators.required , Validators.pattern("(01)[0-9]{9}")]],
         
       });
 
@@ -110,12 +119,65 @@ export class ForgetPasswordPage {
     )
 
   }
+  sendSMS(){
+
+    let load = this.loading.create({
+      content: this.pleaseWait
+
+
+    })
+    load.present()
+    this.loginService.logout();
+
+    let mailModel = {
+      phone:this.myForm1.get("phone").value
+    }
+    this.accountService.forgetPasswordByPhone(mailModel).subscribe(
+      res =>{
+        load.dismiss();
+
+        let toast = this.toastCtrl.create({
+          message: this.forgetSuccessPhone,
+          duration: 3000,
+          position: 'top'
+        });
+        toast.present();
+        this.navCtrl.setRoot(LoginPage);
+
+      }, err =>{
+        console.log(err , 'errrrror');
+        load.dismiss();
+
+        if(err.status == 504){
+
+          let toast = this.toastCtrl.create({
+            message: this.forgetSuccessPhone,
+            duration: 3000,
+            position: 'top'
+          });
+          toast.present();
+          this.navCtrl.setRoot(LoginPage);
+        }else{
+
+        let toast = this.toastCtrl.create({
+          message: this.forgetEroorPhone,
+          duration: 3000,
+          position: 'top'
+        });
+        toast.present();
+      }
+
+      }
+    )
+
+
+  }
 
   back(){
     this.navCtrl.setRoot(LoginPage);
   }
-  hasError(field: string, error: string) {
-    const ctrl = this.myForm.get(field);
+  hasError(field: string, error: string , form) {
+    const ctrl = form.get(field);
     return ctrl.dirty && ctrl.hasError(error);
   }
 

@@ -51,15 +51,24 @@ export class AssignOrderPage {
   userDetailIemParam;
   userDetailUserTypeParam;
 
+  isCordova = false;
+
+  myVar
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams , private deviceTokenService:DeviceTockenService , public platform:Platform , public userOrderService:UserOrderService,
     private builder: FormBuilder , public captainService:CaptainService  ,private loading: LoadingController , private app: App, private principal: Principal, public toastCtrl: ToastController , public translateService: TranslateService , public orderService:OrderService ) {
 
       this.order = this.navParams.get("item");
       this.from = this.navParams.get("from");
+      this.myVar = this.navParams.get("myVar");
+
       this.userDetailIemParam = this.navParams.get('order')
       this.userDetailUserTypeParam = this.navParams.get('userType')
 
+      if (this.platform.is("cordova") && this.platform.is("android")) {
+        this.isCordova = true;
+      }
 
     this.translateService.get(['ASSIGN_ORDER_ERROR', 'ASSIGN_ORDER_SUCCESS' , 'PLEASE_WAIT' , 'NOT_WORKING' , 'ON_BACK_WAY' , 'AT_MARKET' , 'BUSY']).subscribe((values) => {
       this.assignOrderError = values.ASSIGN_ORDER_ERROR;
@@ -80,12 +89,12 @@ export class AssignOrderPage {
 
     this.platform.registerBackButtonAction(() => {
       if(this.userType == 'Agency'){
-        this.navCtrl.setRoot(OrdersPage);
+        this.navCtrl.setRoot(OrdersPage , { myVar:this.myVar} );
         }else{
           if(this.from == 'UserOrderDetailPage'){
-            this.navCtrl.setRoot(UserOrderDetailPage , {item:this.userDetailIemParam , userType:this.userDetailUserTypeParam});
+            this.navCtrl.setRoot(UserOrderDetailPage , {item:this.userDetailIemParam , userType:this.userDetailUserTypeParam , myVar:this.myVar});
           }else{
-          this.navCtrl.setRoot(UserOrdersPage);
+          this.navCtrl.setRoot(UserOrdersPage , { myVar:this.myVar} );
           }
         }
     });
@@ -371,12 +380,12 @@ export class AssignOrderPage {
   }
   back(){
     if(this.userType == 'Agency'){
-    this.navCtrl.setRoot(OrdersPage);
+    this.navCtrl.setRoot(OrdersPage , { myVar:this.myVar});
     }else{
       if(this.from == 'UserOrderDetailPage'){
-        this.navCtrl.setRoot(UserOrderDetailPage , {item:this.userDetailIemParam , userType:this.userDetailUserTypeParam});
+        this.navCtrl.setRoot(UserOrderDetailPage , {item:this.userDetailIemParam , userType:this.userDetailUserTypeParam , myVar:this.myVar});
       }else{
-      this.navCtrl.setRoot(UserOrdersPage);
+      this.navCtrl.setRoot(UserOrdersPage , { myVar:this.myVar});
       }
     }
   }

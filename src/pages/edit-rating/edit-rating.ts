@@ -44,12 +44,18 @@ export class EditRatingPage {
   from
 
   pleaseWait
+
+  isCordova = false;
   
 
   constructor(public navCtrl: NavController, public navParams: NavParams , private builder: FormBuilder
      , private translateService:TranslateService,
      private userOrderService:UserOrderService , private loading: LoadingController,  private platform: Platform, public toastCtrl: ToastController) {
   
+      if (this.platform.is("cordova") && this.platform.is("android")) {
+        this.isCordova = true;
+      }
+
       this.order = this.navParams.get("item");
       this.from = this.navParams.get("from");
         this.userDetailIemParam = this.navParams.get('order')

@@ -23,7 +23,7 @@ export class AddOrderPopoverComponent {
   constructor( public viewCtrl: ViewController , private builder: FormBuilder) {
     this.myForm = builder.group({      
       "order": ['', [Validators.required, Validators.maxLength(45)]],
-      "price":['',[Validators.required, Validators.maxLength(45)]]
+      "price":['',[Validators.required, Validators.maxLength(5)]]
     });
 
   }
@@ -48,6 +48,11 @@ export class AddOrderPopoverComponent {
     const ctrl = form.get(field);
     return ctrl.dirty && ctrl.hasError(error);
 
+  }
+
+  validatePrice(){
+    const ctrl = this.myForm.get("price");
+    return ctrl.dirty && ctrl.value <= 0; 
   }
 
 }

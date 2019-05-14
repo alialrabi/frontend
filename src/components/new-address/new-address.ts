@@ -30,6 +30,10 @@ export class NewAddressComponent {
     height: "0%",
     width: "0%"
   }
+  mapStyle1 = {
+    height: "0%",
+    width: "0%"
+  }
   map: any;
   openMap = false;
   mainMarker = null;
@@ -89,11 +93,18 @@ export class NewAddressComponent {
   locationDisable = true;
   haveMarkerToLocation = false;
 
+  isCordova = false;
+
+
   constructor(private loading: LoadingController, public viewCtrl: ViewController, public renderer: Renderer, private _alert: AlertController,
     public navParams: NavParams, public locationAccuracy: LocationAccuracy, public addressService: AddressService, public toastCtrl: ToastController,
     public translateService: TranslateService, private app: App, public platform: Platform, private principal: Principal, private builder: FormBuilder) {
     this.user = this.navParams.get("user");
     console.log(this.user);
+
+    if (this.platform.is("cordova") && this.platform.is("android")) {
+      this.isCordova = true;
+    }
 
     this.platform.registerBackButtonAction(() => {
       this.back();
@@ -205,6 +216,9 @@ export class NewAddressComponent {
     this.mapStyle.width = "100%";
     this.submapStyle.height = '100%';
     this.submapStyle.width = '100%'
+
+    this.mapStyle1.height = "95%";
+    this.mapStyle1.width = "100%";
 
     this.openMap = true;
 
@@ -550,6 +564,9 @@ export class NewAddressComponent {
     if (this.openMap) {
       this.mapStyle.height = "0%";
       this.mapStyle.width = "0%";
+
+      this.mapStyle1.height = "0%";
+      this.mapStyle1.width = "0%";
 
       this.openMap = false;
     } else {

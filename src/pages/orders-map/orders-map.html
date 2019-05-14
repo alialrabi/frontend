@@ -18,7 +18,7 @@
               </ion-buttons>
             </ion-col>
             <ion-col col-11  [style.margin-top] ="language == 'en' ? '5px' : '0px'">
-                <ion-title>{{ 'ORDERS_ON_MAP' | translate }}</ion-title>
+                <ion-title [style.margin-top]="!isCordova && language != 'en' ? '3px' : '0px'">{{ 'ORDERS_ON_MAP' | translate }}</ion-title>
             </ion-col>
           </ion-row>
         </ion-grid>

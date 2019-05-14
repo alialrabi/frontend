@@ -12,8 +12,8 @@
           </ion-buttons>
         </ion-col>
         <ion-col col-11 [style.margin-top]="language == 'en' ? '5px' : '2px'">
-          <ion-title *ngIf="!openMap">{{ 'ADD_ADDRESS' | translate }}</ion-title>
-          <ion-title *ngIf="openMap">{{ 'MAP' | translate }}</ion-title>
+          <ion-title *ngIf="!openMap" [style.margin-top]="!isCordova && language != 'en' ? '3px' : '0px'">{{ 'ADD_ADDRESS' | translate }}</ion-title>
+          <ion-title *ngIf="openMap" [style.margin-top]="!isCordova && language != 'en' ? '3px' : '0px'">{{ 'MAP' | translate }}</ion-title>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -176,29 +176,29 @@
     </div>
   </div>
   <div [ngStyle]="mapStyle">
-    <ion-grid [ngStyle]="mapStyle">
+    <ion-grid [ngStyle]="mapStyle1">
       <ion-row [ngStyle]="submapStyle">
         <ion-col [ngStyle]="submapStyle">
           <div #map id="map" [ngStyle]="submapStyle"></div>
         </ion-col>
       </ion-row>
       <!-- [style.height] = "openMap ? '15%' : '0px'" [style.width] = "openMap ? '100%' : '0px'" -->
-      <ion-row *ngIf="openMap">
+      <ion-row [style.height]="openMap ? '50px' : '0px'" [style.width]="openMap ? '100%' : '0%'">
         <ion-col col-4>
-          <div margin-top>
-            <button ion-button block color="dark" tappable (click)="skip()" [disabled]="locationDisable">
+          <div margin-top [style.height]="openMap ? '100%' : '0px'">
+            <button ion-button block color="dark" tappable (click)="skip()" [disabled]="locationDisable" [style.height]="openMap ? '100%' : '0px'">
               {{ 'SKIP' | translate }}
             </button>
           </div>
         </ion-col>
         <ion-col col-8>
-          <div margin-top *ngIf="!loadWithOutLocation">
-            <button ion-button block color="dark" tappable (click)="chooseLocation()" [disabled]="mainMarkerCheck()">
+          <div margin-top *ngIf="!loadWithOutLocation" [style.height]="openMap ? '100%' : '0px'">
+            <button ion-button block color="dark" [style.height]="openMap ? '100%' : '0px'" tappable (click)="chooseLocation()" [disabled]="mainMarkerCheck()">
               {{ 'CHOOSE_LOCATION' | translate }}
             </button>
           </div>
-          <div margin-top *ngIf="loadWithOutLocation">
-            <button ion-button block #chooseLocation id="chooseLocation" color="dark" tappable [disabled]="mainMarkerCheck()">
+          <div margin-top *ngIf="loadWithOutLocation" [style.height]="openMap ? '100%' : '0px'">
+            <button ion-button block #chooseLocation id="chooseLocation" [style.height]="openMap ? '100%' : '0px'" color="dark" tappable [disabled]="mainMarkerCheck()">
               {{ 'CHOOSE_LOCATION' | translate }}
             </button>
           </div>

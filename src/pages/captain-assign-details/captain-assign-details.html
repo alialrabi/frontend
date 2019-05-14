@@ -19,8 +19,8 @@
                 </button>
               </ion-buttons>
             </ion-col>
-            <ion-col col-11 [style.margin-top]="captain != null && captain != undefined && language == 'en' ? '10px' : '0px'">
-                <ion-title [style.margin-top]="captain != null && captain != undefined && language == 'ar' ? '7px' : '0px'">{{ 'CAPTAIN_ASSIGN_DETAILS' | translate }}</ion-title>
+            <ion-col col-11 [style.margin-top]="captain != null && captain != undefined && language == 'en' ? '10px' : '7px'">
+                <ion-title [style.margin-top]="!isCordova && language != 'en' ? '2px' : '0px'">{{ 'CAPTAIN_ASSIGN_DETAILS' | translate }}</ion-title>
             </ion-col>
           </ion-row>
         </ion-grid>

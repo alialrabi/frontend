@@ -36,6 +36,10 @@ export class AddAddressPage {
     height: "0%",
     width: "0%"
   }
+  mapStyle1 = {
+    height: "0%",
+    width: "0%"
+  }
   map: any;
   openMap = false;
   mainMarker = null;
@@ -94,11 +98,18 @@ export class AddAddressPage {
   dialogMessage = ''
   ok = ''
 
+  isCordova = false;
+
+
   constructor(public navCtrl: NavController, private loading: LoadingController, public renderer: Renderer , public _alert: AlertController,
     public navParams: NavParams, public locationAccuracy: LocationAccuracy, public addressService: AddressService, public toastCtrl: ToastController,
     public translateService: TranslateService, private app: App, public platform: Platform, private principal: Principal, private builder: FormBuilder) {
     this.to = this.navParams.get("address");
 
+    if (this.platform.is("cordova") && this.platform.is("android")) {
+      this.isCordova = true;
+    }
+    
     this.translateService.get(['ADD_ADDRESS_ERROR', 'ADD_ADDRESS_SUCCESS',
       'EGYPT', 'ALEX', 'CAIRO', 'TANTA', 'DAMNHOR', 'SHIPIN_ELKOM',
       'BANHA', 'PLEASE_WAIT',
@@ -155,6 +166,9 @@ export class AddAddressPage {
           this.mapStyle.height = "0%";
           this.mapStyle.width = "0%";
 
+          this.mapStyle1.height = "0%";
+          this.mapStyle1.width = "0%";
+
           this.openMap = false;
 
         } else {
@@ -170,6 +184,9 @@ export class AddAddressPage {
         if (this.openMap) {
           this.mapStyle.height = "0%";
           this.mapStyle.width = "0%";
+
+          this.mapStyle1.height = "0%";
+          this.mapStyle1.width = "0%";
 
           this.openMap = false;
 
@@ -263,11 +280,18 @@ export class AddAddressPage {
     this.mapStyle.height = "100%";
     this.mapStyle.width = "100%";
 
+    this.mapStyle1.height = "95%";
+    this.mapStyle1.width = "100%";
+
     this.openMap = true;
 
   }
 
+
   loadMap(mainClass) {
+
+    console.log("load map");
+    
 
     //var mainClass = this;
     let options = { timeout: 30000, enableHighAccuracy: true };
@@ -325,6 +349,8 @@ export class AddAddressPage {
           
           superclass.chooseLocationelementRef._elementRef.nativeElement.disabled = false
           if (flag) {
+            console.log("set action load map");
+            
             superclass.renderer.listen(superclass.chooseLocationelementRef._elementRef.nativeElement, 'click', (event) => {
               superclass.chooseLocation()
             })
@@ -353,6 +379,8 @@ export class AddAddressPage {
   }
   loadMapWithOutLocation(mainClass) {
     console.log("************************");
+    console.log("load without location");
+    
 
     mainClass.loadWithOutLocation = true;
 
@@ -393,10 +421,12 @@ export class AddAddressPage {
 
         superclass.chooseLocationelementRef._elementRef.nativeElement.disabled = false
         if (flag) {
+          console.log("add action load without location");
+          
           superclass.renderer.listen(superclass.chooseLocationelementRef._elementRef.nativeElement, 'click', (event) => {
             superclass.chooseLocation()
           })
-        }
+       }
 
         superclass.address.latitude = event.latLng.lat();
         superclass.address.longitude = event.latLng.lng();
@@ -510,6 +540,9 @@ export class AddAddressPage {
     if (this.openMap) {
       this.mapStyle.height = "0%";
       this.mapStyle.width = "0%";
+
+      this.mapStyle1.height = "0%";
+      this.mapStyle1.width = "0%";
 
       this.openMap = false;
 

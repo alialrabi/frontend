@@ -56,12 +56,21 @@ export class UserOrderDetailPage {
   notSupported = ''
   noLocationAvilable = ''
 
+  isCordova = false;
+
+  myVar;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private _alert:AlertController , private orderService:UserOrderService , public toastCtrl: ToastController , private deviceTokenService:DeviceTockenService , private loading: LoadingController  ,private platform:Platform , private translateService:TranslateService) {
     this.order = navParams.get('item');
     this.userType = navParams.get('userType');
+    this.myVar = navParams.get("myVar");
+
+    if(this.platform.is("cordova") && this.platform.is("android")){
+      this.isCordova = true;
+    }
 
     this.platform.registerBackButtonAction(() => {
-      this.navCtrl.setRoot(UserOrdersPage);
+      this.navCtrl.setRoot(UserOrdersPage , {myVar:this.myVar});
     });
 
     this.translateService.get(['DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT' , 'OK' , 'NOT_SUPPORTED' , 'NO_LOCATION_AVILABLE']).subscribe((values) => {
@@ -82,11 +91,11 @@ export class UserOrderDetailPage {
     console.log('ionViewDidLoad UserOrderDetailPage');
   }
   back(){
-    this.navCtrl.setRoot(UserOrdersPage);
+    this.navCtrl.setRoot(UserOrdersPage , {myVar:this.myVar});
   }
 
   assingCaptain() {
-    this.navCtrl.setRoot('AssignOrderPage', { item: this.order.userOrder , from:"UserOrderDetailPage" , order:this.order , userType:this.userType})
+    this.navCtrl.setRoot('AssignOrderPage', { item: this.order.userOrder , from:"UserOrderDetailPage" , order:this.order , userType:this.userType , myVar:this.myVar})
   }
   editRating(){
     this.navCtrl.setRoot('EditRatingPage', { item: this.order.userOrder , from:"UserOrderDetailPage" , order:this.order , userType:this.userType})

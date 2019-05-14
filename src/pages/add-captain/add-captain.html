@@ -12,7 +12,7 @@
           </ion-buttons>
         </ion-col>
         <ion-col col-11  [style.margin-top] ="language == 'en' ? '5px' : '2px'">
-          <ion-title>{{ 'ADD_CAPTAIN' | translate }}</ion-title>
+          <ion-title [style.margin-top]="!isCordova && language != 'en' ? '3px' : '0px'">{{ 'ADD_CAPTAIN' | translate }}</ion-title>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -42,7 +42,7 @@
               <ion-icon name="camera"></ion-icon>
             </button>
             <input id="imageInput" type="file" accept="image/*" style="visibility:hidden" [(ngModel)]="browserImage" (change)="uploadBrowserImage($event)" *ngIf="platformType != 'cordova'" />
-            <button ion-button icon-only clear class="icon-btn" float-left (click)="openFileSelector()" *ngIf="platformType != 'cordova'">
+            <button ion-button icon-only [style.margin-bottom]="!isCordova && language != 'en' ? '26px' : '0px'" clear class="icon-btn" float-left (click)="openFileSelector()" *ngIf="platformType != 'cordova'">
               <ion-icon name="camera"></ion-icon>
             </button>
           </ion-col>

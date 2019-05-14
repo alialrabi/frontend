@@ -12,7 +12,7 @@
           </ion-buttons>
         </ion-col>
         <ion-col col-11  [style.margin-top] ="language == 'en' ? '5px' : '2px'">
-          <ion-title>{{ 'ASSIGN-CAPTAINS' | translate }}</ion-title>
+          <ion-title [style.margin-top]="!isCordova1 && language != 'en' ? '3px' : '0px'">{{ 'ASSIGN-CAPTAINS' | translate }}</ion-title>
         </ion-col>
       </ion-row>
     </ion-grid>

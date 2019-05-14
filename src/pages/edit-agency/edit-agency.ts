@@ -51,6 +51,8 @@ export class EditAgencyPage {
 
   agency;
 
+  isCordova = false;
+
   constructor(public navCtrl: NavController,
     public navParams: NavParams ,
     public user: User,
@@ -70,6 +72,10 @@ export class EditAgencyPage {
       this.firstName = this.account.firstName;
       this.lastName = this.account.lastName;
       this.phone = this.account.phone;
+
+      if (this.platform.is("cordova") && this.platform.is("android")) {
+        this.isCordova = true;
+      }
       
     this.translateService.get(['UPDATE_AGENCY_ERROR', 'UPDATE_AGENCY_SUCCESS',
       'EXISTING_USER_ERROR', 'INVALID_PASSWORD_ERROR' , 'PLEASE_WAIT']).subscribe((values) => {

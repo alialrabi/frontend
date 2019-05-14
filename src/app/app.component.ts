@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
-import { Config, Nav, Platform, App, MenuController, ToastController, AlertController } from 'ionic-angular';
+import { Config, Nav, Platform, App, MenuController, ToastController, AlertController, LoadingController } from 'ionic-angular';
 import { Settings } from '../providers/providers';
 import { LandingPage } from '../pages/landing/landing';
 import { HomePage } from '../pages/home/home';
@@ -64,6 +64,7 @@ export class MyApp {
 
   public captain;
   public userTypeText = '';
+  public pleaseWait = ''
   // public userAdmin = 'Admin';
   // public userCaptain = 'Captain';
   // public userAgency = 'Agency';
@@ -81,7 +82,7 @@ export class MyApp {
   public autoAssignInternal = null;
 
 
-  constructor(private translate: TranslateService, private manup: ManUpService, private fcm: FCM, public _alert: AlertController, private deviceTokenService: DeviceTockenService, private device: Device, public admobFree: AdMobFree, private backgroundMode: BackgroundMode, public menu: MenuController, public platform: Platform, settings: Settings, private config: Config,
+  constructor(private translate: TranslateService, private loading: LoadingController, private manup: ManUpService, private fcm: FCM, public _alert: AlertController, private deviceTokenService: DeviceTockenService, private device: Device, public admobFree: AdMobFree, private backgroundMode: BackgroundMode, public menu: MenuController, public platform: Platform, settings: Settings, private config: Config,
     private statusBar: StatusBar, public locationAccuracy: LocationAccuracy, public toastCtrl: ToastController, private loginService: LoginService, private captainService: CaptainService, private app: App, private principal: Principal, private splashScreen: SplashScreen, private keyboard: Keyboard) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -519,6 +520,13 @@ export class MyApp {
   }
   logout() {
 
+    let load = this.loading.create({
+      content: this.pleaseWait
+
+
+    })
+    load.present()
+
     this.userSettingToggleFlag = false;
     if (this.platform.is("cordova")) {
       this.fcm.getToken().then(token => {
@@ -543,12 +551,14 @@ export class MyApp {
                 }
 
                 this.loginService.logout();
+                
                 //this.userType = '';
                 //this.account = null;
 
 
                 this.checkAccess();
                 this.isLogOut = true;
+                load.dismiss();
                 // this.app.getRootNavs()[0].setRoot(FirstRunPage);
 
               }
@@ -579,6 +589,7 @@ export class MyApp {
 
                 this.checkAccess();
                 this.isLogOut = true;
+                load.dismiss();
                 // this.app.getRootNavs()[0].setRoot(FirstRunPage);
 
               }
@@ -609,6 +620,7 @@ export class MyApp {
 
           this.checkAccess();
           this.isLogOut = true;
+          load.dismiss();
           // this.app.getRootNavs()[0].setRoot(FirstRunPage);
 
         }
@@ -755,7 +767,7 @@ export class MyApp {
     console.log('translateeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
 
 
-    this.translate.get(['AGENCY', 'ADMIN', 'USER', 'CAPTAIN']).subscribe((values) => {
+    this.translate.get(['AGENCY', 'ADMIN', 'USER', 'CAPTAIN' , 'PLEASE_WAIT']).subscribe((values) => {
 
       console.log(values);
       if (this.userType == 'Admin') {
@@ -768,6 +780,7 @@ export class MyApp {
         this.userTypeText = values.CAPTAIN;
       }
       console.log(this.userTypeText, 'user type text');
+      this.pleaseWait = values.PLEASE_WAIT
 
     })
 

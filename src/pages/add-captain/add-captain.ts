@@ -75,6 +75,9 @@ export class AddCaptainPage {
   public takePhoto = '';
   platformType="cordova";
   browserImage;
+  isCordova = false;
+
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private ng2ImgMaxService: Ng2ImgMaxService , public _alert: AlertController
     , public imagePicker: ImagePicker, public camera: Camera, public toastCtrl: ToastController,
     public captainService: CaptainService,
@@ -84,6 +87,10 @@ export class AddCaptainPage {
     private platform: Platform,
     public storage: LocalStorageService,
     public translateService: TranslateService, private app: App, private builder: FormBuilder, public user: User, private accountService: AccountService) {
+
+      if (this.platform.is("cordova") && this.platform.is("android")) {
+        this.isCordova = true;
+      }
 
       if(platform.is("cordova")){
         this.platformType = "cordova";

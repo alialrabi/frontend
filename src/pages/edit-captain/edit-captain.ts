@@ -77,6 +77,8 @@ export class EditCaptainPage {
 
   platformType="cordova";
 
+  isCordova = false;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public _alert: AlertController
     , public imagePicker: ImagePicker, public camera: Camera, public toastCtrl: ToastController,
     public captainService: CaptainService,
@@ -88,6 +90,9 @@ export class EditCaptainPage {
     public storage: LocalStorageService,
     public translateService: TranslateService, private app: App, private builder: FormBuilder, public user: User, private accountService: AccountService) {
 
+      if (this.platform.is("cordova") && this.platform.is("android")) {
+        this.isCordova = true;
+      }
 
       if(platform.is("cordova")){
         this.platformType = "cordova";

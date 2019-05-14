@@ -71,11 +71,13 @@ export class BuyFromMarketPage {
 
   towerText = ''
   floorText = ''
-  flatText = '' 
+  flatText = ''
 
   chooseAddress = ''
 
   modelReciverOpen = false;
+
+  isCordova = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public _alert: AlertController
     , public imagePicker: ImagePicker, public camera: Camera, public toastCtrl: ToastController, public admobFree: AdMobFree,
@@ -85,10 +87,14 @@ export class BuyFromMarketPage {
     public principal: Principal,
     public addressService: AddressService,
     public poverCtrl: PopoverController,
-    public modalControllre:ModalController,
+    public modalControllre: ModalController,
     public deviceTokenService: DeviceTockenService,
     public userOrderService: UserOrderService,
     public translateService: TranslateService, private app: App, private builder: FormBuilder) {
+
+    if (this.platform.is("cordova") && this.platform.is("android")) {
+      this.isCordova = true;
+    }
 
     if (platform.is("cordova")) {
       this.platformType = "cordova";
@@ -96,7 +102,7 @@ export class BuyFromMarketPage {
       this.platformType = "notCordova"
     }
 
-    this.translateService.get(['TOWER', 'FLOOR', 'FLAT', 'ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS', 'CHOOSE_PHOTO', 'CHOOSE_FROM_GALARY', 'TAKE_A_PHOTO', 'PLEASE_WAIT', 'OTHER' , 'CHOOSE_ADDRESS_CLICK']).subscribe((values) => {
+    this.translateService.get(['TOWER', 'FLOOR', 'FLAT', 'ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS', 'CHOOSE_PHOTO', 'CHOOSE_FROM_GALARY', 'TAKE_A_PHOTO', 'PLEASE_WAIT', 'OTHER', 'CHOOSE_ADDRESS_CLICK']).subscribe((values) => {
 
       this.orderError = values.ADD_ORDER_ERROR;
       this.orderSuccess = values.ADD_ORDER_SUCCESS;
@@ -324,31 +330,31 @@ export class BuyFromMarketPage {
     if (!this.modelReciverOpen) {
       this.modelReciverOpen = true;
 
-    const modal = await this.modalControllre.create(AddressesSelectorComponent, { addresses: this.addressList ,  user: this.account });
+      const modal = await this.modalControllre.create(AddressesSelectorComponent, { addresses: this.addressList, user: this.account });
 
-    modal.onDidDismiss((dataReturned) => {
-      if (dataReturned !== null) {
-        console.log('Modal Sent Data :', dataReturned);
+      modal.onDidDismiss((dataReturned) => {
+        if (dataReturned !== null) {
+          console.log('Modal Sent Data :', dataReturned);
 
-        this.addressList = dataReturned.addresses;
-        console.log(this.addressList);
-        this.modelReciverOpen = false;
+          this.addressList = dataReturned.addresses;
+          console.log(this.addressList);
+          this.modelReciverOpen = false;
 
-        this.myForm1.get("address").clearValidators();
-        this.myForm1.get("address").updateValueAndValidity();
+          this.myForm1.get("address").clearValidators();
+          this.myForm1.get("address").updateValueAndValidity();
 
-        this.address = dataReturned.address.region + ' , ' + dataReturned.address.street + ' , ' + this.towerText + '/' + dataReturned.address.building + ' , ' + this.floorText + '/' + dataReturned.address.floor + ' , ' + this.flatText + '/' + dataReturned.address.flatNumber + ' , ' + dataReturned.address.city
-        this.order.reciverAddressId = dataReturned.address.id
-      }else{
-        console.log("else");
-        this.modelReciverOpen = false;   
-      }
-    });
+          this.address = dataReturned.address.region + ' , ' + dataReturned.address.street + ' , ' + this.towerText + '/' + dataReturned.address.building + ' , ' + this.floorText + '/' + dataReturned.address.floor + ' , ' + this.flatText + '/' + dataReturned.address.flatNumber + ' , ' + dataReturned.address.city
+          this.order.reciverAddressId = dataReturned.address.id
+        } else {
+          console.log("else");
+          this.modelReciverOpen = false;
+        }
+      });
 
-    return await modal.present({
-      ev: event
-    });
-  }
+      return await modal.present({
+        ev: event
+      });
+    }
   }
 
   // async newAddressModal(event) {

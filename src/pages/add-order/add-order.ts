@@ -90,12 +90,18 @@ export class AddOrderPage {
 
   platfromType = 'cordova';
 
+  isCordova = false;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public poverCtrl: PopoverController, public modalController: ModalController, public toastCtrl: ToastController
     , public translateService: TranslateService, private loading: LoadingController, public platform: Platform,public _alert: AlertController,
     private builder: FormBuilder, public windowRef:WindowRef  ,public user: User, private app: App, private principal: Principal, public orderService: OrderService) {
 
     console.log('con');
     this.address = this.navParams.get("address");
+
+    if (this.platform.is("cordova") && this.platform.is("android")) {
+      this.isCordova = true;
+    }
 
     if(this.platform.is('cordova')){
       this.platfromType = 'cordova'

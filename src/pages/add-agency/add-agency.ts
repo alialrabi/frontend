@@ -46,6 +46,8 @@ export class AddAgencyPage {
 
   myForm: FormGroup;
 
+  isCordova = false;
+
   constructor(public navCtrl: NavController,
     public user: User,
     public toastCtrl: ToastController,
@@ -56,6 +58,10 @@ export class AddAgencyPage {
     public platform:Platform,
     public accountService: AccountService,
     private builder: FormBuilder) {
+
+      if (this.platform.is("cordova") && this.platform.is("android")) {
+        this.isCordova = true;
+      }
 
     this.translateService.get(['SIGNUP_ERROR', 'SIGNUP_SUCCESS',
       'EXISTING_USER_ERROR', 'INVALID_PASSWORD_ERROR' , 'PLEASE_WAIT']).subscribe((values) => {

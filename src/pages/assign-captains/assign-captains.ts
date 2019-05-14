@@ -65,7 +65,13 @@ export class AssignCaptainsPage {
   startTimePickerDialogOpen = false;
   endTimePickerDialogOpen = false;
 
+  isCordova1 = false;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public _alert: AlertController, public datePicker: DatePicker, public platform: Platform, private principal: Principal, private app: App, private loading: LoadingController, private builder: FormBuilder, public captainService: CaptainService, public toastCtrl: ToastController, public translateService: TranslateService) {
+
+    if (this.platform.is("cordova") && this.platform.is("android")) {
+      this.isCordova1 = true;
+    }
 
     this.isCordova = this.platform.is("cordova");
     console.log(this.isCordova);

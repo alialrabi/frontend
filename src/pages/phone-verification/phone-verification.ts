@@ -21,13 +21,13 @@ import { UserOrdersPage } from '../user-orders/user-orders';
 export class PhoneVerificationPage {
 
   order = {
-    firstPhone:""
+    firstPhone: ""
   };
 
   code = ''
   codeModel = '';
   myForm: FormGroup;
-  
+
 
   public pleaseWait;
   language = MyApp.language
@@ -35,16 +35,18 @@ export class PhoneVerificationPage {
 
   public addORDERError;
   public addORDERSuccessString;
+  public phoneNumberExists = '';
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private app: App, public toastCtrl: ToastController, public translateService: TranslateService, private loading: LoadingController, private builder: FormBuilder, public orderService: OrderService) {
     this.order = navParams.get('order');
 
-    this.translateService.get(['ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS', 'PLEASE_WAIT']).subscribe((values) => {
+    this.translateService.get(['ADD_PHONE_NUMBER_ERROR', 'ADD_PHONE_NUMBER_SUCCESS', 'PLEASE_WAIT', 'PHONE_NUMBER_USED']).subscribe((values) => {
       console.log(values);
 
-      this.addORDERError = values.ADD_ORDER_ERROR;
-      this.addORDERSuccessString = values.ADD_ORDER_SUCCESS;
+      this.addORDERError = values.ADD_PHONE_NUMBER_ERROR;
+      this.addORDERSuccessString = values.ADD_PHONE_NUMBER_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
+      this.phoneNumberExists = values.PHONE_NUMBER_USED
 
     })
     this.myForm = builder.group({
@@ -54,17 +56,17 @@ export class PhoneVerificationPage {
     this.verifyPhone();
 
   }
-  verifyCode(){
-    console.log(this.code , (this.myForm.get('code').value+''));
-    
-    if(this.code == (this.myForm.get('code').value+'')){
+  verifyCode() {
+    console.log(this.code, (this.myForm.get('code').value + ''));
+
+    if (this.code == (this.myForm.get('code').value + '')) {
       this.addOrder();
-    }else{
+    } else {
       this.myForm.get('code').setValue("");
       this.codeModel = ''
     }
   }
-  verifyPhone(){
+  verifyPhone() {
     let load = this.loading.create({
       content: this.pleaseWait
 
@@ -72,19 +74,35 @@ export class PhoneVerificationPage {
     })
     load.present()
     this.orderService.verifyPhone(this.order.firstPhone).subscribe(
-      res =>{
+      res => {
 
         this.code = res.Key
         console.log(this.code);
-        
-        
+        let toast = this.toastCtrl.create({
+          message: this.addORDERSuccessString,
+          duration: 3000,
+          position: 'top'
+        });
+        toast.present();
+
+
         load.dismiss();
 
-      }, err =>{
+      }, err => {
 
-        console.log("err",err);
+        console.log("err", err);
+        let displayError = this.addORDERError;
+        if (err.status === 400) {
+          displayError = this.phoneNumberExists;
+        }
+        let toast = this.toastCtrl.create({
+          message: displayError,
+          duration: 3000,
+          position: 'top'
+        });
+        toast.present();
         load.dismiss();
-        
+
 
       }
     )

@@ -32,11 +32,18 @@ export class OrdersMapPage {
   userDetailIemParam;
   userDetailUserTypeParam;
 
+  isCordova = false;
+
+
   constructor(public navCtrl: NavController, public navParams: NavParams , public platform:Platform) {
     this.order = this.navParams.get("item");
     this.from = this.navParams.get("from");
       this.userDetailIemParam = this.navParams.get('order')
       this.userDetailUserTypeParam = this.navParams.get('userType')
+
+      if (this.platform.is("cordova") && this.platform.is("android")) {
+        this.isCordova = true;
+      }
 
     this.platform.registerBackButtonAction(() => {
       if(this.from == 'UserOrderDetailPage'){
