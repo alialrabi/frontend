@@ -57,6 +57,8 @@ export class UserOrdersPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public platform:Platform ,private deviceTokenService:DeviceTockenService ,  public _alert: AlertController , public toastCtrl: ToastController, private captainService: CaptainService, private loading: LoadingController, public translateService: TranslateService, private app: App, private principal: Principal, public orderService: UserOrderService) {
 
+    this.myVar = navParams.get("myVar");
+
     this.translateService.get(['TAKE_ORDER_ERROR', 'TAKE_ORDER_SUCCESS' , 'DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT', 'MORE_DATA' , 'ADD_ORDER_TITLE' , 'ORDER_KIND_MESSAGE' , 'BUY_FROM_MARKET' , 'DELIVER_FROM_LOCATION_TO_LOCATION']).subscribe((values) => {
 
       this.deliverOrderError = values.DELIVER_ORDER_ERROR;
@@ -104,7 +106,9 @@ export class UserOrdersPage {
       } else if (account.authorities[0] == 'ROLE_USER' && account.authorities.length == 1) {
 
         this.account = account;
+        if(this.myVar == null || this.myVar == undefined || this.myVar == ''){
         this.myVar = 'assigned';
+        }
         this.userType = 'User';
         this.userId = account.id;
         this.captainId = 0;
@@ -116,7 +120,9 @@ export class UserOrdersPage {
       } else if (account.authorities[0] == 'ROLE_CAPTAIN') {
 
         this.account = account;
+        if(this.myVar == null || this.myVar == undefined || this.myVar == ''){
         this.myVar = 'assigned';
+        }
         this.userType = 'Captain';
         this.userId = 0;
 
@@ -141,7 +147,9 @@ export class UserOrdersPage {
 
       else {
         this.account = account;
+        if(this.myVar == null || this.myVar == undefined || this.myVar == ''){
         this.myVar = 'assigned';
+        }
         this.userType = 'Admin';
         this.userId = 0;
         this.captainId = 0;
@@ -305,7 +313,7 @@ export class UserOrdersPage {
   }
 
   assingCaptain(order) {
-    this.navCtrl.setRoot('AssignOrderPage', { item: order.userOrder , from:"userOrder"})
+    this.navCtrl.setRoot('AssignOrderPage', { item: order.userOrder , from:"userOrder" , myVar:this.myVar })
   }
   editRating(order) {
     this.navCtrl.setRoot('EditRatingPage', { item: order.userOrder , from:"userOrder"})
@@ -557,7 +565,7 @@ export class UserOrdersPage {
     this.navCtrl.setRoot('OrdersMapPage', { item: order })
   }
   viewDetails(order){
-    this.navCtrl.setRoot(UserOrderDetailPage , {item:order , userType:this.userType});
+    this.navCtrl.setRoot(UserOrderDetailPage , {item:order , userType:this.userType , myVar:this.myVar});
   }
 
 }

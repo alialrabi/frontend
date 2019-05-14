@@ -38,6 +38,7 @@ export class OrdersPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private loading: LoadingController, public translateService: TranslateService, private app: App, private principal: Principal, public orderService: OrderService) {
 
+    this.myVar = navParams.get("myVar");
     this.translateService.get(['PLEASE_WAIT', 'MORE_DATA']).subscribe((values) => {
 
       this.pleaseWait = values.PLEASE_WAIT
@@ -64,7 +65,9 @@ export class OrdersPage {
       } else if (account.authorities[0] == 'ROLE_AGENCY') {
 
         this.account = account;
+        if(this.myVar == null || this.myVar == undefined || this.myVar == ''){
         this.myVar = 'assigned';
+        }
         this.userType = 'Agency';
         this.userId = account.id;
         this.getAllOrders(this.myVar , 0);
@@ -72,7 +75,9 @@ export class OrdersPage {
 
       } else {
         this.account = account;
+        if(this.myVar == null || this.myVar == undefined || this.myVar == ''){
         this.myVar = 'assigned';
+        }
         this.userType = 'Admin';
         this.userId = 0;
         this.getAllOrders(this.myVar , 0);
@@ -199,7 +204,7 @@ export class OrdersPage {
   }
 
   assingCaptain(order) {
-    this.navCtrl.setRoot('AssignOrderPage', { item: order })
+    this.navCtrl.setRoot('AssignOrderPage', { item: order , myVar:this.myVar })
   }
 
   // openMenu(){
