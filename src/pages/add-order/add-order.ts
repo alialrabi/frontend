@@ -92,6 +92,9 @@ export class AddOrderPage {
 
   isCordova = false;
 
+  okText = ''
+  cancelText = ''
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public poverCtrl: PopoverController, public modalController: ModalController, public toastCtrl: ToastController
     , public translateService: TranslateService, private loading: LoadingController, public platform: Platform,public _alert: AlertController,
     private builder: FormBuilder, public windowRef:WindowRef  ,public user: User, private app: App, private principal: Principal, public orderService: OrderService) {
@@ -110,7 +113,7 @@ export class AddOrderPage {
     }
 
 
-    this.translateService.get(['ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS', 'ALEX', 'CAIRO', 'TANTA', 'DAMNHOR', 'SHIPIN_ELKOM', 'BANHA', 'PLEASE_WAIT' , 'YES' ,
+    this.translateService.get(["SELECTION_CANCEL" , "SELECTION_OK" , 'ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS', 'ALEX', 'CAIRO', 'TANTA', 'DAMNHOR', 'SHIPIN_ELKOM', 'BANHA', 'PLEASE_WAIT' , 'YES' ,
     'CANCEL' , 'VERIFY_PHONE_TILTLE' , 'VERIFY_PHONE_MESSAGE' , 'QUESTION_MARK' ]).subscribe((values) => {
       console.log(values);
 
@@ -128,6 +131,9 @@ export class AddOrderPage {
       this.phoneTitle = values.VERIFY_PHONE_TILTLE
       this.phoneMessage = values.VERIFY_PHONE_MESSAGE
       this.question = values.QUESTION_MARK
+
+      this.okText = values.SELECTION_OK
+      this.cancelText = values.SELECTION_CANCEL
     })
 
 

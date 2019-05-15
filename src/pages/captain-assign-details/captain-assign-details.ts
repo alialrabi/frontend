@@ -61,6 +61,11 @@ export class CaptainAssignDetailsPage {
 
   isCordova = false;
 
+  okText = ''
+  cancelText = ''
+  doneText = ""
+
+
   constructor(public navCtrl: NavController,  public toastCtrl: ToastController, public _alert: AlertController , public navParams: NavParams, private builder: FormBuilder, public platform: Platform, private loading: LoadingController, public translateService: TranslateService, public accountService: AccountService, public captainService: CaptainService) {
 
     this.captain = navParams.get("item");
@@ -88,7 +93,7 @@ export class CaptainAssignDetailsPage {
     });
 
 
-    this.translateService.get(['PLEASE_WAIT', 'MORE_DATA' , 'DELETE_SUB_TITLE' , 'DELETE_SUB_MESSAGE' , 'DONE' , 'CANCEL' , 'DELETE_SUBASSIGN_SUCCESS' , 'DELETE_SUBASSIGN_ERROR' , 'PERIOD_FINISHED_MESSAGE' , 'ADMIN_UNASSIGN_MESSAGE' , 'ADMIN_DELETED_ALL_DAYS']).subscribe((values) => {
+    this.translateService.get(['SELECTION_DONE' , "SELECTION_CANCEL" , "SELECTION_OK" ,'PLEASE_WAIT', 'MORE_DATA' , 'DELETE_SUB_TITLE' , 'DELETE_SUB_MESSAGE' , 'DONE' , 'CANCEL' , 'DELETE_SUBASSIGN_SUCCESS' , 'DELETE_SUBASSIGN_ERROR' , 'PERIOD_FINISHED_MESSAGE' , 'ADMIN_UNASSIGN_MESSAGE' , 'ADMIN_DELETED_ALL_DAYS']).subscribe((values) => {
 
       this.pleaseWait = values.PLEASE_WAIT
       this.moreData = values.MORE_DATA
@@ -101,6 +106,11 @@ export class CaptainAssignDetailsPage {
       this.periodFinishMessage = values.PERIOD_FINISHED_MESSAGE
       this.adminUnAssignMessage = values.ADMIN_UNASSIGN_MESSAGE
       this.adminDeletedAllDays = values.ADMIN_DELETED_ALL_DAYS
+
+      this.okText = values.SELECTION_OK
+      this.cancelText = values.SELECTION_CANCEL
+      this.doneText = values.SELECTION_DONE
+
     })
 
     this.platform.registerBackButtonAction(() => {

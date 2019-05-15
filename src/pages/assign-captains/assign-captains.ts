@@ -67,6 +67,11 @@ export class AssignCaptainsPage {
 
   isCordova1 = false;
 
+  okText = ''
+  cancelText = ''
+  doneText = ""
+
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public _alert: AlertController, public datePicker: DatePicker, public platform: Platform, private principal: Principal, private app: App, private loading: LoadingController, private builder: FormBuilder, public captainService: CaptainService, public toastCtrl: ToastController, public translateService: TranslateService) {
 
     if (this.platform.is("cordova") && this.platform.is("android")) {
@@ -88,7 +93,7 @@ export class AssignCaptainsPage {
     this.maxDate = CurrentYear + 1;
     this.minDate = CurrentYear;
 
-    this.translateService.get(['CANCEL', 'OK', 'CAPTAIN_BUSY', 'ASSIGN_CAPTAIN_ERROR', 'NOT_FREE_ON_TIME', 'ASSIGN_CAPTAIN_SUCCESS', 'PLEASE_WAIT']).subscribe((values) => {
+    this.translateService.get(['SELECTION_DONE' ,"SELECTION_CANCEL" , "SELECTION_OK" , 'CANCEL', 'OK', 'CAPTAIN_BUSY', 'ASSIGN_CAPTAIN_ERROR', 'NOT_FREE_ON_TIME', 'ASSIGN_CAPTAIN_SUCCESS', 'PLEASE_WAIT']).subscribe((values) => {
       this.assignOrderError = values.ASSIGN_CAPTAIN_ERROR;
       this.assingOrderSuccess = values.ASSIGN_CAPTAIN_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
@@ -96,6 +101,10 @@ export class AssignCaptainsPage {
       this.captainBusyTitle = values.CAPTAIN_BUSY
       this.ok = values.OK
       this.cancel = values.CANCEL
+
+      this.okText = values.SELECTION_OK
+      this.cancelText = values.SELECTION_CANCEL
+      this.doneText = values.SELECTION_DONE
     })
 
 

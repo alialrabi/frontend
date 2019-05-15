@@ -37,12 +37,17 @@ export class ChooseAddressPage {
   language = MyApp.language
   direction = MyApp.direction
 
+  okText = ''
+  cancelText = ''
+
   constructor(public navCtrl: NavController, public navParams: NavParams ,
     private builder: FormBuilder  ,private loading: LoadingController, public platform:Platform , private addressService:AddressService , private app: App, private principal: Principal, public toastCtrl: ToastController , public translateService: TranslateService , public orderService:OrderService ) {
 
-    this.translateService.get([ 'PLEASE_WAIT']).subscribe((values) => {
+    this.translateService.get([ 'PLEASE_WAIT' , "SELECTION_CANCEL" , "SELECTION_OK" ]).subscribe((values) => {
       
       this.pleaseWait = values.PLEASE_WAIT
+      this.okText = values.SELECTION_OK
+      this.cancelText = values.SELECTION_CANCEL
     })
 
 

@@ -50,7 +50,7 @@
             <ion-icon name="pin" item-start class="text-primary"></ion-icon>
             {{ 'ADDRESS' | translate }}
           </ion-label>
-          <ion-select formControlName="address" [lang]="language" [dir]="direction" >
+          <ion-select [okText]="okText" [cancelText]="cancelText" formControlName="address" [lang]="language" [dir]="direction" >
             <ion-option *ngFor="let item of addressList" text-wrap [dir]="direction" [selected]="item.country ==item.country && item.city == item.city && item.street == item.street && item.postalCode == item.postalCode" [value]="item"  >{{item.street}} , {{item.city}} </ion-option>
   
           </ion-select>

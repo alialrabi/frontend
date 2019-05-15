@@ -68,7 +68,7 @@
         </ion-row>
       </ion-grid>
       <p class="validationHint" *ngIf="hasError('weight', 'required')"> {{ 'REQURIED' | translate }} </p>
-      <p class="validationHint" *ngIf="hasError('weight', 'pattern')">{{ 'PHONE_NUMBER' | translate }} </p>
+      <p class="validationHint" *ngIf="validateweight()">{{ 'WEIGHT_NOT_ACCEPTABLE' | translate }} </p>
 
 
       <p style="width: 100%" text-center>
@@ -98,10 +98,9 @@
         <ion-input type="number" [(ngModel)]="order.senderPhone" formControlName="senderPhone" name="senderPhone" [lang]="language"
           [dir]="direction"></ion-input>
       </ion-item>
-
+      
       <p class="validationHint" *ngIf="hasError('senderPhone', 'required')"> {{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('senderPhone', 'pattern')">{{ 'PHONE_NUMBER' | translate }} </p>
-
 
 
       <p style="width: 100%" text-center>
@@ -150,7 +149,7 @@
     </form>
 
     <div margin-top style="margin-bottom: 40px;">
-      <button ion-button block color="dark" tappable (click)="addOrder()" [disabled]="!myForm.valid">
+      <button ion-button block color="dark" tappable (click)="addOrder()" [disabled]="!myForm.valid || validateweight()">
         {{ 'ADD_ORDER_BUTTON' | translate }}
       </button>
     </div>

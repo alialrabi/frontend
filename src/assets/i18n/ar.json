@@ -1,4 +1,8 @@
 {
+    "WEIGHT_NOT_ACCEPTABLE":"الوزن غير مناسب",
+    "SELECTION_DONE":"تم",
+    "SELECTION_CANCEL":"الغاء",
+    "SELECTION_OK":"اختيار",
     "UN_ASSIGNED_FROM_TOMMROW":"لقد قام المسؤول بالغاء الحاقه من الغد",
     "ADD_PHONE_NUMBER_ERROR":"خطأ فى اضافه رقم الهاتف",
     "ADD_PHONE_NUMBER_SUCCESS":"تم اضافه رقم الهاتف",

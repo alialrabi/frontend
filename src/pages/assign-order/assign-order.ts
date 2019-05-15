@@ -55,6 +55,9 @@ export class AssignOrderPage {
 
   myVar
 
+  okText = ''
+  cancelText = ''
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams , private deviceTokenService:DeviceTockenService , public platform:Platform , public userOrderService:UserOrderService,
     private builder: FormBuilder , public captainService:CaptainService  ,private loading: LoadingController , private app: App, private principal: Principal, public toastCtrl: ToastController , public translateService: TranslateService , public orderService:OrderService ) {
@@ -70,7 +73,7 @@ export class AssignOrderPage {
         this.isCordova = true;
       }
 
-    this.translateService.get(['ASSIGN_ORDER_ERROR', 'ASSIGN_ORDER_SUCCESS' , 'PLEASE_WAIT' , 'NOT_WORKING' , 'ON_BACK_WAY' , 'AT_MARKET' , 'BUSY']).subscribe((values) => {
+    this.translateService.get(["SELECTION_CANCEL" , "SELECTION_OK" ,'ASSIGN_ORDER_ERROR', 'ASSIGN_ORDER_SUCCESS' , 'PLEASE_WAIT' , 'NOT_WORKING' , 'ON_BACK_WAY' , 'AT_MARKET' , 'BUSY']).subscribe((values) => {
       this.assignOrderError = values.ASSIGN_ORDER_ERROR;
       this.assingOrderSuccess = values.ASSIGN_ORDER_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
@@ -78,6 +81,9 @@ export class AssignOrderPage {
       this.atMarket = values.AT_MARKET
       this.not_working = values.NOT_WORKING
       this.onWay = values.ON_BACK_WAY
+
+      this.okText = values.SELECTION_OK
+      this.cancelText = values.SELECTION_CANCEL
     })
 
 
