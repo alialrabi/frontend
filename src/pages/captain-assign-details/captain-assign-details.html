@@ -80,7 +80,7 @@
           <ion-icon name="person" item-start class="text-primary"></ion-icon>
           {{ 'CAPTAIN' | translate }}
         </ion-label>
-        <ion-select formControlName="captainId" [lang]="language" [dir]="direction">
+        <ion-select [okText]="okText" [cancelText]="cancelText" formControlName="captainId" [lang]="language" [dir]="direction">
           <ion-option *ngFor="let item of captainList" [selected]="item.name ==item.name" [value]="item.id" [dir]="direction">{{item.name}} </ion-option>      
         </ion-select>
       </ion-item>
@@ -89,7 +89,7 @@
             <ion-icon name="person" item-start class="text-primary"></ion-icon>
             {{ 'AGENCY' | translate }}
           </ion-label>
-          <ion-select formControlName="agencyId" [lang]="language" [dir]="direction">
+          <ion-select [okText]="okText" [cancelText]="cancelText" formControlName="agencyId" [lang]="language" [dir]="direction">
             <ion-option *ngFor="let item of agenciesList" [selected]="item.email ==item.email" [value]="item.id" [dir]="direction">{{item.firstName}} {{item.lastName}}</ion-option>      
           </ion-select>
         </ion-item>
@@ -98,7 +98,7 @@
             <ion-icon name="calendar" item-start class="text-primary"></ion-icon>
             {{ 'START_DATE_FROM' | translate }}
           </ion-label>
-          <ion-datetime displayFormat="YYYY-MM-DD" max="{{maxDate}}" (ionChange)="dateChange()" formControlName="startDate" [(ngModel)] ="seaarchFilter.startDate" [lang]="language" [dir]="direction"></ion-datetime>
+          <ion-datetime [doneText]="doneText" [cancelText]="cancelText" displayFormat="YYYY-MM-DD" max="{{maxDate}}" (ionChange)="dateChange()" formControlName="startDate" [(ngModel)] ="seaarchFilter.startDate" [lang]="language" [dir]="direction"></ion-datetime>
         </ion-item>
         <p class="validationHint" *ngIf="hasError('startDate', 'required')"> {{ 'REQURIED' | translate }} </p>
         <ion-item>
@@ -106,7 +106,7 @@
               <ion-icon name="calendar" item-start class="text-primary"></ion-icon>
               {{ 'START_DATE_TO' | translate }}
             </ion-label>
-            <ion-datetime displayFormat="YYYY-MM-DD" max="{{maxDate}}" (ionChange)="dateChange()" formControlName="endDate" [(ngModel)] ="seaarchFilter.endDate" [lang]="language" [dir]="direction"></ion-datetime>
+            <ion-datetime [doneText]="doneText" [cancelText]="cancelText" displayFormat="YYYY-MM-DD" max="{{maxDate}}" (ionChange)="dateChange()" formControlName="endDate" [(ngModel)] ="seaarchFilter.endDate" [lang]="language" [dir]="direction"></ion-datetime>
           </ion-item>
           <p class="validationHint" *ngIf="hasError('endDate', 'required')"> {{ 'REQURIED' | translate }} </p>
   </form>

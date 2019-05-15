@@ -135,7 +135,7 @@ export class DeliverFromToPage {
     this.myForm = builder.group({
       'weight': ['', [Validators.required]],
       'senderAddress': ['', [Validators.required]],
-      'senderPhone': ['', [Validators.pattern("(01)[0-9]{9}")]],
+      'senderPhone': ['', [Validators.pattern("(01)[0-9]{9}") , Validators.required]],
       'reciverName': ['', [Validators.required, Validators.maxLength(50)]],
       'address': ['', [Validators.required]],
       'reciverPhone': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
@@ -444,5 +444,10 @@ export class DeliverFromToPage {
 
   }
 
+  
+  validateweight(){
+    const ctrl = this.myForm.get("weight");
+    return ctrl.dirty && ctrl.value <= 0; 
+  }
 
 }

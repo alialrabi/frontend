@@ -29,7 +29,7 @@
                 <ion-icon name="person" item-start class="text-primary"></ion-icon>
                 {{ 'CAPTAIN' | translate }}
               </ion-label>
-              <ion-select formControlName="captainId" [lang]="language" [dir]="direction">
+              <ion-select [okText]="okText" [cancelText]="cancelText" formControlName="captainId" [lang]="language" [dir]="direction">
                 <ion-option *ngFor="let item of captainList" [selected]="item.name ==item.name" [value]="item.id" [dir]="direction">{{item.name}} </ion-option>      
               </ion-select>
             </ion-item>
@@ -38,14 +38,14 @@
                   <ion-icon name="calendar" item-start class="text-primary"></ion-icon>
                   {{ 'START_DATE' | translate }}
                 </ion-label>
-                <ion-datetime displayFormat="YYYY-MM-DD" max="{{maxDate}}" formControlName="startDate" [(ngModel)] ="seaarchFilter.startDate" [lang]="language" [dir]="direction"></ion-datetime>
+                <ion-datetime [doneText]="doneText" [cancelText]="cancelText" displayFormat="YYYY-MM-DD" max="{{maxDate}}" formControlName="startDate" [(ngModel)] ="seaarchFilter.startDate" [lang]="language" [dir]="direction"></ion-datetime>
               </ion-item>
               <ion-item>
                   <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
                     <ion-icon name="calendar" item-start class="text-primary"></ion-icon>
                     {{ 'END_DATE' | translate }}
                   </ion-label>
-                  <ion-datetime displayFormat="YYYY-MM-DD" max="{{maxDate}}" formControlName="endDate" [(ngModel)] ="seaarchFilter.endDate" [lang]="language" [dir]="direction"></ion-datetime>
+                  <ion-datetime [doneText]="doneText" [cancelText]="cancelText" displayFormat="YYYY-MM-DD" max="{{maxDate}}" formControlName="endDate" [(ngModel)] ="seaarchFilter.endDate" [lang]="language" [dir]="direction"></ion-datetime>
                 </ion-item>
         </form>
 

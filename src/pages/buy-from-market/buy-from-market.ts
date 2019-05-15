@@ -79,6 +79,9 @@ export class BuyFromMarketPage {
 
   isCordova = false;
 
+  okText = ''
+  cancelText = ''
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public _alert: AlertController
     , public imagePicker: ImagePicker, public camera: Camera, public toastCtrl: ToastController, public admobFree: AdMobFree,
     private loading: LoadingController,
@@ -102,7 +105,7 @@ export class BuyFromMarketPage {
       this.platformType = "notCordova"
     }
 
-    this.translateService.get(['TOWER', 'FLOOR', 'FLAT', 'ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS', 'CHOOSE_PHOTO', 'CHOOSE_FROM_GALARY', 'TAKE_A_PHOTO', 'PLEASE_WAIT', 'OTHER', 'CHOOSE_ADDRESS_CLICK']).subscribe((values) => {
+    this.translateService.get(["SELECTION_CANCEL" , "SELECTION_OK" ,'TOWER', 'FLOOR', 'FLAT', 'ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS', 'CHOOSE_PHOTO', 'CHOOSE_FROM_GALARY', 'TAKE_A_PHOTO', 'PLEASE_WAIT', 'OTHER', 'CHOOSE_ADDRESS_CLICK']).subscribe((values) => {
 
       this.orderError = values.ADD_ORDER_ERROR;
       this.orderSuccess = values.ADD_ORDER_SUCCESS;
@@ -117,12 +120,15 @@ export class BuyFromMarketPage {
       this.flatText = values.FLAT
       this.towerText = values.TOWER
       this.chooseAddress = values.CHOOSE_ADDRESS_CLICK
+
+      this.okText = values.SELECTION_OK
+      this.cancelText = values.SELECTION_CANCEL
     })
 
     this.myForm1 = builder.group({
       'marketName': ['', [Validators.required, Validators.maxLength(45)]],
       'marketAddress': ['', [Validators.required, Validators.maxLength(250)]],
-      'marketPhone': ['', [Validators.pattern("(01)[0-9]{9}")]],
+      'marketPhone': ['', [Validators.pattern("(01)[0-9]{9}") , Validators.required]],
       'priceRange': ['', [Validators.required]],
       'description': ['', [Validators.required, Validators.maxLength(999)]],
       'address': ['', [Validators.required]],
@@ -476,4 +482,5 @@ export class BuyFromMarketPage {
     });
 
   }
+
 }

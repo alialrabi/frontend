@@ -71,7 +71,7 @@
             <ion-icon name="calendar" item-start class="text-primary"></ion-icon>
             {{ 'START_TIME' | translate }}
           </ion-label>
-          <ion-datetime displayFormat="hh:mm a" pickerFormat="hh:mm a" formControlName="startTime" [(ngModel)]="assign.startTime"></ion-datetime>
+          <ion-datetime [doneText]="doneText" [cancelText]="cancelText" displayFormat="hh:mm a" pickerFormat="hh:mm a" formControlName="startTime" [(ngModel)]="assign.startTime"></ion-datetime>
         </ion-item>
         <p  class="validationHint" *ngIf="!isCordova && hasError('startTime', 'required')"> {{ 'REQURIED' | translate }} </p>
         <ion-item *ngIf="!isCordova">
@@ -79,7 +79,7 @@
               <ion-icon name="calendar" item-start class="text-primary"></ion-icon>
               {{ 'END_TIME' | translate }}
             </ion-label>
-            <ion-datetime displayFormat="hh:mm a" pickerFormat="hh:mm a" formControlName="endTime" [(ngModel)]="assign.endTime"></ion-datetime>
+            <ion-datetime [doneText]="doneText" [cancelText]="cancelText" displayFormat="hh:mm a" pickerFormat="hh:mm a" formControlName="endTime" [(ngModel)]="assign.endTime"></ion-datetime>
           </ion-item>
           <p class="validationHint" *ngIf="!isCordova && hasError('endTime', 'required')"> {{ 'REQURIED' | translate }} </p>
        

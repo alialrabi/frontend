@@ -38,9 +38,16 @@ export class AdminDashboardPage {
   language = MyApp.language
   direction = MyApp.direction
 
+  okText = ''
+  cancelText = ''
+  doneText = ""
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public captainService: CaptainService, private builder: FormBuilder, private orderServic: OrderService, public app: App, private loading: LoadingController, public translateService: TranslateService, public principal: Principal) {
-    this.translateService.get(['PLEASE_WAIT']).subscribe((values) => {
+    this.translateService.get(['PLEASE_WAIT' , "SELECTION_CANCEL" , "SELECTION_OK" , 'SELECTION_DONE']).subscribe((values) => {
       this.pleaseWait = values.PLEASE_WAIT
+      this.okText = values.SELECTION_OK
+      this.cancelText = values.SELECTION_CANCEL
+      this.doneText = values.SELECTION_DONE
     })
 
     var CurrentYear = new Date().getFullYear()

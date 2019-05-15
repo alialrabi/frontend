@@ -99,7 +99,7 @@
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
           {{ 'LIVINF_TYPE' | translate }}
         </ion-label>
-        <ion-select formControlName="livingType" [placeholder]="getalaivingPlaceholder()" [(ngModel)]="flat" [dir]="direction">
+        <ion-select [okText]="okText" [cancelText]="cancelText" formControlName="livingType" [placeholder]="getalaivingPlaceholder()" [(ngModel)]="flat" [dir]="direction">
           <ion-option [selected]="flat == item" [value]="'Flat'" [dir]="direction">{{'FLAT' | translate}} </ion-option>
           <ion-option [selected]="flat == item" [value]="'Home'" [dir]="direction">{{'HOME' | translate}} </ion-option>
           <ion-option [selected]="flat == item" [value]="'Office'" [dir]="direction">{{'OFFICE' | translate}} </ion-option>
@@ -219,22 +219,22 @@
           <div #map id="map" [ngStyle]="mapStyle"></div>
         </ion-col>
       </ion-row>
-      <ion-row *ngIf="latitudeValue == '0'" [style.height]="openMap ? '50px' : '0px'" [style.width]="openMap ? '100%' : '0%'">
-        <ion-col col-6  [style.height]="openMap ? '100%' : '0px'">
-          <div margin-top [style.height]="openMap ? '100%' : '0px'">
-            <button ion-button block color="dark" tappable text-wrap [style.height]="openMap ? '100%' : '0px'" (click)="skip()" [disabled]="notChangesSkip()">
+      <ion-row *ngIf="latitudeValue == '0'" style="max-height: 55px" [style.height]="openMap ? '55px' : '0px'" [style.width]="openMap ? '100%' : '0%'">
+        <ion-col col-6 style="max-height: 45px"  [style.height]="openMap ? '100%' : '0px'">
+          <div margin-top style="max-height: 40px" [style.height]="openMap ? '100%' : '0px'">
+            <button ion-button style="max-height: 35px" block color="dark" tappable text-wrap [style.height]="openMap ? '100%' : '0px'" (click)="skip()" [disabled]="notChangesSkip()">
               {{ 'SAVE_WITHOUT_LOCATION' | translate }}
             </button>
           </div>
         </ion-col>
-        <ion-col col-6 [style.height]="openMap ? '100%' : '0px'">
-          <div margin-top *ngIf="!loadWithOutLocation" [style.height]="openMap ? '100%' : '0px'">
-            <button ion-button block color="dark" [style.height]="openMap ? '100%' : '0px'" tappable text-wrap (click)="chooseLocation()" [disabled]="notChanges() ||  mainMarkerCheck()">
+        <ion-col col-6 style="max-height: 45px" [style.height]="openMap ? '100%' : '0px'">
+          <div margin-top *ngIf="!loadWithOutLocation" style="max-height: 40px" [style.height]="openMap ? '100%' : '0px'">
+            <button ion-button block color="dark" style="max-height: 35px" [style.height]="openMap ? '100%' : '0px'" tappable text-wrap (click)="chooseLocation()" [disabled]="notChanges() ||  mainMarkerCheck()">
               {{ 'SAVE_CHANGES' | translate }}
             </button>
           </div>
-          <div margin-top *ngIf="loadWithOutLocation" [style.height]="openMap ? '100%' : '0px'">
-            <button ion-button #chooseLocation [style.height]="openMap ? '100%' : '0px'" id="chooseLocation" block color="dark" tappable text-wrap [disabled]="notChanges() ||  mainMarkerCheck()">
+          <div margin-top *ngIf="loadWithOutLocation" style="max-height: 40px" [style.height]="openMap ? '100%' : '0px'">
+            <button ion-button #chooseLocation style="max-height: 35px" [style.height]="openMap ? '100%' : '0px'" id="chooseLocation" block color="dark" tappable text-wrap [disabled]="notChanges() ||  mainMarkerCheck()">
               {{ 'SAVE_CHANGES' | translate }}
             </button>
           </div>

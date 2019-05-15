@@ -73,7 +73,7 @@
           <ion-icon name="cash" item-start class="text-primary"></ion-icon>
           {{ 'PRICE_RANGE' | translate }}
         </ion-label>
-        <ion-select formControlName="priceRange" [(ngModel)]="order.priceRange" [lang]="language" [dir]="direction">
+        <ion-select [okText]="okText" [cancelText]="cancelText" formControlName="priceRange" [(ngModel)]="order.priceRange" [lang]="language" [dir]="direction">
           <ion-option [selected]="order.priceRange == item" [value]="'1 : 500'" [dir]="direction"> 1 : 500 </ion-option>
           <ion-option [selected]="order.priceRange == item" [value]="'501 : 1000'" [dir]="direction"> 501 : 1000 </ion-option>
           <ion-option [selected]="order.priceRange == item" [value]="'1001 : 3000'" [dir]="direction"> 1001 : 3000 </ion-option>

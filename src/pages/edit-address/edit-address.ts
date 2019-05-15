@@ -109,6 +109,9 @@ export class EditAddressPage {
 
   isCordova = false;
 
+  okText = ''
+  cancelText = ''
+
 
   constructor(public navCtrl: NavController, private loading: LoadingController, public renderer: Renderer , public _alert: AlertController,
     public navParams: NavParams, public locationAccuracy: LocationAccuracy, public addressService: AddressService, public toastCtrl: ToastController,
@@ -138,10 +141,13 @@ export class EditAddressPage {
     this.nameValue = this.address.name
 
 
-    this.translateService.get(['EDIT_ADDRESS_ERROR', 'EDIT_ADDRESS_SUCCESS', 'LOCATION_ALERT_TITLE', 'LOCATION_ALERT_MESSAGE', 'OK', 'ALEX', 'CAIRO', 'TANTA', 'DAMNHOR', 'SHIPIN_ELKOM', 'BANHA', 'PLEASE_WAIT', 'OFFICE', 'HOME', 'FLAT']).subscribe((values) => {
+    this.translateService.get(["SELECTION_CANCEL" , "SELECTION_OK" , 'EDIT_ADDRESS_ERROR', 'EDIT_ADDRESS_SUCCESS', 'LOCATION_ALERT_TITLE', 'LOCATION_ALERT_MESSAGE', 'OK', 'ALEX', 'CAIRO', 'TANTA', 'DAMNHOR', 'SHIPIN_ELKOM', 'BANHA', 'PLEASE_WAIT', 'OFFICE', 'HOME', 'FLAT']).subscribe((values) => {
       this.addAddressError = values.EDIT_ADDRESS_ERROR;
       this.addAdressSuccessString = values.EDIT_ADDRESS_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
+
+      this.okText = values.SELECTION_OK
+      this.cancelText = values.SELECTION_CANCEL
 
       this.alexValue = values.ALEX;
       this.cairoValue = values.CAIRO;
@@ -187,6 +193,7 @@ export class EditAddressPage {
           this.mapStyle.width = "0%";
           this.mapStyle1.height = "0%";
           this.mapStyle1.width = "0%";
+          this.flat = this.getLivingType(this.myForm.get("livingType").value)
 
           this.openMap = false;
 
@@ -590,6 +597,7 @@ export class EditAddressPage {
       this.mapStyle.width = "0%";
       this.mapStyle1.height = "0%";
       this.mapStyle1.width = "0%";
+      this.flat = this.getLivingType(this.myForm.get("livingType").value)
       this.openMap = false;
 
     } else {

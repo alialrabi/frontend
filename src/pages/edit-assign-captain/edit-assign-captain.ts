@@ -64,6 +64,8 @@ export class EditAssignCaptainPage {
   selectedDate;
   formatedDate;
   isCordova = false;
+  cancelText = ''
+  doneText = ""
 
   constructor(public navCtrl: NavController, public navParams: NavParams,private principal: Principal, private app: App, private loading: LoadingController, private builder: FormBuilder, public captainService: CaptainService, public toastCtrl: ToastController,public datePicker:DatePicker , public platform: Platform, public translateService: TranslateService) {
 
@@ -99,10 +101,12 @@ export class EditAssignCaptainPage {
     // this.maxDate = CurrentYear + 1;
     // this.minDate = CurrentYear;
 
-    this.translateService.get(['EDIT_ASSIGN_ORDER_ERROR', 'EDIT_ASSIGN_ORDER_SUCCESS', 'PLEASE_WAIT']).subscribe((values) => {
+    this.translateService.get(['SELECTION_DONE' ,"SELECTION_CANCEL" , 'EDIT_ASSIGN_ORDER_ERROR', 'EDIT_ASSIGN_ORDER_SUCCESS', 'PLEASE_WAIT']).subscribe((values) => {
       this.assignOrderError = values.EDIT_ASSIGN_ORDER_ERROR;
       this.assingOrderSuccess = values.EDIT_ASSIGN_ORDER_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
+      this.cancelText = values.SELECTION_CANCEL
+      this.doneText = values.SELECTION_DONE
     })
 
 

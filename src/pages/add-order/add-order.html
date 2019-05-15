@@ -85,7 +85,7 @@
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
           {{ 'CITY' | translate }}
         </ion-label>
-        <ion-select formControlName="city" [placeholder]="alexValue" [(ngModel)]="alex" [lang]="language" [dir]="direction">
+        <ion-select [okText]="okText" [cancelText]="cancelText" formControlName="city" [placeholder]="alexValue" [(ngModel)]="alex" [lang]="language" [dir]="direction">
           <ion-option [selected]="alex == item" [value]="'Alexandria'" [dir]="direction">{{'ALEX' | translate}} </ion-option>
           <ion-option [selected]="alex == item" [value]="'Cairo'" [dir]="direction">{{'CAIRO' | translate}} </ion-option>
           <ion-option [selected]="alex == item" [value]="'Tanta'" [dir]="direction">{{'TANTA' | translate}} </ion-option>
