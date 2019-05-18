@@ -251,25 +251,31 @@ export class AddCheckOrderPage {
   readThis(inputValue: any): void {
     console.log("**************************");
 
-    var file: File = inputValue.files[0];
-    this.ng2ImgMaxService.resize([file], 300, 300).subscribe((result) => {
-      console.log("result", result);
+    if (inputValue != null && inputValue != undefined) {
+      var file: File = inputValue.files[0];
+      if (file != null && file != undefined) {
 
 
-      var myReader: FileReader = new FileReader();
+        this.ng2ImgMaxService.resize([file], 300, 300).subscribe((result) => {
+          console.log("result", result);
 
-      myReader.onloadend = (e) => {
-        console.log("--------------------");
 
-        this.order.check = myReader.result.substr(myReader.result.indexOf(',') + 1)
+          var myReader: FileReader = new FileReader();
 
-        //this..imageContentType = 'fromBrowser'
-        console.log(myReader);
+          myReader.onloadend = (e) => {
+            console.log("--------------------");
 
+            this.order.check = myReader.result.substr(myReader.result.indexOf(',') + 1)
+
+            //this..imageContentType = 'fromBrowser'
+            console.log(myReader);
+
+          }
+          myReader.readAsDataURL(result);
+
+        })
       }
-      myReader.readAsDataURL(result);
-
-    })
+    }
   }
 
 }

@@ -45,7 +45,7 @@ export class AddCaptainPage {
   language = MyApp.language
   direction = MyApp.direction
 
-  captain: { code: number, name: string, phone: string, image: any, imageContentType: string, latitude: string, longitude: string, lastAssignId: number, busy: boolean, userId: any, agencyId: number, working: boolean , atMarket:boolean} = {
+  captain: { code: number, name: string, phone: string, image: any, imageContentType: string, latitude: string, longitude: string, lastAssignId: number, busy: boolean, userId: any, agencyId: number, working: boolean, atMarket: boolean } = {
     code: null,
     name: '',
     phone: '',
@@ -73,12 +73,12 @@ export class AddCaptainPage {
   public choosePhoto = '';
   public chooseFromGalary = '';
   public takePhoto = '';
-  platformType="cordova";
+  platformType = "cordova";
   browserImage;
   isCordova = false;
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private ng2ImgMaxService: Ng2ImgMaxService , public _alert: AlertController
+  constructor(public navCtrl: NavController, public navParams: NavParams, private ng2ImgMaxService: Ng2ImgMaxService, public _alert: AlertController
     , public imagePicker: ImagePicker, public camera: Camera, public toastCtrl: ToastController,
     public captainService: CaptainService,
     private loading: LoadingController,
@@ -88,17 +88,17 @@ export class AddCaptainPage {
     public storage: LocalStorageService,
     public translateService: TranslateService, private app: App, private builder: FormBuilder, public user: User, private accountService: AccountService) {
 
-      if (this.platform.is("cordova") && this.platform.is("android")) {
-        this.isCordova = true;
-      }
+    if (this.platform.is("cordova") && this.platform.is("android")) {
+      this.isCordova = true;
+    }
 
-      if(platform.is("cordova")){
-        this.platformType = "cordova";
-      }else{
-        this.platformType = "notCordova"
-      }
+    if (platform.is("cordova")) {
+      this.platformType = "cordova";
+    } else {
+      this.platformType = "notCordova"
+    }
 
-    this.translateService.get(['ADD_CAPTAIN_ERROR', 'ADD_CAPTAIN_SUCCESS', 'CHOOSE_PHOTO', 'CHOOSE_FROM_GALARY', 'TAKE_A_PHOTO', 'PLEASE_WAIT', 'EXISTING_USER_ERROR', 'INVALID_PASSWORD_ERROR' , 'SIGNUP_ERROR']).subscribe((values) => {
+    this.translateService.get(['ADD_CAPTAIN_ERROR', 'ADD_CAPTAIN_SUCCESS', 'CHOOSE_PHOTO', 'CHOOSE_FROM_GALARY', 'TAKE_A_PHOTO', 'PLEASE_WAIT', 'EXISTING_USER_ERROR', 'INVALID_PASSWORD_ERROR', 'SIGNUP_ERROR']).subscribe((values) => {
       this.addAddressError = values.ADD_CAPTAIN_ERROR;
       this.addAdressSuccessString = values.ADD_CAPTAIN_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
@@ -207,10 +207,10 @@ export class AddCaptainPage {
       quality: 100,
       outputType: 1
 
-    }    
+    }
 
     this.imagePicker.getPictures(options).then((results) => {
-        this.captain.image = results[0];
+      this.captain.image = results[0];
     }, (err) => {
       alert(err);
     });
@@ -231,7 +231,7 @@ export class AddCaptainPage {
       targetHeight: 600
     }
     console.log(options);
-    
+
     //this.backgroundMode.enable();
 
     this.camera.getPicture(options)
@@ -270,7 +270,7 @@ export class AddCaptainPage {
     this.account.firstName = this.captain.name;
     this.account.lastName = this.captain.name;
 
-    if(this.captain.image == 'O'){
+    if (this.captain.image == 'O') {
       this.captain.image = null;
     }
     // Attempt to login in through our User service
@@ -346,22 +346,22 @@ export class AddCaptainPage {
   back() {
     this.navCtrl.setRoot(CaptainsPage);
   }
- 
-  uploadBrowserImage(event:any){
+
+  uploadBrowserImage(event: any) {
     //console.log('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb');
-    
+
     this.readThis(event.target);
     //let files = event.target.files;
 
-   // console.log('files' , files);
-   // files[0]
-    
-    
+    // console.log('files' , files);
+    // files[0]
+
+
   }
 
-  openFileSelector(){
-   // console.log("rrrrrrrrrrrrrrrrrrrrrrrrrrr");
-    
+  openFileSelector() {
+    // console.log("rrrrrrrrrrrrrrrrrrrrrrrrrrr");
+
     //this.myInput.nativeElement.click();
 
     let element = document.getElementById('imageInput') as HTMLElement;
@@ -369,25 +369,28 @@ export class AddCaptainPage {
   }
   readThis(inputValue: any): void {
     console.log("**************************");
+    if (inputValue != null && inputValue != undefined) {
+      var file: File = inputValue.files[0];
+      if (file != null && file != undefined) {
+        this.ng2ImgMaxService.resize([file], 300, 300).subscribe((result) => {
+          console.log("result", result);
 
-    var file: File = inputValue.files[0];
-    this.ng2ImgMaxService.resize([file], 300, 300).subscribe((result) => {
-      console.log("result", result);
 
+          var myReader: FileReader = new FileReader();
 
-      var myReader: FileReader = new FileReader();
+          myReader.onloadend = (e) => {
+            console.log("--------------------");
 
-      myReader.onloadend = (e) => {
-        console.log("--------------------");
+            this.captain.image = myReader.result.substr(myReader.result.indexOf(',') + 1)
 
-        this.captain.image = myReader.result.substr(myReader.result.indexOf(',') + 1)
+            //this..imageContentType = 'fromBrowser'
+            console.log(myReader);
 
-        //this..imageContentType = 'fromBrowser'
-        console.log(myReader);
+          }
+          myReader.readAsDataURL(result);
 
+        })
       }
-      myReader.readAsDataURL(result);
-
-    })
+    }
   }
 }

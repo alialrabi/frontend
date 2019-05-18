@@ -29,7 +29,7 @@ import { Ng2ImgMaxService } from 'ng2-img-max';
 export class EditCaptainPage {
 
   account = {
-    id:0,
+    id: 0,
     email: '',
     firstName: '',
     lastName: '',
@@ -40,13 +40,13 @@ export class EditCaptainPage {
   direction = MyApp.direction
 
   captain = {
-    id:0,
+    id: 0,
     code: '',
     name: '',
     phone: '',
     image: null,
     imageContentType: ''
-    
+
   }
 
   code = ''
@@ -75,7 +75,7 @@ export class EditCaptainPage {
 
   captainDetails;
 
-  platformType="cordova";
+  platformType = "cordova";
 
   isCordova = false;
 
@@ -83,42 +83,42 @@ export class EditCaptainPage {
     , public imagePicker: ImagePicker, public camera: Camera, public toastCtrl: ToastController,
     public captainService: CaptainService,
     private loading: LoadingController,
-    private ng2ImgMaxService: Ng2ImgMaxService ,
+    private ng2ImgMaxService: Ng2ImgMaxService,
     private backgroundMode: BackgroundMode,
     private device: Device,
     private platform: Platform,
     public storage: LocalStorageService,
     public translateService: TranslateService, private app: App, private builder: FormBuilder, public user: User, private accountService: AccountService) {
 
-      if (this.platform.is("cordova") && this.platform.is("android")) {
-        this.isCordova = true;
-      }
+    if (this.platform.is("cordova") && this.platform.is("android")) {
+      this.isCordova = true;
+    }
 
-      if(platform.is("cordova")){
-        this.platformType = "cordova";
-      }else{
-        this.platformType = "notCordova"
-      }
+    if (platform.is("cordova")) {
+      this.platformType = "cordova";
+    } else {
+      this.platformType = "notCordova"
+    }
 
-      this.oldCaptain = this.navParams.get("captain");
-      this.captainDetails = this.navParams.get("item");
-      this.account.id = this.captainDetails.userId;
-      this.account.email = this.captainDetails.email;
-      this.captain.id = this.captainDetails.id;
-      this.captain.code = this.captainDetails.code;
-      this.captain.image = this.captainDetails.image;
-      this.captain.imageContentType = this.captainDetails.imageContentType;
-      this.captain.name = this.captainDetails.name;
-      this.captain.phone = this.captainDetails.phone;
+    this.oldCaptain = this.navParams.get("captain");
+    this.captainDetails = this.navParams.get("item");
+    this.account.id = this.captainDetails.userId;
+    this.account.email = this.captainDetails.email;
+    this.captain.id = this.captainDetails.id;
+    this.captain.code = this.captainDetails.code;
+    this.captain.image = this.captainDetails.image;
+    this.captain.imageContentType = this.captainDetails.imageContentType;
+    this.captain.name = this.captainDetails.name;
+    this.captain.phone = this.captainDetails.phone;
 
-      this.email = this.captainDetails.email;
-      this.code = this.captainDetails.code;
-      this.image = this.captainDetails.image;
-      this.name = this.captainDetails.name;
-      this.phone = this.captainDetails.phone;
-      this.password = this.captainDetails.password;
+    this.email = this.captainDetails.email;
+    this.code = this.captainDetails.code;
+    this.image = this.captainDetails.image;
+    this.name = this.captainDetails.name;
+    this.phone = this.captainDetails.phone;
+    this.password = this.captainDetails.password;
 
-    this.translateService.get(['EDIT_CAPTAIN_ERROR', 'EDIT_CAPTAIN_SUCCESS', 'CHOOSE_PHOTO', 'CHOOSE_FROM_GALARY', 'TAKE_A_PHOTO', 'PLEASE_WAIT', 'EXISTING_USER_ERROR', 'INVALID_PASSWORD_ERROR' , 'SIGNUP_ERROR']).subscribe((values) => {
+    this.translateService.get(['EDIT_CAPTAIN_ERROR', 'EDIT_CAPTAIN_SUCCESS', 'CHOOSE_PHOTO', 'CHOOSE_FROM_GALARY', 'TAKE_A_PHOTO', 'PLEASE_WAIT', 'EXISTING_USER_ERROR', 'INVALID_PASSWORD_ERROR', 'SIGNUP_ERROR']).subscribe((values) => {
       this.addAddressError = values.EDIT_CAPTAIN_ERROR;
       this.addAdressSuccessString = values.ADD_CAPTAIN_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
@@ -140,7 +140,7 @@ export class EditCaptainPage {
     });
 
     this.platform.registerBackButtonAction(() => {
-      this.navCtrl.setRoot(CaptainDetailsPage , {item:this.oldCaptain});
+      this.navCtrl.setRoot(CaptainDetailsPage, { item: this.oldCaptain });
 
     });
 
@@ -174,7 +174,7 @@ export class EditCaptainPage {
 
   }
 
-  
+
   openImagePicker() {
 
     let options = {
@@ -186,10 +186,10 @@ export class EditCaptainPage {
       quality: 100,
       outputType: 1
 
-    }    
+    }
 
     this.imagePicker.getPictures(options).then((results) => {
-        this.captain.image = results[0];
+      this.captain.image = results[0];
     }, (err) => {
       alert(err);
     });
@@ -243,21 +243,21 @@ export class EditCaptainPage {
     load.present()
 
     let editAccount = {
-      id:this.account.id,
-      firstName:this.captain.name,
-      lastName:this.captain.name,
-      phone:this.captain.phone,
-      email:this.myForm.get("email").value,
-      password:this.myForm.get("password").value,
-      emailChanged:this.email != this.myForm.get("email").value
-    } 
-    
-    if(this.myForm.get("password").value != this.password && this.myForm.get("password").value != '' && this.myForm.get("password").value != null){
+      id: this.account.id,
+      firstName: this.captain.name,
+      lastName: this.captain.name,
+      phone: this.captain.phone,
+      email: this.myForm.get("email").value,
+      password: this.myForm.get("password").value,
+      emailChanged: this.email != this.myForm.get("email").value
+    }
+
+    if (this.myForm.get("password").value != this.password && this.myForm.get("password").value != '' && this.myForm.get("password").value != null) {
       editAccount.password = this.myForm.get("password").value;
-    }else{
+    } else {
       editAccount.password = null;
     }
-    if(this.captain.image == 'O'){
+    if (this.captain.image == 'O') {
       this.captain.image = null;
     }
     // Attempt to login in through our User service
@@ -275,7 +275,7 @@ export class EditCaptainPage {
           toast.present();
           load.dismiss();
           //this.navCtrl.push(CaptainsPage);
-          this.app.getRootNavs()[0].setRoot(CaptainDetailsPage , {item:this.oldCaptain});
+          this.app.getRootNavs()[0].setRoot(CaptainDetailsPage, { item: this.oldCaptain });
         }, (err1) => {
           console.log('error', err1);
 
@@ -328,18 +328,18 @@ export class EditCaptainPage {
   }
 
   back() {
-    this.navCtrl.setRoot(CaptainDetailsPage , {item:this.oldCaptain});
+    this.navCtrl.setRoot(CaptainDetailsPage, { item: this.oldCaptain });
   }
-  valuesChanges(){
-    if(this.code != this.captain.code || this.name != this.captain.name || this.phone != this.captain.phone || (this.image != this.captain.image && this.captain.image != 'O') || this.email != this.account.email || (this.password != this.myForm.get("password").value && this.myForm.get("password").value != '' && this.myForm.get("password").value != null)){  
+  valuesChanges() {
+    if (this.code != this.captain.code || this.name != this.captain.name || this.phone != this.captain.phone || (this.image != this.captain.image && this.captain.image != 'O') || this.email != this.account.email || (this.password != this.myForm.get("password").value && this.myForm.get("password").value != '' && this.myForm.get("password").value != null)) {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
-  passwordChange(){
+  passwordChange() {
 
-    if(this.myForm.get("password").value != '' && this.myForm.get("password").value != null){
+    if (this.myForm.get("password").value != '' && this.myForm.get("password").value != null) {
       this.myForm.get("passwordConfirm").clearValidators();
       this.myForm.get("passwordConfirm").updateValueAndValidity()
 
@@ -347,27 +347,27 @@ export class EditCaptainPage {
       this.myForm.get("passwordConfirm").clearValidators();
       this.myForm.get("passwordConfirm").updateValueAndValidity();
 
-    }else{
+    } else {
       this.myForm.get("passwordConfirm").clearValidators();
       this.myForm.get("passwordConfirm").updateValueAndValidity()
     }
   }
 
-  uploadBrowserImage(event:any){
+  uploadBrowserImage(event: any) {
     //console.log('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb');
-    
+
     this.readThis(event.target);
     //let files = event.target.files;
 
-   // console.log('files' , files);
-   // files[0]
-    
-    
+    // console.log('files' , files);
+    // files[0]
+
+
   }
 
-  openFileSelector(){
-   // console.log("rrrrrrrrrrrrrrrrrrrrrrrrrrr");
-    
+  openFileSelector() {
+    // console.log("rrrrrrrrrrrrrrrrrrrrrrrrrrr");
+
     //this.myInput.nativeElement.click();
 
     let element = document.getElementById('imageInput') as HTMLElement;
@@ -376,25 +376,30 @@ export class EditCaptainPage {
   readThis(inputValue: any): void {
     console.log("**************************");
 
-    var file: File = inputValue.files[0];
-    this.ng2ImgMaxService.resize([file], 300, 300).subscribe((result) => {
-      console.log("result", result);
+    if (inputValue != null && inputValue != undefined) {
+      var file: File = inputValue.files[0];
+      if (file != null && file != undefined) {
+
+        this.ng2ImgMaxService.resize([file], 300, 300).subscribe((result) => {
+          console.log("result", result);
 
 
-      var myReader: FileReader = new FileReader();
+          var myReader: FileReader = new FileReader();
 
-      myReader.onloadend = (e) => {
-        console.log("--------------------");
+          myReader.onloadend = (e) => {
+            console.log("--------------------");
 
-        this.captain.image = myReader.result.substr(myReader.result.indexOf(',') + 1)
+            this.captain.image = myReader.result.substr(myReader.result.indexOf(',') + 1)
 
-        //this..imageContentType = 'fromBrowser'
-        console.log(myReader);
+            //this..imageContentType = 'fromBrowser'
+            console.log(myReader);
 
+          }
+          myReader.readAsDataURL(result);
+
+        })
       }
-      myReader.readAsDataURL(result);
-
-    })
+    }
   }
 
 }
