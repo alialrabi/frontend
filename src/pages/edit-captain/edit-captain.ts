@@ -78,6 +78,7 @@ export class EditCaptainPage {
   platformType = "cordova";
 
   isCordova = false;
+  isloadinImage = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public _alert: AlertController
     , public imagePicker: ImagePicker, public camera: Camera, public toastCtrl: ToastController,
@@ -376,6 +377,9 @@ export class EditCaptainPage {
   readThis(inputValue: any): void {
     console.log("**************************");
 
+    this.isloadinImage = true;
+
+
     if (inputValue != null && inputValue != undefined) {
       var file: File = inputValue.files[0];
       if (file != null && file != undefined) {
@@ -389,6 +393,8 @@ export class EditCaptainPage {
           myReader.onloadend = (e) => {
             console.log("--------------------");
 
+            this.isloadinImage = false;
+
             this.captain.image = myReader.result.substr(myReader.result.indexOf(',') + 1)
 
             //this..imageContentType = 'fromBrowser'
@@ -398,8 +404,14 @@ export class EditCaptainPage {
           myReader.readAsDataURL(result);
 
         })
+      } else {
+        this.isloadinImage = false;
       }
+    } else {
+      this.isloadinImage = false;
+
     }
+
   }
 
 }

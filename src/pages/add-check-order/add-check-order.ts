@@ -47,6 +47,9 @@ export class AddCheckOrderPage {
   public takePhoto = '';
   platformType = "cordova";
 
+  isloadinImage = false;
+
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private ng2ImgMaxService: Ng2ImgMaxService, private app: App, private principal: Principal, public camera: Camera, public _alert: AlertController
     , public imagePicker: ImagePicker, private loading: LoadingController, public toastCtrl: ToastController, public orderService: OrderService, public platform: Platform, public translateService: TranslateService) {
 
@@ -251,6 +254,8 @@ export class AddCheckOrderPage {
   readThis(inputValue: any): void {
     console.log("**************************");
 
+    this.isloadinImage = true;
+
     if (inputValue != null && inputValue != undefined) {
       var file: File = inputValue.files[0];
       if (file != null && file != undefined) {
@@ -265,6 +270,8 @@ export class AddCheckOrderPage {
           myReader.onloadend = (e) => {
             console.log("--------------------");
 
+            this.isloadinImage = false;
+
             this.order.check = myReader.result.substr(myReader.result.indexOf(',') + 1)
 
             //this..imageContentType = 'fromBrowser'
@@ -274,7 +281,11 @@ export class AddCheckOrderPage {
           myReader.readAsDataURL(result);
 
         })
+      } else {
+        this.isloadinImage = false;
       }
+    } else {
+      this.isloadinImage = false;
     }
   }
 

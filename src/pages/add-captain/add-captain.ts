@@ -76,7 +76,7 @@ export class AddCaptainPage {
   platformType = "cordova";
   browserImage;
   isCordova = false;
-
+  isloadinImage = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private ng2ImgMaxService: Ng2ImgMaxService, public _alert: AlertController
     , public imagePicker: ImagePicker, public camera: Camera, public toastCtrl: ToastController,
@@ -369,6 +369,7 @@ export class AddCaptainPage {
   }
   readThis(inputValue: any): void {
     console.log("**************************");
+    this.isloadinImage = true;
     if (inputValue != null && inputValue != undefined) {
       var file: File = inputValue.files[0];
       if (file != null && file != undefined) {
@@ -381,7 +382,9 @@ export class AddCaptainPage {
           myReader.onloadend = (e) => {
             console.log("--------------------");
 
+            this.isloadinImage = false;
             this.captain.image = myReader.result.substr(myReader.result.indexOf(',') + 1)
+
 
             //this..imageContentType = 'fromBrowser'
             console.log(myReader);
@@ -390,7 +393,11 @@ export class AddCaptainPage {
           myReader.readAsDataURL(result);
 
         })
+      } else {
+        this.isloadinImage = false;
       }
+    } else {
+      this.isloadinImage = false;
     }
   }
 }
