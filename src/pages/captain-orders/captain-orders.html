@@ -120,14 +120,14 @@
       <div class="account-info info-div2" *ngIf="order.checkImage == null || order.checkImage == 'O'">
           <ion-item class="item-background2">
             <ion-grid style="padding: 0px">
-              <ion-row style="padding: 0px">
+              <ion-row justify-content-center align-items-center style="height: 100%;padding: 0px">
                 <ion-col col-6>
                   <p>
                     {{'NAME' | translate}}
                   </p>
                 </ion-col>
                 <ion-col col-1 style="padding: 0px">
-                    <p>
+                    <p text-center>
                       <strong text-wrap>|</strong>
                     </p>
                   </ion-col>
@@ -141,14 +141,14 @@
           </ion-item>
           <ion-item class="item-background2" *ngFor="let sub of order.subOrders">
             <ion-grid style="padding: 0px">
-              <ion-row style="padding: 0px">
+              <ion-row justify-content-center align-items-center style="height: 100%;padding: 0px">
                 <ion-col col-6 style="padding: 0px">
                   <p>
                     <strong text-wrap>{{sub.name}}</strong>
                   </p>
                 </ion-col>
                 <ion-col col-1 style="padding: 0px">
-                    <p>
+                    <p text-center>
                       <strong text-wrap>|</strong>
                     </p>
                   </ion-col>
@@ -162,14 +162,14 @@
           </ion-item>
           <ion-item class="item-background2">
             <ion-grid style="padding: 0px">
-              <ion-row style="padding: 0px">
+              <ion-row justify-content-center align-items-center style="height: 100%;padding: 0px">
                 <ion-col col-6 style="padding: 0px">
                   <p>
                     <strong text-wrap>{{'DELIVER_PRICE' | translate}}</strong>
                   </p>
                 </ion-col>
                 <ion-col col-1 style="padding: 0px">
-                    <p>
+                    <p text-center>
                       <strong text-wrap>|</strong>
                     </p>
                   </ion-col>
@@ -183,14 +183,14 @@
           </ion-item>
           <ion-item class="item-background2">
             <ion-grid style="padding: 0px">
-              <ion-row style="padding: 0px">
+              <ion-row justify-content-center align-items-center style="height: 100%;padding: 0px">
                 <ion-col col-6 style="padding: 0px">
                   <p>
                     <strong text-wrap>{{'TOTAL' | translate}}</strong>
                   </p>
                 </ion-col>
                 <ion-col col-1 style="padding: 0px">
-                    <p>
+                    <p text-center>
                       <strong text-wrap>|</strong>
                     </p>
                   </ion-col>

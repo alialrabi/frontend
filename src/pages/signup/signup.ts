@@ -99,6 +99,8 @@ export class SignupPage {
 
   doSignup() {
 
+    if(this.myForm.valid && !this.notMathces()){
+
     let loading = this.loading.create({
       content: this.pleaseWait
 
@@ -159,6 +161,7 @@ export class SignupPage {
       });
       toast.present();
     });
+  }
   }
   login() {
     this.navCtrl.setRoot(LoginPage);

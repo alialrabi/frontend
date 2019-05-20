@@ -209,6 +209,8 @@ export class NewAddressComponent {
   }
   save() {
 
+    if(this.myForm.valid){
+
     console.log(this.locationDisable);
 
 
@@ -226,6 +228,8 @@ export class NewAddressComponent {
     this.mapStyle1.width = "100%";
 
     this.openMap = true;
+
+  }
 
   }
 

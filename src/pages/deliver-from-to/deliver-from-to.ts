@@ -354,6 +354,8 @@ export class DeliverFromToPage {
   // }
   addOrder() {
 
+    if(this.myForm.valid && !this.validateweight()){
+
     let load = this.loading.create({
       content: this.pleaseWait
 
@@ -424,7 +426,7 @@ export class DeliverFromToPage {
 
       }
     )
-
+  }
   }
   launchInterstitial() {
 

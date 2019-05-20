@@ -93,6 +93,8 @@ export class AddAgencyPage {
   }
   addAgency() {
 
+    if(this.myForm.valid && !this.notMathces()){
+
     let load = this.loading.create({
       content: this.pleaseWait
   
@@ -140,6 +142,7 @@ export class AddAgencyPage {
 
       load.dismiss();
     });
+  }
   }
 
   hasError(field: string, error: string) {

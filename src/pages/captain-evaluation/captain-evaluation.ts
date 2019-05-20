@@ -97,9 +97,12 @@ export class CaptainEvaluationPage {
         
       }
     )
+  
   }
 
   editEvaluation(){
+
+    if(this.myForm.valid){
 
     let load = this.loading.create({
       content: this.pleaseWait
@@ -135,6 +138,7 @@ export class CaptainEvaluationPage {
       toast.present();
       load.dismiss();
     });
+  }
 
   }
 

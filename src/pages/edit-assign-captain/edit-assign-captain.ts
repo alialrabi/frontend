@@ -170,6 +170,8 @@ export class EditAssignCaptainPage {
     console.log('ionViewDidLoad EditAssignCaptainPage');
   }
   editAssignCaptain() {
+
+    if(this.myForm.valid && !this.validateChange()){
     let load = this.loading.create({
       content: this.pleaseWait
 
@@ -216,7 +218,7 @@ export class EditAssignCaptainPage {
 
       }
     )
-
+  }
 
   }
 

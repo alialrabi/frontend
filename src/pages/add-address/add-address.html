@@ -45,7 +45,8 @@
     </div> -->
 
 
-    <form class="list-form" [formGroup]="myForm">
+    <form class="list-form" [formGroup]="myForm" (submit)="save()">
+        <button type="submit" class="button" hidden></button>
       <!-- <ion-item>
         <ion-label floating>
           <ion-icon name="home" item-start class="text-primary"></ion-icon>

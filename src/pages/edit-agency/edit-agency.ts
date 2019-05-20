@@ -107,6 +107,9 @@ export class EditAgencyPage {
   }
 
   EditAgency() {
+
+    if(this.myForm.valid && !this.notMathces() && this.valuesChanges()){
+
     let load = this.loading.create({
       content: this.pleaseWait
     })
@@ -165,6 +168,7 @@ export class EditAgencyPage {
 
       load.dismiss();
     });
+  }
   }
 
   hasError(field: string, error: string) {

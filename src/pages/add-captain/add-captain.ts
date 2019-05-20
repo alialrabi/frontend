@@ -257,6 +257,7 @@ export class AddCaptainPage {
 
   addCaptain() {
 
+    if(this.myForm.valid && !this.notMathces() && !this.isloadinImage){
 
     let load = this.loading.create({
       content: this.pleaseWait
@@ -332,6 +333,7 @@ export class AddCaptainPage {
         console.log("8888888888888888888888888888");
 
       });
+    }
   }
 
   hasError(field: string, error: string) {

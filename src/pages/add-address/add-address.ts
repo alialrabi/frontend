@@ -266,6 +266,7 @@ export class AddAddressPage {
 
   }
   save() {
+    if(this.myForm.valid){
 
     // console.log(this.locationDisable);
 
@@ -293,6 +294,8 @@ export class AddAddressPage {
     this.mapStyle1.width = "100%";
 
     this.openMap = true;
+
+  }
 
   }
 

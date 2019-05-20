@@ -32,7 +32,8 @@
     </div>
 
     <!-- Login form -->
-    <form class="list-form" [formGroup]="myForm" *ngIf="!print">
+    <form class="list-form" [formGroup]="myForm" (submit)="addOrderWithOutPrint($event)" *ngIf="!print">
+        <button type="submit" class="button" hidden></button>
       <!-- <ion-item>
         <ion-label floating>
           <ion-icon name="person" item-start class="text-primary"></ion-icon>

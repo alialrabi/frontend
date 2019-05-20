@@ -391,6 +391,8 @@ export class BuyFromMarketPage {
   }
   addOrder() {
 
+    if(this.myForm1.valid){
+
     let load = this.loading.create({
       content: this.pleaseWait
 
@@ -463,7 +465,7 @@ export class BuyFromMarketPage {
 
       }
     )
-
+  }
   }
   launchInterstitial() {
 

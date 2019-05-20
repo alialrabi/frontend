@@ -84,6 +84,8 @@ export class AddUserPhonePage {
 
   addPhone(){
 
+    if(this.myForm.valid){
+
     let load = this.loading.create({
       content: this.pleaseWait
 
@@ -117,6 +119,7 @@ export class AddUserPhonePage {
         
       }
     )
+  }
   }
 
   hasError(field: string, error: string) {

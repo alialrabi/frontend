@@ -235,6 +235,7 @@ export class EditCaptainPage {
 
   editCaptain() {
 
+    if(this.myForm.valid && !this.notMathces() && this.valuesChanges() && !this.isloadinImage){
 
     let load = this.loading.create({
       content: this.pleaseWait
@@ -317,6 +318,7 @@ export class EditCaptainPage {
         console.log("8888888888888888888888888888");
 
       });
+    }
   }
 
   hasError(field: string, error: string) {
