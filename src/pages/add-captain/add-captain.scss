@@ -10,7 +10,10 @@ page-add-captain {
        margin-left: auto;
        margin-right: auto;
    }
-   
+   .item-md.item-block .item-inner {
+    padding-right: 8px;
+    border-bottom: 0;
+}
    .circle-pic{
        width:200px;
        height:100px;

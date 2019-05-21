@@ -33,13 +33,16 @@
           <ion-col class="grid-image" class="btn-col" col-9> -->
 
             <img class="circle-pic" style="height: 65%;
-            width: 100%;margin-top: 15%;" *ngIf="!order.check || order.check == 'O'" src="../../assets/img/orders.jpg"
+            width: 100%;margin-top: 15%;" *ngIf="isloadinImage" src="../../assets/img/loader.gif"
+            />
+            <img class="circle-pic" style="height: 65%;
+            width: 100%;margin-top: 15%;" *ngIf="(!order.check || order.check == 'O') && !isloadinImage" src="../../assets/img/orders.jpg"
             />
             <img class="circle-pic" style="height: 70%;
-            width: 100%;margin-top: 15%;" *ngIf="order.check  && order.check != 'O'  && order.checkContentType != 'fromBrowser'"
+            width: 100%;margin-top: 15%;" *ngIf="order.check  && order.check != 'O' && !isloadinImage && order.checkContentType != 'fromBrowser'"
               [src]="['data:image/jpg;base64',order.check]" />
             <img class="circle-pic" style="height: 70%;
-            width: 100%;margin-top: 15%;" *ngIf="order.check  && order.check != 'O' && order.checkContentType == 'fromBrowser'"
+            width: 100%;margin-top: 15%;" *ngIf="order.check  && order.check != 'O' && !isloadinImage && order.checkContentType == 'fromBrowser'"
               [src]="order.check" />
           <!-- </ion-col> -->
 
@@ -59,7 +62,7 @@
 
 
     <div margin-top style="margin-bottom: 40px;">
-      <button ion-button block color="dark" tappable (click)="addOrder()" [disabled]="order.check == null || order.check == 'O'">
+      <button ion-button block color="dark" tappable (click)="addOrder()" [disabled]="order.check == null || order.check == 'O' || isloadinImage">
         {{ 'ADD_ORDER_BUTTON' | translate }}
     </button>
     </div>

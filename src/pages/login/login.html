@@ -16,18 +16,19 @@
       </h2>
     </div> -->
 
+    <p text-center ion-text color="secondary">{{ 'OR_SIGN_IN_WITH' | translate }}</p>
+
+
+    <button ion-button icon-only block class="btn-facebook" (click)="fbLogin()">
+      <ion-icon name="logo-facebook"></ion-icon>
+      {{ 'LOGIN_FACEBOOK' | translate }}
+    </button>
+
+    <p ion-text color="secondary">{{ 'HAVE_AN_ACCOUNT' | translate }}</p>
     <!-- Login form -->
-    <form class="list-form" [formGroup]="myForm">
+    <form class="list-form" [formGroup]="myForm" (submit)="doLogin()">
 
-        <p text-center ion-text color="secondary">{{ 'OR_SIGN_IN_WITH' | translate }}</p>
-
-      
-        <button ion-button icon-only block class="btn-facebook" (click)="fbLogin()">
-          <ion-icon name="logo-facebook"></ion-icon>
-          {{ 'LOGIN_FACEBOOK' | translate }}
-        </button>
-
-        <p ion-text color="secondary">{{ 'HAVE_AN_ACCOUNT' | translate }}</p>
+        <button type="submit" class="button" hidden></button>
 
       <ion-item>
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
@@ -51,8 +52,10 @@
 
     </form>
 
-    <p text-right ion-text color="secondary" tappable (click)="forgotPass()"><strong>{{ 'FPRGET_PASSWORD_QUESTION' | translate }}</strong></p>
-  
+    <p text-right ion-text color="secondary" tappable (click)="forgotPass()">
+      <strong>{{ 'FPRGET_PASSWORD_QUESTION' | translate }}</strong>
+    </p>
+
     <div>
       <button ion-button icon-start block color="dark" tappable (click)="doLogin()" [disabled]="!myForm.valid">
         <ion-icon name="log-in" style="margin-left: 5px;margin-right: 5px"></ion-icon>
@@ -60,8 +63,8 @@
       </button>
 
 
-      
-            <!-- <button ion-button icon-only block class="btn-twitter" (click)="twLogin()" style="margin-top: 10px">
+
+      <!-- <button ion-button icon-only block class="btn-twitter" (click)="twLogin()" style="margin-top: 10px">
               <ion-icon name="logo-twitter"></ion-icon>
               {{ 'LOGIN_TWITTER' | translate }}
             </button>

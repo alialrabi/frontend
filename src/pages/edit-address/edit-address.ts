@@ -255,6 +255,7 @@ export class EditAddressPage {
   }
   next() {
 
+    if(this.myForm.valid){
     // console.log(this.locationDisable);
 
 
@@ -281,6 +282,8 @@ export class EditAddressPage {
     this.mapStyle1.width = "100%";
 
     this.openMap = true;
+
+  }
 
   }
 

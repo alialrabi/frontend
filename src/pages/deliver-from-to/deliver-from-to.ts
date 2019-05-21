@@ -221,6 +221,9 @@ export class DeliverFromToPage {
       const modal = await this.modalController.create(AddressesSelectorComponent, { addresses: this.addressList, user: this.account });
 
       modal.onDidDismiss((dataReturned) => {
+        this.platform.registerBackButtonAction(() => {
+          this.navCtrl.setRoot(OrderKindPage);
+        });
         if (dataReturned !== null) {
           console.log('Modal Sent Data :', dataReturned);
           this.addressList = dataReturned.addresses;
@@ -290,6 +293,9 @@ export class DeliverFromToPage {
       const modal = await this.modalController.create(AddressesSelectorComponent, { addresses: this.addressList, user: this.account });
 
       modal.onDidDismiss((dataReturned) => {
+        this.platform.registerBackButtonAction(() => {
+          this.navCtrl.setRoot(OrderKindPage);
+        });
         if (dataReturned !== null) {
           console.log('Modal Sent Data :', dataReturned);
           this.addressList = dataReturned.addresses;
@@ -353,6 +359,8 @@ export class DeliverFromToPage {
   //   });
   // }
   addOrder() {
+
+    if(this.myForm.valid && !this.validateweight()){
 
     let load = this.loading.create({
       content: this.pleaseWait
@@ -424,7 +432,7 @@ export class DeliverFromToPage {
 
       }
     )
-
+  }
   }
   launchInterstitial() {
 

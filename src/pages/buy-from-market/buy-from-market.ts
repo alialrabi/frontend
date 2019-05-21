@@ -339,6 +339,15 @@ export class BuyFromMarketPage {
       const modal = await this.modalControllre.create(AddressesSelectorComponent, { addresses: this.addressList, user: this.account });
 
       modal.onDidDismiss((dataReturned) => {
+        this.platform.registerBackButtonAction(() => {
+          if (this.reciverData) {
+            this.reciverData = false;
+    
+          } else {
+            this.navCtrl.setRoot(OrderKindPage);
+          }
+    
+        });
         if (dataReturned !== null) {
           console.log('Modal Sent Data :', dataReturned);
 
@@ -390,6 +399,8 @@ export class BuyFromMarketPage {
 
   }
   addOrder() {
+
+    if(this.myForm1.valid){
 
     let load = this.loading.create({
       content: this.pleaseWait
@@ -463,7 +474,7 @@ export class BuyFromMarketPage {
 
       }
     )
-
+  }
   }
   launchInterstitial() {
 

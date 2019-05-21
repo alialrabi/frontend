@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {  ViewController } from 'ionic-angular';
+import { ViewController } from 'ionic-angular';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { MyApp } from '../../app/app.component';
 
@@ -19,28 +19,30 @@ export class AddOrderPopoverComponent {
 
   language = MyApp.language
   direction = MyApp.direction
-  
-  constructor( public viewCtrl: ViewController , private builder: FormBuilder) {
-    this.myForm = builder.group({      
+
+  constructor(public viewCtrl: ViewController, private builder: FormBuilder) {
+    this.myForm = builder.group({
       "order": ['', [Validators.required, Validators.maxLength(45)]],
-      "price":['',[Validators.required, Validators.maxLength(5)]]
+      "price": ['', [Validators.required, Validators.maxLength(5)]]
     });
 
   }
 
   ngOnInit() {
-   
+
   }
- 
+
   async cancel() {
     await this.viewCtrl.dismiss(null);
   }
   async save() {
-    let subOrder = {
-      name:this.myForm.get("order").value,
-      price:this.myForm.get("price").value
+    if (this.myForm.valid && !this.validatePrice()) {
+      let subOrder = {
+        name: this.myForm.get("order").value,
+        price: this.myForm.get("price").value
+      }
+      await this.viewCtrl.dismiss(subOrder);
     }
-    await this.viewCtrl.dismiss(subOrder);
   }
 
   hasError(field: string, error: string, form) {
@@ -50,9 +52,9 @@ export class AddOrderPopoverComponent {
 
   }
 
-  validatePrice(){
+  validatePrice() {
     const ctrl = this.myForm.get("price");
-    return ctrl.dirty && ctrl.value <= 0; 
+    return ctrl.dirty && ctrl.value <= 0;
   }
 
 }

@@ -36,7 +36,9 @@
     </div> -->
 
     <!-- Login form -->
-    <form class="list-form" [formGroup]="myForm">
+    <form class="list-form" (submit)="editAssignCaptain()" [formGroup]="myForm">
+
+        <button type="submit" class="button" hidden></button>
       
         <ionic-calendar-date-picker [fromDate]="yesterday" [date]="date" [backgroundStyle]="{ 'background-color': 'transparent' }" (onSelect)="dateSelected($event)" [lang]="language" [dir]="direction" ></ionic-calendar-date-picker>	
 

@@ -8,22 +8,22 @@
 
   <ion-navbar>
 
-      <ion-grid style="width: 100%">
-          <ion-row>
-            <ion-col col-1 style="max-width: 25px;" (click)="back()" *ngIf="to != null && to != undefined">
-              <ion-buttons style="margin-block-start: 2px" class="btn-style">
-                <button ion-button >
-                  <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
-                </button>
-              </ion-buttons>
-            </ion-col>
-            <ion-col col-11 [style.margin-top] ="language == 'en' ? '5px' : '2px'">
-                <ion-title *ngIf="!openMap" [style.margin-top]="!isCordova && language != 'en' ? '3px' : '0px'">{{ 'ADD_ADDRESS' | translate }}</ion-title>
-                <ion-title *ngIf="openMap" [style.margin-top]="!isCordova && language != 'en' ? '3px' : '0px'">{{ 'MAP' | translate }}</ion-title>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-navbar>
+    <ion-grid style="width: 100%">
+      <ion-row>
+        <ion-col col-1 style="max-width: 25px;" (click)="back()" *ngIf="to != null && to != undefined">
+          <ion-buttons style="margin-block-start: 2px" class="btn-style">
+            <button ion-button>
+              <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
+            </button>
+          </ion-buttons>
+        </ion-col>
+        <ion-col col-11 [style.margin-top]="language == 'en' ? '5px' : '2px'">
+          <ion-title *ngIf="!openMap" [style.margin-top]="!isCordova && language != 'en' ? '3px' : '0px'">{{ 'ADD_ADDRESS' | translate }}</ion-title>
+          <ion-title *ngIf="openMap" [style.margin-top]="!isCordova && language != 'en' ? '3px' : '0px'">{{ 'MAP' | translate }}</ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-navbar>
 
 
   <!-- <ion-buttons end *ngIf="openMap">
@@ -34,8 +34,8 @@
 </ion-header>
 
 <!-- -->
-<ion-content class="auth-page">
-  <div class="login-content" *ngIf="!openMap">
+<ion-content text-center class="auth-page">
+  <div class="login-content" style="width: 100%">
 
     <!-- <div padding text-center>
       <div class="logo"></div>
@@ -45,7 +45,8 @@
     </div> -->
 
 
-    <form class="list-form" [formGroup]="myForm">
+    <form class="list-form" style="padding-left: 7%;padding-right: 7%" [formGroup]="myForm" *ngIf="!openMap" (submit)="save()">
+      <button type="submit" class="button" hidden></button>
       <!-- <ion-item>
         <ion-label floating>
           <ion-icon name="home" item-start class="text-primary"></ion-icon>
@@ -95,21 +96,22 @@
       <p class="validationHint" *ngIf="hasError('city', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
  -->
 
-      <ion-item >
-          <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
-            <ion-icon name="pin" item-start class="text-primary"></ion-icon>
-            {{ 'LIVINF_TYPE' | translate }}
-          </ion-label>
-          <ion-select [okText]="okText" [cancelText]="cancelText" formControlName="livingType" [placeholder]="flatValue" [(ngModel)] = "flat" [lang]="language" [dir]="direction">
-            <ion-option [selected]="flat == item" [value]="'Flat'" [dir]="direction" >{{'FLAT' | translate}} </ion-option>
-            <ion-option [selected]="flat == item" [value]="'Home'" [dir]="direction" >{{'HOME' | translate}} </ion-option>
-            <ion-option [selected]="flat == item" [value]="'Office'" [dir]="direction" >{{'OFFICE' | translate}} </ion-option>
-          </ion-select>
-        </ion-item>
-  
-        <p class="validationHint" *ngIf="hasError('livingType', 'required')">{{ 'REQURIED' | translate }}  </p>
-        <p class="validationHint" *ngIf="hasError('livingType', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
-  
+      <ion-item>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+          <ion-icon name="pin" item-start class="text-primary"></ion-icon>
+          {{ 'LIVINF_TYPE' | translate }}
+        </ion-label>
+        <ion-select [okText]="okText" [cancelText]="cancelText" formControlName="livingType" [placeholder]="flatValue" [(ngModel)]="flat"
+          [lang]="language" [dir]="direction">
+          <ion-option [selected]="flat == item" [value]="'Flat'" [dir]="direction">{{'FLAT' | translate}} </ion-option>
+          <ion-option [selected]="flat == item" [value]="'Home'" [dir]="direction">{{'HOME' | translate}} </ion-option>
+          <ion-option [selected]="flat == item" [value]="'Office'" [dir]="direction">{{'OFFICE' | translate}} </ion-option>
+        </ion-select>
+      </ion-item>
+
+      <p class="validationHint" *ngIf="hasError('livingType', 'required')">{{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('livingType', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
+
 
       <ion-item>
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
@@ -119,7 +121,7 @@
         <ion-input type="text" [(ngModel)]="address.region" formControlName="region" name="region" [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
 
-      <p class="validationHint" *ngIf="hasError('region', 'required')">{{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('region', 'required')">{{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('region', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
 
 
@@ -131,7 +133,7 @@
         <ion-input type="text" [(ngModel)]="address.street" formControlName="street" name="street" [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
 
-      <p class="validationHint" *ngIf="hasError('street', 'required')">{{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('street', 'required')">{{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('street', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
 
       <ion-item>
@@ -142,7 +144,7 @@
         <ion-input type="text" [(ngModel)]="address.building" formControlName="building" name="building" [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
 
-      <p class="validationHint" *ngIf="hasError('building', 'required')">{{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('building', 'required')">{{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('building', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
 
       <ion-item>
@@ -153,7 +155,7 @@
         <ion-input type="text" [(ngModel)]="address.floor" formControlName="floor" name="floor" [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
 
-      <p class="validationHint" *ngIf="hasError('floor', 'required')">{{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('floor', 'required')">{{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('floor', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
 
       <ion-item>
@@ -161,10 +163,11 @@
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
           {{ 'FLAT_NUMBER' | translate }}
         </ion-label>
-        <ion-input type="text" [(ngModel)]="address.flatNumber" formControlName="flatNumber" name="flatNumber" [lang]="language" [dir]="direction"></ion-input>
+        <ion-input type="text" [(ngModel)]="address.flatNumber" formControlName="flatNumber" name="flatNumber" [lang]="language"
+          [dir]="direction"></ion-input>
       </ion-item>
 
-      <p class="validationHint" *ngIf="hasError('flatNumber', 'required')">{{ 'REQURIED' | translate }}  </p>
+      <p class="validationHint" *ngIf="hasError('flatNumber', 'required')">{{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('flatNumber', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
 
 
@@ -173,7 +176,8 @@
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
           {{ 'OTHER_DETAILS' | translate }}
         </ion-label>
-        <ion-input type="text" [(ngModel)]="address.otherDetails" formControlName="otherDetails" name="otherDetails" [lang]="language" [dir]="direction"></ion-input>
+        <ion-input type="text" [(ngModel)]="address.otherDetails" formControlName="otherDetails" name="otherDetails" [lang]="language"
+          [dir]="direction"></ion-input>
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('otherDetails', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
@@ -201,12 +205,12 @@
  -->
     </form>
 
-    <div margin-top style="margin-bottom: 40px;">
-      <button ion-button block color="dark" tappable (click)="save()" [disabled]="!myForm.valid" >
+    <div margin-top style="padding-left: 7%;padding-right: 7%" *ngIf="!openMap">
+      <button ion-button block color="dark" tappable (click)="save()" [disabled]="!myForm.valid">
         {{ 'ADD-ADDRESS' | translate }}
       </button>
     </div>
-  </div>
+  
   <div [ngStyle]="mapStyle">
     <ion-grid [ngStyle]="mapStyle1">
       <ion-row [ngStyle]="mapStyle">
@@ -215,26 +219,29 @@
         </ion-col>
       </ion-row>
       <ion-row [style.height]="openMap ? '55px' : '0px'" [style.width]="openMap ? '100%' : '0%'" style="max-height: 55px">
-          <ion-col col-4 style="max-height: 45px">
-              <div margin-top style="max-height: 40px" [style.height]="openMap ? '100%' : '0px'">
-                <button ion-button block color="dark" style="max-height: 35px" tappable (click)="skip()" text-wrap [style.height]="openMap ? '100%' : '0px'">
-                  {{ 'SKIP' | translate }}
-                </button>
-              </div>
-            </ion-col>
+        <ion-col col-4 style="max-height: 45px">
+          <div margin-top style="max-height: 40px" [style.height]="openMap ? '100%' : '0px'">
+            <button ion-button block color="dark" style="max-height: 35px" tappable (click)="skip()" text-wrap [style.height]="openMap ? '100%' : '0px'">
+              {{ 'SKIP' | translate }}
+            </button>
+          </div>
+        </ion-col>
         <ion-col col-8 style="max-height: 45px">
-            <div margin-top style="max-height: 40px" *ngIf="!loadWithOutLocation" [style.height]="openMap ? '100%' : '0px'">
-              <button ion-button style="max-height: 35px" block color="dark" tappable (click)="chooseLocation()" [disabled]="mainMarkerCheck()" [style.height]="openMap ? '100%' : '0px'">
-                {{ 'CHOOSE_LOCATION' | translate }}
-              </button>
-            </div>
-            <div margin-top style="max-height: 40px" *ngIf="loadWithOutLocation" [style.height]="openMap ? '100%' : '0px'">
-              <button ion-button style="max-height: 35px" block #chooseLocation id="chooseLocation" color="dark" tappable [disabled]="mainMarkerCheck()" [style.height]="openMap ? '100%' : '0px'">
-                {{ 'CHOOSE_LOCATION' | translate }}
-              </button>
-            </div>
+          <div margin-top style="max-height: 40px" *ngIf="!loadWithOutLocation" [style.height]="openMap ? '100%' : '0px'">
+            <button ion-button style="max-height: 35px" block color="dark" tappable (click)="chooseLocation()" [disabled]="mainMarkerCheck()"
+              [style.height]="openMap ? '100%' : '0px'">
+              {{ 'CHOOSE_LOCATION' | translate }}
+            </button>
+          </div>
+          <div margin-top style="max-height: 40px" *ngIf="loadWithOutLocation" [style.height]="openMap ? '100%' : '0px'">
+            <button ion-button style="max-height: 35px" block #chooseLocation id="chooseLocation" color="dark" tappable [disabled]="mainMarkerCheck()"
+              [style.height]="openMap ? '100%' : '0px'">
+              {{ 'CHOOSE_LOCATION' | translate }}
+            </button>
+          </div>
         </ion-col>
       </ion-row>
     </ion-grid>
   </div>
+</div>
 </ion-content>

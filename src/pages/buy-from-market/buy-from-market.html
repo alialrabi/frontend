@@ -31,7 +31,8 @@
 <ion-content class="auth-page">
   <div class="login-content">
 
-    <form class="list-form" [formGroup]="myForm1">
+    <form class="list-form" (submit)="addOrder()" [formGroup]="myForm1">
+        <button type="submit" class="button" hidden></button>
       <p style="width: 100%" text-center>
         <strong>{{ 'PRODUCT_DATA' | translate }}</strong>
       </p>

@@ -73,6 +73,9 @@ export class ChangePasswordPage {
     return ctrl.dirty && ctrl.value != this.myForm.get("password").value
   }
   EditPassword(){
+
+    if(this.myForm.valid && !this.notMathces() && this.myForm.get('passwordConfirm').value.length != 0){
+
     let load = this.loading.create({
       content: this.pleaseWait
     })
@@ -138,6 +141,7 @@ export class ChangePasswordPage {
      
       }
     )
+  }
   }
   hasError(field: string, error: string) {
     const ctrl = this.myForm.get(field);

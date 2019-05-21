@@ -17,7 +17,8 @@
   <div class="login-content">
 
     <!-- Login form -->
-    <form class="list-form" [formGroup]="myForm" style="margin-top: 30%">
+    <form class="list-form" [formGroup]="myForm" (submit)="addPhone()" style="margin-top: 30%">
+        <button type="submit" class="button" hidden></button>
       <p> <strong text-wrap>{{ 'INTER_VALID_PHONE' | translate }}</strong></p>
       <ion-item>
         <ion-input type="number" [(ngModel)] = "phoneModel.phoneNumber" formControlName="phone" name="phone" [lang]="language" [dir]="direction"></ion-input>

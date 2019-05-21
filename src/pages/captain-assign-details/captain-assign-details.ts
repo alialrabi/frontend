@@ -66,7 +66,7 @@ export class CaptainAssignDetailsPage {
   doneText = ""
 
 
-  constructor(public navCtrl: NavController,  public toastCtrl: ToastController, public _alert: AlertController , public navParams: NavParams, private builder: FormBuilder, public platform: Platform, private loading: LoadingController, public translateService: TranslateService, public accountService: AccountService, public captainService: CaptainService) {
+  constructor(public navCtrl: NavController, public toastCtrl: ToastController, public _alert: AlertController, public navParams: NavParams, private builder: FormBuilder, public platform: Platform, private loading: LoadingController, public translateService: TranslateService, public accountService: AccountService, public captainService: CaptainService) {
 
     this.captain = navParams.get("item");
 
@@ -74,9 +74,9 @@ export class CaptainAssignDetailsPage {
       this.isCordova = true;
     }
 
-    if(this.language == 'en'){
+    if (this.language == 'en') {
       this.side = "right";
-    }else{
+    } else {
       this.side = "left";
     }
 
@@ -93,12 +93,12 @@ export class CaptainAssignDetailsPage {
     });
 
 
-    this.translateService.get(['SELECTION_DONE' , "SELECTION_CANCEL" , "SELECTION_OK" ,'PLEASE_WAIT', 'MORE_DATA' , 'DELETE_SUB_TITLE' , 'DELETE_SUB_MESSAGE' , 'DONE' , 'CANCEL' , 'DELETE_SUBASSIGN_SUCCESS' , 'DELETE_SUBASSIGN_ERROR' , 'PERIOD_FINISHED_MESSAGE' , 'ADMIN_UNASSIGN_MESSAGE' , 'ADMIN_DELETED_ALL_DAYS']).subscribe((values) => {
+    this.translateService.get(['SELECTION_DONE', "SELECTION_CANCEL", "SELECTION_OK", 'PLEASE_WAIT', 'MORE_DATA', 'DELETE_SUB_TITLE', 'DELETE_SUB_MESSAGE', 'DONE', 'CANCEL', 'DELETE_SUBASSIGN_SUCCESS', 'DELETE_SUBASSIGN_ERROR', 'PERIOD_FINISHED_MESSAGE', 'ADMIN_UNASSIGN_MESSAGE', 'ADMIN_DELETED_ALL_DAYS']).subscribe((values) => {
 
       this.pleaseWait = values.PLEASE_WAIT
       this.moreData = values.MORE_DATA
       this.deleteSubTitle = values.DELETE_SUB_TITLE
-      this.deleteSubMessage  =values.DELETE_SUB_MESSAGE
+      this.deleteSubMessage = values.DELETE_SUB_MESSAGE
       this.ok = values.DONE
       this.cancel = values.CANCEL
       this.deleteSuccess = values.DELETE_SUBASSIGN_SUCCESS
@@ -193,79 +193,142 @@ export class CaptainAssignDetailsPage {
 
   getCaptainAssignes(pageNum) {
 
-    if (!this.isLoading) {
-      this.isLoading = true;
-    let load;
     if (pageNum == 0) {
 
-      load = this.loading.create({
+      let load = this.loading.create({
         content: this.pleaseWait
 
 
       })
       load.present()
       this.assingCaptains = [];
-    }
+      this.pageNum = 1;
 
-    if (this.captain == null || this.captain == undefined) {
 
-      if (this.seaarchFilter.endDate == '' || this.seaarchFilter.endDate == undefined) {
+      if (this.captain == null || this.captain == undefined) {
+
+        if (this.seaarchFilter.endDate == '' || this.seaarchFilter.endDate == undefined) {
+          this.seaarchFilter.endDate = null;
+        }
+        if (this.seaarchFilter.startDate == '' || this.seaarchFilter.startDate == undefined) {
+          this.seaarchFilter.startDate = null;
+        }
+
+        let captainId = this.myForm.get("captainId").value;
+        if (captainId != null && captainId != undefined && captainId != '') {
+          this.seaarchFilter.captainId = captainId;
+        } else {
+          this.seaarchFilter.captainId = null;
+        }
+
+        let agencyId = this.myForm.get("agencyId").value;
+        if (agencyId != null && agencyId != undefined && agencyId != '') {
+          this.seaarchFilter.agencyId = agencyId;
+        } else {
+          this.seaarchFilter.agencyId = null;
+        }
+        console.log('searchFilter', this.seaarchFilter);
+      } else {
         this.seaarchFilter.endDate = null;
-      }
-      if (this.seaarchFilter.startDate == '' || this.seaarchFilter.startDate == undefined) {
         this.seaarchFilter.startDate = null;
-      }
-
-      let captainId = this.myForm.get("captainId").value;
-      if (captainId != null && captainId != undefined && captainId != '') {
-        this.seaarchFilter.captainId = captainId;
-      } else {
-        this.seaarchFilter.captainId = null;
-      }
-
-      let agencyId = this.myForm.get("agencyId").value;
-      if (agencyId != null && agencyId != undefined && agencyId != '') {
-        this.seaarchFilter.agencyId = agencyId;
-      } else {
         this.seaarchFilter.agencyId = null;
+        this.seaarchFilter.captainId = this.captain.id;
       }
-      console.log('searchFilter', this.seaarchFilter);
-    } else {
-      this.seaarchFilter.endDate = null;
-      this.seaarchFilter.startDate = null;
-      this.seaarchFilter.agencyId = null;
-      this.seaarchFilter.captainId = this.captain.id;
-    }
 
 
 
 
-    this.captainService.getCaptainAssignDetails(this.seaarchFilter, pageNum).subscribe(
-      res => {
-        if (pageNum == 0) {
+      this.captainService.getCaptainAssignDetails(this.seaarchFilter, pageNum).subscribe(
+        res => {
           this.assingCaptains = res;
           load.dismiss();
-        } else {
-          if (res.length > 0) {
-            this.pageNum++;
-          }
-          res.forEach(element => {
-            this.assingCaptains.push(element);
-          });
-        }
-        this.isLoading = false;
 
-      }, err => {
 
-        console.log(err, 'errorrrr');
-        if (pageNum == 0) {
+        }, err => {
+
           load.dismiss();
+
+        }
+      )
+
+
+    } else {
+
+      if (!this.isLoading) {
+        this.isLoading = true;
+        let load;
+        if (pageNum == 0) {
+
+          load = this.loading.create({
+            content: this.pleaseWait
+
+
+          })
+          load.present()
+          this.assingCaptains = [];
+          this.pageNum = 1;
+        }
+
+        if (this.captain == null || this.captain == undefined) {
+
+          if (this.seaarchFilter.endDate == '' || this.seaarchFilter.endDate == undefined) {
+            this.seaarchFilter.endDate = null;
+          }
+          if (this.seaarchFilter.startDate == '' || this.seaarchFilter.startDate == undefined) {
+            this.seaarchFilter.startDate = null;
+          }
+
+          let captainId = this.myForm.get("captainId").value;
+          if (captainId != null && captainId != undefined && captainId != '') {
+            this.seaarchFilter.captainId = captainId;
+          } else {
+            this.seaarchFilter.captainId = null;
+          }
+
+          let agencyId = this.myForm.get("agencyId").value;
+          if (agencyId != null && agencyId != undefined && agencyId != '') {
+            this.seaarchFilter.agencyId = agencyId;
+          } else {
+            this.seaarchFilter.agencyId = null;
+          }
+          console.log('searchFilter', this.seaarchFilter);
+        } else {
+          this.seaarchFilter.endDate = null;
+          this.seaarchFilter.startDate = null;
+          this.seaarchFilter.agencyId = null;
+          this.seaarchFilter.captainId = this.captain.id;
         }
 
 
+
+
+        this.captainService.getCaptainAssignDetails(this.seaarchFilter, pageNum).subscribe(
+          res => {
+            if (pageNum == 0) {
+              this.assingCaptains = res;
+              load.dismiss();
+            } else {
+              if (res.length > 0) {
+                this.pageNum++;
+              }
+              res.forEach(element => {
+                this.assingCaptains.push(element);
+              });
+            }
+            this.isLoading = false;
+
+          }, err => {
+
+            console.log(err, 'errorrrr');
+            if (pageNum == 0) {
+              load.dismiss();
+            }
+
+
+          }
+        )
       }
-    )
-  }
+    }
 
   }
 
@@ -343,7 +406,7 @@ export class CaptainAssignDetailsPage {
         {
           text: this.cancel,
           handler: () => {
-            
+
           }
         }
       ]
@@ -353,14 +416,14 @@ export class CaptainAssignDetailsPage {
 
 
   }
-  deleteSubAssign(assign){
+  deleteSubAssign(assign) {
     let load = this.loading.create({
       content: this.pleaseWait
 
 
     })
     load.present()
-    this.captainService.deleteSubAssign(assign.id).subscribe(res =>{
+    this.captainService.deleteSubAssign(assign.id).subscribe(res => {
       load.dismiss();
       let toast = this.toastCtrl.create({
         message: this.deleteSuccess,
@@ -370,8 +433,8 @@ export class CaptainAssignDetailsPage {
       toast.present();
       this.getCaptainAssignes(0);
       this.pageNum = 1;
-    },err =>{
-      console.log(err , 'errror');
+    }, err => {
+      console.log(err, 'errror');
       let toast = this.toastCtrl.create({
         message: this.deleteError,
         duration: 3000,
@@ -379,22 +442,22 @@ export class CaptainAssignDetailsPage {
       });
       toast.present();
       load.dismiss();
-      
+
     })
   }
-  getStatus(message){
+  getStatus(message) {
     console.log(message);
-    
+
     let result = "";
-    if(message == "This Captain is unAssigned because the Admin is unassign him"){
+    if (message == "This Captain is unAssigned because the Admin is unassign him") {
       result = this.adminUnAssignMessage
       console.log("ssssssss");
-      
-    }else if(message == "the admin deleted all assign days"){
+
+    } else if (message == "the admin deleted all assign days") {
       result = this.adminDeletedAllDays
-    }else if(message == "The assign period is finished"){
+    } else if (message == "The assign period is finished") {
       result = this.periodFinishMessage
-    }else{
+    } else {
       result = message
     }
     return result;

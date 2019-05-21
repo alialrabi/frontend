@@ -34,9 +34,10 @@
           <ion-row class="grid-image">
             <ion-col class="grid-image" class="btn-col" col-9>
   
-              <img class="circle-pic" style="max-width: 150px;" *ngIf="!captain.image || captain.image == 'O'" src="../../assets/img/person.png" />
-              <img class="circle-pic" style="max-width: 150px;" *ngIf="captain.image  && captain.image != 'O'  && captain.imageContentType != 'fromBrowser'" [src]="['data:image/jpg;base64',captain.image]" />
-              <img class="circle-pic" style="max-width: 150px;" *ngIf="captain.image  && captain.image != 'O' && captain.imageContentType == 'fromBrowser'" [src]="captain.image" />
+              <img class="circle-pic" style="max-width: 150px;" *ngIf="isloadinImage" src="../../assets/img/loader.gif" />
+              <img class="circle-pic" style="max-width: 150px;" *ngIf="(!captain.image || captain.image == 'O') && !isloadinImage" src="../../assets/img/person.png" />
+              <img class="circle-pic" style="max-width: 150px;" *ngIf="captain.image  && captain.image != 'O'  && captain.imageContentType != 'fromBrowser' && !isloadinImage" [src]="['data:image/jpg;base64',captain.image]" />
+              <img class="circle-pic" style="max-width: 150px;" *ngIf="captain.image  && captain.image != 'O' && captain.imageContentType == 'fromBrowser' && !isloadinImage" [src]="captain.image" />
             </ion-col>
   
             <ion-col class="btn-col" col-3 text-center>
@@ -53,7 +54,8 @@
       </div>
   
       <!-- Login form -->
-      <form class="list-form" [formGroup]="myForm">
+      <form class="list-form" (submit)="editCaptain()" [formGroup]="myForm">
+          <button type="submit" class="button" hidden></button>
         <ion-item>
           <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
             <ion-icon name="flag" item-start class="text-primary"></ion-icon>
@@ -125,7 +127,7 @@
       </form>
   
       <div margin-top style="margin-bottom: 40px;">
-        <button ion-button block color="dark" tappable (click)="editCaptain()" [disabled]="!myForm.valid || notMathces() || !valuesChanges()">
+        <button ion-button block color="dark" tappable (click)="editCaptain()" [disabled]="!myForm.valid || notMathces() || !valuesChanges() || isloadinImage">
           {{ 'EDIT_CAPTAIN_BUTTON' | translate }}
         </button>
       </div>

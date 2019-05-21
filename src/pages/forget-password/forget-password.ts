@@ -69,6 +69,8 @@ export class ForgetPasswordPage {
   }
   sendMail(){
 
+    if(this.myForm.valid){
+
     let load = this.loading.create({
       content: this.pleaseWait
 
@@ -117,9 +119,11 @@ export class ForgetPasswordPage {
 
       }
     )
-
+  }
   }
   sendSMS(){
+
+    if(this.myForm1.valid){
 
     let load = this.loading.create({
       content: this.pleaseWait
@@ -169,7 +173,7 @@ export class ForgetPasswordPage {
 
       }
     )
-
+  }
 
   }
 

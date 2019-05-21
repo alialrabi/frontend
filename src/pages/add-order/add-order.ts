@@ -501,6 +501,8 @@ export class AddOrderPage {
   }
   addOrderWithOutPrint(){
 
+    if(this.myForm.valid && this.ordersArray.length != 0){
+
     let load = this.loading.create({
       content: this.pleaseWait
 
@@ -613,6 +615,7 @@ export class AddOrderPage {
 
 
   }
+}
 
   }
 

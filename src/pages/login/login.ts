@@ -96,42 +96,43 @@ export class LoginPage {
   }
   // Attempt to login in through our User service
   doLogin() {
-
-    let load = this.loading.create({
-      content: this.pleaseWait
-
-
-    })
-    load.present()
-
-    this.account.username = this.account.username.toLowerCase();
-    console.log(this.account.username.toLowerCase(), 'lower case');
+    if (this.myForm.valid) {
+      let load = this.loading.create({
+        content: this.pleaseWait
 
 
-    this.loginService.login(this.account).then((response) => {
+      })
+      load.present()
 
-      load.dismiss();
-      this.myApp.checkAccess();
-
-      this.validateUser(true);
-
+      this.account.username = this.account.username.toLowerCase();
+      console.log(this.account.username.toLowerCase(), 'lower case');
 
 
+      this.loginService.login(this.account).then((response) => {
 
-    }, (err) => {
-      // Unable to log in
-      this.account.password = '';
-      console.log(err);
+        load.dismiss();
+        this.myApp.checkAccess();
+
+        this.validateUser(true);
 
 
-      let toast = this.toastCtrl.create({
-        message: this.loginErrorString,
-        duration: 3000,
-        position: 'top'
+
+
+      }, (err) => {
+        // Unable to log in
+        this.account.password = '';
+        console.log(err);
+
+
+        let toast = this.toastCtrl.create({
+          message: this.loginErrorString,
+          duration: 3000,
+          position: 'top'
+        });
+        toast.present();
+        load.dismiss();
       });
-      toast.present();
-      load.dismiss();
-    });
+    }
   }
   validateUser(flag) {
     let load = this.loading.create({
@@ -185,7 +186,7 @@ export class LoginPage {
           //   this.app.getRootNavs()[0].setRoot(AdminDashboardPage);
           // }
           this.myApp.checkAccess();
-          
+
         }
 
       }

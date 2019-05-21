@@ -29,8 +29,9 @@
 
 <!-- Generated template for the NewAddressComponent component -->
 <ion-content class="auth-page">
-  <div class="login-content" *ngIf="!openMap">
-    <form class="list-form" [formGroup]="myForm">
+  <div class="login-content" style="width: 100%">
+    <form class="list-form" *ngIf="!openMap" style="padding-left: 7%;padding-right: 7%" [formGroup]="myForm" (submit)="save()">
+        <button type="submit" class="button" hidden></button>
       <ion-item>
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
@@ -169,12 +170,11 @@
    -->
     </form>
 
-    <div margin-top style="margin-bottom: 40px;">
+    <div margin-top *ngIf="!openMap" style="padding-left: 7%;padding-right: 7%">
       <button ion-button block color="dark" tappable (click)="save()" [disabled]="!myForm.valid">
         {{ 'ADD-ADDRESS' | translate }}
       </button>
     </div>
-  </div>
   <div [ngStyle]="mapStyle">
     <ion-grid [ngStyle]="mapStyle1">
       <ion-row [ngStyle]="submapStyle">
@@ -206,4 +206,5 @@
       </ion-row>
     </ion-grid>
   </div>
+</div>
 </ion-content>
