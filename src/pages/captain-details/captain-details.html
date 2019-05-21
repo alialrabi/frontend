@@ -12,21 +12,21 @@
       <ion-row>
         <ion-col col-1 style="max-width: 25px;" (click)="back()">
           <ion-buttons style="margin-block-start: 2px;padding-bottom: 0px;padding-top: 0px" class="btn-style">
-            <button ion-button >
+            <button ion-button>
               <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
             </button>
           </ion-buttons>
         </ion-col>
-        <ion-col col-8 [style.margin-top] ="language == 'en' ? '5px' : '2px'">
+        <ion-col col-8 [style.margin-top]="language == 'en' ? '5px' : '2px'">
           <ion-title [style.margin-top]="!isCordova && language != 'en' ? '3px' : '0px'">{{ 'CAPTAIN_DETAILS' | translate }}</ion-title>
         </ion-col>
-        <ion-col [style.text-align] = "language == 'en' ? 'right' : 'left'" *ngIf="userType=='admin'">
-            <ion-buttons style="padding:0px" class="btn-style" >
-              <button ion-button (click)="editCaptain()">
-                  {{ 'EDIT' | translate }}
-              </button>
-            </ion-buttons>
-          </ion-col>
+        <ion-col [style.text-align]="language == 'en' ? 'right' : 'left'" *ngIf="userType=='admin'">
+          <ion-buttons style="padding:0px" class="btn-style">
+            <button ion-button (click)="editCaptain()">
+              {{ 'EDIT' | translate }}
+            </button>
+          </ion-buttons>
+        </ion-col>
       </ion-row>
     </ion-grid>
 
@@ -39,18 +39,20 @@
 
 <ion-content class="auth-page-captain">
 
-  <div padding text-center style="width: 100%;height:40%;padding-bottom: 0px">
+  <div padding text-center style="width: 100%;height:35%;max-height: 150px;padding-bottom: 0px">
 
 
-    <div [ngClass]="language == 'en' ?  'circle-pic-div' : 'circle-pic-div-ar'" style="width:100%;height: 70%;" text-center>
+    <div [ngClass]="language == 'en' ?  'circle-pic-div' : 'circle-pic-div-ar'" style="width:100%;height: 100%;" text-center>
 
-      <img class="circle-pic" style="width: 50%;height: 100%;max-width: 150px;" *ngIf="!captain.image || captain.image == 'O'" src="../../assets/img/person.png"
-      />
-      <img class="circle-pic" style="width: 50%;height: 100%;max-width: 150px;" *ngIf="captain.image  && captain.image != 'O'" [src]="['data:image/jpg;base64',captain.image]"
-      />
+      <img class="circle-pic" style="width: 50%;height: 100%;max-width: 150px;" *ngIf="!captain.image || captain.image == 'O'"
+        src="../../assets/img/person.png" />
+      <img class="circle-pic" style="width: 50%;height: 100%;max-width: 150px;" *ngIf="captain.image  && captain.image != 'O'"
+        [src]="['data:image/jpg;base64',captain.image]" />
 
     </div>
+  </div>
 
+  <div text-center style="width: 100%;padding-bottom: 0px">
 
     <h2 ion-text style="color: black" text-wrap>
       {{ captain.name }}
@@ -58,18 +60,18 @@
   </div>
 
   <div class="account-info info-div" style="margin-top: 20px;padding-right: 10px;margin-bottom: 60px;">
-      <ion-item class="item-background">
-          <p>
-            {{'CODE' | translate}} :
-            <strong text-wrap>{{captain.code}}</strong>
-          </p>
-        </ion-item>
-      <ion-item class="item-background">
-          <p>
-            {{'PHONE' | translate}} :
-            <strong text-wrap>{{captain.phone}}</strong>
-          </p>
-        </ion-item>
+    <ion-item class="item-background">
+      <p>
+        {{'CODE' | translate}} :
+        <strong text-wrap>{{captain.code}}</strong>
+      </p>
+    </ion-item>
+    <ion-item class="item-background">
+      <p>
+        {{'PHONE' | translate}} :
+        <strong text-wrap>{{captain.phone}}</strong>
+      </p>
+    </ion-item>
     <ion-item class="item-background" *ngIf="userType=='admin'">
       <p>
         {{'EMAIL' | translate}} :
@@ -93,65 +95,66 @@
     <ion-item class="item-background" *ngIf="userType=='admin'">
       <p>
         {{'PASSWORD' | translate}} :
-        <strong text-wrap >{{ togglePassword ? viewStars(captain.password) : captain.password}}
-          <ion-icon [name]="passwordEye" (click)="togglePasswordMethod()" [style.margin-right]="language == 'en' ? '0px' : '10px'" [style.margin-left]="language == 'en' ? '10px' : '0px'"></ion-icon>
+        <strong text-wrap>{{ togglePassword ? viewStars(captain.password) : captain.password}}
+          <ion-icon [name]="passwordEye" (click)="togglePasswordMethod()" [style.margin-right]="language == 'en' ? '0px' : '10px'"
+            [style.margin-left]="language == 'en' ? '10px' : '0px'"></ion-icon>
         </strong>
-        </p>
+      </p>
     </ion-item>
     <ion-item class="item-background">
       <p>
         {{'HOURS_COUNT' | translate}} :
-        <strong text-wrap >{{ captain.totalHours }}
+        <strong text-wrap>{{ captain.totalHours }}
         </strong>
-        </p>
+      </p>
     </ion-item>
     <ion-item class="item-background" text-center *ngIf="captain.agencies.length != 0 && userType=='admin'">
       <p>
         <strong text-wrap>{{'HOURS_DETAILS' | translate}}</strong>
       </p>
     </ion-item>
-      <ion-item class="item-background" *ngIf="captain.agencies.length != 0 && userType=='admin'">
-        <ion-grid style="padding: 0px">
-          <ion-row style="padding: 0px">
-            <ion-col col-6>
-              <p>
-                {{'AGENCY_NAME' | translate}}
-              </p>
-            </ion-col>
-            <ion-col col-1 style="padding: 0px">
-                <p>
-                  <strong text-wrap>|</strong>
-                </p>
-              </ion-col>
-            <ion-col col-5 style="padding: 0px">
-              <p text-center>
-                {{'HOURS_COUNT_DETAILS' | translate}}
-              </p>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-item>
-      <ion-item class="item-background" *ngFor="let sub of captain.agencies" (click)="hoursDetails(sub)">
-        <ion-grid style="padding: 0px">
-          <ion-row style="padding: 0px">
-            <ion-col col-6 style="padding: 0px">
-              <p>
-                <strong text-wrap>{{sub.firstName}} {{sub.lastName}}</strong>
-              </p>
-            </ion-col>
-            <ion-col col-1 style="padding: 0px">
-                <p>
-                  <strong text-wrap>|</strong>
-                </p>
-              </ion-col>
-            <ion-col col-5 style="padding: 0px">
-              <p text-center>
-                <strong text-wrap>{{sub.hoursResult}}</strong>
-              </p>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-item>
+    <ion-item class="item-background" *ngIf="captain.agencies.length != 0 && userType=='admin'">
+      <ion-grid style="padding: 0px">
+        <ion-row style="padding: 0px">
+          <ion-col col-6>
+            <p>
+              {{'AGENCY_NAME' | translate}}
+            </p>
+          </ion-col>
+          <ion-col col-1 style="padding: 0px">
+            <p>
+              <strong text-wrap>|</strong>
+            </p>
+          </ion-col>
+          <ion-col col-5 style="padding: 0px">
+            <p text-center>
+              {{'HOURS_COUNT_DETAILS' | translate}}
+            </p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+    <ion-item class="item-background" *ngFor="let sub of captain.agencies" (click)="hoursDetails(sub)">
+      <ion-grid style="padding: 0px">
+        <ion-row style="padding: 0px">
+          <ion-col col-6 style="padding: 0px">
+            <p>
+              <strong text-wrap>{{sub.firstName}} {{sub.lastName}}</strong>
+            </p>
+          </ion-col>
+          <ion-col col-1 style="padding: 0px">
+            <p>
+              <strong text-wrap>|</strong>
+            </p>
+          </ion-col>
+          <ion-col col-5 style="padding: 0px">
+            <p text-center>
+              <strong text-wrap>{{sub.hoursResult}}</strong>
+            </p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
 
   </div>
 

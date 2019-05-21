@@ -12,7 +12,7 @@
       <ion-row>
         <ion-col col-1 style="max-width: 25px;" (click)="back()">
           <ion-buttons style="margin-block-start: 2px;padding-bottom: 0px;padding-top: 0px" class="btn-style">
-            <button ion-button >
+            <button ion-button>
               <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
             </button>
           </ion-buttons>
@@ -20,10 +20,10 @@
         <ion-col col-8 [style.margin-top]="language == 'en' ? '5px' : '2px'">
           <ion-title [style.margin-top]="!isCordova && language != 'en' ? '3px' : '0px'">{{ 'AGENCY_DETAILS' | translate }}</ion-title>
         </ion-col>
-        <ion-col [style.text-align] = "language == 'en' ? 'right' : 'left'">
+        <ion-col [style.text-align]="language == 'en' ? 'right' : 'left'">
           <ion-buttons style="padding:0px" class="btn-style">
             <button ion-button (click)="editAgency()">
-                {{ 'EDIT' | translate }}
+              {{ 'EDIT' | translate }}
             </button>
           </ion-buttons>
         </ion-col>
@@ -39,10 +39,19 @@
 
 <ion-content class="auth-page-captain">
 
-  <div padding text-center style="width: 100%;height:40%;">
+    <div padding text-center style="width: 100%;height:35%;max-height: 150px;padding-bottom: 0px">
 
-    <div class="person" style="max-width: 150px;"></div>
-    <h2 ion-text style="color: black" text-wrap>
+
+        <div [ngClass]="language == 'en' ?  'circle-pic-div' : 'circle-pic-div-ar'" style="width:100%;height: 100%;" text-center>
+    
+          <img class="circle-pic" style="width: 50%;height: 100%;max-width: 150px;"
+            src="../../assets/img/person.png" />
+    
+        </div>
+      </div>
+
+  <div text-center style="width: 100%;padding-bottom: 0px">
+    <h2 ion-text style="color: black;" text-wrap>
       {{ agencyDetail.firstName }} {{ agencyDetail.lastName }}
     </h2>
   </div>

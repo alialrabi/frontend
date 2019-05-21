@@ -339,6 +339,15 @@ export class BuyFromMarketPage {
       const modal = await this.modalControllre.create(AddressesSelectorComponent, { addresses: this.addressList, user: this.account });
 
       modal.onDidDismiss((dataReturned) => {
+        this.platform.registerBackButtonAction(() => {
+          if (this.reciverData) {
+            this.reciverData = false;
+    
+          } else {
+            this.navCtrl.setRoot(OrderKindPage);
+          }
+    
+        });
         if (dataReturned !== null) {
           console.log('Modal Sent Data :', dataReturned);
 

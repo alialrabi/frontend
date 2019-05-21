@@ -109,7 +109,9 @@ export class NewAddressComponent {
     }
 
     this.platform.registerBackButtonAction(() => {
-      this.back();
+      console.log("back button");
+      
+      this.viewCtrl.dismiss(null);
     });
 
     this.translateService.get(["SELECTION_CANCEL" , "SELECTION_OK" , 'ADD_ADDRESS_ERROR', 'ADD_ADDRESS_SUCCESS', 'EGYPT', 'ALEX', 'CAIRO', 'TANTA', 'DAMNHOR', 'SHIPIN_ELKOM', 'BANHA', 'PLEASE_WAIT', 'OFFICE', 'HOME', 'FLAT', 'LOCATION_ALERT_TITLE', 'LOCATION_ALERT_MESSAGE', 'OK']).subscribe((values) => {

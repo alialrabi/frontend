@@ -109,6 +109,9 @@ export class AddAddressPage {
     public translateService: TranslateService, private app: App, public platform: Platform, private principal: Principal, private builder: FormBuilder) {
     this.to = this.navParams.get("address");
 
+    console.log(this.language , this.direction);
+    
+
     if (this.platform.is("cordova") && this.platform.is("android")) {
       this.isCordova = true;
     }

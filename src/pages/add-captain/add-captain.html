@@ -6,12 +6,12 @@
       <ion-row>
         <ion-col col-1 style="max-width: 25px;" (click)="back()">
           <ion-buttons style="margin-block-start: 2px" class="btn-style">
-            <button ion-button >
+            <button ion-button>
               <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
             </button>
           </ion-buttons>
         </ion-col>
-        <ion-col col-11  [style.margin-top] ="language == 'en' ? '5px' : '2px'">
+        <ion-col col-11 [style.margin-top]="language == 'en' ? '5px' : '2px'">
           <ion-title [style.margin-top]="!isCordova && language != 'en' ? '3px' : '0px'">{{ 'ADD_CAPTAIN' | translate }}</ion-title>
         </ion-col>
       </ion-row>
@@ -26,35 +26,42 @@
 <!-- -->
 <ion-content class="auth-page">
   <div class="login-content">
-    <div [ngClass]="language == 'en' ?  'circle-pic-div' : 'circle-pic-div-ar'" style="width:100%" text-center>
+    <ion-item style="padding: 0px;border-bottom: 0;background-color:initial;">
+      <div [ngClass]="language == 'en' ?  'circle-pic-div' : 'circle-pic-div-ar'" style="width:100%" text-center>
 
-      <ion-grid class="grid-image" style="width: 50%;max-width: 200px;" >
-        <ion-row class="grid-image">
-          <ion-col class="grid-image" class="btn-col" col-9>
+        <ion-grid class="grid-image" style="width: 50%;max-width: 200px;">
+          <ion-row class="grid-image">
+            <ion-col class="grid-image" class="btn-col" col-9>
 
-            <img class="circle-pic" style="max-width: 150px;" *ngIf="isloadinImage" src="../../assets/img/loader.gif" />
-            <img class="circle-pic" style="max-width: 150px;" *ngIf="(!captain.image || captain.image == 'O') && !isloadinImage" src="../../assets/img/person.png" />
-            <img class="circle-pic" style="max-width: 150px;" *ngIf="captain.image  && captain.image != 'O' && !isloadinImage  && captain.imageContentType != 'fromBrowser'" [src]="['data:image/jpg;base64',captain.image]" />
-            <img class="circle-pic" style="max-width: 150px;" *ngIf="captain.image  && captain.image != 'O' && !isloadinImage && captain.imageContentType == 'fromBrowser'" [src]="captain.image" />
-          </ion-col>
+              <img class="circle-pic" style="max-width: 150px;" *ngIf="isloadinImage" src="../../assets/img/loader.gif" />
+              <img class="circle-pic" style="max-width: 150px;" *ngIf="(!captain.image || captain.image == 'O') && !isloadinImage" src="../../assets/img/person.png"
+              />
+              <img class="circle-pic" style="max-width: 150px;" *ngIf="captain.image  && captain.image != 'O' && !isloadinImage  && captain.imageContentType != 'fromBrowser'"
+                [src]="['data:image/jpg;base64',captain.image]" />
+              <img class="circle-pic" style="max-width: 150px;" *ngIf="captain.image  && captain.image != 'O' && !isloadinImage && captain.imageContentType == 'fromBrowser'"
+                [src]="captain.image" />
+            </ion-col>
 
-          <ion-col class="btn-col" col-3 text-center>
-            <button ion-button icon-only clear class="icon-btn" float-left (click)="showDialog()" *ngIf="platformType == 'cordova'">
-              <ion-icon name="camera"></ion-icon>
-            </button>
-            <input id="imageInput" type="file" accept="image/*" style="visibility:hidden" [(ngModel)]="browserImage" (change)="uploadBrowserImage($event)" *ngIf="platformType != 'cordova'" />
-            <button ion-button icon-only [style.margin-bottom]="!isCordova && language != 'en' ? '26px' : '0px'" clear class="icon-btn" float-left (click)="openFileSelector()" *ngIf="platformType != 'cordova'">
-              <ion-icon name="camera"></ion-icon>
-            </button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </div>
+            <ion-col class="btn-col" col-3 text-center>
+              <button ion-button icon-only clear class="icon-btn" float-left (click)="showDialog()" *ngIf="platformType == 'cordova'">
+                <ion-icon name="camera"></ion-icon>
+              </button>
+              <input id="imageInput" type="file" accept="image/*" style="visibility:hidden" [(ngModel)]="browserImage" (change)="uploadBrowserImage($event)"
+                *ngIf="platformType != 'cordova'" />
+              <button ion-button icon-only [style.margin-bottom]="!isCordova && language != 'en' ? '26px' : '0px'" clear class="icon-btn"
+                float-left (click)="openFileSelector()" *ngIf="platformType != 'cordova'">
+                <ion-icon name="camera"></ion-icon>
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+    </ion-item>
 
     <!-- Login form -->
     <form class="list-form" [formGroup]="myForm" (submit)="addCaptain()">
-        <button type="submit" class="button" hidden></button>
-      <ion-item>
+      <button type="submit" class="button" hidden></button>
+      <ion-item style="border-bottom: 1px solid #dedede;">
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="flag" item-start class="text-primary"></ion-icon>
           {{ 'CODE' | translate }}
@@ -65,7 +72,7 @@
       <p class="validationHint" *ngIf="hasError('code', 'required')"> {{ 'REQURIED' | translate }} </p>
 
 
-      <ion-item>
+      <ion-item style="border-bottom: 1px solid #dedede;">
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="person" item-start class="text-primary"></ion-icon>
           {{ 'NAME' | translate }}
@@ -77,7 +84,7 @@
       <p class="validationHint" *ngIf="hasError('name', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
 
 
-      <ion-item>
+      <ion-item style="border-bottom: 1px solid #dedede;">
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="call" item-start class="text-primary"></ion-icon>
           {{ 'PHONE' | translate }}
@@ -89,7 +96,7 @@
       <p class="validationHint" *ngIf="hasError('phone', 'pattern')">{{ 'PHONE_NUMBER' | translate }} </p>
 
 
-      <ion-item>
+      <ion-item style="border-bottom: 1px solid #dedede;">
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="mail" item-start class="text-primary"></ion-icon>
           {{ 'EMAIL' | translate }}
@@ -100,7 +107,7 @@
       <p class="validationHint" *ngIf="hasError('email', 'required')"> {{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('email', 'email')">{{ 'EMAIL_VALID' | translate }} </p>
 
-      <ion-item>
+      <ion-item style="border-bottom: 1px solid #dedede;">
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="lock" item-start class="text-primary"></ion-icon>
           {{ 'PASSWORD' | translate }}
@@ -111,12 +118,12 @@
       <p class="validationHint" *ngIf="hasError('password', 'required')"> {{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('password', 'minlength')">{{ 'MIN_LENGTH' | translate }} </p>
 
-      <ion-item>
+      <ion-item style="border-bottom: 1px solid #dedede;">
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="lock" item-start class="text-primary"></ion-icon>
           {{ 'CONFIRM_PASSWORD' | translate }}
         </ion-label>
-        <ion-input type="password" name="passwordConfirm" formControlName="passwordConfirm" [lang]="language" [dir]="direction"  [disabled]="!myForm.get('password').valid"></ion-input>
+        <ion-input type="password" name="passwordConfirm" formControlName="passwordConfirm" [lang]="language" [dir]="direction" [disabled]="!myForm.get('password').valid"></ion-input>
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('passwordConfirm', 'required')"> {{ 'REQURIED' | translate }} </p>

@@ -38,9 +38,8 @@ export class AddressesSelectorComponent {
     }
 
     this.platform.registerBackButtonAction(() => {
-        this.back();
-     
-
+      console.log("back button selector");
+      this.viewCtrl.dismiss(null);
     });
 
   }
@@ -57,6 +56,10 @@ export class AddressesSelectorComponent {
     const modal = await this.modalController.create(NewAddressComponent, { user: this.account });
 
     modal.onDidDismiss((dataReturned) => {
+      this.platform.registerBackButtonAction(() => {
+        console.log("back button selector");
+        this.viewCtrl.dismiss(null);
+      });
       if (dataReturned !== null) {
         console.log('Modal Sent Data :', dataReturned);
 

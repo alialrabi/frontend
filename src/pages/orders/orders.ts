@@ -108,6 +108,34 @@ export class OrdersPage {
 
   getAllOrders(status, pageNum) {
 
+    if(pageNum == 0){
+
+    this.myVar = status;
+    
+    let load = this.loading.create({
+        content: this.pleaseWait
+
+
+      })
+      load.present()
+      this.ordersList = [];
+      this.pageNum = 1;
+    
+
+    this.orderService.getAllByStatus(status, this.userId, false, pageNum).subscribe(res => {
+      console.log(res);
+
+        this.ordersList = res;
+        load.dismiss();
+     
+    }, err => {
+      console.log(err);
+        load.dismiss();
+      
+    })
+
+    }else{
+
     if (!this.isLoading) {
       this.isLoading = true;
 
@@ -148,6 +176,7 @@ export class OrdersPage {
       }
     })
   }
+}
   }
 
   add() {
