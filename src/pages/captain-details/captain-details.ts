@@ -8,6 +8,7 @@ import { EditCaptainPage } from '../edit-captain/edit-captain';
 import { Principal } from '../../providers/auth/principal.service';
 import { FirstRunPage } from '../pages';
 import { DaysDetailsPage } from '../days-details/days-details';
+import { AgencyCaptainsPage } from '../agency-captains/agency-captains';
 
 /**
  * Generated class for the CaptainDetailsPage page.
@@ -50,10 +51,15 @@ export class CaptainDetailsPage {
 
   isCordova = false;
 
+  from = ''
+  agency = null;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public app:App , public principal:Principal , public platform: Platform,
     private loading: LoadingController, public translateService: TranslateService, public captainService: CaptainService) {
 
     this.item = navParams.get("item");
+    this.from = navParams.get("from");
+    this.agency = navParams.get("agency");
 
     if (this.platform.is("cordova") && this.platform.is("android")) {
       this.isCordova = true;
@@ -65,7 +71,11 @@ export class CaptainDetailsPage {
     })
 
     this.platform.registerBackButtonAction(() => {
+      if(this.from == "AgencyCaptainsPage"){
+        this.navCtrl.setRoot(AgencyCaptainsPage , {item:this.agency});
+      }else{
       this.navCtrl.setRoot(CaptainsPage);
+      }
     });
 
     //this.getCaptain();
@@ -125,7 +135,11 @@ export class CaptainDetailsPage {
   }
 
   back() {
+    if(this.from == "AgencyCaptainsPage"){
+      this.navCtrl.setRoot(AgencyCaptainsPage , {item:this.agency});
+    }else{
     this.navCtrl.setRoot(CaptainsPage);
+    }
   }
 
   getFormattedDate(dateString) {
@@ -163,10 +177,10 @@ export class CaptainDetailsPage {
   }
 
   editCaptain() {
-    this.navCtrl.setRoot(EditCaptainPage, { item: this.captain, captain: this.item });
+    this.navCtrl.setRoot(EditCaptainPage, { item: this.captain, captain: this.item , agency:this.agency , frommain:this.from });
   }
   hoursDetails(sub){
-    this.navCtrl.setRoot(DaysDetailsPage, {from:"CaptainDetailsPage" , captain: this.item, agencyId: sub.id , captainId:this.captain.id });
+    this.navCtrl.setRoot(DaysDetailsPage, {from:"CaptainDetailsPage" , captain: this.item, agencyId: sub.id , captainId:this.captain.id , agency:this.agency , frommain:this.from });
   }
 
 }

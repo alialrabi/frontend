@@ -76,7 +76,7 @@
             <img class="circle-pic" *ngIf="captain.image" [src]="['data:image/jpg;base64',captain.image]" />
           </ion-col>
 
-          <ion-col class="btn-col" col-9>
+          <ion-col class="btn-col" col-9 (click)="captainDetails(captain)">
 
             <div class="account-info info-div">
               <p>

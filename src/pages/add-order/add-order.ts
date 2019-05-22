@@ -259,6 +259,13 @@ export class AddOrderPage {
     const modal = await this.poverCtrl.create(AddOrderPopoverComponent);
 
     modal.onDidDismiss((dataReturned) => {
+      this.platform.registerBackButtonAction(() => {
+        if (this.userType == 'User') {
+          this.navCtrl.setRoot(UserOrdersPage);
+        } else {
+          this.navCtrl.setRoot(OrdersPage);
+        }
+      });
       if (dataReturned !== null) {
         console.log('Modal Sent Data :', dataReturned);
 

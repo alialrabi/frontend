@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ViewController } from 'ionic-angular';
+import { ViewController, Platform } from 'ionic-angular';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { MyApp } from '../../app/app.component';
 
@@ -20,16 +20,24 @@ export class AddOrderPopoverComponent {
   language = MyApp.language
   direction = MyApp.direction
 
-  constructor(public viewCtrl: ViewController, private builder: FormBuilder) {
+  constructor(public viewCtrl: ViewController, private builder: FormBuilder,public platform:Platform) {
     this.myForm = builder.group({
       "order": ['', [Validators.required, Validators.maxLength(45)]],
       "price": ['', [Validators.required, Validators.maxLength(5)]]
+    });
+
+    this.platform.registerBackButtonAction(() => {
+      console.log("back button selector");
+       this.back()
     });
 
   }
 
   ngOnInit() {
 
+  }
+  async back(){
+    await this.viewCtrl.dismiss(null);
   }
 
   async cancel() {

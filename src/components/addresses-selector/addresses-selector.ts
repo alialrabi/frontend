@@ -39,7 +39,7 @@ export class AddressesSelectorComponent {
 
     this.platform.registerBackButtonAction(() => {
       console.log("back button selector");
-      this.viewCtrl.dismiss(null);
+      this.back();
     });
 
   }
@@ -58,7 +58,7 @@ export class AddressesSelectorComponent {
     modal.onDidDismiss((dataReturned) => {
       this.platform.registerBackButtonAction(() => {
         console.log("back button selector");
-        this.viewCtrl.dismiss(null);
+        this.back()
       });
       if (dataReturned !== null) {
         console.log('Modal Sent Data :', dataReturned);

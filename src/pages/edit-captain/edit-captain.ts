@@ -80,6 +80,9 @@ export class EditCaptainPage {
   isCordova = false;
   isloadinImage = false;
 
+  agency = null
+  frommain = '' 
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public _alert: AlertController
     , public imagePicker: ImagePicker, public camera: Camera, public toastCtrl: ToastController,
     public captainService: CaptainService,
@@ -101,6 +104,8 @@ export class EditCaptainPage {
       this.platformType = "notCordova"
     }
 
+    this.frommain = navParams.get("frommain");
+    this.agency = navParams.get("agency");
     this.oldCaptain = this.navParams.get("captain");
     this.captainDetails = this.navParams.get("item");
     this.account.id = this.captainDetails.userId;
@@ -141,7 +146,7 @@ export class EditCaptainPage {
     });
 
     this.platform.registerBackButtonAction(() => {
-      this.navCtrl.setRoot(CaptainDetailsPage, { item: this.oldCaptain });
+      this.navCtrl.setRoot(CaptainDetailsPage, { item: this.oldCaptain , from: this.frommain , agency:this.agency });
 
     });
 
@@ -190,7 +195,9 @@ export class EditCaptainPage {
     }
 
     this.imagePicker.getPictures(options).then((results) => {
+      if (results[0] != null && results[0] != undefined && results[0] != 'O' && results[0] != '') {
       this.captain.image = results[0];
+      }
     }, (err) => {
       alert(err);
     });
@@ -277,7 +284,7 @@ export class EditCaptainPage {
           toast.present();
           load.dismiss();
           //this.navCtrl.push(CaptainsPage);
-          this.app.getRootNavs()[0].setRoot(CaptainDetailsPage, { item: this.oldCaptain });
+          this.app.getRootNavs()[0].setRoot(CaptainDetailsPage, { item: this.oldCaptain , from: this.frommain , agency:this.agency });
         }, (err1) => {
           console.log('error', err1);
 
@@ -331,7 +338,7 @@ export class EditCaptainPage {
   }
 
   back() {
-    this.navCtrl.setRoot(CaptainDetailsPage, { item: this.oldCaptain });
+    this.navCtrl.setRoot(CaptainDetailsPage, { item: this.oldCaptain , from: this.frommain , agency:this.agency });
   }
   valuesChanges() {
     if (this.code != this.captain.code || this.name != this.captain.name || this.phone != this.captain.phone || (this.image != this.captain.image && this.captain.image != 'O') || this.email != this.account.email || (this.password != this.myForm.get("password").value && this.myForm.get("password").value != '' && this.myForm.get("password").value != null)) {
