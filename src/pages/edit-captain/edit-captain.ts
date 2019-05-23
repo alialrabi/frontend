@@ -137,7 +137,7 @@ export class EditCaptainPage {
     })
 
     this.myForm = builder.group({
-      'code': ['', [Validators.required]],
+      'code': ['', [Validators.required , Validators.pattern("[0-9]{1,8}")]],
       'name': ['', [Validators.required, Validators.maxLength(45)]],
       'phone': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
       'email': ['', [Validators.required, Validators.email]],

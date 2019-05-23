@@ -24,12 +24,12 @@
   <div class="login-content">
 
     <!-- Logo -->
-    <div padding text-center *ngIf="!print">
+    <!-- <div padding text-center *ngIf="!print">
       <div class="logo"></div>
       <h2 ion-text class="text-primary">
         {{ 'TLABATAC' | translate }}
       </h2>
-    </div>
+    </div> -->
 
     <!-- Login form -->
     <form class="list-form" [formGroup]="myForm" (submit)="addOrderWithOutPrint($event)" *ngIf="!print">

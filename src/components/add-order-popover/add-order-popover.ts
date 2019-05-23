@@ -23,7 +23,7 @@ export class AddOrderPopoverComponent {
   constructor(public viewCtrl: ViewController, private builder: FormBuilder,public platform:Platform) {
     this.myForm = builder.group({
       "order": ['', [Validators.required, Validators.maxLength(45)]],
-      "price": ['', [Validators.required, Validators.maxLength(5)]]
+      "price": ['', [Validators.required,, Validators.maxLength(8)]]
     });
 
     this.platform.registerBackButtonAction(() => {
@@ -62,7 +62,7 @@ export class AddOrderPopoverComponent {
 
   validatePrice() {
     const ctrl = this.myForm.get("price");
-    return ctrl.dirty && ctrl.value <= 0;
+    return ctrl.dirty && (ctrl.value <= 0 || ctrl.value > 100000);
   }
 
 }

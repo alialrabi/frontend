@@ -70,6 +70,7 @@
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('code', 'required')"> {{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('code', 'pattern')">{{ 'CAPTAIN_CODE_PATTERN' | translate }} </p>
 
 
       <ion-item style="border-bottom: 1px solid #dedede;">

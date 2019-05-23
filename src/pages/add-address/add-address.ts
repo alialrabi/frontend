@@ -86,6 +86,7 @@ export class AddAddressPage {
   banhaValue = ''
 
   flatValue = ''
+  flatValue2 = ''
   homeValue = ''
   officeValue = ''
 
@@ -136,6 +137,7 @@ export class AddAddressPage {
         this.egyptText = values.EGYPT
 
         this.flatValue = values.FLAT
+        this.flatValue2 = values.FLAT
         this.homeValue = values.HOME
         this.officeValue = values.OFFICE
         this.dialogTitle = values.LOCATION_ALERT_TITLE
@@ -178,7 +180,7 @@ export class AddAddressPage {
           this.mapStyle1.height = "0%";
           this.mapStyle1.width = "0%";
 
-          this.flatValue = this.getLivingType(this.myForm.get("livingType").value)
+          this.flatValue2 = this.getLivingType(this.myForm.get("livingType").value)
 
           this.openMap = false;
 
@@ -198,7 +200,7 @@ export class AddAddressPage {
 
           this.mapStyle1.height = "0%";
           this.mapStyle1.width = "0%";
-          this.flatValue = this.getLivingType(this.myForm.get("livingType").value)
+          this.flatValue2 = this.getLivingType(this.myForm.get("livingType").value)
 
           this.openMap = false;
 
@@ -559,7 +561,7 @@ export class AddAddressPage {
       this.mapStyle1.height = "0%";
       this.mapStyle1.width = "0%";
 
-      this.flatValue = this.getLivingType(this.myForm.get("livingType").value)
+      this.flatValue2 = this.getLivingType(this.myForm.get("livingType").value)
 
       this.openMap = false;
 

@@ -1,4 +1,5 @@
 {
+    "CAPTAIN_CODE_PATTERN":"يجب ان يحتوى لرمز على ارقام صحيحه فقط",
     "WEIGHT_NOT_ACCEPTABLE":"الوزن غير مناسب",
     "SELECTION_DONE":"تم",
     "SELECTION_CANCEL":"الغاء",
