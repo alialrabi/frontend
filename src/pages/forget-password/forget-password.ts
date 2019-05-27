@@ -57,10 +57,10 @@ export class ForgetPasswordPage {
         'email': ['', [ Validators.required , Validators.email]],
         
       });
-      this.myForm1 = builder.group({
-        'phone': ['', [ Validators.required , Validators.pattern("(01)[0-9]{9}")]],
+      // this.myForm1 = builder.group({
+      //   'phone': ['', [ Validators.required , Validators.pattern("(01)[0-9]{9}")]],
         
-      });
+      // });
 
     }
 
@@ -121,61 +121,61 @@ export class ForgetPasswordPage {
     )
   }
   }
-  sendSMS(){
+  // sendSMS(){
 
-    if(this.myForm1.valid){
+  //   if(this.myForm1.valid){
 
-    let load = this.loading.create({
-      content: this.pleaseWait
+  //   let load = this.loading.create({
+  //     content: this.pleaseWait
 
 
-    })
-    load.present()
-    this.loginService.logout();
+  //   })
+  //   load.present()
+  //   this.loginService.logout();
 
-    let mailModel = {
-      phone:this.myForm1.get("phone").value
-    }
-    this.accountService.forgetPasswordByPhone(mailModel).subscribe(
-      res =>{
-        load.dismiss();
+  //   let mailModel = {
+  //     phone:this.myForm1.get("phone").value
+  //   }
+  //   this.accountService.forgetPasswordByPhone(mailModel).subscribe(
+  //     res =>{
+  //       load.dismiss();
 
-        let toast = this.toastCtrl.create({
-          message: this.forgetSuccessPhone,
-          duration: 3000,
-          position: 'top'
-        });
-        toast.present();
-        this.navCtrl.setRoot(LoginPage);
+  //       let toast = this.toastCtrl.create({
+  //         message: this.forgetSuccessPhone,
+  //         duration: 3000,
+  //         position: 'top'
+  //       });
+  //       toast.present();
+  //       this.navCtrl.setRoot(LoginPage);
 
-      }, err =>{
-        console.log(err , 'errrrror');
-        load.dismiss();
+  //     }, err =>{
+  //       console.log(err , 'errrrror');
+  //       load.dismiss();
 
-        if(err.status == 504){
+  //       if(err.status == 504){
 
-          let toast = this.toastCtrl.create({
-            message: this.forgetSuccessPhone,
-            duration: 3000,
-            position: 'top'
-          });
-          toast.present();
-          this.navCtrl.setRoot(LoginPage);
-        }else{
+  //         let toast = this.toastCtrl.create({
+  //           message: this.forgetSuccessPhone,
+  //           duration: 3000,
+  //           position: 'top'
+  //         });
+  //         toast.present();
+  //         this.navCtrl.setRoot(LoginPage);
+  //       }else{
 
-        let toast = this.toastCtrl.create({
-          message: this.forgetEroorPhone,
-          duration: 3000,
-          position: 'top'
-        });
-        toast.present();
-      }
+  //       let toast = this.toastCtrl.create({
+  //         message: this.forgetEroorPhone,
+  //         duration: 3000,
+  //         position: 'top'
+  //       });
+  //       toast.present();
+  //     }
 
-      }
-    )
-  }
+  //     }
+  //   )
+  // }
 
-  }
+  // }
 
   back(){
     this.navCtrl.setRoot(LoginPage);
