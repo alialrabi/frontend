@@ -34,7 +34,7 @@
 
 <!-- -->
 <ion-content class="auth-page">
-  <div class="login-content" *ngIf="!openMap">
+  <div class="login-content" style="width: 100%">
 
     <!-- <div padding text-center>
       <div class="logo"></div>
@@ -44,7 +44,7 @@
     </div>
  -->
 
-    <form class="list-form" (submit)="next()" [formGroup]="myForm">
+    <form class="list-form" style="padding-left: 7%;padding-right: 7%"  *ngIf="!openMap" (submit)="next()" [formGroup]="myForm">
         <button type="submit" class="button" hidden></button>
       <!-- <ion-item>
         <ion-label floating>
@@ -205,14 +205,14 @@
 
     </form>
 
-    <div margin-top style="margin-bottom: 40px;">
+    <div margin-top  *ngIf="!openMap" style="padding-left: 7%;padding-right: 7%;">
      
             <button ion-button block color="dark" tappable (click)="next()" [disabled]="!myForm.valid">
               {{ 'NEXT' | translate }}
             </button>
           
     </div>
-  </div>
+  
   <div [ngStyle]="mapStyle">
     <ion-grid [ngStyle]="mapStyle1">
       <ion-row [ngStyle]="mapStyle">
@@ -252,4 +252,5 @@
       </ion-row>
     </ion-grid>
   </div>
+</div>
 </ion-content>

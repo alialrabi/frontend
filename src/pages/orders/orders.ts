@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, App, MenuController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, App, MenuController, LoadingController, Platform, ToastController } from 'ionic-angular';
 import { AddOrderPage } from '../add-order/add-order';
 import { OrderService } from '../../providers/auth/order.service';
 import { Principal } from '../../providers/auth/principal.service';
@@ -35,15 +35,39 @@ export class OrdersPage {
 
   pageNum = 1;
   moreData = 'Loading more data...'
+  exitMessage = ''
+  counter = 0;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private loading: LoadingController, public translateService: TranslateService, private app: App, private principal: Principal, public orderService: OrderService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController , public platform:Platform , private loading: LoadingController, public translateService: TranslateService, private app: App, private principal: Principal, public orderService: OrderService) {
 
     this.myVar = navParams.get("myVar");
-    this.translateService.get(['PLEASE_WAIT', 'MORE_DATA']).subscribe((values) => {
+    this.translateService.get(['EXIT_MESSAGE', 'PLEASE_WAIT', 'MORE_DATA']).subscribe((values) => {
 
       this.pleaseWait = values.PLEASE_WAIT
       this.moreData = values.MORE_DATA
+      this.exitMessage = values.EXIT_MESSAGE
     })
+    if (this.platform.is('cordova') && this.platform.is("android")) {
+      this.platform.registerBackButtonAction(() => {
+
+        if (this.counter == 0) {
+          this.counter++;
+
+          let toast = this.toastCtrl.create({
+            message: this.exitMessage,
+            duration: 3000,
+            position: "bottom"
+          });
+          toast.present();
+
+          setTimeout(() => { this.counter = 0 }, 3000)
+        } else {
+          // console.log("exitapp");
+          this.platform.exitApp();
+        }
+
+      });
+    }
 
   }
 

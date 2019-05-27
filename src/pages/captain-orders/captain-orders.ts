@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ItemDivider, ToastController, App, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ItemDivider, ToastController, App, LoadingController, Platform } from 'ionic-angular';
 import { OrderService } from '../../providers/auth/order.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Principal } from '../../providers/auth/principal.service';
@@ -49,20 +49,45 @@ export class CaptainOrdersPage {
 
   pageNum = 1;
   moreData = 'Loading more data...'
+  exitMessage
+  counter = 0
 
 
-  constructor(public navCtrl: NavController, private loginService: LoginService, private loading: LoadingController, public accountService: AccountService, private captainService: CaptainService, private app: App, private principal: Principal, public navParams: NavParams, public orderService: OrderService, public translateService: TranslateService, public toastCtrl: ToastController) {
+  constructor(public navCtrl: NavController, private loginService: LoginService, public platform:Platform , private loading: LoadingController, public accountService: AccountService, private captainService: CaptainService, private app: App, private principal: Principal, public navParams: NavParams, public orderService: OrderService, public translateService: TranslateService, public toastCtrl: ToastController) {
 
     // this.captain = this.navParams.get("item");
 
-    this.translateService.get(['DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'ASSIGN_ORDER_ERROR', 'ASSIGN_ORDER_SUCCESS', 'PLEASE_WAIT', 'MORE_DATA']).subscribe((values) => {
+    this.translateService.get(['EXIT_MESSAGE', 'DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'ASSIGN_ORDER_ERROR', 'ASSIGN_ORDER_SUCCESS', 'PLEASE_WAIT', 'MORE_DATA']).subscribe((values) => {
       this.deliverOrderError = values.DELIVER_ORDER_ERROR;
       this.deliverOrderSuccess = values.DELIVER_ORDER_SUCCESS;
       this.assignOrderError = values.ASSIGN_ORDER_ERROR;
       this.assingOrderSuccess = values.ASSIGN_ORDER_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
       this.moreData = values.MORE_DATA
+      this.exitMessage = values.EXIT_MESSAGE
     })
+
+    if (this.platform.is('cordova') && this.platform.is("android")) {
+      this.platform.registerBackButtonAction(() => {
+
+        if (this.counter == 0) {
+          this.counter++;
+
+          let toast = this.toastCtrl.create({
+            message: this.exitMessage,
+            duration: 3000,
+            position: "bottom"
+          });
+          toast.present();
+
+          setTimeout(() => { this.counter = 0 }, 3000)
+        } else {
+          // console.log("exitapp");
+          this.platform.exitApp();
+        }
+
+      });
+    }
 
   }
 

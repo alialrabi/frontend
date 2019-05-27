@@ -4,6 +4,7 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { MyApp } from '../../app/app.component';
 import { TranslateService } from '@ngx-translate/core';
 import { AccountService } from '../../providers/auth/account.service';
+import { UserOrdersPage } from '../user-orders/user-orders';
 
 /**
  * Generated class for the ChangePasswordPage page.
@@ -61,6 +62,13 @@ export class ChangePasswordPage {
       'password': ['', [Validators.required ,Validators.minLength(6)]],
       'passwordConfirm': ['', []]
     });
+
+    if (this.platform.is('cordova') && this.platform.is("android")) {
+      this.platform.registerBackButtonAction(() => {
+        this.navCtrl.setRoot(UserOrdersPage);
+
+      });
+    }
 
   }
 

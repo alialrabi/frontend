@@ -9,6 +9,10 @@ import { FirstRunPage } from '../pages';
 import { AccountService } from '../../providers/auth/account.service';
 import { CaptainService } from '../../providers/auth/captain.service';
 import { MyApp } from '../../app/app.component';
+import { AdminDashboardPage } from '../admin-dashboard/admin-dashboard';
+import { OrdersPage } from '../orders/orders';
+import { CaptainOrdersPage } from '../captain-orders/captain-orders';
+import { UserOrdersPage } from '../user-orders/user-orders';
 
 /**
  * The Settings page is a simple form that syncs with a Settings provider
@@ -91,7 +95,7 @@ export class SettingsPage {
     this.translate.get(['AUTO_ASSIGN_ERROR', 'AUTO_ASSIGN_SUCCESS',
       'AUTO_ASSIGN_CONFIRM_MESSAGE', 'AUTO_ASSIGN_CONFIRM_TITLE', 'WORKING_ERROR', 'WORKING_SUCCESS',
       'WORKING_CONFIRM_MESSAGE', 'WORKING_CONFIRM_TITLE', 'CHANGE_LANGUAGE_ERROR', 'CHANGE_LANGUAGE_SUCCESS',
-      'CHANGE_LANGUAGE_MESSAGE', 'CHANGE_LANGUAGE_CONFIRM_TITLE' , 'DONE' , 'CANCEL' , 'PLEASE_WAIT' , 'CHANGE_AT_MARKET_TITLE' , 'CHANGE_AT_MARKET_SUCCESS' , 'CHANGE_AT_MARKET_MESSAGE' , 'CHANGE_AT_MARKET_ERROR' ]).subscribe((values) => {
+      'CHANGE_LANGUAGE_MESSAGE', 'CHANGE_LANGUAGE_CONFIRM_TITLE', 'DONE', 'CANCEL', 'PLEASE_WAIT', 'CHANGE_AT_MARKET_TITLE', 'CHANGE_AT_MARKET_SUCCESS', 'CHANGE_AT_MARKET_MESSAGE', 'CHANGE_AT_MARKET_ERROR']).subscribe((values) => {
         this.changeAutoAssignError = values.AUTO_ASSIGN_ERROR
         this.changeAutoAssignSuccessString = values.AUTO_ASSIGN_SUCCESS
         this.confirmAutoAssignMessage = values.AUTO_ASSIGN_CONFIRM_MESSAGE
@@ -117,17 +121,30 @@ export class SettingsPage {
         this.changeAtMarketSuccess = values.CHANGE_AT_MARKET_SUCCESS
         this.changeAtMarketError = values.CHANGE_AT_MARKET_ERROR
 
-        
+
       })
 
 
     this.myForm = formBuilder.group({
       'autoAssign': ['', []],
       'working': ['', []],
-      'atMarket':['' , []],
+      'atMarket': ['', []],
       'langKey': [this.langKey, []]
     });
 
+    if (this.platform.is('cordova') && this.platform.is("android")) {
+      this.platform.registerBackButtonAction(() => {
+        if (this.userType == 'Admin') {
+          this.navCtrl.setRoot(AdminDashboardPage);
+        } else if (this.userType == 'Agency') {
+          this.navCtrl.setRoot(OrdersPage);
+        }else if (this.userType == 'Captain') {
+          this.navCtrl.setRoot(CaptainOrdersPage);
+        }else if(this.userType == 'User'){
+          this.navCtrl.setRoot(UserOrdersPage);
+        }
+      });
+    }
 
 
   }
@@ -170,12 +187,12 @@ export class SettingsPage {
 
         this.getCaptain(this.account.id);
 
-      }else if (account.authorities[0] == 'ROLE_USER' && account.authorities.length == 1) {
+      } else if (account.authorities[0] == 'ROLE_USER' && account.authorities.length == 1) {
 
         this.account = account;
 
         this.userType = 'User'
-      }else{
+      } else {
 
         this.account = account;
 
@@ -252,7 +269,7 @@ export class SettingsPage {
 
   }
 
-  changeAtMarket(){
+  changeAtMarket() {
 
     let alert = this.alertCtrl.create({
       title: this.changeAtMarketTitle,
@@ -285,9 +302,9 @@ export class SettingsPage {
 
   }
 
-  updateAtMarket(){
+  updateAtMarket() {
 
-    
+
     let obj = {
       captainId: this.captain.id,
       atMarket: this.myForm.get('atMarket').value
@@ -423,33 +440,33 @@ export class SettingsPage {
   changeLanguage() {
     if (this.langKey != MyApp.language) {
 
-    let alert = this.alertCtrl.create({
-      title: this.confirmChaneLanguageTitle,
-      message: this.confirmChaneLanguage,
-      buttons: [{
-        text: this.doneMessage,
-        handler: () => {
+      let alert = this.alertCtrl.create({
+        title: this.confirmChaneLanguageTitle,
+        message: this.confirmChaneLanguage,
+        buttons: [{
+          text: this.doneMessage,
+          handler: () => {
 
-          console.log("----------------------");
-
-
-          this.updateLanguage();
-
-        }
-      }, {
+            console.log("----------------------");
 
 
-        text: this.cancelMessage,
-        handler: () => {
+            this.updateLanguage();
 
-          //nothing
-        }
+          }
+        }, {
 
 
-      }]
-    });
-    alert.present();
-  }
+          text: this.cancelMessage,
+          handler: () => {
+
+            //nothing
+          }
+
+
+        }]
+      });
+      alert.present();
+    }
 
   }
 
@@ -477,7 +494,7 @@ export class SettingsPage {
         window.location.reload();
 
         // this.validateUser(false);
-        
+
 
       }, (err) => {
         // Unable to sign up

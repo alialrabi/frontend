@@ -101,7 +101,7 @@
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
           {{ 'LIVINF_TYPE' | translate }}
         </ion-label>
-        <ion-select [okText]="okText" [cancelText]="cancelText" formControlName="livingType" [placeholder]="flatValue" [(ngModel)]="flat"
+        <ion-select [okText]="okText" [cancelText]="cancelText" formControlName="livingType" [placeholder]="flatValue2" [(ngModel)]="flat"
           [lang]="language" [dir]="direction">
           <ion-option [selected]="flat == item" [value]="'Flat'" [dir]="direction">{{'FLAT' | translate}} </ion-option>
           <ion-option [selected]="flat == item" [value]="'Home'" [dir]="direction">{{'HOME' | translate}} </ion-option>

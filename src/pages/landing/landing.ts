@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, App, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, App, AlertController, Platform, ToastController } from 'ionic-angular';
 import { Principal } from '../../providers/auth/principal.service';
 import { CaptainOrdersPage } from '../captain-orders/captain-orders';
 import { OrdersPage } from '../orders/orders';
@@ -27,16 +27,41 @@ export class LandingPage {
   dialogTitle = ''
   dialogMesaage = ''
 
-  constructor(public navCtrl: NavController, public _alert: AlertController ,  public translateService: TranslateService , public navParams: NavParams , public app:App , public principal:Principal) {
+  counter = 0;
+  exitMessage = ''
+
+  constructor(public navCtrl: NavController, public _alert: AlertController , public toastCtrl: ToastController , public platform: Platform , public translateService: TranslateService , public navParams: NavParams , public app:App , public principal:Principal) {
   
     this.validateUser();
 
-    this.translateService.get([ 'OK' , 'NO_INTERNET_TITLE' , 'NO_INTERNET_MESSAGE' ]).subscribe((values) => {
+    this.translateService.get(['EXIT_MESSAGE' , 'OK' , 'NO_INTERNET_TITLE' , 'NO_INTERNET_MESSAGE' ]).subscribe((values) => {
      
       this.ok = values.OK
       this.dialogTitle = values.NO_INTERNET_TITLE
       this.dialogMesaage = values.NO_INTERNET_MESSAGE
+      this.exitMessage = values.EXIT_MESSAGE
     })
+    if (this.platform.is('cordova') && this.platform.is("android")) {
+      this.platform.registerBackButtonAction(() => {
+
+        if (this.counter == 0) {
+          this.counter++;
+
+          let toast = this.toastCtrl.create({
+            message: this.exitMessage,
+            duration: 3000,
+            position: "bottom"
+          });
+          toast.present();
+
+          setTimeout(() => { this.counter = 0 }, 3000)
+        } else {
+          // console.log("exitapp");
+          this.platform.exitApp();
+        }
+
+      });
+    }
 
   }
 

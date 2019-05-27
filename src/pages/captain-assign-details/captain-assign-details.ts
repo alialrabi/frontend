@@ -8,6 +8,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Builder } from 'selenium-webdriver';
 import { AccountService } from '../../providers/auth/account.service';
 import { SubAssignDetailsPage } from '../sub-assign-details/sub-assign-details';
+import { AdminDashboardPage } from '../admin-dashboard/admin-dashboard';
 
 /**
  * Generated class for the CaptainAssignDetailsPage page.
@@ -114,7 +115,11 @@ export class CaptainAssignDetailsPage {
     })
 
     this.platform.registerBackButtonAction(() => {
-      this.navCtrl.setRoot(CaptainsPage);
+      if (this.captain == null || this.captain == undefined) {
+        this.navCtrl.setRoot(AdminDashboardPage);
+      } else {
+        this.navCtrl.setRoot(CaptainsPage);
+      }
 
     });
 

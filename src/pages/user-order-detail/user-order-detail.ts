@@ -221,7 +221,7 @@ export class UserOrderDetailPage {
   viewLocation(order) {
     if(order.latitude != "0"){
 
-    this.navCtrl.setRoot('OrdersMapPage', { item: order , from:"UserOrderDetailPage" , order:this.order , userType:this.userType })
+    this.navCtrl.setRoot('OrdersMapPage', { item: order , from:"UserOrderDetailPage" , order:this.order , userType:this.userType , myVar:this.myVar })
     }else{
       let alert = this._alert.create({
         title: this.notSupported,

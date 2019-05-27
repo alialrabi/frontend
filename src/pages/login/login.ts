@@ -54,6 +54,10 @@ export class LoginPage {
 
   myForm: FormGroup;
 
+  counter = 0;
+  exitMessage = ''
+
+
   constructor(public navCtrl: NavController,
     public forgotCtrl: AlertController,
     private tw: TwitterConnect,
@@ -73,11 +77,12 @@ export class LoginPage {
     public deviceTokenService: DeviceTockenService,
     private accountService: AccountService, private captainService: CaptainService, public myApp: MyApp) {
 
-    this.translateService.get(['LOGIN_ERROR', 'PLEASE_WAIT', 'NO_EMAIL_MESSAGE', 'EXISTING_USER_ERROR']).subscribe((values) => {
+    this.translateService.get(['EXIT_MESSAGE' , 'LOGIN_ERROR', 'PLEASE_WAIT', 'NO_EMAIL_MESSAGE', 'EXISTING_USER_ERROR']).subscribe((values) => {
       this.loginErrorString = values.LOGIN_ERROR;
       this.pleaseWait = values.PLEASE_WAIT;
       this.noEmailMessage = values.NO_EMAIL_MESSAGE
       this.existingUserError = values.EXISTING_USER_ERROR;
+      this.exitMessage = values.EXIT_MESSAGE
     })
     this.validateUser(false);
 
@@ -86,6 +91,27 @@ export class LoginPage {
       'password': ['', [Validators.required]],
     });
 
+    if (this.platform.is('cordova') && this.platform.is("android")) {
+      this.platform.registerBackButtonAction(() => {
+
+        if (this.counter == 0) {
+          this.counter++;
+
+          let toast = this.toastCtrl.create({
+            message: this.exitMessage,
+            duration: 3000,
+            position: "bottom"
+          });
+          toast.present();
+
+          setTimeout(() => { this.counter = 0 }, 3000)
+        } else {
+          // console.log("exitapp");
+          this.platform.exitApp();
+        }
+
+      });
+    }
   }
 
   userData = {

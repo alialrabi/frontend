@@ -70,6 +70,8 @@
       </ion-grid>
       <p class="validationHint" *ngIf="hasError('weight', 'required')"> {{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="validateweight()">{{ 'WEIGHT_NOT_ACCEPTABLE' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('weight', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
+
 
 
       <p style="width: 100%" text-center>

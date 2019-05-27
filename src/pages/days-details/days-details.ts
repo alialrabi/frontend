@@ -49,11 +49,17 @@ export class DaysDetailsPage {
 
   isCordova = false;
 
+  frommain = ''
+  agencymain = null
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController, public _alert: AlertController , public platform: Platform, private loading: LoadingController, public translateService: TranslateService, public accountService: AccountService, public captainService: CaptainService) {
 
     if (this.platform.is("cordova") && this.platform.is("android")) {
       this.isCordova = true;
     }
+
+    this.frommain = navParams.get("frommain");
+    this.agencymain = navParams.get("agency");
 
     this.from = navParams.get("from");
     this.captain = navParams.get("captain");
@@ -80,7 +86,7 @@ export class DaysDetailsPage {
       if (this.from != 'CaptainDetailsPage') {
         this.navCtrl.setRoot(AgencyDetailsPage, { item: this.agency });
       } else {
-        this.navCtrl.setRoot(CaptainDetailsPage, { item: this.captain });
+        this.navCtrl.setRoot(CaptainDetailsPage, { item: this.captain , from: this.frommain , agency:this.agencymain });
       }
 
 
@@ -127,7 +133,7 @@ export class DaysDetailsPage {
     if (this.from != 'CaptainDetailsPage') {
       this.navCtrl.setRoot(AgencyDetailsPage, { item: this.agency });
     } else {
-      this.navCtrl.setRoot(CaptainDetailsPage, { item: this.captain });
+      this.navCtrl.setRoot(CaptainDetailsPage, { item: this.captain , from: this.frommain , agency:this.agencymain});
     }
 
 

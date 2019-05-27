@@ -83,6 +83,7 @@ export class NewAddressComponent {
   banhaValue = ''
 
   flatValue = ''
+  flatValue2 = ''
   homeValue = ''
   officeValue = ''
 
@@ -111,7 +112,7 @@ export class NewAddressComponent {
     this.platform.registerBackButtonAction(() => {
       console.log("back button");
       
-      this.viewCtrl.dismiss(null);
+      this.back()
     });
 
     this.translateService.get(["SELECTION_CANCEL" , "SELECTION_OK" , 'ADD_ADDRESS_ERROR', 'ADD_ADDRESS_SUCCESS', 'EGYPT', 'ALEX', 'CAIRO', 'TANTA', 'DAMNHOR', 'SHIPIN_ELKOM', 'BANHA', 'PLEASE_WAIT', 'OFFICE', 'HOME', 'FLAT', 'LOCATION_ALERT_TITLE', 'LOCATION_ALERT_MESSAGE', 'OK']).subscribe((values) => {
@@ -131,6 +132,7 @@ export class NewAddressComponent {
       this.egyptText = values.EGYPT
 
       this.flatValue = values.FLAT
+      this.flatValue2 = values.FLAT
       this.homeValue = values.HOME
       this.officeValue = values.OFFICE
 
@@ -452,15 +454,17 @@ export class NewAddressComponent {
     return city;
 
   }
+
   getLivingType(livingTypeValue) {
     let livingType = '';
-    if (livingTypeValue == 'Flat') {
+    if (livingTypeValue == 'Flat') {      
       livingType = this.flatValue
     } else if (livingTypeValue == 'Home') {
       livingType = this.homeValue
     } else if (livingTypeValue == 'Office') {
       livingType = this.officeValue
     }
+    console.log(livingType);
     return livingType;
   }
 
@@ -579,7 +583,9 @@ export class NewAddressComponent {
       this.mapStyle1.height = "0%";
       this.mapStyle1.width = "0%";
 
-      this.flatValue = this.getLivingType(this.myForm.get("livingType").value)
+      console.log(this.myForm.get("livingType").value , 'ssssssssssssss');
+      
+      this.flatValue2 = this.getLivingType(this.myForm.get("livingType").value)
 
       this.openMap = false;
     } else {

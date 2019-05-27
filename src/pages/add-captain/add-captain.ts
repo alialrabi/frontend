@@ -111,7 +111,7 @@ export class AddCaptainPage {
     })
 
     this.myForm = builder.group({
-      'code': ['', [Validators.required]],
+      'code': ['', [Validators.required , Validators.pattern("[0-9]{1,8}")]],
       'name': ['', [Validators.required, Validators.maxLength(45)]],
       'phone': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
       'email': ['', [Validators.required, Validators.email]],
@@ -210,7 +210,9 @@ export class AddCaptainPage {
     }
 
     this.imagePicker.getPictures(options).then((results) => {
+      if (results[0] != null && results[0] != undefined && results[0] != 'O' && results[0] != '') {
       this.captain.image = results[0];
+      }
     }, (err) => {
       alert(err);
     });

@@ -189,7 +189,9 @@ export class AddCheckOrderPage {
     }
 
     this.imagePicker.getPictures(options).then((results) => {
-      this.order.check = results[0];
+      if (results[0] != null && results[0] != undefined && results[0] != 'O' && results[0] != '') {
+        this.order.check = results[0];
+      }
     }, (err) => {
       alert(err);
     });

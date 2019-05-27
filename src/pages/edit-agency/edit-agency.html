@@ -85,7 +85,7 @@
             <ion-icon name="lock" item-start class="text-primary"></ion-icon>
             {{ 'CONFIRM_PASSWORD' | translate }}
           </ion-label>
-          <ion-input type="password" name="passwordConfirm" (ionChange)="passwordChange()" formControlName="passwordConfirm" [disabled] = "!myForm.get('password').valid || myForm.get('password').value.length == 0" [lang]="language" [dir]="direction"></ion-input>
+          <ion-input type="password" name="passwordConfirm" formControlName="passwordConfirm" [disabled] = "!myForm.get('password').valid || myForm.get('password').value.length == 0" [lang]="language" [dir]="direction"></ion-input>
         </ion-item>
   
         <p class="validationHint" *ngIf="hasError('passwordConfirm', 'required')"> {{ 'REQURIED' | translate }} </p>
@@ -94,7 +94,7 @@
       </form>
   
       <div margin-top style="margin-bottom: 40px;">
-        <button ion-button block color="dark" tappable (click)="EditAgency()" [disabled]="!myForm.valid || notMathces() || !valuesChanges()">
+        <button ion-button block color="dark" tappable (click)="EditAgency()" [disabled]="!myForm.valid || notMathces() || !valuesChanges() || validatePasswordChange()">
           {{ 'EDIT_AGENCY_BUTTON' | translate }}
         </button>
   

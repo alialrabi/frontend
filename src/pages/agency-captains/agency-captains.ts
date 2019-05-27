@@ -9,6 +9,7 @@ import { MyApp } from '../../app/app.component';
 import { AgenciesPage } from '../agencies/agencies';
 import { EditAssignCaptainPage } from '../edit-assign-captain/edit-assign-captain';
 import { SubAssignDetailsPage } from '../sub-assign-details/sub-assign-details';
+import { CaptainDetailsPage } from '../captain-details/captain-details';
 
 /**
  * Generated class for the AgencyCaptainsPage page.
@@ -271,5 +272,8 @@ export class AgencyCaptainsPage {
 
   back() {
     this.navCtrl.setRoot(AgenciesPage);
+  }
+  captainDetails(captain) {
+    this.navCtrl.setRoot(CaptainDetailsPage, { item: captain , from: "AgencyCaptainsPage" , agency:this.agency  });
   }
 }

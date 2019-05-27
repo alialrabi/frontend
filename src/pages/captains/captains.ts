@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, App, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, App, LoadingController, Platform } from 'ionic-angular';
 import { CaptainService } from '../../providers/auth/captain.service';
 import { AddCaptainPage } from '../add-captain/add-captain';
 import { CaptainsMapPage } from '../captains-map/captains-map';
@@ -9,6 +9,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { CaptainEvaluationPage } from '../captain-evaluation/captain-evaluation';
 import { CaptainAssignDetailsPage } from '../captain-assign-details/captain-assign-details';
 import { CaptainDetailsPage } from '../captain-details/captain-details';
+import { AdminDashboardPage } from '../admin-dashboard/admin-dashboard';
+import { OrdersPage } from '../orders/orders';
 
 /**
  * Generated class for the CaptainsPage page.
@@ -33,7 +35,7 @@ export class CaptainsPage {
   pageNum = 1;
   moreData = 'Loading more data...'
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private loading: LoadingController, public translateService: TranslateService, private app: App, private principal: Principal, public captainService: CaptainService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public platform:Platform , private loading: LoadingController, public translateService: TranslateService, private app: App, private principal: Principal, public captainService: CaptainService) {
     //this.getAllCaptains();
 
     this.translateService.get(['PLEASE_WAIT', 'MORE_DATA']).subscribe((values) => {
@@ -41,6 +43,16 @@ export class CaptainsPage {
       this.pleaseWait = values.PLEASE_WAIT
       this.moreData = values.MORE_DATA
     })
+    if (this.platform.is('cordova') && this.platform.is("android")) {
+      this.platform.registerBackButtonAction(() => {
+        if(this.userType == 'admin'){
+        this.navCtrl.setRoot(AdminDashboardPage);
+        }else if(this.userType == 'agency'){
+          this.navCtrl.setRoot(OrdersPage);
+        }
+
+      });
+    }
 
   }
 
