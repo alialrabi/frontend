@@ -637,7 +637,25 @@ font-size: inherit;
 line-height: initial;
 background: transparent;
 }
-
+.toast-container{
+  background-color: rgb(199, 199, 199);
+  text-align: center;
+  border-radius:20px;
+  width: 70%;
+  margin-left: 15%;
+  margin-right: 15%;
+  height: auto;
+  }
+  .dark-trans, .toast-md .toast-wrapper {
+    background-color: initial;
+    margin-bottom: 10%;
+    margin-top: 2%;
+  }
+  .toast-md .toast-message {
+    font-size: 1.5rem;
+    color: #080707;
+    padding: 19px 16px 17px;
+  }
 
 // .label-md-floating-en {
 //   -webkit-transform: translate3d(0, 27px, 0);

@@ -86,7 +86,6 @@ export class AddAgencyPage {
 
     });
 
-
   }
   ionViewDidLoad() {
     console.log('ionViewDidLoad AddAgencyPage');

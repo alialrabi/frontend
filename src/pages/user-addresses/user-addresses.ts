@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, App, AlertController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, App, AlertController, ToastController, Platform } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 import { AccountService } from '../../providers/auth/account.service';
 import { AddAddressPage } from '../add-address/add-address';
@@ -8,6 +8,7 @@ import { Principal } from '../../providers/auth/principal.service';
 import { AddressService } from '../../providers/auth/address.service';
 import { MyApp } from '../../app/app.component';
 import { EditAddressPage } from '../edit-address/edit-address';
+import { UserOrdersPage } from '../user-orders/user-orders';
 
 /**
  * Generated class for the UserAddressesPage page.
@@ -45,7 +46,7 @@ export class UserAddressesPage {
   direction = MyApp.direction
 
 
-  constructor(public navCtrl: NavController, public toastCtrl: ToastController , public navParams: NavParams,public app:App, public principal:Principal,public addressesService:AddressService,
+  constructor(public navCtrl: NavController, public toastCtrl: ToastController , public platform:Platform , public navParams: NavParams,public app:App, public principal:Principal,public addressesService:AddressService,
      private loading: LoadingController, public _alert: AlertController , public translateService: TranslateService, public accountService: AccountService) {
 
 
@@ -60,6 +61,13 @@ export class UserAddressesPage {
       this.deleteSuccess = values.DELETE_ADDRESS_SUCCESS
       this.deleteError = values.DELETE_ADDRESS_ERROR
     })
+
+    if (this.platform.is('cordova') && this.platform.is("android")) {
+      this.platform.registerBackButtonAction(() => {
+        this.navCtrl.setRoot(UserOrdersPage);
+
+      });
+    }
   }
   ngOnInit() {
 

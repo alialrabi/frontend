@@ -11,6 +11,8 @@ import { OrderKindPage } from '../order-kind/order-kind';
 import { UserOrderService } from '../../providers/auth/userOrders.service';
 import { DeviceTockenService } from '../../providers/auth/deviceToken.service';
 import { UserOrderDetailPage } from '../user-order-detail/user-order-detail';
+import { AdminDashboardPage } from '../admin-dashboard/admin-dashboard';
+import { CaptainOrdersPage } from '../captain-orders/captain-orders';
 
 /**
  * Generated class for the UserOrdersPage page.
@@ -55,11 +57,14 @@ export class UserOrdersPage {
   deliverFromTo = '';
   buyFromMarket = '';
 
+  counter = 0;
+  exitMessage
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public platform: Platform, private deviceTokenService: DeviceTockenService, public _alert: AlertController, public toastCtrl: ToastController, private captainService: CaptainService, private loading: LoadingController, public translateService: TranslateService, private app: App, private principal: Principal, public orderService: UserOrderService) {
 
     this.myVar = navParams.get("myVar");
 
-    this.translateService.get(['TAKE_ORDER_ERROR', 'TAKE_ORDER_SUCCESS', 'DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT', 'MORE_DATA', 'ADD_ORDER_TITLE', 'ORDER_KIND_MESSAGE', 'BUY_FROM_MARKET', 'DELIVER_FROM_LOCATION_TO_LOCATION']).subscribe((values) => {
+    this.translateService.get(['EXIT_MESSAGE','TAKE_ORDER_ERROR', 'TAKE_ORDER_SUCCESS', 'DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT', 'MORE_DATA', 'ADD_ORDER_TITLE', 'ORDER_KIND_MESSAGE', 'BUY_FROM_MARKET', 'DELIVER_FROM_LOCATION_TO_LOCATION']).subscribe((values) => {
 
       this.deliverOrderError = values.DELIVER_ORDER_ERROR;
       this.deliverOrderSuccess = values.DELIVER_ORDER_SUCCESS;
@@ -72,7 +77,34 @@ export class UserOrdersPage {
       this.buyFromMarket = values.BUY_FROM_MARKET;
       this.takeOrderSuccess = values.TAKE_ORDER_SUCCESS
       this.takeOrderErroe = values.TAKE_ORDER_ERROR
+      this.exitMessage = values.EXIT_MESSAGE
     })
+    if (this.platform.is('cordova') && this.platform.is("android")) {
+      this.platform.registerBackButtonAction(() => {
+        if (this.userType == 'Admin') {
+          this.navCtrl.setRoot(AdminDashboardPage);
+        }else if(this.userType == 'Captain'){
+          this.navCtrl.setRoot(CaptainOrdersPage);
+        }else if(this.userType == 'User'){
+          if (this.counter == 0) {
+            this.counter++;
+  
+            let toast = this.toastCtrl.create({
+              message: this.exitMessage,
+              duration: 3000,
+              position: "bottom"
+            });
+            toast.present();
+  
+            setTimeout(() => { this.counter = 0 }, 3000)
+          } else {
+            // console.log("exitapp");
+            this.platform.exitApp();
+          }
+        }
+
+      });
+    }
 
   }
 

@@ -1,5 +1,6 @@
 {
-    "CAPTAIN_CODE_PATTERN":"Code must contain integer numbers only",
+    "EXIT_MESSAGE":"Click again to exit",
+    "CAPTAIN_CODE_PATTERN":"this code not Acceptable",
     "WEIGHT_NOT_ACCEPTABLE":"Weight not Acceptable",
     "SELECTION_DONE":"Done",
     "SELECTION_CANCEL":"Cancel",
@@ -387,7 +388,7 @@
     "LOGIN_BUTTON": "Sign in",
     "SIGNUP_TITLE": "Sign up",
     "SIGNUP_ERROR": "Unable to create account. Please check your account information and try again.",
-    "SIGNUP_SUCCESS": "Registration saved! Please check your email for confirmation.",
+    "SIGNUP_SUCCESS": "Registration saved Successfully",
     "EXISTING_USER_ERROR": "Email is already in use! Please choose another one.",
     "INVALID_PASSWORD_ERROR": "Invalid password, please try again.",
     "SIGNUP_BUTTON": "Sign up",

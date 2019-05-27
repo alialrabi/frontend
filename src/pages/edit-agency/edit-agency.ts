@@ -108,7 +108,7 @@ export class EditAgencyPage {
 
   EditAgency() {
 
-    if(this.myForm.valid && !this.notMathces() && this.valuesChanges()){
+    if(this.myForm.valid && !this.notMathces() && this.valuesChanges() && !this.validatePasswordChange()){
 
     let load = this.loading.create({
       content: this.pleaseWait
@@ -191,7 +191,15 @@ export class EditAgencyPage {
       return false;
     }
   }
+  validatePasswordChange(){
+    let flag = false;
+    flag = this.myForm.get("password").value.length != this.myForm.get("passwordConfirm").value.length
+
+    return flag;
+  }
   passwordChange(){
+    console.log('password change');
+    
 
     if(this.myForm.get("password").value != '' && this.myForm.get("password").value != null){
       this.myForm.get("passwordConfirm").clearValidators();

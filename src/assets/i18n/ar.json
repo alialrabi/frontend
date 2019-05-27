@@ -1,5 +1,6 @@
 {
-    "CAPTAIN_CODE_PATTERN":"يجب ان يحتوى لرمز على ارقام صحيحه فقط",
+    "EXIT_MESSAGE":"اضغط مره اخرى للخروج",
+    "CAPTAIN_CODE_PATTERN":"هذا الرمز غير مناسب",
     "WEIGHT_NOT_ACCEPTABLE":"الوزن غير مناسب",
     "SELECTION_DONE":"تم",
     "SELECTION_CANCEL":"الغاء",

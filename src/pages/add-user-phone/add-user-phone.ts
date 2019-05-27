@@ -36,18 +36,19 @@ export class AddUserPhonePage {
 
   public addPhoneError;
   public addPhoneSuccessString;
+  public phoneNumberExists = '';
 
   account = null; 
 
   constructor(public navCtrl: NavController, public navParams: NavParams ,public platform:Platform , private principal:Principal , private app: App, public toastCtrl: ToastController, public translateService: TranslateService, private loading: LoadingController, private builder: FormBuilder , private accountSirvice:AccountService) {
 
-    this.translateService.get(['ADD_PHONE_ERROR', 'ADD_PHONE_SUCCESS', 'PLEASE_WAIT']).subscribe((values) => {
+    this.translateService.get(['ADD_PHONE_ERROR', 'ADD_PHONE_SUCCESS', 'PLEASE_WAIT' , 'PHONE_NUMBER_USED']).subscribe((values) => {
       console.log(values);
 
       this.addPhoneError = values.ADD_PHONE_ERROR;
       this.addPhoneSuccessString = values.ADD_PHONE_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
-
+      this.phoneNumberExists = values.PHONE_NUMBER_USED
     })
     this.myForm = builder.group({
       'phone': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
@@ -109,11 +110,15 @@ export class AddUserPhonePage {
       }, err =>{
         console.log(err , 'errrrror');
         load.dismiss()
+        let displayError = this.addPhoneError;
+        if (err.status == 400) {
+          displayError = this.phoneNumberExists;
+        }
 
         let toast = this.toastCtrl.create({
-          message: this.addPhoneError,
+          message: displayError,
           duration: 3000,
-          position: 'middle'
+          position: 'top'
         });
         toast.present();
         

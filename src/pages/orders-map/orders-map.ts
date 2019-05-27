@@ -33,11 +33,13 @@ export class OrdersMapPage {
   userDetailUserTypeParam;
 
   isCordova = false;
+  myVar
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams , public platform:Platform) {
     this.order = this.navParams.get("item");
     this.from = this.navParams.get("from");
+    this.myVar = this.navParams.get("myVar");
       this.userDetailIemParam = this.navParams.get('order')
       this.userDetailUserTypeParam = this.navParams.get('userType')
 
@@ -47,7 +49,7 @@ export class OrdersMapPage {
 
     this.platform.registerBackButtonAction(() => {
       if(this.from == 'UserOrderDetailPage'){
-        this.navCtrl.setRoot(UserOrderDetailPage , {item:this.userDetailIemParam , userType:this.userDetailUserTypeParam});
+        this.navCtrl.setRoot(UserOrderDetailPage , {item:this.userDetailIemParam , userType:this.userDetailUserTypeParam , myVar:this.myVar});
       }else{
       this.navCtrl.setRoot(UserOrdersPage);
       }
@@ -82,7 +84,7 @@ export class OrdersMapPage {
 
   back(){
     if(this.from == 'UserOrderDetailPage'){
-      this.navCtrl.setRoot(UserOrderDetailPage , {item:this.userDetailIemParam , userType:this.userDetailUserTypeParam});
+      this.navCtrl.setRoot(UserOrderDetailPage , {item:this.userDetailIemParam , userType:this.userDetailUserTypeParam , myVar:this.myVar});
     }else{
     this.navCtrl.setRoot(UserOrdersPage);
     }

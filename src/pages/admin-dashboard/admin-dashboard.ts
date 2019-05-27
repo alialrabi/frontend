@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, App } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, App, Platform, ToastController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Principal } from '../../providers/auth/principal.service';
 import { FirstRunPage } from '../pages';
@@ -41,17 +41,20 @@ export class AdminDashboardPage {
   okText = ''
   cancelText = ''
   doneText = ""
+  counter = 0;
+  exitMessage = ''
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public captainService: CaptainService, private builder: FormBuilder, private orderServic: OrderService, public app: App, private loading: LoadingController, public translateService: TranslateService, public principal: Principal) {
-    this.translateService.get(['PLEASE_WAIT' , "SELECTION_CANCEL" , "SELECTION_OK" , 'SELECTION_DONE']).subscribe((values) => {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController, public platform: Platform, public captainService: CaptainService, private builder: FormBuilder, private orderServic: OrderService, public app: App, private loading: LoadingController, public translateService: TranslateService, public principal: Principal) {
+    this.translateService.get(['EXIT_MESSAGE', 'PLEASE_WAIT', "SELECTION_CANCEL", "SELECTION_OK", 'SELECTION_DONE']).subscribe((values) => {
       this.pleaseWait = values.PLEASE_WAIT
       this.okText = values.SELECTION_OK
       this.cancelText = values.SELECTION_CANCEL
       this.doneText = values.SELECTION_DONE
+      this.exitMessage = values.EXIT_MESSAGE
     })
 
     var CurrentYear = new Date().getFullYear()
-      this.maxDate = CurrentYear + 2 ;
+    this.maxDate = CurrentYear + 2;
 
     this.myForm = builder.group({
       //'userId':['', [Validators.required ]],
@@ -61,10 +64,30 @@ export class AdminDashboardPage {
 
     });
 
+    if (this.platform.is('cordova') && this.platform.is("android")) {
+      this.platform.registerBackButtonAction(() => {
+
+        if (this.counter == 0) {
+          this.counter++;
+
+          let toast = this.toastCtrl.create({
+            message: this.exitMessage,
+            duration: 3000,
+            position: "bottom",
+          });
+          toast.present();
+
+          setTimeout(() => { this.counter = 0 }, 3000)
+        } else {
+          // console.log("exitapp");
+          this.platform.exitApp();
+        }
+
+      });
+    }
     this.getAdminStatistcs();
     this.getAllCaptains();
 
-    
   }
 
   ngOnInit() {

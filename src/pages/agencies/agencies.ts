@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, MenuController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, MenuController, LoadingController, Platform } from 'ionic-angular';
 import { AccountService } from '../../providers/auth/account.service';
 import { AddAgencyPage } from '../add-agency/add-agency';
 import { AssignCaptainsPage } from '../assign-captains/assign-captains';
@@ -7,6 +7,7 @@ import { AgencyCaptainsPage } from '../agency-captains/agency-captains';
 import { MyApp } from '../../app/app.component';
 import { TranslateService } from '@ngx-translate/core';
 import { AgencyDetailsPage } from '../agency-details/agency-details';
+import { AdminDashboardPage } from '../admin-dashboard/admin-dashboard';
 
 /**
  * Generated class for the AgenciesPage page.
@@ -32,7 +33,7 @@ export class AgenciesPage {
   moreData = 'Loading more data...'
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams
+  constructor(public navCtrl: NavController, public navParams: NavParams, public platform: Platform
     , private loading: LoadingController, public translateService: TranslateService, public accountService: AccountService) {
 
 
@@ -41,6 +42,12 @@ export class AgenciesPage {
       this.pleaseWait = values.PLEASE_WAIT
       this.moreData = values.MORE_DATA
     })
+    if (this.platform.is('cordova') && this.platform.is("android")) {
+      this.platform.registerBackButtonAction(() => {
+        this.navCtrl.setRoot(AdminDashboardPage);
+
+      });
+    }
     this.getAllAgincies(0);
   }
 
@@ -51,41 +58,41 @@ export class AgenciesPage {
   getAllAgincies(pageNum) {
     if (!this.isLoading) {
       this.isLoading = true;
-    let load;
-    if (pageNum == 0) {
-      load = this.loading.create({
-        content: this.pleaseWait
+      let load;
+      if (pageNum == 0) {
+        load = this.loading.create({
+          content: this.pleaseWait
 
+
+        })
+        load.present()
+        this.agenciesList = [];
+      }
+      //this.agenciesList = [];
+      this.accountService.getAllAgencyWithPagination(pageNum).subscribe(res => {
+        console.log(res);
+
+        if (pageNum == 0) {
+          this.agenciesList = res;
+
+          load.dismiss();
+        } else {
+          if (res.length > 0) {
+            this.pageNum++;
+          }
+          res.forEach(element => {
+            this.agenciesList.push(element);
+          });
+        }
+        this.isLoading = false;
+      }, err => {
+        console.log(err);
+        if (pageNum == 0) {
+          load.dismiss();
+        }
 
       })
-      load.present()
-      this.agenciesList = [];
     }
-    //this.agenciesList = [];
-    this.accountService.getAllAgencyWithPagination(pageNum).subscribe(res => {
-      console.log(res);
-
-      if (pageNum == 0) {
-        this.agenciesList = res;
-
-        load.dismiss();
-      }else{
-        if(res.length > 0){
-          this.pageNum++;
-        }
-        res.forEach(element => {
-          this.agenciesList.push(element);
-        });
-      }
-      this.isLoading = false;
-    }, err => {
-      console.log(err);
-      if (pageNum == 0) {
-        load.dismiss();
-      }
-
-    })
-  }
   }
 
   doInfinite(infiniteScroll) {
@@ -112,7 +119,7 @@ export class AgenciesPage {
   viewCaptains(agency) {
     this.navCtrl.setRoot(AgencyCaptainsPage, { item: agency });
   }
-  agencyDetails(agency){
+  agencyDetails(agency) {
     this.navCtrl.setRoot(AgencyDetailsPage, { item: agency });
   }
 

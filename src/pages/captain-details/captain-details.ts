@@ -166,7 +166,6 @@ export class CaptainDetailsPage {
     }
   }
   viewStars(password) {
-    console.log(password);
 
     let result = "";
     for (let i = 0; i < password.length; i++) {
