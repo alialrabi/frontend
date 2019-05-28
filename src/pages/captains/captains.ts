@@ -58,18 +58,18 @@ export class CaptainsPage {
 
   ngOnInit() {
 
-    let load = this.loading.create({
-      content: this.pleaseWait
+    // let load = this.loading.create({
+    //   content: this.pleaseWait
 
 
-    })
-    load.present()
+    // })
+    // load.present()
 
     this.principal.identity().then((account) => {
       console.log(account);
       this.account = account;
 
-      load.dismiss()
+ //     load.dismiss()
 
 
       if (account === null) {
@@ -87,7 +87,7 @@ export class CaptainsPage {
       console.log(this.userType);
 
     }).catch((err) => {
-      load.dismiss()
+ //     load.dismiss()
     });
   }
 

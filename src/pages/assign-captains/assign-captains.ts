@@ -350,7 +350,7 @@ export class AssignCaptainsPage {
 
       this.captainService.checkAssignCaptains(assignCaptains).subscribe(
         res => {
-          load.dismiss()
+//          load.dismiss()
 
           this.dates.push(date)
 
@@ -361,7 +361,7 @@ export class AssignCaptainsPage {
           this.timeValue = '2002-09-23T00:00:00.000';
           console.log(this.dates, 'dartes');
 
-          this.doAssignCaptains();
+          this.doAssignCaptains(load);
 
         }, err => {
           load.dismiss()
@@ -395,8 +395,8 @@ export class AssignCaptainsPage {
 
 
     } else {
-      load.dismiss();
-      this.doAssignCaptains();
+      // load.dismiss();
+      this.doAssignCaptains(load);
 
     }
 
@@ -405,14 +405,14 @@ export class AssignCaptainsPage {
 
   }
 
-  doAssignCaptains() {
+  doAssignCaptains(load) {
 
-    let load = this.loading.create({
-      content: this.pleaseWait
+    // let load = this.loading.create({
+    //   content: this.pleaseWait
 
 
-    })
-    load.present()
+    // })
+    // load.present()
 
     let ids = this.myForm.get("captainIds").value;
 

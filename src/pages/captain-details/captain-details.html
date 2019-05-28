@@ -22,7 +22,7 @@
         </ion-col>
         <ion-col [style.text-align]="language == 'en' ? 'right' : 'left'" *ngIf="userType=='admin'">
           <ion-buttons style="padding:0px" class="btn-style">
-            <button ion-button (click)="editCaptain()">
+            <button class="add-btn-style" ion-button (click)="editCaptain()">
               {{ 'EDIT' | translate }}
             </button>
           </ion-buttons>

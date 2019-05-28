@@ -13,13 +13,13 @@
     </button>
 
     <ion-title> {{ 'CAPTAINS' | translate }}</ion-title>
-    <ion-buttons end class="btn-style">
-        <button ion-button (click)="openMap()">
+    <ion-buttons [style.padding] ="userType == 'admin' ? '2px' : '5px'" end class="btn-style">
+        <button class="add-btn-style" ion-button (click)="openMap()">
             {{ 'MAP' | translate }}
         </button>
       </ion-buttons>
-    <ion-buttons end class="btn-style" *ngIf="userType == 'admin'">
-      <button ion-button (click)="add()">
+    <ion-buttons style="padding: 2px;" end class="btn-style" *ngIf="userType == 'admin'">
+      <button class="add-btn-style" ion-button (click)="add()">
           {{ 'ADD' | translate }}
       </button>
     </ion-buttons>
@@ -40,7 +40,8 @@
           <ion-row>
             <ion-col>
     
-              <h3 class="not-found-text"> {{ 'EMPTY_LIST' | translate }}</h3>
+              <h3 class="not-found-text" *ngIf="userType == 'admin'"> {{ 'ADD_CAPTAIN_NOW' | translate }}</h3>
+              <h3 class="not-found-text" *ngIf="userType != 'admin'"> {{ 'NO_CAPTAINS_TO_YOU' | translate }}</h3>
             </ion-col>
           </ion-row>
         </ion-grid>

@@ -162,13 +162,14 @@ export class BuyFromMarketPage {
     this.principal.identity().then((account) => {
       console.log(account);
       this.account = account;
-      load.dismiss()
+//      load.dismiss()
 
       if (account === null) {
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
+        load.dismiss()
       } else {
         this.account = account;
-        this.getAddresses();
+        this.getAddresses(load);
 
       }
 
@@ -179,13 +180,13 @@ export class BuyFromMarketPage {
     });
   }
 
-  getAddresses() {
-    let load = this.loading.create({
-      content: this.pleaseWait
+  getAddresses(load) {
+    // let load = this.loading.create({
+    //   content: this.pleaseWait
 
 
-    })
-    load.present()
+    // })
+    // load.present()
     this.addressList = [];
     this.addressService.getUserAddresses(this.account.id).subscribe(
       res => {

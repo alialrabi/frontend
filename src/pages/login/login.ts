@@ -77,7 +77,7 @@ export class LoginPage {
     public deviceTokenService: DeviceTockenService,
     private accountService: AccountService, private captainService: CaptainService, public myApp: MyApp) {
 
-    this.translateService.get(['EXIT_MESSAGE' , 'LOGIN_ERROR', 'PLEASE_WAIT', 'NO_EMAIL_MESSAGE', 'EXISTING_USER_ERROR']).subscribe((values) => {
+    this.translateService.get(['EXIT_MESSAGE', 'LOGIN_ERROR', 'PLEASE_WAIT', 'NO_EMAIL_MESSAGE', 'EXISTING_USER_ERROR']).subscribe((values) => {
       this.loginErrorString = values.LOGIN_ERROR;
       this.pleaseWait = values.PLEASE_WAIT;
       this.noEmailMessage = values.NO_EMAIL_MESSAGE
@@ -161,16 +161,21 @@ export class LoginPage {
     }
   }
   validateUser(flag) {
-    let load = this.loading.create({
-      content: this.pleaseWait
+    let load;
+    if (!flag) {
+      load = this.loading.create({
+        content: this.pleaseWait
 
 
-    })
-    load.present()
+      })
+      load.present()
+    }
 
     this.principal.identity().then((account) => {
 
-      load.dismiss();
+      if (!flag) {
+        load.dismiss();
+      }
       console.log(account);
 
       if (account === null) {
@@ -217,7 +222,9 @@ export class LoginPage {
 
       }
     }).catch((err) => {
-      load.dismiss();
+      if (!flag) {
+        load.dismiss();
+      }
     });
 
   }

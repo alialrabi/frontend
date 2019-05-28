@@ -91,18 +91,18 @@ export class CaptainsMapPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad CaptainsMapPage');
 
-    let load = this.loading.create({
-      content: this.pleaseWait
+    // let load = this.loading.create({
+    //   content: this.pleaseWait
   
   
-    })
-    load.present()
+    // })
+    // load.present()
 
     this.principal.identity().then((account) => {
       console.log(account);
       this.account = account;
 
-      load.dismiss();
+ //     load.dismiss();
 
       if (account === null) {
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
@@ -119,7 +119,7 @@ export class CaptainsMapPage {
       console.log(this.userType);
 
     }).catch((err) =>{
-      load.dismiss();
+ //     load.dismiss();
     });
 
 

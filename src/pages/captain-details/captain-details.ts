@@ -92,19 +92,20 @@ export class CaptainDetailsPage {
 
     this.principal.identity().then((account) => {
       console.log(account);
-      load.dismiss();
+ //     load.dismiss();
 
       if (account === null) {
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
+        load.dismiss()
       } else if (account.authorities[0] == 'ROLE_AGENCY') {
         this.user = account;
         this.userType = 'agency'
-        this.getCaptain(this.user.id)
+        this.getCaptain(this.user.id , load);
 
       }else{
         this.user = account;
         this.userType = 'admin'
-        this.getCaptain(0)
+        this.getCaptain(0 , load)
       }
     }).catch((err) => {
       console.log(err, 'err')
@@ -118,11 +119,11 @@ export class CaptainDetailsPage {
   }
 
 
-  getCaptain(agencyId) {
-    let load = this.loading.create({
-      content: this.pleaseWait
-    })
-    load.present()
+  getCaptain(agencyId , load) {
+    // let load = this.loading.create({
+    //   content: this.pleaseWait
+    // })
+    // load.present()
 
     this.captainService.getCaptainDetails(this.item.id , agencyId).subscribe(res => {
       console.log(res);

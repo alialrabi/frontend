@@ -122,18 +122,18 @@ export class UserOrdersPage {
   }
   ngOnInit() {
 
-    let load = this.loading.create({
-      content: this.pleaseWait
+    // let load = this.loading.create({
+    //   content: this.pleaseWait
 
 
-    })
-    load.present()
+    // })
+    // load.present()
 
     this.principal.identity().then((account) => {
       console.log(account);
 
       if (account === null) {
-        load.dismiss();
+//        load.dismiss();
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
       } else if (account.authorities[0] == 'ROLE_USER' && account.authorities.length == 1) {
 
@@ -144,7 +144,7 @@ export class UserOrdersPage {
         this.userType = 'User';
         this.userId = account.id;
         this.captainId = 0;
-        load.dismiss();
+//        load.dismiss();
         this.getUserOrders(this.myVar, 0);
 
 
@@ -166,12 +166,12 @@ export class UserOrdersPage {
             this.captainId = data.id;
             console.log(data, this.captain);
 
-            load.dismiss();
+//            load.dismiss();
             this.getUserOrders(this.myVar, 0);
           },
           err => {
             console.log(err, 'errrrror');
-            load.dismiss()
+//            load.dismiss()
 
           })
 
@@ -185,12 +185,12 @@ export class UserOrdersPage {
         this.userType = 'Admin';
         this.userId = 0;
         this.captainId = 0;
-        load.dismiss();
+//        load.dismiss();
         this.getUserOrders(this.myVar, 0);
 
       }
     }).catch((err) => {
-      load.dismiss();
+//      load.dismiss();
     });
   }
 

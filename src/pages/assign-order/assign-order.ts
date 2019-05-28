@@ -120,18 +120,19 @@ export class AssignOrderPage {
     this.principal.identity().then((account) => {
       console.log(account);
       this.account = account;
-      load.dismiss()
+//      load.dismiss()
       
       if (account === null ) {
          this.app.getRootNavs()[0].setRoot(FirstRunPage);
+         load.dismiss();
       }else if(account.authorities[0]== 'ROLE_AGENCY'){
         this.account = account;
         this.userType = 'Agency'
-        this.getAllCaptains(this.account.id);
+        this.getAllCaptains(this.account.id , load);
       }else{
         this.account = account;
         this.userType = 'Admin'
-        this.getAllCaptains(0);
+        this.getAllCaptains(0 , load);
 
       }
        
@@ -147,13 +148,13 @@ export class AssignOrderPage {
     console.log('ionViewDidLoad AssignOrderPage');
   }
 
-  getAllCaptains(id){
-    let load = this.loading.create({
-      content: this.pleaseWait
+  getAllCaptains(id , load){
+    // let load = this.loading.create({
+    //   content: this.pleaseWait
   
   
-    })
-    load.present()
+    // })
+    // load.present()
     this.captainService.captainsPickListByAgencyId(id).subscribe(
       res =>{
 
