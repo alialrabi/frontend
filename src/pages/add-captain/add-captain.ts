@@ -212,6 +212,8 @@ export class AddCaptainPage {
     this.imagePicker.getPictures(options).then((results) => {
       if (results[0] != null && results[0] != undefined && results[0] != 'O' && results[0] != '') {
       this.captain.image = results[0];
+      }else if(results[0] == 'O'){
+        this.openImagePicker();
       }
     }, (err) => {
       alert(err);

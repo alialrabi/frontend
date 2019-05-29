@@ -54,7 +54,7 @@ export class AgencyCaptainsPage {
   isCordova = false;
 
 
-  constructor(public navCtrl: NavController, public _alert: AlertController , public navParams: NavParams, public platform: Platform, private principal: Principal, private app: App, private loading: LoadingController, public toastCtrl: ToastController, public captainService: CaptainService, public translateService: TranslateService) {
+  constructor(public navCtrl: NavController, public _alert: AlertController, public navParams: NavParams, public platform: Platform, private principal: Principal, private app: App, private loading: LoadingController, public toastCtrl: ToastController, public captainService: CaptainService, public translateService: TranslateService) {
 
     this.agency = this.navParams.get("item");
 
@@ -65,21 +65,21 @@ export class AgencyCaptainsPage {
     console.log('agency 3', this.agency);
 
 
-    this.translateService.get(['UN_ASSIGN_CAPTAIN_ERROR', 'UN_ASSIGN_CAPTAIN_SUCCESS', 'PLEASE_WAIT', 'MORE_DATA' 
-    , 'UNASSIGN_ALERT_TITLE' , 'UNASSIGN_ALERT_MESSAGE' , 'YES' ,
-     'CANCEL' , 'FROM_WHEN_MESSAGE','FROM_TODAY','FROM_TOMMOROW']).subscribe((values) => {
-      this.unassignCaptainError = values.UN_ASSIGN_CAPTAIN_ERROR;
-      this.unassignCaptainSuccess = values.UN_ASSIGN_CAPTAIN_SUCCESS;
-      this.pleaseWait = values.PLEASE_WAIT
-      this.moreData = values.MORE_DATA
-      this.unAssignAlertTilte = values.UNASSIGN_ALERT_TITLE
-      this.unAssignAlertMessage = values.UNASSIGN_ALERT_MESSAGE
-      this.yes = values.YES
-      this.cancel = values.CANCEL
-      this.fromWhenMessage = values.FROM_WHEN_MESSAGE
-      this.todayMessage = values.FROM_TODAY
-      this.tommorowMessage = values.FROM_TOMMOROW
-    })
+    this.translateService.get(['UN_ASSIGN_CAPTAIN_ERROR', 'UN_ASSIGN_CAPTAIN_SUCCESS', 'PLEASE_WAIT', 'MORE_DATA'
+      , 'UNASSIGN_ALERT_TITLE', 'UNASSIGN_ALERT_MESSAGE', 'YES',
+      'CANCEL', 'FROM_WHEN_MESSAGE', 'FROM_TODAY', 'FROM_TOMMOROW']).subscribe((values) => {
+        this.unassignCaptainError = values.UN_ASSIGN_CAPTAIN_ERROR;
+        this.unassignCaptainSuccess = values.UN_ASSIGN_CAPTAIN_SUCCESS;
+        this.pleaseWait = values.PLEASE_WAIT
+        this.moreData = values.MORE_DATA
+        this.unAssignAlertTilte = values.UNASSIGN_ALERT_TITLE
+        this.unAssignAlertMessage = values.UNASSIGN_ALERT_MESSAGE
+        this.yes = values.YES
+        this.cancel = values.CANCEL
+        this.fromWhenMessage = values.FROM_WHEN_MESSAGE
+        this.todayMessage = values.FROM_TODAY
+        this.tommorowMessage = values.FROM_TOMMOROW
+      })
 
     this.platform.registerBackButtonAction(() => {
       this.navCtrl.setRoot(AgenciesPage);
@@ -99,7 +99,7 @@ export class AgencyCaptainsPage {
 
     this.principal.identity().then((account) => {
       console.log(account);
-//      load.dismiss();
+      //      load.dismiss();
 
       if (account === null) {
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
@@ -110,7 +110,7 @@ export class AgencyCaptainsPage {
       }
     }).catch((err) => {
       console.log(err, 'err')
- //     load.dismiss();
+      //     load.dismiss();
     });
   }
 
@@ -136,53 +136,83 @@ export class AgencyCaptainsPage {
   getAgencyCaptains(pageNum) {
     if (!this.isLoading) {
       this.isLoading = true;
-    let load;
-    if (pageNum == 0) {
+      let load;
+      if (pageNum == 0) {
 
-      load = this.loading.create({
-        content: this.pleaseWait
+        load = this.loading.create({
+          content: this.pleaseWait
 
+
+        })
+        load.present()
+        this.captainsList = [];
+        this.pageNum = 1;
+      }
+      let agencyId = 0;
+      if (this.agency == null || this.agency == undefined) {
+        agencyId = this.user.id
+      } else {
+        agencyId = this.agency.id;
+      }
+      this.captainService.getByAgencyId(agencyId, pageNum).subscribe(res => {
+        console.log(res);
+
+        if (pageNum == 0) {
+          this.captainsList = res;
+        } else {
+          if (res.length > 0) {
+            this.pageNum++;
+          }
+
+          res.forEach(element => {
+            this.captainsList.push(element);
+
+          });
+        }
+        if (pageNum == 0) {
+          load.dismiss();
+        }
+
+        this.isLoading = false;
+
+      }, err => {
+        console.log(err);
+        if (pageNum == 0) {
+          load.dismiss();
+        }
 
       })
-      load.present()
-      this.captainsList = [];
     }
+  }
+  getAgencyCaptainsAfterUnAssign(pageNum, load) {
+
+    this.captainsList = [];
+
     let agencyId = 0;
     if (this.agency == null || this.agency == undefined) {
       agencyId = this.user.id
     } else {
       agencyId = this.agency.id;
     }
+    this.pageNum = 1;
     this.captainService.getByAgencyId(agencyId, pageNum).subscribe(res => {
       console.log(res);
 
-      if (pageNum == 0) {
-        this.captainsList = res;
-      } else {
-        if (res.length > 0) {
-          this.pageNum++;
-        }
+      this.captainsList = res;
 
-        res.forEach(element => {
-          this.captainsList.push(element);
 
-        });
-      }
-      if (pageNum == 0) {
-        load.dismiss();
-      }
 
-      this.isLoading = false;
+      load.dismiss();
+
 
     }, err => {
       console.log(err);
-      if (pageNum == 0) {
-        load.dismiss();
-      }
+      load.dismiss();
+
 
     })
   }
-  }
+
 
   unAssingCaptain(captain) {
     let alert = this._alert.create({
@@ -198,14 +228,14 @@ export class AgencyCaptainsPage {
         {
           text: this.cancel,
           handler: () => {
-            
+
           }
         }
       ]
     });
     alert.present();
   }
-  fromWhenDialog(captain){
+  fromWhenDialog(captain) {
     let alert = this._alert.create({
       title: this.unAssignAlertTilte,
       message: this.fromWhenMessage,
@@ -213,13 +243,13 @@ export class AgencyCaptainsPage {
         {
           text: this.todayMessage,
           handler: () => {
-            this.doUnAssingCaptain(captain , 'today');
+            this.doUnAssingCaptain(captain, 'today');
           }
         },
         {
           text: this.tommorowMessage,
           handler: () => {
-            this.doUnAssingCaptain(captain , 'tommorow');
+            this.doUnAssingCaptain(captain, 'tommorow');
           }
         }
       ]
@@ -227,17 +257,18 @@ export class AgencyCaptainsPage {
     alert.present();
   }
 
-  doUnAssingCaptain(captain , day) {
+  doUnAssingCaptain(captain, day) {
     let load = this.loading.create({
       content: this.pleaseWait
 
 
     })
     load.present()
-    this.captainService.unAssignCaptain(captain.id , day).subscribe(
+    this.captainService.unAssignCaptain(captain.id, day).subscribe(
       res => {
-        load.dismiss();
-        this.getAgencyCaptains(0);
+        //     load.dismiss();
+        this.getAgencyCaptainsAfterUnAssign(0, load);
+        this.pageNum = 1;
 
         let toast = this.toastCtrl.create({
           message: this.unassignCaptainSuccess,
@@ -267,13 +298,13 @@ export class AgencyCaptainsPage {
   }
 
   assignDetails(captain) {
-    this.navCtrl.setRoot(SubAssignDetailsPage, { item: captain, from: "AgencyCaptainsPage" , agency:this.agency });
+    this.navCtrl.setRoot(SubAssignDetailsPage, { item: captain, from: "AgencyCaptainsPage", agency: this.agency });
   }
 
   back() {
     this.navCtrl.setRoot(AgenciesPage);
   }
   captainDetails(captain) {
-    this.navCtrl.setRoot(CaptainDetailsPage, { item: captain , from: "AgencyCaptainsPage" , agency:this.agency  });
+    this.navCtrl.setRoot(CaptainDetailsPage, { item: captain, from: "AgencyCaptainsPage", agency: this.agency });
   }
 }

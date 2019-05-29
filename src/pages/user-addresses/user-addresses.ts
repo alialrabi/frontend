@@ -115,6 +115,7 @@ export class UserAddressesPage {
       })
       load.present()
       this.addresses = [];
+      this.pageNum = 1;
     }
     //this.agenciesList = [];
     this.addressesService.getUserAddressesWithPagination(this.user.id ,pageNum).subscribe(res => {
@@ -141,6 +142,26 @@ export class UserAddressesPage {
 
     })
   }
+  }
+  getAllAddressesAfterDelete(pageNum , load) {
+    
+      this.addresses = [];
+      this.pageNum = 1;
+    
+    //this.agenciesList = [];
+    this.addressesService.getUserAddressesWithPagination(this.user.id ,pageNum).subscribe(res => {
+      console.log(res);
+
+        this.addresses = res;
+
+        load.dismiss();
+      
+    }, err => {
+      console.log(err);
+        load.dismiss();
+
+    })
+  
   }
 
   doInfinite(infiniteScroll) {
@@ -197,8 +218,8 @@ export class UserAddressesPage {
     load.present()
     this.addressesService.delete(address.id).subscribe(
       res =>{
-        load.dismiss();
-        this.getAllAddresses(0);
+//        load.dismiss();
+        this.getAllAddressesAfterDelete(0 , load);
 
         let toast = this.toastCtrl.create({
           message: this.deleteSuccess,
