@@ -92,16 +92,16 @@ export class AdminDashboardPage {
 
   ngOnInit() {
 
-    let load = this.loading.create({
-      content: this.pleaseWait
+    // let load = this.loading.create({
+    //   content: this.pleaseWait
 
 
-    })
-    load.present()
+    // })
+    // load.present()
 
     this.principal.identity().then((account) => {
       console.log(account);
-      load.dismiss();
+   //   load.dismiss();
       if (account === null) {
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
       } else {
@@ -110,7 +110,7 @@ export class AdminDashboardPage {
 
       }
     }).catch((err) => {
-      load.dismiss();
+ //     load.dismiss();
     });
   }
 
@@ -119,23 +119,23 @@ export class AdminDashboardPage {
   }
 
   getAllCaptains() {
-    let load = this.loading.create({
-      content: this.pleaseWait
+    // let load = this.loading.create({
+    //   content: this.pleaseWait
 
 
-    })
-    load.present()
+    // })
+    // load.present()
     this.captainService.captainsPickList().subscribe(
       res => {
 
         console.log(res, "res");
         this.captainList = res;
-        load.dismiss();
+  //      load.dismiss();
 
       }, err => {
 
         console.log(err, "err");
-        load.dismiss();
+//        load.dismiss();
 
 
       }

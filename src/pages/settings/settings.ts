@@ -165,12 +165,13 @@ export class SettingsPage {
 
     this.principal.identity().then((account) => {
       console.log(account);
-      load.dismiss();
+      
       if (account === null) {
+        load.dismiss();
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
 
       } else if (account.authorities[0] == 'ROLE_AGENCY') {
-        console.log("555555555 ************** 555555555555555");
+        load.dismiss();
 
         this.account = account;
         if (flag) {
@@ -185,14 +186,16 @@ export class SettingsPage {
 
         this.userType = 'Captain'
 
-        this.getCaptain(this.account.id);
+        this.getCaptain(this.account.id , load);
 
       } else if (account.authorities[0] == 'ROLE_USER' && account.authorities.length == 1) {
+        load.dismiss();
 
         this.account = account;
 
         this.userType = 'User'
       } else {
+        load.dismiss();
 
         this.account = account;
 
@@ -204,14 +207,14 @@ export class SettingsPage {
     });
   }
 
-  getCaptain(captainId) {
+  getCaptain(captainId , load) {
 
-    let load = this.loading.create({
-      content: this.pleaseWait
+    // let load = this.loading.create({
+    //   content: this.pleaseWait
 
 
-    })
-    load.present()
+    // })
+    // load.present()
 
     this.captainService.getByUserId(captainId).subscribe(
       data => {

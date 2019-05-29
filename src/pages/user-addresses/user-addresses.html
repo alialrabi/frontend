@@ -16,7 +16,7 @@
     <ion-title>{{ 'MY_ADDRESSES' | translate }}</ion-title>
 
     <ion-buttons end class="btn-style">
-      <button ion-button (click)="add()">
+      <button class="add-btn-style" ion-button (click)="add()">
         {{ 'ADD' | translate }}
       </button>
     </ion-buttons>
@@ -37,7 +37,7 @@
       <ion-row>
         <ion-col>
 
-          <h3 class="not-found-text"> {{ 'EMPTY_LIST' | translate }}</h3>
+          <h3 class="not-found-text"> {{ 'ADD_NEW_ADDRESS' | translate }}</h3>
         </ion-col>
       </ion-row>
     </ion-grid>

@@ -62,7 +62,8 @@
       <ion-row>
         <ion-col>
 
-          <h3 class="not-found-text"> {{ 'EMPTY_LIST' | translate }}</h3>
+          <h3 class="not-found-text" *ngIf="myVar != 'delivered'"> {{ 'NO_NEW_ORDERS' | translate }}</h3>
+          <h3 class="not-found-text" *ngIf="myVar == 'delivered'"> {{ 'NO_DELIVERED_ORDERS' | translate }}</h3>
         </ion-col>
       </ion-row>
     </ion-grid>

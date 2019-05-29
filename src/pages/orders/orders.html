@@ -14,12 +14,12 @@
 
     <ion-title>{{ 'ORDERS' | translate }}</ion-title>
     <ion-buttons end class="btn-style">
-      <button ion-button (click)="add()" *ngIf="userType == 'Agency'">
+      <button class="add-btn-style" ion-button (click)="add()" *ngIf="userType == 'Agency'">
         {{ 'ADD' | translate }}
       </button>
     </ion-buttons>
     <ion-buttons end class="btn-style">
-      <button ion-button (click)="addCheck()" *ngIf="userType == 'Agency'">
+      <button class="add-btn-style" ion-button (click)="addCheck()" *ngIf="userType == 'Agency'">
         {{ 'ADD_CHECK' | translate }}
       </button>
     </ion-buttons>
@@ -67,7 +67,8 @@
       <ion-row>
         <ion-col>
 
-          <h3 class="not-found-text"> {{ 'EMPTY_LIST' | translate }}</h3>
+          <h3 class="not-found-text" *ngIf="myVar != 'delivered'"> {{ 'ADD__ORDER' | translate }}</h3>
+          <h3 class="not-found-text" *ngIf="myVar == 'delivered'"> {{ 'NO_DELIVERED_ORDER' | translate }}</h3>
         </ion-col>
       </ion-row>
     </ion-grid>

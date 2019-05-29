@@ -146,23 +146,23 @@ export class CaptainAssignDetailsPage {
   }
 
   getAllCaptains() {
-    let load = this.loading.create({
-      content: this.pleaseWait
+    // let load = this.loading.create({
+    //   content: this.pleaseWait
 
 
-    })
-    load.present()
+    // })
+    // load.present()
     this.captainService.captainsPickList().subscribe(
       res => {
 
         console.log(res, "res");
         this.captainList = res;
-        load.dismiss();
+  //      load.dismiss();
 
       }, err => {
 
         console.log(err, "err");
-        load.dismiss();
+  //      load.dismiss();
 
 
       }
@@ -171,24 +171,24 @@ export class CaptainAssignDetailsPage {
   }
   getAllAgencyies() {
 
-    let load = this.loading.create({
-      content: this.pleaseWait
+    // let load = this.loading.create({
+    //   content: this.pleaseWait
 
 
-    })
-    load.present()
+    // })
+    // load.present()
 
     this.accountService.getAllAgency().subscribe(
       res => {
 
         console.log(res, "res");
         this.agenciesList = res;
-        load.dismiss();
+//        load.dismiss();
 
       }, err => {
 
         console.log(err, "err");
-        load.dismiss();
+ //       load.dismiss();
 
 
       }

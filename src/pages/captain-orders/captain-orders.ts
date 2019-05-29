@@ -150,12 +150,12 @@ export class CaptainOrdersPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad CaptainOrdersPage');
 
-    let load = this.loading.create({
-      content: this.pleaseWait
+    // let load = this.loading.create({
+    //   content: this.pleaseWait
 
 
-    })
-    load.present()
+    // })
+    // load.present()
 
     let classIn = this;
     this.principal.identity().then((account) => {
@@ -174,7 +174,7 @@ export class CaptainOrdersPage {
 
             this.myVar = 'assigned';
             console.log("**********");
-            load.dismiss();
+ //           load.dismiss();
 
             this.getAllOrders(this.myVar, 0);
             if (this.captain.agencyId != 0) {
@@ -188,14 +188,14 @@ export class CaptainOrdersPage {
 
           }, err => {
             console.log(err, 'errror');
-            load.dismiss();
+ //           load.dismiss();
 
           }
         )
 
       }
     }).catch((err) => {
-      load.dismiss()
+  //    load.dismiss()
     });
 
 
@@ -211,22 +211,22 @@ export class CaptainOrdersPage {
   }
 
   getCaptainAgency() {
-    let load = this.loading.create({
-      content: this.pleaseWait
+    // let load = this.loading.create({
+    //   content: this.pleaseWait
 
 
-    })
-    load.present()
+    // })
+    // load.present()
     this.accountService.getById(this.captain.agencyId).subscribe(
       res => {
         console.log(res, 'nnnnnnnnnnnnn');
         this.agency = res;
         this.autoAssign = res.autoAssign
-        load.dismiss();
+   //     load.dismiss();
 
 
       }, err => {
-        load.dismiss();
+  //      load.dismiss();
 
         console.log(err, 'errrrrrrror');
 

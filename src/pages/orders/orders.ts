@@ -73,16 +73,16 @@ export class OrdersPage {
 
   ngOnInit() {
 
-    let load = this.loading.create({
-      content: this.pleaseWait
+    // let load = this.loading.create({
+    //   content: this.pleaseWait
 
 
-    })
-    load.present()
+    // })
+    // load.present()
 
     this.principal.identity().then((account) => {
       console.log(account);
-      load.dismiss();
+//      load.dismiss();
 
       if (account === null) {
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
@@ -108,7 +108,7 @@ export class OrdersPage {
 
       }
     }).catch((err) => {
-      load.dismiss();
+//      load.dismiss();
     });
   }
 
