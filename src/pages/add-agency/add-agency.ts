@@ -48,6 +48,9 @@ export class AddAgencyPage {
 
   isCordova = false;
 
+  passwordType: string = 'password';
+  passwordIcon: string = 'eye-off';
+
   constructor(public navCtrl: NavController,
     public user: User,
     public toastCtrl: ToastController,
@@ -77,7 +80,7 @@ export class AddAgencyPage {
       'lastName': ['', [Validators.required, Validators.maxLength(45)]],
       'phone': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
       'email': ['', [Validators.required, Validators.email]],
-      'password': ['', [Validators.required, Validators.minLength(6)]],
+      'password': ['', [Validators.required, Validators.minLength(6) , Validators.maxLength(50)]],
       'passwordConfirm': ['', [Validators.required]]
     });
 
@@ -156,6 +159,11 @@ export class AddAgencyPage {
 
   back(){
     this.navCtrl.setRoot(AgenciesPage);
+  }
+
+  hideShowPassword() {    
+    this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
+    this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
   }
 
 }

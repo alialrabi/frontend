@@ -57,6 +57,9 @@ export class LoginPage {
   counter = 0;
   exitMessage = ''
 
+  passwordType: string = 'password';
+ passwordIcon: string = 'eye-off';
+
 
   constructor(public navCtrl: NavController,
     public forgotCtrl: AlertController,
@@ -541,6 +544,11 @@ export class LoginPage {
 
         loading.dismiss();
       })
+  }
+
+  hideShowPassword() {    
+    this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
+    this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
   }
 
 

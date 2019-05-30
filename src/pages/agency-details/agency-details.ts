@@ -32,7 +32,7 @@ export class AgencyDetailsPage {
     password:"",
     captains:[]
   };
-  passwordEye="eye"
+  passwordEye="eye-off"
   language = MyApp.language
   direction = MyApp.direction
 
@@ -107,9 +107,9 @@ togglePasswordMethod(){
 
   this.togglePassword = !this.togglePassword;
   if(this.togglePassword){
-    this.passwordEye = "eye"
-  }else{
     this.passwordEye = "eye-off"
+  }else{
+    this.passwordEye = "eye"
   }
 }
 viewStars(password){

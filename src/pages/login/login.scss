@@ -1,2 +1,10 @@
 page-login {
+    .ion-md-eye-off:before {
+        content: "\f2e8";
+        margin-top: 9px;
+      }
+      .ion-md-eye:before {
+        content: "\f2e9";
+        margin-top: 9px;
+      }
 }

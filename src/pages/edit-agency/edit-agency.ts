@@ -53,6 +53,9 @@ export class EditAgencyPage {
 
   isCordova = false;
 
+  passwordType: string = 'password';
+  passwordIcon: string = 'eye-off';
+
   constructor(public navCtrl: NavController,
     public navParams: NavParams ,
     public user: User,
@@ -91,7 +94,7 @@ export class EditAgencyPage {
       'lastName': ['', [Validators.required, Validators.maxLength(45)]],
       'phone': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
       'email': ['', [Validators.required, Validators.email]],
-      'password': ['', [Validators.minLength(6)]],
+      'password': ['', [Validators.minLength(6) , Validators.maxLength(50)]],
       'passwordConfirm': ['', []]
     });
 
@@ -213,5 +216,9 @@ export class EditAgencyPage {
       this.myForm.get("passwordConfirm").clearValidators();
       this.myForm.get("passwordConfirm").updateValueAndValidity()
     }
+  }
+  hideShowPassword() {    
+    this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
+    this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
   }
 }

@@ -36,7 +36,7 @@ export class CaptainDetailsPage {
     agencies:[]
   };
   togglePassword = true;
-  passwordEye = "eye"
+  passwordEye = "eye-off"
 
 
 
@@ -161,9 +161,9 @@ export class CaptainDetailsPage {
 
     this.togglePassword = !this.togglePassword;
     if (this.togglePassword) {
-      this.passwordEye = "eye"
+      this.passwordEye =  "eye-off"
     } else {
-      this.passwordEye = "eye-off"
+      this.passwordEye = "eye"
     }
   }
   viewStars(password) {

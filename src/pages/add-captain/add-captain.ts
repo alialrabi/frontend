@@ -78,6 +78,9 @@ export class AddCaptainPage {
   isCordova = false;
   isloadinImage = false;
 
+  passwordType: string = 'password';
+  passwordIcon: string = 'eye-off';
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private ng2ImgMaxService: Ng2ImgMaxService, public _alert: AlertController
     , public imagePicker: ImagePicker, public camera: Camera, public toastCtrl: ToastController,
     public captainService: CaptainService,
@@ -115,7 +118,7 @@ export class AddCaptainPage {
       'name': ['', [Validators.required, Validators.maxLength(45)]],
       'phone': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
       'email': ['', [Validators.required, Validators.email]],
-      'password': ['', [Validators.required, Validators.minLength(6)]],
+      'password': ['', [Validators.required, Validators.minLength(6) , Validators.maxLength(50)]],
       'passwordConfirm': ['', [Validators.required]]
     });
 
@@ -209,11 +212,9 @@ export class AddCaptainPage {
 
     }
 
-    this.imagePicker.getPictures(options).then((results) => {
+    this.imagePicker.getPictures(options).then((results) => {      
       if (results[0] != null && results[0] != undefined && results[0] != 'O' && results[0] != '') {
       this.captain.image = results[0];
-      }else if(results[0] == 'O'){
-        this.openImagePicker();
       }
     }, (err) => {
       alert(err);
@@ -405,5 +406,10 @@ export class AddCaptainPage {
     } else {
       this.isloadinImage = false;
     }
+  }
+
+  hideShowPassword() {    
+    this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
+    this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
   }
 }

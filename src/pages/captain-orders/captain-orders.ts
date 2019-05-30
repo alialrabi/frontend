@@ -150,12 +150,12 @@ export class CaptainOrdersPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad CaptainOrdersPage');
 
-    // let load = this.loading.create({
-    //   content: this.pleaseWait
+    let load = this.loading.create({
+      content: this.pleaseWait
 
 
-    // })
-    // load.present()
+    })
+    load.present()
 
     let classIn = this;
     this.principal.identity().then((account) => {
@@ -163,6 +163,7 @@ export class CaptainOrdersPage {
 
       if (account === null || account.authorities[0] != 'ROLE_CAPTAIN') {
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
+        load.dismiss()
       } else {
 
         this.captainService.getByUserId(account.id).subscribe(
@@ -176,7 +177,7 @@ export class CaptainOrdersPage {
             console.log("**********");
             //           load.dismiss();
 
-            this.getAllOrders(this.myVar, 0);
+            this.getAllOrdersAfterFinish(this.myVar, 0 , load);
             if (this.captain.agencyId != 0) {
               this.getCaptainAgency();
             }
@@ -188,14 +189,14 @@ export class CaptainOrdersPage {
 
           }, err => {
             console.log(err, 'errror');
-            //           load.dismiss();
+                       load.dismiss();
 
           }
         )
 
       }
     }).catch((err) => {
-      //    load.dismiss()
+          load.dismiss()
     });
 
 
