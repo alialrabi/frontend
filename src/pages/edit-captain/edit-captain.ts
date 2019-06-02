@@ -129,7 +129,7 @@ export class EditCaptainPage {
 
     this.translateService.get(['EDIT_CAPTAIN_ERROR', 'EDIT_CAPTAIN_SUCCESS', 'CHOOSE_PHOTO', 'CHOOSE_FROM_GALARY', 'TAKE_A_PHOTO', 'PLEASE_WAIT', 'EXISTING_USER_ERROR', 'INVALID_PASSWORD_ERROR', 'SIGNUP_ERROR']).subscribe((values) => {
       this.addAddressError = values.EDIT_CAPTAIN_ERROR;
-      this.addAdressSuccessString = values.ADD_CAPTAIN_SUCCESS;
+      this.addAdressSuccessString = values.EDIT_CAPTAIN_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
       this.takePhoto = values.TAKE_A_PHOTO
       this.chooseFromGalary = values.CHOOSE_FROM_GALARY

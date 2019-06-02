@@ -364,7 +364,7 @@ export class LoginPage {
         });
     } else {
 
-
+      
 
       this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then(data => {
         this.userData = { id: data.id, email: data.email, first_name: data.firstName, last_name: data.lastName }
