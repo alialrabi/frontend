@@ -45,12 +45,16 @@ export class UserAddressesPage {
   language = MyApp.language
   direction = MyApp.direction
 
+  flatValue = ''
+  homeValue = ''
+  officeValue = ''
+
 
   constructor(public navCtrl: NavController, public toastCtrl: ToastController , public platform:Platform , public navParams: NavParams,public app:App, public principal:Principal,public addressesService:AddressService,
      private loading: LoadingController, public _alert: AlertController , public translateService: TranslateService, public accountService: AccountService) {
 
 
-    this.translateService.get(['PLEASE_WAIT', 'MORE_DATA' , 'DELETE_ADDRESS_TITLE' , 'DELETE_ADDRESS_MESSAGE' , 'DONE' , 'CANCEL' , 'DELETE_ADDRESS_SUCCESS' , 'DELETE_ADDRESS_ERROR' ]).subscribe((values) => {
+    this.translateService.get(['PLEASE_WAIT', 'MORE_DATA' , 'DELETE_ADDRESS_TITLE' , 'DELETE_ADDRESS_MESSAGE' , 'DONE' , 'CANCEL' , 'DELETE_ADDRESS_SUCCESS' , 'DELETE_ADDRESS_ERROR' , 'OFFICE', 'HOME', 'FLAT' ]).subscribe((values) => {
 
       this.pleaseWait = values.PLEASE_WAIT
       this.moreData = values.MORE_DATA
@@ -60,6 +64,10 @@ export class UserAddressesPage {
       this.cancel = values.CANCEL
       this.deleteSuccess = values.DELETE_ADDRESS_SUCCESS
       this.deleteError = values.DELETE_ADDRESS_ERROR
+
+      this.flatValue = values.FLAT
+      this.homeValue = values.HOME
+      this.officeValue = values.OFFICE
     })
 
     if (this.platform.is('cordova') && this.platform.is("android")) {
@@ -115,6 +123,7 @@ export class UserAddressesPage {
       })
       load.present()
       this.addresses = [];
+      this.pageNum = 1;
     }
     //this.agenciesList = [];
     this.addressesService.getUserAddressesWithPagination(this.user.id ,pageNum).subscribe(res => {
@@ -141,6 +150,26 @@ export class UserAddressesPage {
 
     })
   }
+  }
+  getAllAddressesAfterDelete(pageNum , load) {
+    
+      this.addresses = [];
+      this.pageNum = 1;
+    
+    //this.agenciesList = [];
+    this.addressesService.getUserAddressesWithPagination(this.user.id ,pageNum).subscribe(res => {
+      console.log(res);
+
+        this.addresses = res;
+
+        load.dismiss();
+      
+    }, err => {
+      console.log(err);
+        load.dismiss();
+
+    })
+  
   }
 
   doInfinite(infiniteScroll) {
@@ -197,8 +226,8 @@ export class UserAddressesPage {
     load.present()
     this.addressesService.delete(address.id).subscribe(
       res =>{
-        load.dismiss();
-        this.getAllAddresses(0);
+//        load.dismiss();
+        this.getAllAddressesAfterDelete(0 , load);
 
         let toast = this.toastCtrl.create({
           message: this.deleteSuccess,
@@ -226,5 +255,16 @@ export class UserAddressesPage {
 
     this.navCtrl.setRoot(EditAddressPage , {item:address});
 
+  }
+  getLivingType(type) {
+    let typeValue = '';
+    if (type == 'Flat' || type == 'شقه') {
+      typeValue = this.flatValue
+    } else if (type == 'منزل' || type == 'Home') {
+      typeValue = this.homeValue
+    } else if (type == 'مكتب' || type == 'Office') {
+      typeValue = this.officeValue
+    }
+    return typeValue;
   }
 }

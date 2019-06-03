@@ -83,6 +83,9 @@ export class EditCaptainPage {
   agency = null
   frommain = '' 
 
+  passwordType: string = 'password';
+  passwordIcon: string = 'eye-off';
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public _alert: AlertController
     , public imagePicker: ImagePicker, public camera: Camera, public toastCtrl: ToastController,
     public captainService: CaptainService,
@@ -126,7 +129,7 @@ export class EditCaptainPage {
 
     this.translateService.get(['EDIT_CAPTAIN_ERROR', 'EDIT_CAPTAIN_SUCCESS', 'CHOOSE_PHOTO', 'CHOOSE_FROM_GALARY', 'TAKE_A_PHOTO', 'PLEASE_WAIT', 'EXISTING_USER_ERROR', 'INVALID_PASSWORD_ERROR', 'SIGNUP_ERROR']).subscribe((values) => {
       this.addAddressError = values.EDIT_CAPTAIN_ERROR;
-      this.addAdressSuccessString = values.ADD_CAPTAIN_SUCCESS;
+      this.addAdressSuccessString = values.EDIT_CAPTAIN_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
       this.takePhoto = values.TAKE_A_PHOTO
       this.chooseFromGalary = values.CHOOSE_FROM_GALARY
@@ -141,7 +144,7 @@ export class EditCaptainPage {
       'name': ['', [Validators.required, Validators.maxLength(45)]],
       'phone': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
       'email': ['', [Validators.required, Validators.email]],
-      'password': ['', [Validators.minLength(6)]],
+      'password': ['', [Validators.minLength(6) , Validators.maxLength(50)]],
       'passwordConfirm': ['', []]
     });
 
@@ -429,6 +432,11 @@ export class EditCaptainPage {
 
     }
 
+  }
+
+  hideShowPassword() {    
+    this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
+    this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
   }
 
 }

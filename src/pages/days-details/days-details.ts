@@ -52,7 +52,7 @@ export class DaysDetailsPage {
   frommain = ''
   agencymain = null
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController, public _alert: AlertController , public platform: Platform, private loading: LoadingController, public translateService: TranslateService, public accountService: AccountService, public captainService: CaptainService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController, public _alert: AlertController, public platform: Platform, private loading: LoadingController, public translateService: TranslateService, public accountService: AccountService, public captainService: CaptainService) {
 
     if (this.platform.is("cordova") && this.platform.is("android")) {
       this.isCordova = true;
@@ -67,13 +67,13 @@ export class DaysDetailsPage {
     this.agencyId = navParams.get("agencyId");
     this.captainId = navParams.get("captainId");
 
-    this.translateService.get(['PLEASE_WAIT', 'MORE_DATA' , 'DELETE_SUB_TITLE' , 'DELETE_SUB_MESSAGE' , 'DONE' , 'CANCEL' , 'DELETE_SUBASSIGN_SUCCESS' , 'DELETE_SUBASSIGN_ERROR']).subscribe((values) => {
+    this.translateService.get(['PLEASE_WAIT', 'MORE_DATA', 'DELETE_SUB_TITLE', 'DELETE_SUB_MESSAGE', 'DONE', 'CANCEL', 'DELETE_SUBASSIGN_SUCCESS', 'DELETE_SUBASSIGN_ERROR']).subscribe((values) => {
 
       this.pleaseWait = values.PLEASE_WAIT
       this.moreData = values.MORE_DATA
 
       this.deleteSubTitle = values.DELETE_SUB_TITLE
-      this.deleteSubMessage  =values.DELETE_SUB_MESSAGE
+      this.deleteSubMessage = values.DELETE_SUB_MESSAGE
       this.ok = values.DONE
       this.cancel = values.CANCEL
       this.deleteSuccess = values.DELETE_SUBASSIGN_SUCCESS
@@ -82,11 +82,11 @@ export class DaysDetailsPage {
 
     this.platform.registerBackButtonAction(() => {
       console.log(this.from);
-      
+
       if (this.from != 'CaptainDetailsPage') {
         this.navCtrl.setRoot(AgencyDetailsPage, { item: this.agency });
       } else {
-        this.navCtrl.setRoot(CaptainDetailsPage, { item: this.captain , from: this.frommain , agency:this.agencymain });
+        this.navCtrl.setRoot(CaptainDetailsPage, { item: this.captain, from: this.frommain, agency: this.agencymain });
       }
 
 
@@ -127,13 +127,33 @@ export class DaysDetailsPage {
     )
 
   }
+  getSubAssignAfterDelete(load) {
+
+    this.assingCaptains = [];
+
+    this.captainService.getSubAssignesToCaptainWithAgency(this.captainId, this.agencyId).subscribe(
+      res => {
+        console.log(res);
+
+        this.assingCaptains = res;
+        load.dismiss();
+
+
+      }, err => {
+
+        console.log(err, 'errorrrr');
+        load.dismiss();
+      }
+    )
+
+  }
   back() {
     console.log(this.from);
-    
+
     if (this.from != 'CaptainDetailsPage') {
       this.navCtrl.setRoot(AgencyDetailsPage, { item: this.agency });
     } else {
-      this.navCtrl.setRoot(CaptainDetailsPage, { item: this.captain , from: this.frommain , agency:this.agencymain});
+      this.navCtrl.setRoot(CaptainDetailsPage, { item: this.captain, from: this.frommain, agency: this.agencymain });
     }
 
 
@@ -163,7 +183,7 @@ export class DaysDetailsPage {
         {
           text: this.cancel,
           handler: () => {
-            
+
           }
         }
       ]
@@ -173,24 +193,24 @@ export class DaysDetailsPage {
 
 
   }
-  deleteSubAssign(assign){
+  deleteSubAssign(assign) {
     let load = this.loading.create({
       content: this.pleaseWait
 
 
     })
     load.present()
-    this.captainService.deleteSubAssign(assign.id).subscribe(res =>{
-      load.dismiss();
+    this.captainService.deleteSubAssign(assign.id).subscribe(res => {
+      //      load.dismiss();
       let toast = this.toastCtrl.create({
         message: this.deleteSuccess,
         duration: 3000,
         position: 'top'
       });
       toast.present();
-      this.getSubAssign();
-    },err =>{
-      console.log(err , 'errror');
+      this.getSubAssignAfterDelete(load);
+    }, err => {
+      console.log(err, 'errror');
       let toast = this.toastCtrl.create({
         message: this.deleteError,
         duration: 3000,
@@ -198,7 +218,7 @@ export class DaysDetailsPage {
       });
       toast.present();
       load.dismiss();
-      
+
     })
   }
 

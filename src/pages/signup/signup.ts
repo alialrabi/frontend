@@ -58,6 +58,9 @@ export class SignupPage {
 
   noEmailMessage = ''
 
+  passwordType: string = 'password';
+  passwordIcon: string = 'eye-off';
+
   constructor(public navCtrl: NavController,
     public user: User,
     public toastCtrl: ToastController,
@@ -89,7 +92,7 @@ export class SignupPage {
       //'lastName': ['', [Validators.required , Validators.maxLength(45) ]],
       'phone': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
       'email': ['', [Validators.required, Validators.email]],
-      'password': ['', [Validators.required, Validators.minLength(6)]],
+      'password': ['', [Validators.required, Validators.minLength(6) , Validators.maxLength(50)]],
       'passwordConfirm': ['', [Validators.required]],
       "langKey": [this.language, []]
     });
@@ -400,6 +403,11 @@ export class SignupPage {
         )
       })
     }
+  }
+
+  hideShowPassword() {    
+    this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
+    this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
   }
 
 

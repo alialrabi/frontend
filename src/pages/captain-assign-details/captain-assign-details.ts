@@ -157,12 +157,12 @@ export class CaptainAssignDetailsPage {
 
         console.log(res, "res");
         this.captainList = res;
-  //      load.dismiss();
+        //      load.dismiss();
 
       }, err => {
 
         console.log(err, "err");
-  //      load.dismiss();
+        //      load.dismiss();
 
 
       }
@@ -183,12 +183,12 @@ export class CaptainAssignDetailsPage {
 
         console.log(res, "res");
         this.agenciesList = res;
-//        load.dismiss();
+        //        load.dismiss();
 
       }, err => {
 
         console.log(err, "err");
- //       load.dismiss();
+        //       load.dismiss();
 
 
       }
@@ -337,6 +337,60 @@ export class CaptainAssignDetailsPage {
 
   }
 
+  getCapatainAssignsAfterDelete(pageNum, load) {
+
+    this.assingCaptains = [];
+    this.pageNum = 1;
+
+
+    if (this.captain == null || this.captain == undefined) {
+
+      if (this.seaarchFilter.endDate == '' || this.seaarchFilter.endDate == undefined) {
+        this.seaarchFilter.endDate = null;
+      }
+      if (this.seaarchFilter.startDate == '' || this.seaarchFilter.startDate == undefined) {
+        this.seaarchFilter.startDate = null;
+      }
+
+      let captainId = this.myForm.get("captainId").value;
+      if (captainId != null && captainId != undefined && captainId != '') {
+        this.seaarchFilter.captainId = captainId;
+      } else {
+        this.seaarchFilter.captainId = null;
+      }
+
+      let agencyId = this.myForm.get("agencyId").value;
+      if (agencyId != null && agencyId != undefined && agencyId != '') {
+        this.seaarchFilter.agencyId = agencyId;
+      } else {
+        this.seaarchFilter.agencyId = null;
+      }
+      console.log('searchFilter', this.seaarchFilter);
+    } else {
+      this.seaarchFilter.endDate = null;
+      this.seaarchFilter.startDate = null;
+      this.seaarchFilter.agencyId = null;
+      this.seaarchFilter.captainId = this.captain.id;
+    }
+
+
+
+
+    this.captainService.getCaptainAssignDetails(this.seaarchFilter, pageNum).subscribe(
+      res => {
+        this.assingCaptains = res;
+        load.dismiss();
+
+
+      }, err => {
+
+        load.dismiss();
+
+      }
+    )
+
+  }
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad CaptainAssignDetailsPage');
   }
@@ -429,14 +483,14 @@ export class CaptainAssignDetailsPage {
     })
     load.present()
     this.captainService.deleteSubAssign(assign.id).subscribe(res => {
-      load.dismiss();
+      //      load.dismiss();
       let toast = this.toastCtrl.create({
         message: this.deleteSuccess,
         duration: 3000,
         position: 'top'
       });
       toast.present();
-      this.getCaptainAssignes(0);
+      this.getCapatainAssignsAfterDelete(0, load);
       this.pageNum = 1;
     }, err => {
       console.log(err, 'errror');

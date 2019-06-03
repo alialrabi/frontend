@@ -72,6 +72,10 @@
                 {{'ADDRESS' | translate}} :
                <strong text-wrap> {{address.region}} , {{address.street}} , {{'TOWER' | translate}}/{{address.building}} , {{'FLOOR' | translate}}/{{address.floor}} , {{'FLAT' | translate}}/{{address.flatNumber}} , {{address.city}}</strong>
               </p>
+              <p style="margin-top: 13px" *ngIf="address.livingType != null && address.livingType != ''">
+                {{'LIVINF_TYPE' | translate}} :
+                <strong text-wrap> {{getLivingType(address.livingType)}}</strong>
+              </p>
               <p style="margin-top: 13px" *ngIf="address.otherDetails != null && address.otherDetails != ''">
                 {{'OTHER_DETAILS' | translate}} :
                 <strong text-wrap> {{address.otherDetails}}</strong>

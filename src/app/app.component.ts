@@ -82,7 +82,7 @@ export class MyApp {
   public autoAssignInternal = null;
 
 
-  constructor(private translate: TranslateService, private loading: LoadingController, private manup: ManUpService, private fcm: FCM, public _alert: AlertController, private deviceTokenService: DeviceTockenService, private device: Device, public admobFree: AdMobFree, private backgroundMode: BackgroundMode, public menu: MenuController, public platform: Platform, settings: Settings, private config: Config,
+  constructor(private translate: TranslateService , private loading: LoadingController, private manup: ManUpService, private fcm: FCM, public _alert: AlertController, private deviceTokenService: DeviceTockenService, private device: Device, public admobFree: AdMobFree, private backgroundMode: BackgroundMode, public menu: MenuController, public platform: Platform, settings: Settings, private config: Config,
     private statusBar: StatusBar, public locationAccuracy: LocationAccuracy, public toastCtrl: ToastController, private loginService: LoginService, private captainService: CaptainService, private app: App, private principal: Principal, private splashScreen: SplashScreen, private keyboard: Keyboard) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -202,6 +202,8 @@ export class MyApp {
   }
 
   checkAccess() {
+    console.log("************************************************************************************");
+    
     this.principal.identity().then((account) => {
       console.log(account, 'app');
 
@@ -330,6 +332,8 @@ export class MyApp {
         //   { title: this.userOrdersText, component: UserOrdersPage, icon: 'basket' }
 
         // ];
+        console.log("go to admin dash board  ---------------------------------");
+        
         this.nav.setRoot("AdminDashboardPage")
       }
       console.log(this.userType, 'user');
@@ -458,6 +462,8 @@ export class MyApp {
 
         // ];
 
+        console.log("signup");
+        
         this.nav.setRoot("AdminDashboardPage")
       }
       console.log(this.userType, 'user');

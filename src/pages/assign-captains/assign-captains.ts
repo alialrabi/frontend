@@ -495,7 +495,7 @@ export class AssignCaptainsPage {
   }
   checkEqualTimes() {
     let ids = this.myForm.get("captainIds").value;
-    if (this.myForm.get("startTime").value == this.myForm.get("endTime").value || ids.length == 0) {
+    if (this.myForm.get("startTime").value == this.myForm.get("endTime").value || ids.length == 0 || this.myForm.get("startTime").value == null || this.myForm.get("startTime").value == undefined || this.myForm.get("startTime").value == '' || this.myForm.get("endTime").value == null || this.myForm.get("endTime").value == undefined || this.myForm.get("endTime").value == '') {
       return true;
     } else {
       return false;

@@ -64,7 +64,7 @@ export class UserOrdersPage {
 
     this.myVar = navParams.get("myVar");
 
-    this.translateService.get(['EXIT_MESSAGE','TAKE_ORDER_ERROR', 'TAKE_ORDER_SUCCESS', 'DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT', 'MORE_DATA', 'ADD_ORDER_TITLE', 'ORDER_KIND_MESSAGE', 'BUY_FROM_MARKET', 'DELIVER_FROM_LOCATION_TO_LOCATION']).subscribe((values) => {
+    this.translateService.get(['EXIT_MESSAGE', 'TAKE_ORDER_ERROR', 'TAKE_ORDER_SUCCESS', 'DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT', 'MORE_DATA', 'ADD_ORDER_TITLE', 'ORDER_KIND_MESSAGE', 'BUY_FROM_MARKET', 'DELIVER_FROM_LOCATION_TO_LOCATION']).subscribe((values) => {
 
       this.deliverOrderError = values.DELIVER_ORDER_ERROR;
       this.deliverOrderSuccess = values.DELIVER_ORDER_SUCCESS;
@@ -83,19 +83,19 @@ export class UserOrdersPage {
       this.platform.registerBackButtonAction(() => {
         if (this.userType == 'Admin') {
           this.navCtrl.setRoot(AdminDashboardPage);
-        }else if(this.userType == 'Captain'){
+        } else if (this.userType == 'Captain') {
           this.navCtrl.setRoot(CaptainOrdersPage);
-        }else if(this.userType == 'User'){
+        } else if (this.userType == 'User') {
           if (this.counter == 0) {
             this.counter++;
-  
+
             let toast = this.toastCtrl.create({
               message: this.exitMessage,
               duration: 3000,
               position: "bottom"
             });
             toast.present();
-  
+
             setTimeout(() => { this.counter = 0 }, 3000)
           } else {
             // console.log("exitapp");
@@ -122,18 +122,18 @@ export class UserOrdersPage {
   }
   ngOnInit() {
 
-    // let load = this.loading.create({
-    //   content: this.pleaseWait
+    let load = this.loading.create({
+      content: this.pleaseWait
 
 
-    // })
-    // load.present()
+    })
+    load.present()
 
     this.principal.identity().then((account) => {
       console.log(account);
 
       if (account === null) {
-//        load.dismiss();
+        load.dismiss();
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
       } else if (account.authorities[0] == 'ROLE_USER' && account.authorities.length == 1) {
 
@@ -144,8 +144,8 @@ export class UserOrdersPage {
         this.userType = 'User';
         this.userId = account.id;
         this.captainId = 0;
-//        load.dismiss();
-        this.getUserOrders(this.myVar, 0);
+        //        load.dismiss();
+        this.getUserOrdersAfterFinish(this.myVar, 0, load);
 
 
 
@@ -166,12 +166,12 @@ export class UserOrdersPage {
             this.captainId = data.id;
             console.log(data, this.captain);
 
-//            load.dismiss();
-            this.getUserOrders(this.myVar, 0);
+            //            load.dismiss();
+            this.getUserOrdersAfterFinish(this.myVar, 0, load);
           },
           err => {
             console.log(err, 'errrrror');
-//            load.dismiss()
+            load.dismiss()
 
           })
 
@@ -185,12 +185,12 @@ export class UserOrdersPage {
         this.userType = 'Admin';
         this.userId = 0;
         this.captainId = 0;
-//        load.dismiss();
-        this.getUserOrders(this.myVar, 0);
+        //        load.dismiss();
+        this.getUserOrdersAfterFinish(this.myVar, 0, load);
 
       }
     }).catch((err) => {
-//      load.dismiss();
+      load.dismiss();
     });
   }
 
@@ -300,6 +300,28 @@ export class UserOrdersPage {
       }
     }
   }
+
+  getUserOrdersAfterFinish(status, pageNum, load) {
+
+
+    this.myVar = status;
+
+    this.ordersList = [];
+    this.pageNum = 1;
+
+    this.orderService.getUserOrders(this.userId, this.captainId, status, pageNum).subscribe(res => {
+      console.log(res);
+      this.ordersList = res;
+      load.dismiss();
+
+    }, err => {
+      console.log(err);
+      load.dismiss();
+
+    })
+
+  }
+
 
   add() {
 
@@ -468,8 +490,8 @@ export class UserOrdersPage {
         toast.present();
         console.log("success");
 
-        load.dismiss();
-        this.getUserOrders(this.myVar, 0);
+        //        load.dismiss();
+        this.getUserOrdersAfterFinish(this.myVar, 0, load);
 
       }, err => {
         console.log(err);
@@ -579,8 +601,8 @@ export class UserOrdersPage {
         toast.present();
         console.log("success");
 
-        load.dismiss();
-        this.getUserOrders(this.myVar, 0);
+        //        load.dismiss();
+        this.getUserOrdersAfterFinish(this.myVar, 0, load);
 
       }, err => {
         console.log(err);

@@ -126,6 +126,12 @@
         </ion-row>
       </ion-grid>
     </ion-item>
+    <ion-item class="item-background" *ngIf="!order.userOrder.isBuing && order.senderAddress != null && order.senderAddress.livingType != null && order.senderAddress.livingType != ''">
+      <p>
+        {{ 'ORDER_DETAIL_SENDER_LIVING_TYPE' | translate }} :
+        <strong text-wrap>{{getLivingType(order.senderAddress.livingType)}}</strong>
+      </p>
+    </ion-item>
     <ion-item class="item-background" *ngIf="!order.userOrder.isBuing && order.senderAddress != null && order.senderAddress.otherDetails != null && order.senderAddress.otherDetails != ''">
       <p>
         {{ 'ORDER_DETAIL_SENDER_SPECIAL_MARQE' | translate }} :
@@ -164,6 +170,12 @@
           </ion-col>
         </ion-row>
       </ion-grid>
+    </ion-item>
+    <ion-item class="item-background" *ngIf="order.reciverAddress != null && order.reciverAddress.livingType != null && order.reciverAddress.livingType != ''">
+      <p>
+        {{ 'ORDER_DETAIL_RECIVER_LIVING_TYPE' | translate }} :
+        <strong text-wrap>{{getLivingType(order.reciverAddress.livingType)}}</strong>
+      </p>
     </ion-item>
     <ion-item class="item-background" *ngIf="order.reciverAddress != null && order.reciverAddress.otherDetails != null && order.reciverAddress.otherDetails != ''">
       <p>

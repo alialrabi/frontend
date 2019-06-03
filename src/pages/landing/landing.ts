@@ -32,7 +32,7 @@ export class LandingPage {
 
   constructor(public navCtrl: NavController, public _alert: AlertController , public toastCtrl: ToastController , public platform: Platform , public translateService: TranslateService , public navParams: NavParams , public app:App , public principal:Principal) {
   
-    this.validateUser();
+ //   this.validateUser();
 
     this.translateService.get(['EXIT_MESSAGE' , 'OK' , 'NO_INTERNET_TITLE' , 'NO_INTERNET_MESSAGE' ]).subscribe((values) => {
      
@@ -97,6 +97,8 @@ export class LandingPage {
   }
 
   validateUser(){
+    console.log('validate user landing');
+ 
     this.principal.identity().then((account) => {
 
         
@@ -113,19 +115,19 @@ export class LandingPage {
 
         if (account.authorities[0] === 'ROLE_CAPTAIN') {
 
-          this.app.getRootNavs()[0].setRoot(CaptainOrdersPage);
+       //   this.app.getRootNavs()[0].setRoot(CaptainOrdersPage);
 
         } else if(account.authorities[0] == 'ROLE_AGENCY') {
-          this.app.getRootNavs()[0].setRoot(OrdersPage);
+      //    this.app.getRootNavs()[0].setRoot(OrdersPage);
         } else if (account.authorities[0] == 'ROLE_USER'  && account.authorities.length == 1){
-          if (account.phone == null || account.phone == '') {
-            this.navCtrl.setRoot("AddUserPhonePage")
-          } else {
-            this.navCtrl.setRoot("UserOrdersPage")
-          }
+          // if (account.phone == null || account.phone == '') {
+          //   this.navCtrl.setRoot("AddUserPhonePage")
+          // } else {
+          //   this.navCtrl.setRoot("UserOrdersPage")
+          // }
         }
         else {
-          this.app.getRootNavs()[0].setRoot(AdminDashboardPage);
+  //        this.app.getRootNavs()[0].setRoot(AdminDashboardPage);
         }
 
 

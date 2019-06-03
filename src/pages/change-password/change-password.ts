@@ -38,6 +38,12 @@ export class ChangePasswordPage {
   ok = '';
   dialogTitle = '';
 
+  passwordType: string = 'password';
+  passwordIcon: string = 'eye-off';
+
+  passwordTypenew: string = 'password';
+  passwordIconnew: string = 'eye-off';
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public toastCtrl: ToastController,
     public translateService: TranslateService,
@@ -58,8 +64,8 @@ export class ChangePasswordPage {
       })
 
     this.myForm = builder.group({
-      'oldpassword': ['', [Validators.required ,Validators.minLength(6)]],
-      'password': ['', [Validators.required ,Validators.minLength(6)]],
+      'oldpassword': ['', [Validators.required ,Validators.minLength(6) , Validators.maxLength(50)]],
+      'password': ['', [Validators.required ,Validators.minLength(6) , Validators.maxLength(50)]],
       'passwordConfirm': ['', []]
     });
 
@@ -154,6 +160,14 @@ export class ChangePasswordPage {
   hasError(field: string, error: string) {
     const ctrl = this.myForm.get(field);
     return ctrl.dirty && ctrl.hasError(error);
+  }
+  hideShowPassword() {    
+    this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
+    this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
+  }
+  hideShowPasswordnew() {    
+    this.passwordTypenew = this.passwordTypenew === 'text' ? 'password' : 'text';
+    this.passwordIconnew = this.passwordIconnew === 'eye-off' ? 'eye' : 'eye-off';
   }
 
 }

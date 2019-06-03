@@ -22,23 +22,23 @@ import { MyApp } from '../../app/app.component';
 export class UserOrderDetailPage {
 
   order = {
-    reciverAddress:null,
-    senderAddress:null,
-    userOrder:{
-      identifyNumber:'',
-      marketName:'',
-      isBuing:false,
-      marketAddress:'',
-      marketPhone:'',
-      priceRange:'',
-      description:'',
-      weight:'',
-      senderPhone:null,
-      reciverName:null,
-      reciverPhone:null,
-      status:'',
-      id:0,
-      userId:0
+    reciverAddress: null,
+    senderAddress: null,
+    userOrder: {
+      identifyNumber: '',
+      marketName: '',
+      isBuing: false,
+      marketAddress: '',
+      marketPhone: '',
+      priceRange: '',
+      description: '',
+      weight: '',
+      senderPhone: null,
+      reciverName: null,
+      reciverPhone: null,
+      status: '',
+      id: 0,
+      userId: 0
     }
   }
 
@@ -60,20 +60,24 @@ export class UserOrderDetailPage {
 
   myVar;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private _alert:AlertController , private orderService:UserOrderService , public toastCtrl: ToastController , private deviceTokenService:DeviceTockenService , private loading: LoadingController  ,private platform:Platform , private translateService:TranslateService) {
+  flatValue = ''
+  homeValue = ''
+  officeValue = ''
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private _alert: AlertController, private orderService: UserOrderService, public toastCtrl: ToastController, private deviceTokenService: DeviceTockenService, private loading: LoadingController, private platform: Platform, private translateService: TranslateService) {
     this.order = navParams.get('item');
     this.userType = navParams.get('userType');
     this.myVar = navParams.get("myVar");
 
-    if(this.platform.is("cordova") && this.platform.is("android")){
+    if (this.platform.is("cordova") && this.platform.is("android")) {
       this.isCordova = true;
     }
 
     this.platform.registerBackButtonAction(() => {
-      this.navCtrl.setRoot(UserOrdersPage , {myVar:this.myVar});
+      this.navCtrl.setRoot(UserOrdersPage, { myVar: this.myVar });
     });
 
-    this.translateService.get(['DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT' , 'OK' , 'NOT_SUPPORTED' , 'NO_LOCATION_AVILABLE']).subscribe((values) => {
+    this.translateService.get(['DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT', 'OK', 'NOT_SUPPORTED', 'NO_LOCATION_AVILABLE', 'OFFICE', 'HOME', 'FLAT']).subscribe((values) => {
 
       this.deliverOrderError = values.DELIVER_ORDER_ERROR;
       this.deliverOrderSuccess = values.DELIVER_ORDER_SUCCESS;
@@ -82,7 +86,12 @@ export class UserOrderDetailPage {
       this.ok = values.OK
       this.notSupported = values.NOT_SUPPORTED
       this.noLocationAvilable = values.NO_LOCATION_AVILABLE
-     
+
+      this.flatValue = values.FLAT
+      this.homeValue = values.HOME
+      this.officeValue = values.OFFICE
+
+
     })
 
   }
@@ -90,15 +99,15 @@ export class UserOrderDetailPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad UserOrderDetailPage');
   }
-  back(){
-    this.navCtrl.setRoot(UserOrdersPage , {myVar:this.myVar});
+  back() {
+    this.navCtrl.setRoot(UserOrdersPage, { myVar: this.myVar });
   }
 
   assingCaptain() {
-    this.navCtrl.setRoot('AssignOrderPage', { item: this.order.userOrder , from:"UserOrderDetailPage" , order:this.order , userType:this.userType , myVar:this.myVar})
+    this.navCtrl.setRoot('AssignOrderPage', { item: this.order.userOrder, from: "UserOrderDetailPage", order: this.order, userType: this.userType, myVar: this.myVar })
   }
-  editRating(){
-    this.navCtrl.setRoot('EditRatingPage', { item: this.order.userOrder , from:"UserOrderDetailPage" , order:this.order , userType:this.userType})
+  editRating() {
+    this.navCtrl.setRoot('EditRatingPage', { item: this.order.userOrder, from: "UserOrderDetailPage", order: this.order, userType: this.userType })
   }
 
   finish() {
@@ -121,36 +130,36 @@ export class UserOrderDetailPage {
 
               res1.forEach(element => {
                 let body = {
-                  "notification":{
-                    "title":"طلب جديد",
-                    "body":"لقد تم توصيل الطلب  " +" "+this.order.userOrder.identifyNumber,
-                    "sound":"default",
-                    "click_action":"FCM_PLUGIN_ACTIVITY",
-                    "icon":"fcm_push_icon"
+                  "notification": {
+                    "title": "طلب جديد",
+                    "body": "لقد تم توصيل الطلب  " + " " + this.order.userOrder.identifyNumber,
+                    "sound": "default",
+                    "click_action": "FCM_PLUGIN_ACTIVITY",
+                    "icon": "fcm_push_icon"
                   },
-                  "data":{
-                    "title":"طلب جديد",
-                    "body":"لقد تم توصيل الطلب  " +" "+this.order.userOrder.identifyNumber
+                  "data": {
+                    "title": "طلب جديد",
+                    "body": "لقد تم توصيل الطلب  " + " " + this.order.userOrder.identifyNumber
                   },
-                    "to":element,
-                    "priority":"high",
-                    "restricted_package_name":""
+                  "to": element,
+                  "priority": "high",
+                  "restricted_package_name": ""
                 }
-  
+
                 this.deviceTokenService.sendNotification(body);
-  
-                
+
+
               });
 
-            },err1 =>{
-              console.log(err1 , 'errrrrrrrrrrrrrrrrrrrrrrrrrror');
-              
+            }, err1 => {
+              console.log(err1, 'errrrrrrrrrrrrrrrrrrrrrrrrrror');
+
             }
           )
 
-              
 
-           
+
+
 
           this.deviceTokenService.getUserTokens(this.order.userOrder.userId).subscribe(
             res1 => {
@@ -158,29 +167,29 @@ export class UserOrderDetailPage {
 
               res1.forEach(element => {
                 let body = {
-                  "notification":{
-                    "title":"طلبك",
-                    "body":"لقد تم توصيل طلبك  " +" "+this.order.userOrder.identifyNumber,
-                    "sound":"default",
-                    "click_action":"FCM_PLUGIN_ACTIVITY",
-                    "icon":"fcm_push_icon"
+                  "notification": {
+                    "title": "طلبك",
+                    "body": "لقد تم توصيل طلبك  " + " " + this.order.userOrder.identifyNumber,
+                    "sound": "default",
+                    "click_action": "FCM_PLUGIN_ACTIVITY",
+                    "icon": "fcm_push_icon"
                   },
-                  "data":{
-                    "title":"طلبك",
-                    "body":"لقد تم توصيل طلبك  " +" "+this.order.userOrder.identifyNumber
+                  "data": {
+                    "title": "طلبك",
+                    "body": "لقد تم توصيل طلبك  " + " " + this.order.userOrder.identifyNumber
                   },
-                    "to":element,
-                    "priority":"high",
-                    "restricted_package_name":""
+                  "to": element,
+                  "priority": "high",
+                  "restricted_package_name": ""
                 }
-  
+
                 this.deviceTokenService.sendNotification(body);
-  
-                
+
+
               });
-            },err1 =>{
-              console.log(err1 , 'errrrrrrrrrrrrrrrrrrrrrrrrrror');
-              
+            }, err1 => {
+              console.log(err1, 'errrrrrrrrrrrrrrrrrrrrrrrrrror');
+
             }
           )
 
@@ -215,14 +224,14 @@ export class UserOrderDetailPage {
     )
 
   }
-  getStringNumer(number){
-    return ""+number +"";
+  getStringNumer(number) {
+    return "" + number + "";
   }
   viewLocation(order) {
-    if(order.latitude != "0"){
+    if (order.latitude != "0") {
 
-    this.navCtrl.setRoot('OrdersMapPage', { item: order , from:"UserOrderDetailPage" , order:this.order , userType:this.userType , myVar:this.myVar })
-    }else{
+      this.navCtrl.setRoot('OrdersMapPage', { item: order, from: "UserOrderDetailPage", order: this.order, userType: this.userType, myVar: this.myVar })
+    } else {
       let alert = this._alert.create({
         title: this.notSupported,
         message: this.noLocationAvilable,
@@ -241,17 +250,28 @@ export class UserOrderDetailPage {
   getFormattedDate(dateString) {
     var date = new Date(dateString);
     var str = date.getFullYear() + "-";
-    str +=  (date.getMonth() + 1) < 10 ? "0"+(date.getMonth() + 1) : (date.getMonth() + 1) ;
+    str += (date.getMonth() + 1) < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
     str += "-";
-    str += date.getDate() < 10 ? "0"+date.getDate() : date.getDate();
+    str += date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
     str += " "
-    str += date.getHours() < 10 ? "0"+ date.getHours() :  date.getHours();
+    str += date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
     str += ":";
-    str += date.getMinutes() < 10 ? "0"+ date.getMinutes() :  date.getMinutes();
+    str += date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
     // str += ":";
     // str += date.getSeconds() < 10 ? "0"+ date.getSeconds() :  date.getSeconds();
     return str;
-}
+  }
+  getLivingType(type) {
+    let typeValue = '';
+    if (type == 'Flat' || type == 'شقه') {
+      typeValue = this.flatValue
+    } else if (type == 'منزل' || type == 'Home') {
+      typeValue = this.homeValue
+    } else if (type == 'مكتب' || type == 'Office') {
+      typeValue = this.officeValue
+    }
+    return typeValue;
+  }
 
 
 }

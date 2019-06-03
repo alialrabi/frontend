@@ -45,7 +45,8 @@
           <ion-icon name="lock" item-start class="text-primary"></ion-icon>
           {{ 'PASSWORD' | translate }}
         </ion-label>
-        <ion-input type="password" [(ngModel)]="account.password" name="password" formControlName="password" [lang]="language" [dir]="direction"></ion-input>
+        <ion-input [type]="passwordType" [(ngModel)]="account.password" name="password" formControlName="password" [lang]="language" [dir]="direction"></ion-input>
+        <ion-icon item-end [name]="passwordIcon" class="passwordIcon" (click)='hideShowPassword()'></ion-icon>
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('password', 'required')"> {{ 'REQURIED' | translate }} </p>
