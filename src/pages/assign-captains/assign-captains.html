@@ -134,13 +134,13 @@
     </form>
 
     <ion-buttons end class="btn-style">
-      <button ion-button (click)="add()" [disabled]="checkEqualTimes()">
+      <button class="myButton" ion-button (click)="add()" [disabled]="checkEqualTimes()">
         <ion-icon name="add"></ion-icon>
       </button>
     </ion-buttons>
 
     <div margin-top>
-      <button ion-button block color="dark" tappable (click)="assignCaptain()" [disabled]="!myForm.valid || validateTimes()">
+      <button class="myButton" ion-button block tappable (click)="assignCaptain()" [disabled]="!myForm.valid || validateTimes()">
         {{ 'ASSIGN_CAPTAINS_BUTTON' | translate }}
       </button>
     </div>

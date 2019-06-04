@@ -143,7 +143,7 @@
     </form>
 
     <div margin-top style="margin-bottom: 40px;">
-      <button ion-button block color="dark" tappable (click)="addCaptain()" [disabled]="!myForm.valid || notMathces() || isloadinImage">
+      <button ion-button block class="myButton" tappable (click)="addCaptain()" [disabled]="!myForm.valid || notMathces() || isloadinImage">
         {{ 'ADD_CAPTAIN_BUTTON' | translate }}
       </button>
     </div>

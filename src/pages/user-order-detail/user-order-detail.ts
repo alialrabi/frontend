@@ -6,6 +6,7 @@ import { DeviceTockenService } from '../../providers/auth/deviceToken.service';
 import { OrderService } from '../../providers/auth/order.service';
 import { UserOrderService } from '../../providers/auth/userOrders.service';
 import { MyApp } from '../../app/app.component';
+import { CaptainDetailsPage } from '../captain-details/captain-details';
 
 /**
  * Generated class for the UserOrderDetailPage page.
@@ -24,6 +25,7 @@ export class UserOrderDetailPage {
   order = {
     reciverAddress: null,
     senderAddress: null,
+    captain: null,
     userOrder: {
       identifyNumber: '',
       marketName: '',
@@ -38,12 +40,17 @@ export class UserOrderDetailPage {
       reciverPhone: null,
       status: '',
       id: 0,
-      userId: 0
+      userId: 0,
+      isTaken: false
     }
   }
 
   language = MyApp.language
   direction = MyApp.direction
+
+  takeOrderSuccess = null;
+  takeOrderErroe = null;
+
 
   userType = '';
   status = ''
@@ -77,7 +84,7 @@ export class UserOrderDetailPage {
       this.navCtrl.setRoot(UserOrdersPage, { myVar: this.myVar });
     });
 
-    this.translateService.get(['DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT', 'OK', 'NOT_SUPPORTED', 'NO_LOCATION_AVILABLE', 'OFFICE', 'HOME', 'FLAT']).subscribe((values) => {
+    this.translateService.get([ 'TAKE_ORDER_ERROR', 'TAKE_ORDER_SUCCESS', 'DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT', 'OK', 'NOT_SUPPORTED', 'NO_LOCATION_AVILABLE', 'OFFICE', 'HOME', 'FLAT']).subscribe((values) => {
 
       this.deliverOrderError = values.DELIVER_ORDER_ERROR;
       this.deliverOrderSuccess = values.DELIVER_ORDER_SUCCESS;
@@ -90,6 +97,9 @@ export class UserOrderDetailPage {
       this.flatValue = values.FLAT
       this.homeValue = values.HOME
       this.officeValue = values.OFFICE
+
+      this.takeOrderSuccess = values.TAKE_ORDER_SUCCESS
+      this.takeOrderErroe = values.TAKE_ORDER_ERROR
 
 
     })
@@ -109,7 +119,9 @@ export class UserOrderDetailPage {
   editRating() {
     this.navCtrl.setRoot('EditRatingPage', { item: this.order.userOrder, from: "UserOrderDetailPage", order: this.order, userType: this.userType })
   }
-
+  viewCaptainDetails() {
+    this.navCtrl.setRoot(CaptainDetailsPage, { item: this.order.captain, from: "UserOrderDetailPage", myVar: this.myVar, order: this.order, userType: this.userType });
+  }
   finish() {
 
     let load = this.loading.create({
@@ -206,6 +218,7 @@ export class UserOrderDetailPage {
 
         load.dismiss();
         this.order.userOrder.status = 'delivered';
+        this.myVar = 'delivered';
 
       }, err => {
         console.log(err);
@@ -271,6 +284,115 @@ export class UserOrderDetailPage {
       typeValue = this.officeValue
     }
     return typeValue;
+  }
+  takeOrder(item) {
+
+    let load = this.loading.create({
+      content: this.pleaseWait
+
+
+    })
+    load.present()
+
+
+    this.orderService.takeOrder(item.userOrder.id).subscribe(
+      res => {
+
+        // if (this.platform.is('cordova')) {
+        this.deviceTokenService.getAdminTokens().subscribe(
+          res1 => {
+            console.log("res1", res1);
+
+            res1.forEach(element => {
+              let body = {
+                "notification": {
+                  "title": "طلب جديد",
+                  "body": "لقد تم الاستلام من المرسل للطلب  " + " " + item.userOrder.identifyNumber,
+                  "sound": "default",
+                  "click_action": "FCM_PLUGIN_ACTIVITY",
+                  "icon": "fcm_push_icon"
+                },
+                "data": {
+                  "title": "طلب جديد",
+                  "body": "لقد تم الاستلام من المرسل للطلب  " + " " + item.userOrder.identifyNumber
+                },
+                "to": element,
+                "priority": "high",
+                "restricted_package_name": ""
+              }
+
+              this.deviceTokenService.sendNotification(body);
+
+
+            });
+
+          }, err1 => {
+            console.log(err1, 'errrrrrrrrrrrrrrrrrrrrrrrrrror');
+
+          }
+        )
+
+        this.deviceTokenService.getUserTokens(item.userOrder.userId).subscribe(
+          res1 => {
+            console.log("res1", res1);
+
+            res1.forEach(element => {
+              let body = {
+                "notification": {
+                  "title": "طلبك",
+                  "body": "لقد تم الاستلام من المرسل لطلبك  " + " " + item.userOrder.identifyNumber,
+                  "sound": "default",
+                  "click_action": "FCM_PLUGIN_ACTIVITY",
+                  "icon": "fcm_push_icon"
+                },
+                "data": {
+                  "title": "طلبك",
+                  "body": "لقد تم الاستلام من المرسل لطلبك  " + " " + item.userOrder.identifyNumber
+                },
+                "to": element,
+                "priority": "high",
+                "restricted_package_name": ""
+              }
+
+              this.deviceTokenService.sendNotification(body);
+
+
+            });
+          }, err1 => {
+            console.log(err1, 'errrrrrrrrrrrrrrrrrrrrrrrrrror');
+
+          }
+        )
+
+        // }
+
+
+        let toast = this.toastCtrl.create({
+          message: this.takeOrderSuccess,
+          duration: 3000,
+          position: 'top'
+        });
+        toast.present();
+        console.log("success");
+
+        load.dismiss();
+        this.order.userOrder.isTaken = true;
+      }, err => {
+        console.log(err);
+
+
+        let displayError = this.takeOrderErroe;
+
+        let toast = this.toastCtrl.create({
+          message: displayError,
+          duration: 3000,
+          position: 'middle'
+        });
+        toast.present();
+        load.dismiss();
+      }
+    )
+
   }
 
 

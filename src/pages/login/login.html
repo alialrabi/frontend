@@ -58,7 +58,7 @@
     </p>
 
     <div>
-      <button ion-button icon-start block color="dark" tappable (click)="doLogin()" [disabled]="!myForm.valid">
+      <button ion-button icon-start block class="myButton" tappable (click)="doLogin()" [disabled]="!myForm.valid">
         <ion-icon name="log-in" style="margin-left: 5px;margin-right: 5px"></ion-icon>
         {{ 'LOGIN_BUTTON' | translate }}
       </button>

@@ -50,6 +50,24 @@
         <strong text-wrap *ngIf="order.userOrder.status == 'delivered'"> {{ 'DELIVERED' | translate }}</strong>
       </p>
     </ion-item>
+    <ion-item class="item-background" *ngIf="order.captain != null && userType == 'Admin'" (click)="viewCaptainDetails()">
+      <p>
+        {{ 'CAPTAIN_NAME' | translate }} :
+        <strong text-wrap>{{order.captain.name}}</strong>
+      </p>
+    </ion-item>
+    <ion-item class="item-background" *ngIf="order.captain != null && userType == 'User'">
+      <p>
+        {{ 'CAPTAIN_NAME' | translate }} :
+        <strong text-wrap>{{order.captain.name}}</strong>
+      </p>
+    </ion-item>
+    <ion-item class="item-background" *ngIf="order.captain != null && userType == 'User'">
+      <p>
+        {{ 'CAPTAIN_PHONE' | translate }} :
+        <strong text-wrap>{{order.captain.phone}}</strong>
+      </p>
+    </ion-item>
     <ion-item class="item-background">
       <p>
         {{'CREATION_DATE' | translate}} :
@@ -208,27 +226,69 @@
       </p>
     </ion-item>
     <ion-grid>
-      <ion-row>
+      <ion-row *ngIf="userType!='Captain'">
         <ion-col>
           <ion-buttons end class="btn-style" style="width: 100%" *ngIf="order.userOrder.status != 'delivered' && userType=='Admin'">
-            <button ion-button style="width: 100%" (click)="assingCaptain()">
+            <button class="myButton" ion-button style="width: 100%" (click)="assingCaptain()">
               {{ 'ASSIGN_CAPTAIN' | translate }}
             </button>
           </ion-buttons>
 
           <ion-buttons end class="btn-style" style="width: 100%" *ngIf="order.userOrder.status == 'assigned' && userType=='Captain'">
-            <button ion-button style="width: 100%" (click)="finish()">
+            <button class="myButton" ion-button style="width: 100%" (click)="finish()">
               {{ 'DELIVER' | translate }}
             </button>
           </ion-buttons>
 
 
           <ion-buttons end class="btn-style" style="width: 100%" *ngIf="userType=='User'">
-            <button ion-button style="width: 100%" (click)="editRating()">
+            <button class="myButton" ion-button style="width: 100%" (click)="editRating()">
               {{ 'EDIT_RATING_BUTTON' | translate }}
             </button>
           </ion-buttons>
         </ion-col>
+      </ion-row>
+      <ion-row *ngIf=" userType =='Captain' && !order.userOrder.isTaken && !order.userOrder.isBuing && order.userOrder.status == 'assigned'">
+
+        <ion-col col-6>
+
+          <ion-buttons end class="btn-style" style="width: 100%" *ngIf="myVar == 'assigned' && userType=='Captain' && !order.userOrder.isTaken">
+            <button ion-button class="myButton" style="width: 100%" (click)="takeOrder(order)">
+              {{ 'TAKE_ORDER_FROM_SENDER' | translate }}
+            </button>
+          </ion-buttons>
+
+        </ion-col>
+
+        <ion-col col-6>
+
+          <ion-buttons end class="btn-style" style="width: 100%" *ngIf="myVar == 'assigned' && userType=='Captain'">
+            <button ion-button class="myButton" style="width: 100%" (click)="finish(order)">
+              {{ 'DELIVER' | translate }}
+            </button>
+          </ion-buttons>
+
+        </ion-col>
+
+        <!-- <ion-col col-6>
+          <ion-buttons end class="btn-style" style="width: 100%;" *ngIf="myVar != 'delivered' && (userType=='Captain' || userType=='Admin')">
+            <button ion-button (click)="viewLocation(order)" style="width: 100%;">
+              {{ 'VIEW_LOCATION' | translate }}
+            </button>
+          </ion-buttons>
+        </ion-col> -->
+      </ion-row>
+      <ion-row *ngIf=" userType =='Captain' && (order.userOrder.isTaken || order.userOrder.isBuing) && order.userOrder.status == 'assigned'">
+        <ion-col col-12>
+
+          <ion-buttons end class="btn-style" style="width: 100%" *ngIf="myVar == 'assigned' && userType=='Captain'">
+            <button ion-button class="myButton" style="width: 100%" (click)="finish(order)">
+              {{ 'DELIVER' | translate }}
+            </button>
+          </ion-buttons>
+
+        </ion-col>
+
       </ion-row>
 
     </ion-grid>

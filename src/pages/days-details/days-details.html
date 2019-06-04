@@ -10,14 +10,14 @@
 
     <ion-grid style="width: 100%">
       <ion-row>
-        <ion-col col-1 style="max-width: 25px;"  (click)="back()">
+        <ion-col col-1 style="max-width: 25px;" (click)="back()">
           <ion-buttons style="margin-block-start: 2px" class="btn-style">
             <button ion-button>
               <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
             </button>
           </ion-buttons>
         </ion-col>
-        <ion-col col-11  [style.margin-top] ="language == 'en' ? '9px' : '8px'">
+        <ion-col col-11 [style.margin-top]="language == 'en' ? '9px' : '8px'">
           <ion-title [style.margin-top]="!isCordova && language != 'en' ? '2px' : '0px'">{{ 'HOURS_DETAILS' | translate }}</ion-title>
         </ion-col>
       </ion-row>
@@ -81,11 +81,12 @@
           </ion-col>
         </ion-row>
         <ion-row>
-         
+
           <ion-col col-12>
-            <button style="width: 100%" ion-button class="circul" color="danger" (click)="DeleteSub(assign)">
+            <button style="width: 100%" ion-button class="circul" class="myButton" style="background: linear-gradient(to bottom, #fc1200 5%, #ff2e02 100%);background-color: rgba(0, 0, 0, 0);background-color: rgba(0, 0, 0, 0);width: 100%"
+              (click)="DeleteSub(assign)">
               {{'DELETE' | translate}}
-              <ion-icon name="ios-trash" [style.margin-right]="language == 'en' ? '0px' : '10px'" [style.margin-left]="language == 'en' ? '10px' : '0px'" ></ion-icon>
+              <ion-icon name="ios-trash" [style.margin-right]="language == 'en' ? '0px' : '10px'" [style.margin-left]="language == 'en' ? '10px' : '0px'"></ion-icon>
             </button>
 
           </ion-col>

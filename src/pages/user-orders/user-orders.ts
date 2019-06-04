@@ -13,6 +13,7 @@ import { DeviceTockenService } from '../../providers/auth/deviceToken.service';
 import { UserOrderDetailPage } from '../user-order-detail/user-order-detail';
 import { AdminDashboardPage } from '../admin-dashboard/admin-dashboard';
 import { CaptainOrdersPage } from '../captain-orders/captain-orders';
+import { CaptainDetailsPage } from '../captain-details/captain-details';
 
 /**
  * Generated class for the UserOrdersPage page.
@@ -647,6 +648,9 @@ export class UserOrdersPage {
   }
   viewDetails(order) {
     this.navCtrl.setRoot(UserOrderDetailPage, { item: order, userType: this.userType, myVar: this.myVar });
+  }
+  viewCaptainDetails(captain){
+    this.navCtrl.setRoot(CaptainDetailsPage, {item: captain , from: "UserOrdersPage" , myVar: this.myVar });
   }
 
 }

@@ -35,7 +35,7 @@
 
 
     <ion-buttons end class="btn-style" *ngIf="agency == null">
-      <button class="add-btn-style" ion-button (click)="add()" >
+      <button class="myButton" ion-button (click)="add()" >
           {{ 'ADD' | translate }}
       </button>
     </ion-buttons>
@@ -102,7 +102,7 @@
         <ion-row *ngIf="captain.unAssignDetails == undefined || captain.unAssignDetails == null || captain.unAssignDetails == ''">
           <ion-col col-12>
             <ion-buttons class="btn-style" style="width: 100%;padding: 0px;">
-              <button ion-button (click)="unAssingCaptain(captain)" style="width: 100%;padding: 0px;">
+              <button ion-button class="myButton" (click)="unAssingCaptain(captain)" style="width: 100%;padding: 0px;">
                 {{ 'UN_ASSIGN_CAPTAIN' | translate }}
               </button>
             </ion-buttons>

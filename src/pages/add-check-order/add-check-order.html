@@ -62,7 +62,7 @@
 
 
     <div margin-top style="margin-bottom: 40px;">
-      <button ion-button block color="dark" tappable (click)="addOrder()" [disabled]="order.check == null || order.check == 'O' || isloadinImage">
+      <button ion-button block class="myButton" tappable (click)="addOrder()" [disabled]="order.check == null || order.check == 'O' || isloadinImage">
         {{ 'ADD_ORDER_BUTTON' | translate }}
     </button>
     </div>

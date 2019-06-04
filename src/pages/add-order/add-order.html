@@ -149,7 +149,7 @@
 
     </form>
     <ion-buttons end class="btn-style" *ngIf="!print">
-      <button ion-button (click)="add()">
+      <button class="myButton" ion-button (click)="add()">
         <ion-icon name="add"></ion-icon>
       </button>
     </ion-buttons>
@@ -157,13 +157,13 @@
     <ion-grid margin-top style="margin-bottom: 40px;" *ngIf="!print">
       <ion-row *ngIf="platfromType == 'not-cordova' && userType != 'User'">
         <ion-col col-6>
-          <button ion-button block text-wrap color="dark" tappable (click)="addOrder($event)" [disabled]="!myForm.valid || ordersArray.length == 0">
+          <button ion-button block text-wrap class="myButton" tappable (click)="addOrder($event)" [disabled]="!myForm.valid || ordersArray.length == 0">
               {{ 'ADD_ORDER_BUTTON_WITH_PRINT' | translate }}
            
           </button>
         </ion-col>
         <ion-col col-6>
-          <button ion-button block text-wrap color="dark" tappable (click)="addOrderWithOutPrint($event)" [disabled]="!myForm.valid || ordersArray.length == 0">
+          <button ion-button block text-wrap class="myButton" tappable (click)="addOrderWithOutPrint($event)" [disabled]="!myForm.valid || ordersArray.length == 0">
               {{ 'ADD_ORDER_BUTTON' | translate }}
           </button>
         </ion-col>
@@ -171,7 +171,7 @@
       <ion-row *ngIf="platfromType == 'cordova' || userType == 'User'">
         
         <ion-col col-12>
-          <button ion-button block text-wrap color="dark" tappable (click)="addOrderWithOutPrint($event)" [disabled]="!myForm.valid || ordersArray.length == 0">
+          <button ion-button block text-wrap class="myButton" tappable (click)="addOrderWithOutPrint($event)" [disabled]="!myForm.valid || ordersArray.length == 0">
               {{ 'ADD_ORDER_BUTTON' | translate }}
           </button>
         </ion-col>
