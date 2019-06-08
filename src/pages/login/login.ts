@@ -451,7 +451,8 @@ export class LoginPage {
       lastName: '',
       password: this.socialPassword,
       langKey: MyApp.language,
-      activated: true
+      activated: true,
+      faceBookAccount:true
     }
 
     if (this.userData.email == null || this.userData.email == '') {

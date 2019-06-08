@@ -96,11 +96,11 @@
         <ion-icon item-left name="home" color="primary"></ion-icon>
         <span ion-text color="primary">{{'MY_ADDRESSES' | translate}}</span>
       </button>
-      <button ion-item menuClose class="text-1x" (click)="openPage('SettingsPage')" *ngIf="userType != 'User'">
+      <button ion-item menuClose class="text-1x" (click)="openPage('SettingsPage')" *ngIf="userType != 'User' || (userType == 'User' && account.faceBookAccount)">
         <ion-icon item-left name="construct" color="primary"></ion-icon>
         <span ion-text color="primary">{{'SETTING' | translate}}</span>
       </button>
-      <button ion-item class="text-1x" (click)="userSettingToggle()" *ngIf="userType == 'User'">
+      <button ion-item class="text-1x" (click)="userSettingToggle()" *ngIf="userType == 'User' && !account.faceBookAccount">
           <ion-icon item-left name="construct" color="primary"></ion-icon>
           <span ion-text color="primary">{{'SETTING' | translate}}</span>
           <ion-icon [name]="getSettingIcon()"  item-right ></ion-icon>

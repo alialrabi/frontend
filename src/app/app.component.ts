@@ -263,6 +263,7 @@ export class MyApp {
         this.userType = 'User'
         this.translateMenu();
         this.account = account;
+        let mail = this.account.email
         // this.appMenuItems = [
         //   { title: this.userOrdersText, component: UserOrdersPage, icon: 'basket' }
         // ];
