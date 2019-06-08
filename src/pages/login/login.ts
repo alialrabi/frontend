@@ -364,7 +364,7 @@ export class LoginPage {
         });
     } else {
 
-      
+
 
       this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then(data => {
         this.userData = { id: data.id, email: data.email, first_name: data.firstName, last_name: data.lastName }
@@ -451,7 +451,8 @@ export class LoginPage {
       lastName: '',
       password: this.socialPassword,
       langKey: MyApp.language,
-      activated: true
+      activated: true,
+      faceBookAccount:true
     }
 
     if (this.userData.email == null || this.userData.email == '') {

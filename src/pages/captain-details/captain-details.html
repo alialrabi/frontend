@@ -17,12 +17,12 @@
             </button>
           </ion-buttons>
         </ion-col>
-        <ion-col col-8 [style.margin-top]="language == 'en' ? '5px' : '2px'">
+        <ion-col col-7 [style.margin-top]="language == 'en' ? '5px' : '2px'">
           <ion-title [style.margin-top]="!isCordova && language != 'en' ? '3px' : '0px'">{{ 'CAPTAIN_DETAILS' | translate }}</ion-title>
         </ion-col>
-        <ion-col [style.text-align]="language == 'en' ? 'right' : 'left'" *ngIf="userType=='admin'">
+        <ion-col col-4 [style.text-align]="language == 'en' ? 'right' : 'left'" *ngIf="userType=='admin' && from != 'UserOrdersPage' && from != 'UserOrderDetailPage'">
           <ion-buttons style="padding:0px" class="btn-style">
-            <button class="add-btn-style" ion-button (click)="editCaptain()">
+            <button class="myButton" style="box-shadow: 0px 0px 0px 0px #9fb4f2;text-shadow: 0px 0px 0px #283966;border: 0px solid #263973;" ion-button (click)="editCaptain()">
               {{ 'EDIT' | translate }}
             </button>
           </ion-buttons>
@@ -90,7 +90,12 @@
         <strong text-wrap>{{captain.orderCount}}</strong>
       </p>
     </ion-item>
-
+    <ion-item class="item-background" *ngIf="userType=='admin'">
+        <p>
+          {{'SHIPPING_ORDERS_COUNT' | translate}} :
+          <strong text-wrap>{{captain.shippingOrderCount}}</strong>
+        </p>
+      </ion-item>
 
     <ion-item class="item-background" *ngIf="userType=='admin'">
       <p>
@@ -101,19 +106,19 @@
         </strong>
       </p>
     </ion-item>
-    <ion-item class="item-background">
+    <ion-item class="item-background" *ngIf="userType != 'user'">
       <p>
         {{'HOURS_COUNT' | translate}} :
         <strong text-wrap>{{ captain.totalHours }}
         </strong>
       </p>
     </ion-item>
-    <ion-item class="item-background" text-center *ngIf="captain.agencies.length != 0 && userType=='admin'">
+    <ion-item class="item-background" text-center *ngIf="captain.agencies.length != 0 && userType=='admin'  && from != 'UserOrdersPage' && from != 'UserOrderDetailPage'">
       <p>
         <strong text-wrap>{{'HOURS_DETAILS' | translate}}</strong>
       </p>
     </ion-item>
-    <ion-item class="item-background" *ngIf="captain.agencies.length != 0 && userType=='admin'">
+    <ion-item class="item-background" *ngIf="captain.agencies.length != 0 && userType=='admin' && from != 'UserOrdersPage' && from != 'UserOrderDetailPage'">
       <ion-grid style="padding: 0px">
         <ion-row justify-content-center align-items-center style="height: 100%;padding: 0px">
           <ion-col col-6>

@@ -23,7 +23,7 @@ import { AddUserPhonePage } from '../add-user-phone/add-user-phone';
 })
 export class SignupPage {
   // The account fields for the signup form
-  account: { login: string, email: string, firstName: string, lastName: string, password: string, langKey: string, activated: boolean, phone: string } = {
+  account: { login: string, email: string, firstName: string, lastName: string, password: string, langKey: string, activated: boolean, phone: string , faceBookAccount:boolean } = {
     login: '',
     email: '',
     firstName: '',
@@ -31,7 +31,8 @@ export class SignupPage {
     password: '',
     langKey: MyApp.language,
     activated: true,
-    phone: ''
+    phone: '',
+    faceBookAccount:false
   };
 
   // Our translated text strings
@@ -244,7 +245,8 @@ export class SignupPage {
       lastName: '',
       password: this.socialPassword,
       langKey: MyApp.language,
-      activated: true
+      activated: true,
+      faceBookAccount:true
     }
     let loginAccount = {
       username: signUpAccount.login,

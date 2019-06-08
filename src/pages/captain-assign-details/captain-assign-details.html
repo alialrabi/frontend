@@ -116,14 +116,14 @@
       <ion-row>
           <ion-col col-6>
             <ion-buttons end class="btn-style" style="width: 100%;">
-              <button ion-button (click)="getCaptainAssignes(0)" style="width: 100%;" [disabled]  = "!myForm.valid">
+              <button ion-button class="myButton" (click)="getCaptainAssignes(0)" style="width: 100%;" [disabled]  = "!myForm.valid">
                 {{ 'SEARCH' | translate }}
               </button>
             </ion-buttons>
           </ion-col>
           <ion-col col-6>
             <ion-buttons end class="btn-style" style="width: 100%;">
-              <button ion-button (click)="clear()" style="width: 100%;">
+              <button ion-button class="myButton" (click)="clear()" style="width: 100%;">
                 {{ 'CLEAR_FIELDS' | translate }}
               </button>
             </ion-buttons>

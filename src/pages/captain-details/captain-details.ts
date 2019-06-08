@@ -9,6 +9,8 @@ import { Principal } from '../../providers/auth/principal.service';
 import { FirstRunPage } from '../pages';
 import { DaysDetailsPage } from '../days-details/days-details';
 import { AgencyCaptainsPage } from '../agency-captains/agency-captains';
+import { UserOrdersPage } from '../user-orders/user-orders';
+import { UserOrderDetailPage } from '../user-order-detail/user-order-detail';
 
 /**
  * Generated class for the CaptainDetailsPage page.
@@ -53,6 +55,9 @@ export class CaptainDetailsPage {
 
   from = ''
   agency = null;
+  myVar = ''
+  order = null
+  userType1 = ''
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public app:App , public principal:Principal , public platform: Platform,
     private loading: LoadingController, public translateService: TranslateService, public captainService: CaptainService) {
@@ -60,6 +65,9 @@ export class CaptainDetailsPage {
     this.item = navParams.get("item");
     this.from = navParams.get("from");
     this.agency = navParams.get("agency");
+    this.myVar = navParams.get("myVar");
+    this.order = navParams.get("order");
+    this.userType1 = navParams.get("userType");
 
     if (this.platform.is("cordova") && this.platform.is("android")) {
       this.isCordova = true;
@@ -73,7 +81,12 @@ export class CaptainDetailsPage {
     this.platform.registerBackButtonAction(() => {
       if(this.from == "AgencyCaptainsPage"){
         this.navCtrl.setRoot(AgencyCaptainsPage , {item:this.agency});
-      }else{
+      }else if (this.from == "UserOrdersPage"){
+        this.navCtrl.setRoot(UserOrdersPage , {myVar:this.myVar});
+      }else if (this.from == "UserOrderDetailPage"){
+        this.navCtrl.setRoot(UserOrderDetailPage , {item:this.order , userType:this.userType1 , myVar:this.myVar});
+      }
+      else{
       this.navCtrl.setRoot(CaptainsPage);
       }
     });
@@ -102,7 +115,15 @@ export class CaptainDetailsPage {
         this.userType = 'agency'
         this.getCaptain(this.user.id , load);
 
-      }else{
+      }else if (account.authorities[0] == 'ROLE_USER' && account.authorities.length == 1) {
+        console.log("222");
+        
+        this.user = account;
+        this.userType = 'user'
+        this.getCaptain(this.user.id , load);
+
+      }
+      else{
         this.user = account;
         this.userType = 'admin'
         this.getCaptain(0 , load)
@@ -128,6 +149,9 @@ export class CaptainDetailsPage {
     this.captainService.getCaptainDetails(this.item.id , agencyId).subscribe(res => {
       console.log(res);
       this.captain = res
+      if(this.from == 'UserOrdersPage' || this.from == 'UserOrderDetailPage'){
+        this.captain.agencies = []
+      }
       load.dismiss();
     }, err => {
       console.log(err);
@@ -138,7 +162,12 @@ export class CaptainDetailsPage {
   back() {
     if(this.from == "AgencyCaptainsPage"){
       this.navCtrl.setRoot(AgencyCaptainsPage , {item:this.agency});
-    }else{
+    }else if (this.from == "UserOrdersPage"){
+      this.navCtrl.setRoot(UserOrdersPage , {myVar:this.myVar});
+    }else if (this.from == "UserOrderDetailPage"){
+      this.navCtrl.setRoot(UserOrderDetailPage , {item:this.order , userType:this.userType1 , myVar:this.myVar});
+    }
+    else{
     this.navCtrl.setRoot(CaptainsPage);
     }
   }

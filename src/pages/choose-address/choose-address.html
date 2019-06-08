@@ -63,13 +63,13 @@
     </form>
 
     <div margin-top>
-      <button ion-button block color="dark" tappable (click)="chooseAddress()" [disabled]="!myForm.valid">
+      <button ion-button block class="myButton" tappable (click)="chooseAddress()" [disabled]="!myForm.valid">
         {{ 'CHOOSE_ADDRESS' | translate }}
       </button>
     </div>
 
     <div margin-top>
-      <button ion-button block color="dark" tappable (click)="newAddress()">
+      <button ion-button block class="myButton" tappable (click)="newAddress()">
         {{ 'NEW_ADDRESS' | translate }}
       </button>
     </div>

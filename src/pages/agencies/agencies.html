@@ -16,7 +16,7 @@
       <ion-title>{{ 'AGENCIES' | translate }}</ion-title>
 
       <ion-buttons end class="btn-style">
-        <button class="add-btn-style" ion-button (click)="add()">
+        <button class="myButton" style="box-shadow: 0px 0px 0px 0px #9fb4f2;text-shadow: 0px 0px 0px #283966;border: 0px solid #263973;" ion-button (click)="add()">
             {{ 'ADD' | translate }}
         </button>
       </ion-buttons>
@@ -71,16 +71,18 @@
           </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col>
+          <ion-col col-12>
             <ion-buttons end class="btn-style" style="width: 100%;">
-              <button ion-button (click)="assingCaptains(agency)" style="width: 100%;">
+              <button  class="myButton" ion-button (click)="assingCaptains(agency)" style="width: 100%;">
                 {{ 'ASSIGN_CAPTAIN' | translate }}
               </button>
             </ion-buttons>
           </ion-col>
-          <ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-12>
             <ion-buttons end class="btn-style" style="width: 100%;">
-              <button ion-button (click)="viewCaptains(agency)" style="width: 100%;">
+              <button ion-button class="myButton" (click)="viewCaptains(agency)" style="width: 100%;">
                 {{ 'CAPTAINS' | translate }}
               </button>
             </ion-buttons>

@@ -96,7 +96,7 @@
       </form>
   
       <div margin-top style="margin-bottom: 40px;">
-        <button ion-button block color="dark" tappable (click)="EditAgency()" [disabled]="!myForm.valid || notMathces() || !valuesChanges() || validatePasswordChange()">
+        <button ion-button block class="myButton" tappable (click)="EditAgency()" [disabled]="!myForm.valid || notMathces() || !valuesChanges() || validatePasswordChange()">
           {{ 'EDIT_AGENCY_BUTTON' | translate }}
         </button>
   

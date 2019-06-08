@@ -53,18 +53,18 @@
     </form>
 
       <div margin-top>
-        <button ion-button block color="dark" tappable (click)="assignOrder()" [disabled]  = "!myForm.valid" >
+        <button ion-button block class="myButton" tappable (click)="assignOrder()" [disabled]  = "!myForm.valid" >
           {{ 'ASSIGN_ORDER_BUTTON' | translate }}
         </button>
       </div>
       <!-- <div margin-top>
-        <button ion-button block color="dark" tappable (click)="assignOrderToFreeCaptain()"  >
+        <button ion-button block class="myButton" tappable (click)="assignOrderToFreeCaptain()"  >
           {{ 'ASSIGN_ORDER_TO_FREE_BUTTON' | translate }}
         </button>
       </div> -->
 
       <div margin-top>
-        <button ion-button block color="dark" tappable (click)="skip()"  >
+        <button ion-button block class="myButton" tappable (click)="skip()"  >
           {{ 'SKIP' | translate }}
         </button>
       </div>

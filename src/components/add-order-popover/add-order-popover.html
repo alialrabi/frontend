@@ -1,50 +1,51 @@
 <!-- Generated template for the AddOrderPopoverComponent component -->
 <ion-content class="auth-page">
-    <div class="login-content">
-      <!-- Login form -->
-      <form class="list-form" [formGroup]="myForm" (submit)="save()">
-          <button type="submit" class="button" hidden></button>
-        <ion-item>
-          <ion-label floating [style.transform-origin]="language =='en'? 'left top': 'right top'">
-            <ion-icon name="reorder" item-start class="text-primary"></ion-icon>
-            {{ 'ORDER' | translate }}
-          </ion-label>
-          <ion-input type="text" name="order" formControlName="order" [lang]="language" [dir]="direction"></ion-input>
-        </ion-item>
-        <p class="validationHint" *ngIf="hasError('order', 'required' , myForm)"> {{ 'REQURIED' | translate }} </p>
-        <p class="validationHint" *ngIf="hasError('order', 'maxlength' , myForm)">{{ 'MAX_LENGTH' | translate }} </p>
-  
-        <ion-item>
-          <ion-label floating [style.transform-origin]="language =='en'? 'left top': 'right top'">
-            <ion-icon name="cash" item-start class="text-primary"></ion-icon>
-            {{ 'PRICE' | translate }}
-          </ion-label>
-          <ion-input type="number" name="price" formControlName="price" [lang]="language" [dir]="direction"></ion-input>
-        </ion-item>
-        <p class="validationHint" *ngIf="hasError('price', 'required' , myForm)"> {{ 'REQURIED' | translate }} </p>
-        <p class="validationHint" *ngIf="hasError('price', 'maxlength' , myForm)">{{ 'MAX_LENGTH' | translate }} </p>
-        <p class="validationHint" *ngIf="validatePrice()">{{ 'PRICE_NOT_ACCEPTAPLE' | translate }} </p>
-  
-      </form>
-      <ion-grid>
-        <ion-row>
-          <ion-col col-6>
-            <ion-buttons>
-              <button ion-button block style="background-color: #bec221" tappable (click)="cancel()">
-                {{ 'CANCEL' | translate }}
-              </button>
-            </ion-buttons>
-          </ion-col>
-  
-          <ion-col col-6>
-            <ion-buttons>
-              <button ion-button block color="dark" tappable (click)="save()" [disabled]="!myForm.valid || validatePrice()">
-                {{ 'ADD' | translate }}
-              </button>
-            </ion-buttons>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </div>
-  
-  </ion-content>
+  <div class="login-content">
+    <!-- Login form -->
+    <form class="list-form" [formGroup]="myForm" (submit)="save()">
+      <button type="submit" class="button" hidden></button>
+      <ion-item>
+        <ion-label floating [style.transform-origin]="language =='en'? 'left top': 'right top'">
+          <ion-icon name="reorder" item-start class="text-primary"></ion-icon>
+          {{ 'ORDER' | translate }}
+        </ion-label>
+        <ion-input type="text" name="order" formControlName="order" [lang]="language" [dir]="direction"></ion-input>
+      </ion-item>
+      <p class="validationHint" *ngIf="hasError('order', 'required' , myForm)"> {{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('order', 'maxlength' , myForm)">{{ 'MAX_LENGTH' | translate }} </p>
+
+      <ion-item>
+        <ion-label floating [style.transform-origin]="language =='en'? 'left top': 'right top'">
+          <ion-icon name="cash" item-start class="text-primary"></ion-icon>
+          {{ 'PRICE' | translate }}
+        </ion-label>
+        <ion-input type="number" name="price" formControlName="price" [lang]="language" [dir]="direction"></ion-input>
+      </ion-item>
+      <p class="validationHint" *ngIf="hasError('price', 'required' , myForm)"> {{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('price', 'maxlength' , myForm)">{{ 'MAX_LENGTH' | translate }} </p>
+      <p class="validationHint" *ngIf="validatePrice()">{{ 'PRICE_NOT_ACCEPTAPLE' | translate }} </p>
+
+    </form>
+    <ion-grid>
+      <ion-row>
+        <ion-col col-6>
+          <ion-buttons>
+            <button ion-button block style="background: linear-gradient(to bottom, #ec9a0d 5%, #686b0f 100%);background-color: rgba(0, 0, 0, 0);background-color: rgba(0, 0, 0, 0);"
+              class="myButton" tappable (click)="cancel()">
+              {{ 'CANCEL' | translate }}
+            </button>
+          </ion-buttons>
+        </ion-col>
+
+        <ion-col col-6>
+          <ion-buttons>
+            <button ion-button block tappable (click)="save()" class="myButton" [disabled]="!myForm.valid || validatePrice()">
+              {{ 'ADD' | translate }}
+            </button>
+          </ion-buttons>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+</ion-content>
