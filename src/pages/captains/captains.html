@@ -79,18 +79,18 @@
           </ion-row>
 
         <ion-row *ngIf="userType == 'admin'">
-            <ion-col col-12>
-                <ion-buttons end class="btn-style" style="width: 100%; padding: 0px;">
-                    <button ion-button class="myButton" text-wrap (click)="openEvaluation(captain)" style="width: 100%; padding: 0px;">
+            <ion-col col-12 style="padding-bottom: 0px;">
+                <ion-buttons end class="btn-style" style="width: 100%;">
+                    <button ion-button class="myButton" text-wrap (click)="openEvaluation(captain)" style="width: 100%;">
                       {{ 'EDIT_EVALUATION' | translate }}
                     </button>
                   </ion-buttons> 
             </ion-col>
           </ion-row>
           <ion-row *ngIf="userType == 'admin'">
-            <ion-col col-12>
-              <ion-buttons class="btn-style" style="width: 100%; padding: 0px;">
-                <button ion-button text-wrap class="myButton" (click)="viewAssignDetails(captain)" style="width: 100%;padding: 0px;">
+            <ion-col col-12 style="padding-top: 0px;">
+              <ion-buttons class="btn-style" style="width: 100%;">
+                <button ion-button text-wrap class="myButton" (click)="viewAssignDetails(captain)" style="width: 100%;">
                   {{ 'VIEW_ASSIGN_DETAILS' | translate }}
                 </button>
               </ion-buttons>

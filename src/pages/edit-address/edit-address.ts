@@ -704,6 +704,9 @@ export class EditAddressPage {
   }
   skip() {
 
+    console.log("****** skip");
+    
+
     let load = this.loading.create({
       content: this.pleaseWait
 

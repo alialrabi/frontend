@@ -186,19 +186,19 @@
       <ion-row [style.height]="openMap ? '55px' : '0px'" [style.width]="openMap ? '100%' : '0%'" style="max-height: 55px">
         <ion-col col-4 style="max-height: 45px">
           <div margin-top [style.height]="openMap ? '100%' : '0px'" style="max-height: 40px">
-            <button ion-button block class="myButton" tappable style="max-height: 35px" (click)="skip()" [disabled]="locationDisable" [style.height]="openMap ? '100%' : '0px'" [style.border]="openMap ? '1px solid #263973' : '0px'" [style.box-shadow]="openMap ? '0px 0px 0px 2px #9fb4f2' : '0px 0px 0px 0px #9fb4f2'" [style.padding]="openMap ? '12px 20px' : '0px'">
+            <button ion-button block class="myButton" tappable style="max-height: 35px" (click)="skip()" [disabled]="locationDisable" [style.height]="openMap ? '100%' : '0px'" [style.border]="openMap ? '1px solid #263973' : '0px'" [style.box-shadow]="openMap ? '0px 0px 0px 2px #9fb4f2' : '0px 0px 0px 0px #9fb4f2'" [style.padding]="openMap ? '12px 5px' : '0px'">
               {{ 'SKIP' | translate }}
             </button>
           </div>
         </ion-col>
         <ion-col col-8 style="max-height: 45px">
           <div margin-top style="max-height: 40px" *ngIf="!loadWithOutLocation" [style.height]="openMap ? '100%' : '0px'">
-            <button ion-button block style="max-height: 35px" class="myButton" [style.height]="openMap ? '100%' : '0px'" [style.box-shadow]="openMap ? '0px 0px 0px 2px #9fb4f2' : '0px 0px 0px 0px #9fb4f2'" [style.border]="openMap ? '1px solid #263973' : '0px'" [style.padding]="openMap ? '12px 20px' : '0px'" tappable (click)="chooseLocation()" [disabled]="mainMarkerCheck()">
+            <button ion-button block style="max-height: 35px" class="myButton" [style.height]="openMap ? '100%' : '0px'" [style.box-shadow]="openMap ? '0px 0px 0px 2px #9fb4f2' : '0px 0px 0px 0px #9fb4f2'" [style.border]="openMap ? '1px solid #263973' : '0px'" [style.padding]="openMap ? '12px 5px' : '0px'" tappable (click)="chooseLocation()" [disabled]="mainMarkerCheck()">
               {{ 'CHOOSE_LOCATION' | translate }}
             </button>
           </div>
           <div margin-top style="max-height: 40px" *ngIf="loadWithOutLocation" [style.height]="openMap ? '100%' : '0px'">
-            <button ion-button block style="max-height: 35px" #chooseLocation id="chooseLocation" [style.height]="openMap ? '100%' : '0px'" [style.box-shadow]="openMap ? '0px 0px 0px 2px #9fb4f2' : '0px 0px 0px 0px #9fb4f2'" [style.border]="openMap ? '1px solid #263973' : '0px'" [style.padding]="openMap ? '12px 20px' : '0px'" class="myButton" tappable [disabled]="mainMarkerCheck()">
+            <button ion-button block style="max-height: 35px" #chooseLocation id="chooseLocation" [style.height]="openMap ? '100%' : '0px'" [style.box-shadow]="openMap ? '0px 0px 0px 2px #9fb4f2' : '0px 0px 0px 0px #9fb4f2'" [style.border]="openMap ? '1px solid #263973' : '0px'" [style.padding]="openMap ? '12px 5px' : '0px'" class="myButton" tappable [disabled]="mainMarkerCheck()">
               {{ 'CHOOSE_LOCATION' | translate }}
             </button>
           </div>

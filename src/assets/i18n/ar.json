@@ -50,6 +50,7 @@
     "ADD_PHONE_SUCCESS":" تم إضافه الهاتف بنجاح",
     "ADD_PHONE_ERROR":"خطأ فى إضافه الهاتف",
     "ADD_PHONE":"إضافه الهاتف",
+    "ADD_PHONE_BUTTON":"أضف الهاتف",
     "INTER_VALID_PHONE":"من فضلك ادخل رقم الهاتف المحمول الخاص بك",
     "CAPTAIN_BUSY":"الطيار مشغول",
     "TOWER":"عماره",

@@ -143,7 +143,7 @@ export class EditCaptainPage {
       'code': ['', [Validators.required , Validators.pattern("[0-9]{1,8}")]],
       'name': ['', [Validators.required, Validators.maxLength(45)]],
       'phone': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
-      'email': ['', [Validators.required, Validators.email]],
+      'email': ['', [Validators.required, Validators.email , Validators.maxLength(49)]],
       'password': ['', [Validators.minLength(6) , Validators.maxLength(50)]],
       'passwordConfirm': ['', []]
     });
