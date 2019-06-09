@@ -220,7 +220,7 @@
           <div #map id="map" [ngStyle]="mapStyle"></div>
         </ion-col>
       </ion-row>
-      <ion-row *ngIf="latitudeValue == '0'" style="max-height: 55px" [style.height]="openMap ? '55px' : '0px'" [style.width]="openMap ? '100%' : '0%'">
+      <ion-row *ngIf="latitudeValue == '0'" style="max-height: 55px;margin-bottom: 10px" [style.height]="openMap ? '55px' : '0px'" [style.width]="openMap ? '100%' : '0%'">
         <ion-col col-12 style="max-height: 45px"  [style.height]="openMap ? '100%' : '0px'">
           <div margin-top style="max-height: 40px" [style.height]="openMap ? '100%' : '0px'">
             <button ion-button style="max-height: 35px" block class="myButton" tappable text-wrap [style.height]="openMap ? '100%' : '0px'" [style.box-shadow]="openMap ? '0px 0px 0px 2px #9fb4f2' : '0px 0px 0px 0px #9fb4f2'" [style.padding]="openMap ? '20px 5px' : '0px'" [style.border]="openMap ? '1px solid #263973' : '0px'" (click)="skip()" [disabled]="notChangesSkip()">

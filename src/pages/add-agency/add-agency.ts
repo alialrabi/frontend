@@ -79,7 +79,7 @@ export class AddAgencyPage {
       'firstName': ['', [Validators.required, Validators.maxLength(45)]],
       'lastName': ['', [Validators.required, Validators.maxLength(45)]],
       'phone': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
-      'email': ['', [Validators.required, Validators.email]],
+      'email': ['', [Validators.required, Validators.email , Validators.maxLength(49)]],
       'password': ['', [Validators.required, Validators.minLength(6) , Validators.maxLength(50)]],
       'passwordConfirm': ['', [Validators.required]]
     });

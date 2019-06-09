@@ -69,6 +69,7 @@
   
         <p class="validationHint" *ngIf="hasError('email', 'required')"> {{ 'REQURIED' | translate }} </p>
         <p class="validationHint" *ngIf="hasError('email', 'email')">{{ 'EMAIL_VALID' | translate }} </p>
+        <p class="validationHint" *ngIf="hasError('email', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
   
         <ion-item>
           <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">

@@ -106,10 +106,16 @@ export class AddOrderPage {
       this.isCordova = true;
     }
 
+    console.log(this.platform.is('cordova') , this.platform.is("android"));
+    
     if(this.platform.is('cordova') || this.platform.is("android")){
+      console.log("cordova");
+      
       this.platfromType = 'cordova'
     }else{
       this.platfromType = 'not-cordova'
+      console.log("not cordova");
+      
     }
 
 
