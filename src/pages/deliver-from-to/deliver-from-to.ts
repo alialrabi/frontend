@@ -135,7 +135,7 @@ export class DeliverFromToPage {
     this.myForm = builder.group({
       'weight': ['', [Validators.required , Validators.maxLength(8)]],
       'senderAddress': ['', [Validators.required]],
-      'senderPhone': ['', [Validators.pattern("(01)[0-9]{9}") , Validators.required]],
+      'senderPhone': ['', [Validators.pattern("(01)[0-9]{9}")]] ,
       'reciverName': ['', [Validators.required, Validators.maxLength(50)]],
       'address': ['', [Validators.required]],
       'reciverPhone': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
@@ -176,6 +176,19 @@ export class DeliverFromToPage {
     }).catch((err) => {
       load.dismiss();
     });
+
+    this.myForm.valueChanges
+      .map((value) => {
+        // Here you can manipulate your value
+        value.reciverName = value.reciverName.trim();
+        this.order.reciverName = value.reciverName
+        value.description = value.description.trim();
+        this.order.description = value.description
+       
+        return value;
+      }).filter((value) => this.myForm.valid)
+      .subscribe((value) => {
+      });
   }
 
   getAddresses(load) {
@@ -361,7 +374,7 @@ export class DeliverFromToPage {
   // }
   addOrder() {
 
-    if(this.myForm.valid && !this.validateweight()){
+    if(this.myForm.valid && !this.validateweight() && !this.checkSpaces()){
 
     let load = this.loading.create({
       content: this.pleaseWait
@@ -457,6 +470,19 @@ export class DeliverFromToPage {
   validateweight(){
     const ctrl = this.myForm.get("weight");
     return ctrl.dirty && (ctrl.value <= 0 || ctrl.value >20000); 
+  }
+
+  checkSpaces() {
+    if (this.order.reciverName == '' || this.order.description == '') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  checkSpaceTofields(string, field) {
+    const ctrl = this.myForm.get(field);
+    return ctrl.dirty && string == '';
+
   }
 
 }

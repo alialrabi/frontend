@@ -64,8 +64,8 @@ export class ChangePasswordPage {
       })
 
     this.myForm = builder.group({
-      'oldpassword': ['', [Validators.required ,Validators.minLength(6) , Validators.maxLength(50)]],
-      'password': ['', [Validators.required ,Validators.minLength(6) , Validators.maxLength(50)]],
+      'oldpassword': ['', [Validators.required ,Validators.minLength(6) , Validators.maxLength(50) , Validators.pattern("^[A-Za-z0-9?!@#$%^&*_-]*$")]],
+      'password': ['', [Validators.required ,Validators.minLength(6) , Validators.maxLength(50) , Validators.pattern("^[A-Za-z0-9?!@#$%^&*_-]*$")]],
       'passwordConfirm': ['', []]
     });
 
@@ -76,6 +76,11 @@ export class ChangePasswordPage {
       });
     }
 
+  }
+
+  ngOnInit() {
+
+    
   }
 
   ionViewDidLoad() {

@@ -93,7 +93,7 @@ export class SignupPage {
       //'lastName': ['', [Validators.required , Validators.maxLength(45) ]],
       'phone': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
       'email': ['', [Validators.required, Validators.email , Validators.maxLength(49)]],
-      'password': ['', [Validators.required, Validators.minLength(6) , Validators.maxLength(50)]],
+      'password': ['', [Validators.required, Validators.minLength(6) , Validators.maxLength(50) , Validators.pattern("^[A-Za-z0-9?!@#$%^&*_-]*$")]],
       'passwordConfirm': ['', [Validators.required]],
       "langKey": [this.language, []]
     });
@@ -101,9 +101,61 @@ export class SignupPage {
 
   }
 
+  ngOnInit() {
+
+    
+    // var field2 = document.querySelector('[name="passwordConfirm"]');
+
+    // field2.addEventListener('keypress', function (event:any) {
+    //   console.log("event" , event);
+      
+    //   var key = event.charCode;
+    //   if (key === 32) {
+    //     console.log("in if");
+        
+    //     event.preventDefault();
+    //   }
+    // });
+    
+
+    // var field1 = document.querySelector('[name="password"]');
+    
+    // field1.addEventListener('keypress', function (event:any) {
+    //   console.log('action');
+      
+    //   var key = event.charCode;
+    //   if (key === 32) {
+    //     event.preventDefault();
+    //   }
+    // });
+
+    // console.log("field 1 ",field1);
+ 
+    this.myForm.valueChanges
+      .map((value) => {
+        // Here you can manipulate your value
+        value.firstName = value.firstName.trim();
+        this.account.firstName = value.firstName
+       
+        return value;
+      }).filter((value) => this.myForm.valid)
+      .subscribe((value) => {
+      });
+  }
+  // onKeypress(keypress){
+  //   console.log(keypress , 'keybress');
+    
+  //   var key = keypress.charCode;
+  //   if (key === 32) {
+  //     console.log("in if");
+      
+  //     keypress.preventDefault();
+  //   }
+  // }
+
   doSignup() {
 
-    if(this.myForm.valid && !this.notMathces()){
+    if(this.myForm.valid && !this.notMathces()  && !this.checkSpaces()){
 
     let loading = this.loading.create({
       content: this.pleaseWait
@@ -410,6 +462,19 @@ export class SignupPage {
   hideShowPassword() {    
     this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
     this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
+  }
+
+  checkSpaces() {
+    if (this.account.firstName == '') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  checkSpaceTofields(string, field) {
+    const ctrl = this.myForm.get(field);
+    return ctrl.dirty && string == '';
+
   }
 
 

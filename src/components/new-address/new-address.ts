@@ -111,11 +111,11 @@ export class NewAddressComponent {
 
     this.platform.registerBackButtonAction(() => {
       console.log("back button");
-      
+
       this.back()
     });
 
-    this.translateService.get(["SELECTION_CANCEL" , "SELECTION_OK" , 'ADD_ADDRESS_ERROR', 'ADD_ADDRESS_SUCCESS', 'EGYPT', 'ALEX', 'CAIRO', 'TANTA', 'DAMNHOR', 'SHIPIN_ELKOM', 'BANHA', 'PLEASE_WAIT', 'OFFICE', 'HOME', 'FLAT', 'LOCATION_ALERT_TITLE', 'LOCATION_ALERT_MESSAGE', 'OK']).subscribe((values) => {
+    this.translateService.get(["SELECTION_CANCEL", "SELECTION_OK", 'ADD_ADDRESS_ERROR', 'ADD_ADDRESS_SUCCESS', 'EGYPT', 'ALEX', 'CAIRO', 'TANTA', 'DAMNHOR', 'SHIPIN_ELKOM', 'BANHA', 'PLEASE_WAIT', 'OFFICE', 'HOME', 'FLAT', 'LOCATION_ALERT_TITLE', 'LOCATION_ALERT_MESSAGE', 'OK']).subscribe((values) => {
       this.addAddressError = values.ADD_ADDRESS_ERROR;
       this.addAdressSuccessString = values.ADD_ADDRESS_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
@@ -166,6 +166,31 @@ export class NewAddressComponent {
 
   }
 
+  ngOnInit() {
+
+    this.myForm.valueChanges
+      .map((value) => {
+        // Here you can manipulate your value
+        value.name = value.name.trim();
+        this.address.name = value.name
+        value.region = value.region.trim();
+        this.address.region = value.region
+        value.street = value.street.trim();
+        this.address.street = value.street
+        value.building = value.building.trim();
+        this.address.building = value.building
+        value.floor = value.floor.trim();
+        this.address.floor = value.floor
+        value.flatNumber = value.flatNumber.trim();
+        this.address.flatNumber = value.flatNumber
+        value.otherDetails = value.otherDetails.trim();
+        this.address.otherDetails = value.otherDetails
+
+        return value;
+      }).filter((value) => this.myForm.valid)
+      .subscribe((value) => {
+      });
+  }
 
 
   ionViewDidLoad() {
@@ -213,27 +238,27 @@ export class NewAddressComponent {
   }
   save() {
 
-    if(this.myForm.valid){
+    if (this.myForm.valid && !this.checkSpaces()) {
 
-    console.log(this.locationDisable);
+      console.log(this.locationDisable);
 
 
-    if (this.map == null || this.map == undefined) {
-      this.loadMapWithOutLocation(this);
+      if (this.map == null || this.map == undefined) {
+        this.loadMapWithOutLocation(this);
+      }
+
+
+      this.mapStyle.height = "100%";
+      this.mapStyle.width = "100%";
+      this.submapStyle.height = '100%';
+      this.submapStyle.width = '100%'
+
+      this.mapStyle1.height = "95%";
+      this.mapStyle1.width = "100%";
+
+      this.openMap = true;
+
     }
-
-
-    this.mapStyle.height = "100%";
-    this.mapStyle.width = "100%";
-    this.submapStyle.height = '100%';
-    this.submapStyle.width = '100%'
-
-    this.mapStyle1.height = "95%";
-    this.mapStyle1.width = "100%";
-
-    this.openMap = true;
-
-  }
 
   }
 
@@ -268,7 +293,7 @@ export class NewAddressComponent {
         mainClass.mainMarker = marker;
         mainClass.haveMarkerToLocation = true;
 
-      }else{
+      } else {
         mainClass.loadWithOutLocation = true;
       }
       //  console.log(this.map , 'map');
@@ -292,7 +317,7 @@ export class NewAddressComponent {
           superclass.haveMarkerToLocation = true;
           superclass.address.latitude = event.latLng.lat();
           superclass.address.longitude = event.latLng.lng();
-          
+
           superclass.chooseLocationelementRef._elementRef.nativeElement.disabled = false
           if (flag) {
             superclass.renderer.listen(superclass.chooseLocationelementRef._elementRef.nativeElement, 'click', (event) => {
@@ -457,7 +482,7 @@ export class NewAddressComponent {
 
   getLivingType(livingTypeValue) {
     let livingType = '';
-    if (livingTypeValue == 'Flat') {      
+    if (livingTypeValue == 'Flat') {
       livingType = this.flatValue
     } else if (livingTypeValue == 'Home') {
       livingType = this.homeValue
@@ -583,8 +608,8 @@ export class NewAddressComponent {
       this.mapStyle1.height = "0%";
       this.mapStyle1.width = "0%";
 
-      console.log(this.myForm.get("livingType").value , 'ssssssssssssss');
-      
+      console.log(this.myForm.get("livingType").value, 'ssssssssssssss');
+
       this.flatValue2 = this.getLivingType(this.myForm.get("livingType").value)
 
       this.openMap = false;
@@ -602,6 +627,19 @@ export class NewAddressComponent {
   check() {
     console.log("22");
     return false;
+
+  }
+
+  checkSpaces(){
+    if(this.address.building == '' || this.address.flatNumber == '' || this.address.floor == '' || this.address.region == '' || this.address.street == ''){
+      return true;
+    }else{
+      return false;
+    }
+  }
+  checkSpaceTofields(string , field){
+    const ctrl = this.myForm.get(field);
+    return ctrl.dirty && string == '';
 
   }
 

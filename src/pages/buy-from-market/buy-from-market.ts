@@ -127,8 +127,8 @@ export class BuyFromMarketPage {
 
     this.myForm1 = builder.group({
       'marketName': ['', [Validators.required, Validators.maxLength(45)]],
-      'marketAddress': ['', [Validators.required, Validators.maxLength(250)]],
-      'marketPhone': ['', [Validators.pattern("(01)[0-9]{9}") , Validators.required]],
+      'marketAddress': ['', [Validators.maxLength(250)]],
+      'marketPhone': ['', [Validators.pattern("(01)[0-9]{9}")]],
       'priceRange': ['', [Validators.required]],
       'description': ['', [Validators.required, Validators.maxLength(999)]],
       'address': ['', [Validators.required]],
@@ -178,6 +178,21 @@ export class BuyFromMarketPage {
     }).catch((err) => {
       load.dismiss();
     });
+
+    this.myForm1.valueChanges
+      .map((value) => {
+        // Here you can manipulate your value
+        value.marketName = value.marketName.trim();
+        this.order.marketName = value.marketName
+        value.marketAddress = value.marketAddress.trim();
+        this.order.marketAddress = value.marketAddress
+        value.description = value.description.trim();
+        this.order.description = value.description
+       
+        return value;
+      }).filter((value) => this.myForm1.valid)
+      .subscribe((value) => {
+      });
   }
 
   getAddresses(load) {
@@ -401,7 +416,7 @@ export class BuyFromMarketPage {
   }
   addOrder() {
 
-    if(this.myForm1.valid){
+    if(this.myForm1.valid  && !this.checkSpaces()){
 
     let load = this.loading.create({
       content: this.pleaseWait
@@ -492,6 +507,18 @@ export class BuyFromMarketPage {
       console.log("success ads");
 
     });
+
+  }
+  checkSpaces() {
+    if (this.order.marketName == '' || this.order.description == '') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  checkSpaceTofields(string, field) {
+    const ctrl = this.myForm1.get(field);
+    return ctrl.dirty && string == '';
 
   }
 

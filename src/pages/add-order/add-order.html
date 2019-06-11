@@ -53,10 +53,10 @@
           <ion-icon name="person" item-start class="text-primary"></ion-icon>
           {{ 'NAME' | translate }}
         </ion-label>
-        <ion-input type="text" formControlName="name" name="name" [lang]="language" [dir]="direction"></ion-input>
+        <ion-input type="text" formControlName="name" name="name" [(ngModel)]="orderModel.name" [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
 
-      <p class="validationHint" *ngIf="hasError('name', 'required' , myForm)"> {{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('name', 'required' , myForm) || checkSpaceTofields(orderModel.name , 'name')"> {{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('name', 'maxlength' , myForm)">{{ 'MAX_LENGTH' | translate }} </p>
 
 
@@ -65,7 +65,7 @@
           <ion-icon name="call" item-start class="text-primary"></ion-icon>
           {{ 'PHONE' | translate }}
         </ion-label>
-        <ion-input type="number" formControlName="phone" name="phone" [lang]="language" [dir]="direction"></ion-input>
+        <ion-input type="number" formControlName="phone" name="phone" [(ngModel)]="orderModel.phone" [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('phone', 'required' , myForm)"> {{ 'REQURIED' | translate }} </p>
@@ -74,9 +74,9 @@
       <ion-item>
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="call" item-start class="text-primary"></ion-icon>
-          {{ 'SECOND_PHONE' | translate }}
+          {{ 'SECOND_PHONE' | translate }} <span class="optional-text"> {{ 'OPTIONAL_TEXT' | translate }}</span>
         </ion-label>
-        <ion-input type="number" formControlName="secondPhone" name="secondPhone" [lang]="language" [dir]="direction"></ion-input>
+        <ion-input type="number" formControlName="secondPhone" [(ngModel)]="orderModel.secondPhone" name="secondPhone" [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('secondPhone', 'pattern' , myForm)">{{ 'PHONE_NUMBER' | translate }} </p>
@@ -98,7 +98,7 @@
       </ion-item>
       <p class="validationHint" *ngIf="hasError('city', 'required' , myForm)"> {{ 'REQURIED' | translate }} </p>
 
-      <ion-item *ngIf="userType == 'User'">
+      <!-- <ion-item *ngIf="userType == 'User'">
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top': 'right top'">
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
           {{ 'FROM_ADDRESS' | translate }}
@@ -107,7 +107,7 @@
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('fromAddress', 'required' , myForm)"> {{ 'REQURIED' | translate }} </p>
-      <p class="validationHint" *ngIf="hasError('fromAddress', 'maxlength' , myForm)">{{ 'MAX_LENGTH' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('fromAddress', 'maxlength' , myForm)">{{ 'MAX_LENGTH' | translate }} </p> -->
 
 
       <ion-item *ngIf="userType != 'User'">
@@ -115,21 +115,20 @@
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
           {{ 'FULL_ADDRESS' | translate }} 1
         </ion-label>
-        <ion-input type="text" formControlName="address1" name="address1" [lang]="language" [dir]="direction"></ion-input>
+        <ion-input type="text" formControlName="address1"  [(ngModel)]="orderModel.address1" name="address1" [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
 
-      <p class="validationHint" *ngIf="hasError('address1', 'required' , myForm)"> {{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('address1', 'required' , myForm) || checkSpaceTofields(orderModel.address1 , 'address1')"> {{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('address1', 'maxlength' , myForm)">{{ 'MAX_LENGTH' | translate }} </p>
 
       <ion-item *ngIf="userType != 'User'">
         <ion-label floating [style.transform-origin]="language =='en'? 'left top': 'right top'" *ngIf="userType != 'User'">
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
-          {{ 'FULL_ADDRESS' | translate }} 2
+          {{ 'FULL_ADDRESS' | translate }} 2 <span class="optional-text"> {{ 'OPTIONAL_TEXT' | translate }}</span>
         </ion-label>
-        <ion-input type="text" formControlName="address2" name="address2" [lang]="language" [dir]="direction"></ion-input>
+        <ion-input type="text" formControlName="address2" name="address2" [(ngModel)]="orderModel.address2" [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
 
-      <p class="validationHint" *ngIf="hasError('address2', 'required' , myForm)"> {{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('address2', 'maxlength' , myForm)">{{ 'MAX_LENGTH' | translate }} </p>
 
 
@@ -157,13 +156,13 @@
     <ion-grid margin-top style="margin-bottom: 40px;" *ngIf="!print">
       <ion-row *ngIf="platfromType == 'not-cordova' && userType != 'User'">
         <ion-col col-6>
-          <button ion-button block text-wrap class="myButton" tappable (click)="addOrder($event)" [disabled]="!myForm.valid || ordersArray.length == 0">
+          <button ion-button block text-wrap class="myButton" tappable (click)="addOrder($event)" [disabled]="!myForm.valid || ordersArray.length == 0 || checkSpaces()">
               {{ 'ADD_ORDER_BUTTON_WITH_PRINT' | translate }}
            
           </button>
         </ion-col>
         <ion-col col-6>
-          <button ion-button block text-wrap class="myButton" tappable (click)="addOrderWithOutPrint($event)" [disabled]="!myForm.valid || ordersArray.length == 0">
+          <button ion-button block text-wrap class="myButton" tappable (click)="addOrderWithOutPrint($event)" [disabled]="!myForm.valid || ordersArray.length == 0 || checkSpaces()">
               {{ 'ADD_ORDER_BUTTON' | translate }}
           </button>
         </ion-col>
@@ -171,7 +170,7 @@
       <ion-row *ngIf="platfromType == 'cordova' || userType == 'User'">
         
         <ion-col col-12>
-          <button ion-button block text-wrap class="myButton" tappable (click)="addOrderWithOutPrint($event)" [disabled]="!myForm.valid || ordersArray.length == 0">
+          <button ion-button block text-wrap class="myButton" tappable (click)="addOrderWithOutPrint($event)" [disabled]="!myForm.valid || ordersArray.length == 0 || checkSpaces()">
               {{ 'ADD_ORDER_BUTTON' | translate }}
           </button>
         </ion-col>

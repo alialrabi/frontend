@@ -29,7 +29,7 @@
         <ion-input type="text" [(ngModel)]="account.firstName" name="firstName" formControlName="firstName"  [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
 
-      <p class="validationHint" *ngIf="hasError('firstName', 'required')"> {{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('firstName', 'required')  || checkSpaceTofields(account.firstName , 'firstName')"> {{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('firstName', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
 
       <!-- <ion-item>
@@ -73,13 +73,23 @@
           <ion-icon name="lock" item-start class="text-primary"></ion-icon>
           {{ 'PASSWORD' | translate }}
         </ion-label>
-        <ion-input [type]="passwordType" [(ngModel)]="account.password" name="password" formControlName="password"  [lang]="language" [dir]="direction"></ion-input>
+        <ion-input [type]="passwordType" [(ngModel)]="account.password" name="password" formControlName="password" [lang]="language" [dir]="direction"></ion-input>
         <ion-icon item-end [name]="passwordIcon" class="passwordIcon" (click)='hideShowPassword()'></ion-icon>
       </ion-item>
+
+      <!-- <ion-item>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+          <ion-icon name="lock" item-start class="text-primary"></ion-icon>
+          {{ 'PASSWORD' | translate }}
+        </ion-label>
+        <ion-input [type]="passwordType" [(ngModel)]="account.password" name="password" formControlName="password"  [lang]="language" [dir]="direction"></ion-input>
+        <ion-icon item-end [name]="passwordIcon" class="passwordIcon" (click)='hideShowPassword()'></ion-icon>
+      </ion-item> -->
 
       <p class="validationHint" *ngIf="hasError('password', 'required')"> {{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('password', 'minlength')">{{ 'MIN_LENGTH' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('password', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('password', 'pattern')">{{ 'INVALID_PASSWORD' | translate }} </p>
 
       <ion-item >
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
@@ -121,7 +131,7 @@
     
 
     <div margin-top>
-      <button ion-button block class="myButton" tappable (click)="doSignup()" [disabled]="!myForm.valid || notMathces()">
+      <button ion-button block class="myButton" tappable (click)="doSignup()" [disabled]="!myForm.valid || notMathces() || checkSpaces()">
         {{ 'SIGNUP_BUTTON' | translate }}
       </button>
       </div>

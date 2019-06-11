@@ -117,6 +117,20 @@ export class LoginPage {
     }
   }
 
+  ngOnInit() {
+
+    var field = document.querySelector('[name="password"]');
+
+    field.addEventListener('keypress', function (event:any) {
+      
+      var key = event.charCode;
+      if (key === 32) {
+        event.preventDefault();
+      }
+    });
+
+  }
+
   userData = {
     email: '',
     first_name: '',

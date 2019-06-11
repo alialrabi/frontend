@@ -170,13 +170,13 @@ export class EditAddressPage {
       //'country': ['', [Validators.required, Validators.maxLength(45)]],
       //'city': ['Alexandria', []],
       'livingType': ['Flat', []],
-      'name': ['', [Validators.maxLength(45)]],
-      'region': ['', [Validators.required, Validators.maxLength(45)]],
-      'street': ['', [Validators.required, Validators.maxLength(45)]],
-      'building': ['', [Validators.required, Validators.maxLength(45)]],
-      'floor': ['', [Validators.required, Validators.maxLength(45)]],
-      'flatNumber': ['', [Validators.required, Validators.maxLength(45)]],
-      'otherDetails': ['', [Validators.maxLength(45)]],
+      'name': [this.address.name, [Validators.maxLength(45)]],
+      'region': [this.address.region, [Validators.required, Validators.maxLength(45)]],
+      'street': [this.address.street, [Validators.required, Validators.maxLength(45)]],
+      'building': [this.address.building, [Validators.required, Validators.maxLength(45)]],
+      'floor': [this.address.floor, [Validators.required, Validators.maxLength(45)]],
+      'flatNumber': [this.address.flatNumber, [Validators.required, Validators.maxLength(45)]],
+      'otherDetails': [this.address.otherDetails, [Validators.maxLength(45)]],
       // 'mobilePhoneNumber': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
       // 'homePhoneNumber': ['', [Validators.pattern("(0)[0-9]{9}")]],
     });
@@ -203,6 +203,33 @@ export class EditAddressPage {
 
       });
   }
+
+  ngOnInit() {
+
+    this.myForm.valueChanges
+      .map((value) => {
+        // Here you can manipulate your value
+        value.name = value.name.trim();
+        this.address.name = value.name
+        value.region = value.region.trim();
+        this.address.region = value.region
+        value.street = value.street.trim();
+        this.address.street = value.street
+        value.building = value.building.trim();
+        this.address.building = value.building
+        value.floor = value.floor.trim();
+        this.address.floor = value.floor
+        value.flatNumber = value.flatNumber.trim();
+        this.address.flatNumber = value.flatNumber
+        value.otherDetails = value.otherDetails.trim();
+        this.address.otherDetails = value.otherDetails
+
+        return value;
+      }).filter((value) => this.myForm.valid)
+      .subscribe((value) => {
+      });
+  }
+
 
 
   ionViewDidLoad() {
@@ -255,7 +282,7 @@ export class EditAddressPage {
   }
   next() {
 
-    if(this.myForm.valid){
+    if(this.myForm.valid && !this.checkSpaces()){
     // console.log(this.locationDisable);
 
 
@@ -768,6 +795,18 @@ export class EditAddressPage {
     } else {
       return false;
     }
+  }
+  checkSpaces(){
+    if(this.address.building == '' || this.address.flatNumber == '' || this.address.floor == '' || this.address.region == '' || this.address.street == ''){
+      return true;
+    }else{
+      return false;
+    }
+  }
+  checkSpaceTofields(string , field){
+    const ctrl = this.myForm.get(field);
+    return ctrl.dirty && string == '';
+
   }
 
 }

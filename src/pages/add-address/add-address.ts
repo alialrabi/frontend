@@ -214,6 +214,32 @@ export class AddAddressPage {
   }
 
   ngOnInit() {
+
+    this.myForm.valueChanges
+            .map((value) => {
+                // Here you can manipulate your value
+                value.name = value.name.trim();
+                this.address.name = value.name
+                value.region = value.region.trim();
+                this.address.region = value.region
+                value.street = value.street.trim();
+                this.address.street = value.street
+                value.building = value.building.trim();
+                this.address.building = value.building
+                value.floor = value.floor.trim();
+                this.address.floor = value.floor
+                value.flatNumber = value.flatNumber.trim();
+                this.address.flatNumber = value.flatNumber
+                value.otherDetails = value.otherDetails.trim();
+                this.address.otherDetails = value.otherDetails
+                
+                return value;
+            }).filter((value) => this.myForm.valid)
+            .subscribe((value) => {
+            });
+
+
+
     this.principal.identity().then((account) => {
       console.log(account);
 
@@ -271,7 +297,7 @@ export class AddAddressPage {
 
   }
   save() {
-    if(this.myForm.valid){
+    if(this.myForm.valid && !this.checkSpaces()){
 
     // console.log(this.locationDisable);
 
@@ -679,5 +705,17 @@ export class AddAddressPage {
     } else {
       return false;
     }
+  }
+  checkSpaces(){
+    if(this.address.building == '' || this.address.flatNumber == '' || this.address.floor == '' || this.address.region == '' || this.address.street == ''){
+      return true;
+    }else{
+      return false;
+    }
+  }
+  checkSpaceTofields(string , field){
+    const ctrl = this.myForm.get(field);
+    return ctrl.dirty && string == '';
+
   }
 }

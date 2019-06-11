@@ -85,6 +85,13 @@ export class AddOrderPage {
     firstPhone: '',
     secondPhone: ''
   }
+  orderModel = {
+    name: '',
+    address1: '',
+    address2: '',
+    phone: '',
+    secondPhone: ''
+  }
 
   print = false;
 
@@ -230,6 +237,21 @@ export class AddOrderPage {
     }).catch((err) => {
       load.dismiss();
     });
+
+    this.myForm.valueChanges
+      .map((value) => {
+        // Here you can manipulate your value
+        value.name = value.name.trim();
+        this.orderModel.name = value.name
+        value.address1 = value.address1.trim();
+        this.orderModel.address1 = value.address1
+        value.address2 = value.address2.trim();
+        this.orderModel.address2 = value.address2
+       
+        return value;
+      }).filter((value) => this.myForm.valid)
+      .subscribe((value) => {
+      });
   }
 
 
@@ -335,12 +357,12 @@ export class AddOrderPage {
     let orderObject = {
       //userId : this.myForm.get('userId').value,
       orders: this.orderString,
-      name: this.myForm.get("name").value,
-      firstPhone: this.myForm.get("phone").value,
-      secondPhone: this.myForm.get("secondPhone").value,
+      name: this.orderModel.name,
+      firstPhone: this.orderModel.phone,
+      secondPhone: this.orderModel.secondPhone,
       city: this.getCity(this.myForm.get("city").value),
-      address: this.myForm.get("address1").value,
-      secondAddress: this.myForm.get("address2").value,
+      address: this.orderModel.address1,
+      secondAddress: this.orderModel.address2,
       status: 'not assigned',
       captainId: 0,
       agencyId: this.account.id,
@@ -350,7 +372,7 @@ export class AddOrderPage {
       addressId: 0,
       subOrders: this.ordersArray
     }
-    this.order1.address = this.myForm.get("address1").value;
+    this.order1.address = this.orderModel.address1;
     this.order1.firstPhone = orderObject.firstPhone;
     this.order1.name = orderObject.name;
     this.order1.secondAddress = orderObject.secondAddress;
@@ -514,7 +536,7 @@ export class AddOrderPage {
   }
   addOrderWithOutPrint(){
 
-    if(this.myForm.valid && this.ordersArray.length != 0){
+    if(this.myForm.valid && this.ordersArray.length != 0 && !this.checkSpaces()){
 
     let load = this.loading.create({
       content: this.pleaseWait
@@ -526,12 +548,12 @@ export class AddOrderPage {
     let orderObject = {
       //userId : this.myForm.get('userId').value,
       orders: this.orderString,
-      name: this.myForm.get("name").value,
-      firstPhone: this.myForm.get("phone").value,
-      secondPhone: this.myForm.get("secondPhone").value,
+      name: this.orderModel.name,
+      firstPhone: this.orderModel.phone,
+      secondPhone: this.orderModel.secondPhone,
       city: this.getCity(this.myForm.get("city").value),
-      address: this.myForm.get("address1").value,
-      secondAddress: this.myForm.get("address2").value,
+      address: this.orderModel.address1,
+      secondAddress: this.orderModel.address2,
       status: 'not assigned',
       captainId: 0,
       agencyId: this.account.id,
@@ -541,7 +563,7 @@ export class AddOrderPage {
       addressId: 0,
       subOrders: this.ordersArray
     }
-    this.order1.address = this.myForm.get("address1").value;
+    this.order1.address = this.orderModel.address1;
     this.order1.firstPhone = orderObject.firstPhone;
     this.order1.name = orderObject.name;
     this.order1.secondAddress = orderObject.secondAddress;
@@ -714,5 +736,17 @@ export class AddOrderPage {
   }
   verifyPhone(orderObject){
     this.navCtrl.setRoot(PhoneVerificationPage , {order:orderObject})
+  }
+  checkSpaces() {
+    if (this.orderModel.name == '' || this.orderModel.address1 == '') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  checkSpaceTofields(string, field) {
+    const ctrl = this.myForm.get(field);
+    return ctrl.dirty && string == '';
+
   }
 }

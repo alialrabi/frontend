@@ -90,11 +90,11 @@ export class EditAgencyPage {
       })
 
     this.myForm = builder.group({
-      'firstName': ['', [Validators.required, Validators.maxLength(45)]],
-      'lastName': ['', [Validators.required, Validators.maxLength(45)]],
-      'phone': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
-      'email': ['', [Validators.required, Validators.email , Validators.maxLength(49)]],
-      'password': ['', [Validators.minLength(6) , Validators.maxLength(50)]],
+      'firstName': [this.account.firstName, [Validators.required, Validators.maxLength(45)]],
+      'lastName': [this.account.lastName, [Validators.required, Validators.maxLength(45)]],
+      'phone': [this.account.phone, [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
+      'email': [this.account.email, [Validators.required, Validators.email , Validators.maxLength(49)]],
+      'password': ['', [Validators.minLength(6) , Validators.maxLength(50) , Validators.pattern("^[A-Za-z0-9?!@#$%^&*_-]*$")]],
       'passwordConfirm': ['', []]
     });
 
@@ -105,13 +105,29 @@ export class EditAgencyPage {
 
   }
 
+  ngOnInit() {
+
+    this.myForm.valueChanges
+      .map((value) => {
+        // Here you can manipulate your value
+        value.firstName = value.firstName.trim();
+        this.account.firstName = value.firstName
+        value.lastName = value.lastName.trim();
+        this.account.lastName = value.lastName
+       
+        return value;
+      }).filter((value) => this.myForm.valid)
+      .subscribe((value) => {
+      });
+  }
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad EditAgencyPage');
   }
 
   EditAgency() {
 
-    if(this.myForm.valid && !this.notMathces() && this.valuesChanges() && !this.validatePasswordChange()){
+    if(this.myForm.valid && !this.notMathces() && this.valuesChanges() && !this.validatePasswordChange()  && !this.checkSpaces()){
 
     let load = this.loading.create({
       content: this.pleaseWait
@@ -121,8 +137,8 @@ export class EditAgencyPage {
     // Attempt to login in through our User service
     let editAccount = {
       id:this.account.id,
-      firstName:this.myForm.get("firstName").value,
-      lastName:this.myForm.get("lastName").value,
+      firstName:this.account.firstName,
+      lastName:this.account.lastName,
       email:this.myForm.get("email").value,
       password:this.myForm.get("password").value,
       emailChanged:this.email != this.myForm.get("email").value,
@@ -188,6 +204,7 @@ export class EditAgencyPage {
     this.navCtrl.setRoot(AgencyDetailsPage , {item:this.agency});
   }
   valuesChanges(){
+    
     if(this.firstName != this.account.firstName || this.phone != this.account.phone || this.lastName != this.account.lastName || this.email != this.account.email || (this.password != this.myForm.get("password").value && this.myForm.get("password").value != '' && this.myForm.get("password").value != null)){  
       return true;
     }else{
@@ -221,4 +238,17 @@ export class EditAgencyPage {
     this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
     this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
   }
+  checkSpaces() {
+    if (this.account.firstName == '' || this.account.lastName == '') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  checkSpaceTofields(string, field) {
+    const ctrl = this.myForm.get(field);
+    return ctrl.dirty && string == '';
+
+  }
+
 }

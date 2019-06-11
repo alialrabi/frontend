@@ -92,13 +92,13 @@
         <strong text-wrap>{{order.userOrder.marketName}}</strong>
       </p>
     </ion-item>
-    <ion-item class="item-background" *ngIf="order.userOrder.isBuing">
+    <ion-item class="item-background" *ngIf="order.userOrder.isBuing && order.userOrder.marketAddress != null && order.userOrder.marketAddress != undefined && order.userOrder.marketAddress != ''">
       <p>
         {{ 'MARKET_ADDRESS' | translate }} :
         <strong text-wrap>{{order.userOrder.marketAddress}}</strong>
       </p>
     </ion-item>
-    <ion-item class="item-background" *ngIf="order.userOrder.isBuing">
+    <ion-item class="item-background" *ngIf="order.userOrder.isBuing && order.userOrder.marketPhone != null && order.userOrder.marketPhone != undefined && order.userOrder.marketPhone != ''">
       <p>
         {{ 'MARKET_PHONE' | translate }} :
         <strong text-wrap>{{order.userOrder.marketPhone}}</strong>
@@ -156,7 +156,7 @@
         <strong text-wrap>{{order.senderAddress.otherDetails}}</strong>
       </p>
     </ion-item>
-    <ion-item class="item-background" *ngIf="order.userOrder.senderPhone != null">
+    <ion-item class="item-background" *ngIf="order.userOrder.senderPhone != null && order.userOrder.senderPhone != undefined && order.userOrder.senderPhone != ''">
       <p>
         {{ 'SENDER_PHONE' | translate }} :
         <strong text-wrap>{{order.userOrder.senderPhone}}</strong>

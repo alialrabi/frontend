@@ -92,6 +92,21 @@ export class EditRatingPage {
   
     }
 
+    ngOnInit() {
+
+    this.myForm.valueChanges
+    .map((value) => {
+      // Here you can manipulate your value
+      value.ratingComment = value.ratingComment.trim();
+      this.editOrder.ratingComment = value.ratingComment
+     
+      return value;
+    }).filter((value) => this.myForm.valid)
+    .subscribe((value) => {
+    });
+
+  }
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad EditRatingPage');
   }

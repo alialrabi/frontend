@@ -35,7 +35,7 @@
       <ion-item>
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
-          {{ 'ADDRESS_NAME' | translate }}
+          {{ 'ADDRESS_NAME' | translate }} <span class="optional-text"> {{ 'OPTIONAL_TEXT' | translate }}</span>
         </ion-label>
         <ion-input type="text" [(ngModel)]="address.name" formControlName="name" name="name" [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
@@ -86,7 +86,7 @@
         <ion-input type="text" [(ngModel)]="address.region" formControlName="region" name="region" [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
 
-      <p class="validationHint" *ngIf="hasError('region', 'required')">{{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('region', 'required') || checkSpaceTofields(address.region , 'region')">{{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('region', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
 
 
@@ -98,7 +98,7 @@
         <ion-input type="text" [(ngModel)]="address.street" formControlName="street" name="street" [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
 
-      <p class="validationHint" *ngIf="hasError('street', 'required')">{{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('street', 'required') || checkSpaceTofields(address.street , 'street')">{{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('street', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
 
       <ion-item>
@@ -109,7 +109,7 @@
         <ion-input type="text" [(ngModel)]="address.building" formControlName="building" name="building" [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
 
-      <p class="validationHint" *ngIf="hasError('building', 'required')">{{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('building', 'required') || checkSpaceTofields(address.building , 'building')">{{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('building', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
 
       <ion-item>
@@ -120,7 +120,7 @@
         <ion-input type="text" [(ngModel)]="address.floor" formControlName="floor" name="floor" [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
 
-      <p class="validationHint" *ngIf="hasError('floor', 'required')">{{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('floor', 'required') || checkSpaceTofields(address.floor , 'floor')">{{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('floor', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
 
       <ion-item>
@@ -132,14 +132,14 @@
           [dir]="direction"></ion-input>
       </ion-item>
 
-      <p class="validationHint" *ngIf="hasError('flatNumber', 'required')">{{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('flatNumber', 'required') || checkSpaceTofields(address.flatNumber , 'flatNumber')">{{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('flatNumber', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
 
 
       <ion-item>
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
-          {{ 'OTHER_DETAILS' | translate }}
+          {{ 'OTHER_DETAILS' | translate }} <span class="optional-text"> {{ 'OPTIONAL_TEXT' | translate }}</span>
         </ion-label>
         <ion-input type="text" [(ngModel)]="address.otherDetails" formControlName="otherDetails" name="otherDetails" [lang]="language"
           [dir]="direction"></ion-input>
@@ -171,7 +171,7 @@
     </form>
 
     <div margin-top *ngIf="!openMap" style="padding-left: 7%;padding-right: 7%">
-      <button ion-button block class="myButton" tappable (click)="save()" [disabled]="!myForm.valid">
+      <button ion-button block class="myButton" tappable (click)="save()" [disabled]="!myForm.valid || checkSpaces()">
         {{ 'ADD-ADDRESS' | translate }}
       </button>
     </div>

@@ -140,11 +140,11 @@ export class EditCaptainPage {
     })
 
     this.myForm = builder.group({
-      'code': ['', [Validators.required , Validators.pattern("[0-9]{1,8}")]],
-      'name': ['', [Validators.required, Validators.maxLength(45)]],
-      'phone': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
-      'email': ['', [Validators.required, Validators.email , Validators.maxLength(49)]],
-      'password': ['', [Validators.minLength(6) , Validators.maxLength(50)]],
+      'code': [this.captain.code, [Validators.required , Validators.pattern("[0-9]{1,8}")]],
+      'name': [this.captain.name, [Validators.required, Validators.maxLength(45)]],
+      'phone': [this.captain.phone, [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
+      'email': [this.account.email, [Validators.required, Validators.email , Validators.maxLength(49)]],
+      'password': ['', [Validators.minLength(6) , Validators.maxLength(50) , Validators.pattern("^[A-Za-z0-9?!@#$%^&*_-]*$")]],
       'passwordConfirm': ['', []]
     });
 
@@ -154,6 +154,20 @@ export class EditCaptainPage {
     });
 
 
+  }
+
+  ngOnInit() {
+
+    this.myForm.valueChanges
+      .map((value) => {
+        // Here you can manipulate your value
+        value.name = value.name.trim();
+        this.captain.name = value.name
+       
+        return value;
+      }).filter((value) => this.myForm.valid)
+      .subscribe((value) => {
+      });
   }
 
 
@@ -245,7 +259,7 @@ export class EditCaptainPage {
 
   editCaptain() {
 
-    if(this.myForm.valid && !this.notMathces() && this.valuesChanges() && !this.isloadinImage && !this.validatePasswordChange()){
+    if(this.myForm.valid && !this.notMathces() && this.valuesChanges() && !this.isloadinImage && !this.validatePasswordChange() && !this.checkSpaces()){
 
     let load = this.loading.create({
       content: this.pleaseWait
@@ -437,6 +451,19 @@ export class EditCaptainPage {
   hideShowPassword() {    
     this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
     this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
+  }
+
+  checkSpaces() {
+    if (this.captain.name == '') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  checkSpaceTofields(string, field) {
+    const ctrl = this.myForm.get(field);
+    return ctrl.dirty && string == '';
+
   }
 
 }

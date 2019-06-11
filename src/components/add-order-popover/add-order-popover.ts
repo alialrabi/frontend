@@ -20,6 +20,11 @@ export class AddOrderPopoverComponent {
   language = MyApp.language
   direction = MyApp.direction
 
+  order = {
+    price:'',
+    order:''
+  }
+
   constructor(public viewCtrl: ViewController, private builder: FormBuilder,public platform:Platform) {
     this.myForm = builder.group({
       "order": ['', [Validators.required, Validators.maxLength(45)]],
@@ -31,9 +36,21 @@ export class AddOrderPopoverComponent {
        this.back()
     });
 
+   
   }
 
   ngOnInit() {
+
+    this.myForm.valueChanges
+      .map((value) => {        
+        // Here you can manipulate your value
+        value.order = value.order.trim();
+        this.order.order = value.order
+       
+        return value;
+      }).filter((value) => this.myForm.valid)
+      .subscribe((value) => {
+      });
 
   }
   async back(){
@@ -44,10 +61,10 @@ export class AddOrderPopoverComponent {
     await this.viewCtrl.dismiss(null);
   }
   async save() {
-    if (this.myForm.valid && !this.validatePrice()) {
+    if (this.myForm.valid && !this.validatePrice() && !this.checkSpaces()) {
       let subOrder = {
-        name: this.myForm.get("order").value,
-        price: this.myForm.get("price").value
+        name: this.order.order,
+        price: this.order.price
       }
       await this.viewCtrl.dismiss(subOrder);
     }
@@ -63,6 +80,19 @@ export class AddOrderPopoverComponent {
   validatePrice() {
     const ctrl = this.myForm.get("price");
     return ctrl.dirty && (ctrl.value <= 0 || ctrl.value > 100000);
+  }
+
+  checkSpaces() {
+    if (this.order.order == '') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  checkSpaceTofields(string, field) {
+    const ctrl = this.myForm.get(field);
+    return ctrl.dirty && string == '';
+
   }
 
 }

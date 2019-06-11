@@ -46,7 +46,7 @@
           [dir]="direction"></ion-textarea>
       </ion-item>
 
-      <p class="validationHint" *ngIf="hasError('description', 'required')">{{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('description', 'required') || checkSpaceTofields(order.description , 'description')">{{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('description', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
 
 
@@ -96,13 +96,12 @@
       <ion-item>
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="call" item-start class="text-primary"></ion-icon>
-          {{ 'SENDER_PHONE' | translate }}
+          {{ 'SENDER_PHONE' | translate }} <span class="optional-text"> {{ 'OPTIONAL_TEXT' | translate }}</span>
         </ion-label>
         <ion-input type="number" [(ngModel)]="order.senderPhone" formControlName="senderPhone" name="senderPhone" [lang]="language"
           [dir]="direction"></ion-input>
       </ion-item>
       
-      <p class="validationHint" *ngIf="hasError('senderPhone', 'required')"> {{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('senderPhone', 'pattern')">{{ 'PHONE_NUMBER' | translate }} </p>
 
 
@@ -118,7 +117,7 @@
           [dir]="direction"></ion-input>
       </ion-item>
 
-      <p class="validationHint" *ngIf="hasError('reciverName', 'required')"> {{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('reciverName', 'required') || checkSpaceTofields(order.reciverName , 'reciverName')"> {{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('reciverName', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
 
 
@@ -152,7 +151,7 @@
     </form>
 
     <div margin-top style="margin-bottom: 40px;">
-      <button ion-button block class="myButton" tappable (click)="addOrder()" [disabled]="!myForm.valid || validateweight()">
+      <button ion-button block class="myButton" tappable (click)="addOrder()" [disabled]="!myForm.valid || validateweight() || checkSpaces()">
         {{ 'ADD_ORDER_BUTTON' | translate }}
       </button>
     </div>

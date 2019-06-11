@@ -49,7 +49,7 @@
               <input id="imageInput" type="file" accept="image/*" style="visibility:hidden" [(ngModel)]="browserImage" (change)="uploadBrowserImage($event)"
                 *ngIf="platformType != 'cordova'" />
               <button ion-button icon-only [style.margin-bottom]="!isCordova && language != 'en' ? '26px' : '0px'" clear class="icon-btn"
-                float-left (click)="openFileSelector()" *ngIf="platformType != 'cordova'">
+                float-left (click)="openFileSelector()" *ngIf="platformType != 'cordova'" [disabled] = "isloadinImage">
                 <ion-icon name="camera"></ion-icon>
               </button>
             </ion-col>
@@ -81,7 +81,7 @@
         <ion-input type="text" [(ngModel)]="captain.name" formControlName="name" name="name" [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
 
-      <p class="validationHint" *ngIf="hasError('name', 'required')"> {{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('name', 'required') || checkSpaceTofields(captain.name , 'name')"> {{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('name', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
 
 
@@ -121,6 +121,7 @@
       <p class="validationHint" *ngIf="hasError('password', 'required')"> {{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('password', 'minlength')">{{ 'MIN_LENGTH' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('password', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('password', 'pattern')">{{ 'INVALID_PASSWORD' | translate }} </p>
 
       <ion-item style="border-bottom: 1px solid #dedede;">
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
@@ -144,7 +145,7 @@
     </form>
 
     <div margin-top style="margin-bottom: 40px;">
-      <button ion-button block class="myButton" tappable (click)="addCaptain()" [disabled]="!myForm.valid || notMathces() || isloadinImage">
+      <button ion-button block class="myButton" tappable (click)="addCaptain()" [disabled]="!myForm.valid || notMathces() || isloadinImage || checkSpaces()">
         {{ 'ADD_CAPTAIN_BUTTON' | translate }}
       </button>
     </div>

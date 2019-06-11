@@ -139,11 +139,11 @@
                 {{ 'MARKET_NAME' | translate }} :
                 <strong text-wrap>{{order.userOrder.marketName}}</strong>
               </p>
-              <p *ngIf="order.userOrder.isBuing">
+              <p *ngIf="order.userOrder.isBuing && order.userOrder.marketAddress != null && order.userOrder.marketAddress != undefined && order.userOrder.marketAddress != ''">
                 {{ 'MARKET_ADDRESS' | translate }} :
                 <strong text-wrap>{{order.userOrder.marketAddress}}</strong>
               </p>
-              <p *ngIf="order.userOrder.isBuing">
+              <p *ngIf="order.userOrder.isBuing && order.userOrder.marketPhone != null && order.userOrder.marketPhone != undefined && order.userOrder.marketPhone != ''">
                 {{ 'MARKET_PHONE' | translate }} :
                 <strong text-wrap>{{order.userOrder.marketPhone}}</strong>
               </p>

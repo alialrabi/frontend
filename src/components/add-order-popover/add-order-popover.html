@@ -9,9 +9,9 @@
           <ion-icon name="reorder" item-start class="text-primary"></ion-icon>
           {{ 'ORDER' | translate }}
         </ion-label>
-        <ion-input type="text" name="order" formControlName="order" [lang]="language" [dir]="direction"></ion-input>
+        <ion-input type="text" name="order" [(ngModel)]="order.order" formControlName="order" [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
-      <p class="validationHint" *ngIf="hasError('order', 'required' , myForm)"> {{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('order', 'required' , myForm)  || checkSpaceTofields(order.order , 'order')"> {{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('order', 'maxlength' , myForm)">{{ 'MAX_LENGTH' | translate }} </p>
 
       <ion-item>
@@ -19,7 +19,7 @@
           <ion-icon name="cash" item-start class="text-primary"></ion-icon>
           {{ 'PRICE' | translate }}
         </ion-label>
-        <ion-input type="number" name="price" formControlName="price" [lang]="language" [dir]="direction"></ion-input>
+        <ion-input type="number" [(ngModel)]="order.price" name="price" formControlName="price" [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
       <p class="validationHint" *ngIf="hasError('price', 'required' , myForm)"> {{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('price', 'maxlength' , myForm)">{{ 'MAX_LENGTH' | translate }} </p>
@@ -39,7 +39,7 @@
 
         <ion-col col-6>
           <ion-buttons>
-            <button ion-button block tappable (click)="save()" class="myButton" [disabled]="!myForm.valid || validatePrice()">
+            <button ion-button block tappable (click)="save()" class="myButton" [disabled]="!myForm.valid || validatePrice()  || checkSpaces()">
               {{ 'ADD' | translate }}
             </button>
           </ion-buttons>
