@@ -104,33 +104,6 @@ export class SignupPage {
   ngOnInit() {
 
     
-    // var field2 = document.querySelector('[name="passwordConfirm"]');
-
-    // field2.addEventListener('keypress', function (event:any) {
-    //   console.log("event" , event);
-      
-    //   var key = event.charCode;
-    //   if (key === 32) {
-    //     console.log("in if");
-        
-    //     event.preventDefault();
-    //   }
-    // });
-    
-
-    // var field1 = document.querySelector('[name="password"]');
-    
-    // field1.addEventListener('keypress', function (event:any) {
-    //   console.log('action');
-      
-    //   var key = event.charCode;
-    //   if (key === 32) {
-    //     event.preventDefault();
-    //   }
-    // });
-
-    // console.log("field 1 ",field1);
- 
     this.myForm.valueChanges
       .map((value) => {
         // Here you can manipulate your value
