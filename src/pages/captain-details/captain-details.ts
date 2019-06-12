@@ -104,7 +104,6 @@ export class CaptainDetailsPage {
     load.present()
 
     this.principal.identity().then((account) => {
-      console.log(account);
  //     load.dismiss();
 
       if (account === null) {
@@ -116,7 +115,6 @@ export class CaptainDetailsPage {
         this.getCaptain(this.user.id , load);
 
       }else if (account.authorities[0] == 'ROLE_USER' && account.authorities.length == 1) {
-        console.log("222");
         
         this.user = account;
         this.userType = 'user'
@@ -136,7 +134,6 @@ export class CaptainDetailsPage {
 
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad CaptainDetailsPage');
   }
 
 
@@ -147,7 +144,6 @@ export class CaptainDetailsPage {
     // load.present()
 
     this.captainService.getCaptainDetails(this.item.id , agencyId).subscribe(res => {
-      console.log(res);
       this.captain = res
       if(this.from == 'UserOrdersPage' || this.from == 'UserOrderDetailPage'){
         this.captain.agencies = []

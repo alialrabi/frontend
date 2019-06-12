@@ -108,7 +108,6 @@ export class AddAgencyPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AddAgencyPage');
   }
   addAgency() {
 
@@ -124,11 +123,9 @@ export class AddAgencyPage {
       // set login to same as email
       this.account.login = this.account.email;
       this.account.activated = true;
-      console.log("agency", this.account);
 
       // Attempt to login in through our User service
       this.accountService.registerAgency(this.account).subscribe((res) => {
-        console.log(res);
         // var id = res;
 
         let toast = this.toastCtrl.create({

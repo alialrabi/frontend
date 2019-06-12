@@ -115,16 +115,6 @@ export class SignupPage {
       .subscribe((value) => {
       });
   }
-  // onKeypress(keypress){
-  //   console.log(keypress , 'keybress');
-    
-  //   var key = keypress.charCode;
-  //   if (key === 32) {
-  //     console.log("in if");
-      
-  //     keypress.preventDefault();
-  //   }
-  // }
 
   doSignup() {
 
@@ -144,7 +134,6 @@ export class SignupPage {
     this.account.activated = true;
     // Attempt to login in through our User service
     this.user.signup(this.account).subscribe((res) => {
-      console.log(res);
       // var id = res;
 
       let loginAccount = {
@@ -218,7 +207,6 @@ export class SignupPage {
     this.tw.login()
       .then(res => {
 
-        console.log(res, '1111111111111');
 
         this.userData.email = res.userName + '@twitter.com';
         // Get user data
@@ -226,7 +214,6 @@ export class SignupPage {
         // The issue is reported in https://github.com/chroa/twitter-connect-plugin/issues/23
         this.tw.showUser()
           .then(user => {
-            console.log(user, 'useeeeeeeeeeeeeeeeer');
             let name = user.name
             let spaceIndex = name.indexOf(' ');
             if (spaceIndex == 0 || spaceIndex == -1) {
@@ -282,12 +269,10 @@ export class SignupPage {
       signUpAccount.login = this.userData.id + 't@facebook.com';;
       signUpAccount.email = this.userData.id + 't@facebook.com';
       loginAccount.username = this.userData.id + 't@facebook.com';
-      console.log('nullllllllllllllllll', signUpAccount.login);
     }
 
     // Attempt to login in through our User service
     this.user.signup(signUpAccount).subscribe((res) => {
-      console.log(res);
       // var id = res;
 
 
@@ -351,7 +336,6 @@ export class SignupPage {
         .then(
           (res: FacebookLoginResponse) => {
 
-            console.log('Logged into Facebook!', res)
             // let toast1 = classlIn.toastCtrl.create({
             //   message: '----------------------------',
             //   duration: 5000,
@@ -413,7 +397,6 @@ export class SignupPage {
   addToken(id) {
     if (this.platform.is("cordova")) {
       this.fcm.getToken().then(token => {
-        console.log(token);
         let deviceToken = {
           token: token,
           userType: 'User',
@@ -422,7 +405,6 @@ export class SignupPage {
         }
         this.deviceTokenService.save(deviceToken).subscribe(
           res => {
-            console.log("added successfully in login ");
           }, err => {
             console.log("error in add token in login ", err);
 

@@ -84,7 +84,7 @@ export class EditRatingPage {
         })
     
         this.myForm = builder.group({
-          'ratingComment': ['', [ Validators.maxLength(45)]],
+          'ratingComment': ['', [ Validators.maxLength(950)]],
           
         });
 
@@ -108,7 +108,6 @@ export class EditRatingPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad EditRatingPage');
   }
   back(){
     if(this.from == 'UserOrderDetailPage'){

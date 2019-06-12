@@ -132,7 +132,6 @@ export class CaptainAssignDetailsPage {
   }
 
   doInfinite(infiniteScroll) {
-    console.log('Begin async operation');
 
     setTimeout(() => {
 
@@ -140,7 +139,6 @@ export class CaptainAssignDetailsPage {
       this.getCaptainAssignes(this.pageNum);
 
 
-      console.log('Async operation has ended');
       infiniteScroll.complete();
     }, 1000);
   }
@@ -155,7 +153,6 @@ export class CaptainAssignDetailsPage {
     this.captainService.captainsPickList().subscribe(
       res => {
 
-        console.log(res, "res");
         this.captainList = res;
         //      load.dismiss();
 
@@ -181,7 +178,6 @@ export class CaptainAssignDetailsPage {
     this.accountService.getAllAgency().subscribe(
       res => {
 
-        console.log(res, "res");
         this.agenciesList = res;
         //        load.dismiss();
 
@@ -232,7 +228,6 @@ export class CaptainAssignDetailsPage {
         } else {
           this.seaarchFilter.agencyId = null;
         }
-        console.log('searchFilter', this.seaarchFilter);
       } else {
         this.seaarchFilter.endDate = null;
         this.seaarchFilter.startDate = null;
@@ -296,7 +291,6 @@ export class CaptainAssignDetailsPage {
           } else {
             this.seaarchFilter.agencyId = null;
           }
-          console.log('searchFilter', this.seaarchFilter);
         } else {
           this.seaarchFilter.endDate = null;
           this.seaarchFilter.startDate = null;
@@ -365,7 +359,6 @@ export class CaptainAssignDetailsPage {
       } else {
         this.seaarchFilter.agencyId = null;
       }
-      console.log('searchFilter', this.seaarchFilter);
     } else {
       this.seaarchFilter.endDate = null;
       this.seaarchFilter.startDate = null;
@@ -392,7 +385,6 @@ export class CaptainAssignDetailsPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad CaptainAssignDetailsPage');
   }
   back() {
     this.navCtrl.setRoot(CaptainsPage);
@@ -505,12 +497,10 @@ export class CaptainAssignDetailsPage {
     })
   }
   getStatus(message) {
-    console.log(message);
 
     let result = "";
     if (message == "This Captain is unAssigned because the Admin is unassign him") {
       result = this.adminUnAssignMessage
-      console.log("ssssssss");
 
     } else if (message == "the admin deleted all assign days") {
       result = this.adminDeletedAllDays

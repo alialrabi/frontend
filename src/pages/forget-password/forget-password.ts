@@ -65,7 +65,6 @@ export class ForgetPasswordPage {
     }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ForgetPasswordPage');
   }
   sendMail(){
 

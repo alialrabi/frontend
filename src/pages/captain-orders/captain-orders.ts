@@ -82,7 +82,6 @@ export class CaptainOrdersPage {
 
           setTimeout(() => { this.counter = 0 }, 3000)
         } else {
-          // console.log("exitapp");
           this.platform.exitApp();
         }
 
@@ -96,7 +95,6 @@ export class CaptainOrdersPage {
   }
 
   doInfinite(infiniteScroll) {
-    console.log('Begin async operation');
 
     setTimeout(() => {
 
@@ -108,7 +106,6 @@ export class CaptainOrdersPage {
 
       }
 
-      console.log('Async operation has ended');
       infiniteScroll.complete();
     }, 1000);
   }
@@ -122,14 +119,9 @@ export class CaptainOrdersPage {
         lng: position.coords.longitude + '',
         captainId: classIn.captain.id
       }
-      console.log(location);
-
-      console.log("******************");
-
-
+     
       classIn.captainService.updateLocation(location).subscribe(
         res => {
-          console.log(res, 'sssssssssss');
 
         }, err => {
           console.log(err, 'errrrrrpr');
@@ -148,7 +140,6 @@ export class CaptainOrdersPage {
 
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad CaptainOrdersPage');
 
     let load = this.loading.create({
       content: this.pleaseWait
@@ -159,7 +150,6 @@ export class CaptainOrdersPage {
 
     let classIn = this;
     this.principal.identity().then((account) => {
-      console.log(account);
 
       if (account === null || account.authorities[0] != 'ROLE_CAPTAIN') {
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
@@ -171,17 +161,14 @@ export class CaptainOrdersPage {
 
 
             this.captain = data;
-            console.log(data, this.captain);
 
             this.myVar = 'assigned';
-            console.log("**********");
             //           load.dismiss();
 
             this.getAllOrdersAfterFinish(this.myVar, 0 , load);
             if (this.captain.agencyId != 0) {
               this.getCaptainAgency();
             }
-            console.log("********************");
 
             //classIn.updateLocationTimer(classIn);
 
@@ -205,7 +192,6 @@ export class CaptainOrdersPage {
   updateLocationTimer(classIn) {
 
     Observable.interval(10000).subscribe(x => {
-      console.log(x, 'eeeeeeeeeeeeeeee');
       classIn.updateLocation(classIn);
 
     })
@@ -220,7 +206,6 @@ export class CaptainOrdersPage {
     // load.present()
     this.accountService.getById(this.captain.agencyId).subscribe(
       res => {
-        console.log(res, 'nnnnnnnnnnnnn');
         this.agency = res;
         this.autoAssign = res.autoAssign
         //     load.dismiss();
@@ -254,8 +239,7 @@ export class CaptainOrdersPage {
       this.pageNum = 1;
 
       this.orderService.getAllByStatus(status, this.captain.agencyId, false, pageNum).subscribe(res => {
-        console.log(res);
-        console.log("*************");
+        
         this.ordersList = res;
         load.dismiss();
       }, err => {
@@ -287,13 +271,8 @@ export class CaptainOrdersPage {
         }
 
 
-        console.log("orders");
-        console.log(this.captain);
-
-
         this.orderService.getAllByStatus(status, this.captain.agencyId, false, pageNum).subscribe(res => {
-          console.log(res);
-          console.log("*************");
+         
           if (pageNum == 0) {
             this.ordersList = res;
             load.dismiss();
@@ -326,8 +305,7 @@ export class CaptainOrdersPage {
     this.pageNum = 1;
 
     this.orderService.getAllByStatus(status, this.captain.agencyId, false, pageNum).subscribe(res => {
-      console.log(res);
-      console.log("*************");
+     
       this.ordersList = res;
       load.dismiss();
     }, err => {
@@ -436,16 +414,13 @@ export class CaptainOrdersPage {
     while (flag) {
 
       let index = orders.indexOf('-');
-      console.log(index, 'vvvv');
 
       if (index != -1) {
 
         // for (let index = 0; index < orders.length; index++) {  
-        console.log(orders, orders.length, 'sssssssssssss');
-        console.log(index, 'index');
+        
 
 
-        console.log(orders.charAt(index));
         if (orders.charAt(index) === '-' && orders.charAt(index - 1) === ' ' && orders.charAt(index + 1) === ' ') {
           let subOrder = {
             name: orders.substring(0, index - 1),
@@ -460,7 +435,6 @@ export class CaptainOrdersPage {
         flag = false;
       }
     }
-    console.log(items);
 
     let subOrder1 = {
       name: orders,
@@ -468,7 +442,6 @@ export class CaptainOrdersPage {
     }
 
     items.push(subOrder1)
-    console.log(items, 'mmmmmmmmmmmmmmm');
 
     return items;
   }
@@ -491,7 +464,6 @@ export class CaptainOrdersPage {
           position: 'top'
         });
         toast.present();
-        console.log("success");
 
         //        load.dismiss();
         this.getAllOrdersAfterFinish(this.myVar, 0, load);

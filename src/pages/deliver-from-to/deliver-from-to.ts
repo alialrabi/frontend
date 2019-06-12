@@ -158,7 +158,6 @@ export class DeliverFromToPage {
     load.present()
 
     this.principal.identity().then((account) => {
-      console.log(account);
       this.account = account;
   //    load.dismiss()
 
@@ -215,7 +214,6 @@ export class DeliverFromToPage {
 
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad DeliverFromToPage');
   }
 
   hasError(field: string, error: string) {
@@ -230,7 +228,6 @@ export class DeliverFromToPage {
   async openAddressesSelector(event) {
     if (!this.modelReciverOpen) {
       this.modelReciverOpen = true;
-      console.log("11111111111111111111111111111");
 
       const modal = await this.modalController.create(AddressesSelectorComponent, { addresses: this.addressList, user: this.account });
 
@@ -239,9 +236,7 @@ export class DeliverFromToPage {
           this.navCtrl.setRoot(OrderKindPage);
         });
         if (dataReturned !== null) {
-          console.log('Modal Sent Data :', dataReturned);
           this.addressList = dataReturned.addresses;
-          console.log(this.addressList);
 
           this.modelReciverOpen = false;
           if (this.order.senderAddressId != dataReturned.address.id) {
@@ -267,7 +262,6 @@ export class DeliverFromToPage {
           }
 
         } else {
-          console.log("else");
 
           this.modelReciverOpen = false;
         }
@@ -284,10 +278,8 @@ export class DeliverFromToPage {
 
   //   modal.onDidDismiss((dataReturned) => {
   //     if (dataReturned !== null) {
-  //       console.log('Modal Sent Data :', dataReturned);
 
   //       this.addressList.push(dataReturned);
-  //       console.log(this.addressList);
 
 
   //       this.address = dataReturned.region + ' , ' + dataReturned.street + ' , ' + this.towerText + '/' + dataReturned.building + ' , ' + this.floorText + '/' + dataReturned.floor + ' , ' + this.flatText + '/' + dataReturned.flatNumber + ' , ' + dataReturned.city
@@ -302,7 +294,6 @@ export class DeliverFromToPage {
   async openAddressesSelectorSender(event) {
     if (!this.modelSenderOpen) {
       this.modelSenderOpen = true;
-      console.log("222222222222222222222222");
 
       const modal = await this.modalController.create(AddressesSelectorComponent, { addresses: this.addressList, user: this.account });
 
@@ -311,9 +302,7 @@ export class DeliverFromToPage {
           this.navCtrl.setRoot(OrderKindPage);
         });
         if (dataReturned !== null) {
-          console.log('Modal Sent Data :', dataReturned);
           this.addressList = dataReturned.addresses;
-          console.log(this.addressList);
 
           this.modelSenderOpen = false;
 
@@ -340,7 +329,6 @@ export class DeliverFromToPage {
             alert.present();
           }
         } else {
-          console.log("else");
 
           this.modelSenderOpen = false;
         }
@@ -357,10 +345,8 @@ export class DeliverFromToPage {
 
   //   modal.onDidDismiss((dataReturned) => {
   //     if (dataReturned !== null) {
-  //       console.log('Modal Sent Data :', dataReturned);
 
   //       this.addressList.push(dataReturned);
-  //       console.log(this.addressList);
 
 
   //       this.senderAddress = dataReturned.region + ' , ' + dataReturned.street + ' , ' + this.towerText + '/' + dataReturned.building + ' , ' + this.floorText + '/' + dataReturned.floor + ' , ' + this.flatText + '/' + dataReturned.flatNumber + ' , ' + dataReturned.city
@@ -387,14 +373,12 @@ export class DeliverFromToPage {
 
     this.userOrderService.save(this.order).subscribe(
       res => {
-        console.log("order res " + res);
 
         if (this.platformType == 'cordova') {
           this.launchInterstitial();
         }
         this.deviceTokenService.getAdminTokens().subscribe(
           res1 => {
-            console.log("res1", res1);
 
             res1.forEach(element => {
               let body = {
@@ -460,7 +444,6 @@ export class DeliverFromToPage {
 
     this.admobFree.interstitial.prepare().then(() => {
       // success
-      console.log("success ads");
 
     });
 

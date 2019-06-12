@@ -43,7 +43,6 @@ export class AddUserPhonePage {
   constructor(public navCtrl: NavController, public navParams: NavParams ,public platform:Platform , private principal:Principal , private app: App, public toastCtrl: ToastController, public translateService: TranslateService, private loading: LoadingController, private builder: FormBuilder , private accountSirvice:AccountService) {
 
     this.translateService.get(['ADD_PHONE_ERROR', 'ADD_PHONE_SUCCESS', 'PLEASE_WAIT' , 'PHONE_NUMBER_USED']).subscribe((values) => {
-      console.log(values);
 
       this.addPhoneError = values.ADD_PHONE_ERROR;
       this.addPhoneSuccessString = values.ADD_PHONE_SUCCESS;
@@ -66,7 +65,6 @@ export class AddUserPhonePage {
     load.present()
 
     this.principal.identity().then((account) => {
-      console.log(account);
       load.dismiss();
       if (account === null || (account.authorities[0] != 'ROLE_USER')) {
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
@@ -80,7 +78,6 @@ export class AddUserPhonePage {
     });
   }
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AddUserPhonePage');
   }
 
   addPhone(){

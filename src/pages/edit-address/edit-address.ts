@@ -118,7 +118,6 @@ export class EditAddressPage {
     public translateService: TranslateService, private app: App, public platform: Platform, private principal: Principal, private builder: FormBuilder) {
     this.address = this.navParams.get("item");
     this.alex = this.getCity(this.address.city);
-    console.log(this.alex, 'ssssssss');
 
     if (this.platform.is("cordova") && this.platform.is("android")) {
       this.isCordova = true;
@@ -233,16 +232,11 @@ export class EditAddressPage {
 
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad EditAddressPage');
-    console.log(this.address.latitude, '');
+
     if (this.platform.is("cordova") && (this.platform.is("android") || this.platform.is("ios"))) {
-      console.log("---------------------------");
       // this.locationAccuracy.canRequest().then((canRequest: any) => {
 
       // //this.diagnostic.isLocationEnabled().then((isEnabled) =>{
-
-
-      //   console.log('canRequest' , canRequest);
 
 
       // if(canRequest == 0) {
@@ -252,7 +246,6 @@ export class EditAddressPage {
       if (this.address.latitude == '0') {
         this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
           () => {
-            console.log("success");
 
             this.loadMap(this)
           }
@@ -283,13 +276,11 @@ export class EditAddressPage {
   next() {
 
     if(this.myForm.valid && !this.checkSpaces()){
-    // console.log(this.locationDisable);
 
 
     // if (this.locationDisable) {
     //   this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
     //     () => {
-    //       console.log("success");
 
     //       this.loadMap()
     //     }
@@ -339,9 +330,6 @@ export class EditAddressPage {
       mainClass.mainMarker = marker;
 
 
-      //  console.log(this.map , 'map');
-      //  console.log(this.mainMarker , "marker");
-
       var superclass = mainClass;
       google.maps.event.addListener(mainClass.map, 'click', function (event) {
         if (superclass.checkLocation(event.latLng.lat(), event.latLng.lng(), false)) {
@@ -357,11 +345,9 @@ export class EditAddressPage {
           superclass.address.latitude = event.latLng.lat();
           superclass.address.longitude = event.latLng.lng();
         }
-        console.log(superclass.address);
       });
 
       mainClass.locationDisable = false;
-      console.log(mainClass.locationDisable);
 
     } else {
 
@@ -396,9 +382,7 @@ export class EditAddressPage {
         // }else{
         //   mainClass.loadWithOutLocation = true;
         // }
-        //  console.log(this.map , 'map');
-        //  console.log(this.mainMarker , "marker");
-
+        
         mainClass.loadWithOutLocation = true;  
 
         var superclass = mainClass;
@@ -451,7 +435,6 @@ export class EditAddressPage {
   }
 
   loadMapWithOutLocation(mainClass) {
-    console.log("************************");
 
     mainClass.loadWithOutLocation = true;
 
@@ -463,12 +446,10 @@ export class EditAddressPage {
       center: latLng,
       zoom: 15
     }
-    console.log("2222222222222222222222");
 
 
 
     mainClass.map = new google.maps.Map(mainClass.elementRef.nativeElement, mapOptions);
-    console.log("333333333333333333333");
 
 
 
@@ -657,10 +638,8 @@ export class EditAddressPage {
 
     this.address.city = this.alexValue;
     this.address.livingType = this.getLivingTypeValue(this.myForm.get("livingType").value)
-    console.log(this.address, 'sssssssssssssssss');
 
     this.addressService.edit(this.address).subscribe((res) => {
-      console.log(res, 'res');
 
       let toast = this.toastCtrl.create({
         message: this.addAdressSuccessString,
@@ -693,7 +672,6 @@ export class EditAddressPage {
   }
 
   getCityValue(cityValue) {
-    console.log(cityValue, 'ssssssssssss');
 
 
     let city = ''
@@ -730,8 +708,6 @@ export class EditAddressPage {
     return livingType;
   }
   skip() {
-
-    console.log("****** skip");
     
 
     let load = this.loading.create({
@@ -746,10 +722,8 @@ export class EditAddressPage {
 
     this.address.city = this.alexValue;
     this.address.livingType = this.getLivingTypeValue(this.myForm.get("livingType").value)
-    console.log(this.address, 'sssssssssssssssss');
 
     this.addressService.edit(this.address).subscribe((res) => {
-      console.log(res, 'res');
 
       let toast = this.toastCtrl.create({
         message: this.addAdressSuccessString,

@@ -87,7 +87,6 @@ export class UserAddressesPage {
     // load.present()
 
     this.principal.identity().then((account) => {
-      console.log(account);
 //      load.dismiss();
 
       if (account === null) {
@@ -108,7 +107,6 @@ export class UserAddressesPage {
 
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad UserAddressesPage');
   }
   getAllAddresses(pageNum) {
     if (!this.isLoading) {
@@ -127,7 +125,6 @@ export class UserAddressesPage {
     }
     //this.agenciesList = [];
     this.addressesService.getUserAddressesWithPagination(this.user.id ,pageNum).subscribe(res => {
-      console.log(res);
 
       if (pageNum == 0) {
         this.addresses = res;
@@ -158,7 +155,6 @@ export class UserAddressesPage {
     
     //this.agenciesList = [];
     this.addressesService.getUserAddressesWithPagination(this.user.id ,pageNum).subscribe(res => {
-      console.log(res);
 
         this.addresses = res;
 
@@ -173,13 +169,11 @@ export class UserAddressesPage {
   }
 
   doInfinite(infiniteScroll) {
-    console.log('Begin async operation');
 
     setTimeout(() => {
 
       this.getAllAddresses(this.pageNum);
 
-      console.log('Async operation has ended');
       infiniteScroll.complete();
     }, 1000);
   }
@@ -238,7 +232,6 @@ export class UserAddressesPage {
 
       }, err =>{
         load.dismiss();
-        console.log(err , 'errr');
         let toast = this.toastCtrl.create({
           message: this.deleteError,
           duration: 3000,

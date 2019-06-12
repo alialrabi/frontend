@@ -153,7 +153,6 @@ export class SettingsPage {
 
   }
   validateUser(flag) {
-    console.log("++++++ 99999 -------");
 
     let load = this.loading.create({
       content: this.pleaseWait
@@ -164,7 +163,6 @@ export class SettingsPage {
 
 
     this.principal.identity().then((account) => {
-      console.log(account);
       
       if (account === null) {
         load.dismiss();
@@ -238,10 +236,7 @@ export class SettingsPage {
   }
 
   changeAssign() {
-    console.log("**************");
-
-    console.log(this.myForm.get('autoAssign').value);
-
+    
 
     let alert = this.alertCtrl.create({
       title: this.confirmAutoAssignTitle,
@@ -250,7 +245,6 @@ export class SettingsPage {
         text: this.doneMessage,
         handler: () => {
 
-          console.log("----------------------");
 
 
           this.updateAutoAssign();
@@ -281,7 +275,6 @@ export class SettingsPage {
         text: this.doneMessage,
         handler: () => {
 
-          console.log("----------------------");
 
 
           this.updateAtMarket();
@@ -314,9 +307,7 @@ export class SettingsPage {
     }
 
     this.captainService.updateAtMarket(obj).subscribe((res) => {
-      console.log(res);
       // var id = res;
-      console.log("00000000000000000000000000");
       this.captain.atMarket = obj.atMarket;
       // this.validateUser(false);
       let toast = this.toastCtrl.create({
@@ -349,7 +340,6 @@ export class SettingsPage {
         text: this.doneMessage,
         handler: () => {
 
-          console.log("----------------------");
 
 
           this.updateWorking();
@@ -379,9 +369,7 @@ export class SettingsPage {
     }
 
     this.captainService.updateWorking(obj).subscribe((res) => {
-      console.log(res);
       // var id = res;
-      console.log("00000000000000000000000000");
       this.captain.working = obj.working;
       // this.validateUser(false);
       let toast = this.toastCtrl.create({
@@ -406,7 +394,6 @@ export class SettingsPage {
   }
 
   updateAutoAssign() {
-    console.log("****************          ssssssssssssssssss");
 
     let obj = {
       userId: this.account.id,
@@ -414,9 +401,7 @@ export class SettingsPage {
     }
 
     this.accountService.updateAutoAssign(obj).subscribe((res) => {
-      console.log(res);
       // var id = res;
-      console.log("00000000000000000000000000");
       this.account.autoAssign = obj.autoAssign;
       // this.validateUser(false);
       let toast = this.toastCtrl.create({
@@ -450,7 +435,6 @@ export class SettingsPage {
           text: this.doneMessage,
           handler: () => {
 
-            console.log("----------------------");
 
 
             this.updateLanguage();
@@ -474,7 +458,6 @@ export class SettingsPage {
   }
 
   updateLanguage() {
-    console.log(this.myForm.get('langKey').value, this.langKey);
 
     if (this.langKey != MyApp.language) {
 
@@ -484,9 +467,7 @@ export class SettingsPage {
       }
 
       this.accountService.updateLanguage(obj).subscribe((res) => {
-        console.log(res);
         // var id = res;
-        console.log("00000000000000000000000000");
         let toast = this.toastCtrl.create({
           message: this.changeChaneLanguageSuccessString,
           duration: 3000,

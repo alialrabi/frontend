@@ -62,7 +62,6 @@ export class OrdersPage {
 
           setTimeout(() => { this.counter = 0 }, 3000)
         } else {
-          // console.log("exitapp");
           this.platform.exitApp();
         }
 
@@ -81,7 +80,6 @@ export class OrdersPage {
     // load.present()
 
     this.principal.identity().then((account) => {
-      console.log(account);
 //      load.dismiss();
 
       if (account === null) {
@@ -114,18 +112,15 @@ export class OrdersPage {
 
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad OrdersPage');
   }
 
   doInfinite(infiniteScroll) {
-    console.log('Begin async operation');
 
     setTimeout(() => {
 
       this.getAllOrders(this.myVar, this.pageNum)
 
 
-      console.log('Async operation has ended');
       infiniteScroll.complete();
     }, 1000);
   }
@@ -147,7 +142,6 @@ export class OrdersPage {
     
 
     this.orderService.getAllByStatus(status, this.userId, false, pageNum).subscribe(res => {
-      console.log(res);
 
         this.ordersList = res;
         load.dismiss();
@@ -178,7 +172,6 @@ export class OrdersPage {
     }
 
     this.orderService.getAllByStatus(status, this.userId, false, pageNum).subscribe(res => {
-      console.log(res);
 
       if (pageNum == 0) {
         this.ordersList = res;
@@ -215,16 +208,11 @@ export class OrdersPage {
     while (flag) {
 
       let index = orders.indexOf('-');
-      console.log(index, 'vvvv');
 
       if (index != -1) {
 
         // for (let index = 0; index < orders.length; index++) {  
-        console.log(orders, orders.length, 'sssssssssssss');
-        console.log(index, 'index');
-
-
-        console.log(orders.charAt(index));
+        
         if (orders.charAt(index) === '-' && orders.charAt(index - 1) === ' ' && orders.charAt(index + 1) === ' ') {
           let subOrder = {
             name: orders.substring(0, index - 1),
@@ -239,7 +227,6 @@ export class OrdersPage {
         flag = false;
       }
     }
-    console.log(items);
 
     let subOrder1 = {
       name: orders,
@@ -248,7 +235,6 @@ export class OrdersPage {
 
     items.push(subOrder1)
 
-    console.log(items, 'mmmmmmmmmmmmmmm');
 
     return items;
   }

@@ -59,7 +59,6 @@ export class OrdersMapPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad OrdersMapPage');
     this.loadmap();
   }
 
@@ -72,7 +71,6 @@ export class OrdersMapPage {
     }
 
     this.map = new google.maps.Map(this.elementRef.nativeElement, mapOptions);
-    console.log('----------');
     let marker = new google.maps.Marker({
       map: this.map,
       position: latLng,

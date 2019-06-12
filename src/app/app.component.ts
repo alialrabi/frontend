@@ -94,18 +94,15 @@ export class MyApp {
       }
       this.keyboard.disableScroll(false);
       if (this.platform.is("android") && this.platform.is("cordova")) {
-        console.log("cordova ", "android ");
 
 
         this.showBannerAd();
         fcm.subscribeToTopic('all');
         fcm.onNotification().subscribe(data => {
-          console.log(JSON.stringify(data), 'notification');
 
           if (data.wasTapped) {
-            console.log("Received in background");
+
           } else {
-            console.log("Received in foreground");
 
             let alert = this._alert.create({
               title: data.title,
@@ -125,7 +122,7 @@ export class MyApp {
           };
         })
         fcm.onTokenRefresh().subscribe(token => {
-          console.log(token);
+
           if (this.account != null) {
             let deviceToken = {
               token: token,
@@ -135,7 +132,7 @@ export class MyApp {
             }
             this.deviceTokenService.save(deviceToken).subscribe(
               res => {
-                console.log("added successfully in refresh token");
+
               }, err => {
                 console.log("error in add token in refresh", err);
 
@@ -145,9 +142,7 @@ export class MyApp {
         });
         manup.validate().then((data) => {
           // // app initialisation
-          // console.log("version validation done" , data);
           // // manup.metadata().then((data2) =>{
-          // //   console.log(data2 , data2);
 
           //  let platformData = {
           //   "latest": "1.1.7",
@@ -171,7 +166,6 @@ export class MyApp {
     this.translateMenu();
     this.platform.setDir("rtl", true);
 
-    console.log("pppppppppppppppppppppp");
     //backgroundGeolocation = new BackgroundGeolocation();
     //this.startTracking()
     // this.appMenuItems = [
@@ -191,7 +185,6 @@ export class MyApp {
     this.admobFree.banner.config(bannerConfig);
 
     this.admobFree.banner.prepare().then(() => {
-      console.log("banner success");
 
     }).catch(e => console.log("baner erroooor", e));
   }
@@ -202,13 +195,10 @@ export class MyApp {
   }
 
   checkAccess() {
-    console.log("************************************************************************************");
     
     this.principal.identity().then((account) => {
-      console.log(account, 'app');
 
       if (account == null) {
-        console.log('***************');
 
         this.account = account;
         this.userType = '';
@@ -230,7 +220,6 @@ export class MyApp {
           MyApp.direction = 'rtl';
         }
 
-        console.log(MyApp.language);
 
         this.isLogOut = false;
         this.userType = 'Agency'
@@ -257,7 +246,6 @@ export class MyApp {
           this.platform.setDir("rtl", true);
           MyApp.direction = 'rtl';
         }
-        console.log(MyApp.language);
 
         this.isLogOut = false;
         this.userType = 'User'
@@ -287,7 +275,6 @@ export class MyApp {
           this.platform.setDir("rtl", true);
           MyApp.direction = 'rtl';
         }
-        console.log(MyApp.language);
 
         this.isLogOut = false;
         this.userType = 'Captain'
@@ -315,7 +302,6 @@ export class MyApp {
           this.platform.setDir("rtl", true);
           MyApp.direction = 'rtl';
         }
-        console.log(MyApp.language);
 
         this.isLogOut = false;
         this.userType = 'Admin'
@@ -333,22 +319,17 @@ export class MyApp {
         //   { title: this.userOrdersText, component: UserOrdersPage, icon: 'basket' }
 
         // ];
-        console.log("go to admin dash board  ---------------------------------");
         
         this.nav.setRoot("AdminDashboardPage")
       }
-      console.log(this.userType, 'user');
 
     });
-    console.log(MyApp.language);
 
   }
   checkAccessToSignUp() {
     this.principal.identity().then((account) => {
-      console.log(account, 'app');
 
       if (account == null) {
-        console.log('***************');
 
         this.account = account;
         this.userType = '';
@@ -463,21 +444,17 @@ export class MyApp {
 
         // ];
 
-        console.log("signup");
         
         this.nav.setRoot("AdminDashboardPage")
       }
-      console.log(this.userType, 'user');
 
     });
   }
 
   autoUnAssign() {
     this.captainService.autoUnAssign().subscribe(res => {
-      console.log(res);
 
     }, err => {
-      console.log(err, 'errrror');
 
     }
     )
@@ -496,7 +473,6 @@ export class MyApp {
 
 
       }, err => {
-        console.log(err, 'errror');
 
       }
     )
@@ -520,7 +496,6 @@ export class MyApp {
   }
 
   openPage(page) {
-    console.log(page);
 
     this.app.getRootNavs()[0].setRoot(page);
     //this.menu.close("authenticated");
@@ -539,12 +514,10 @@ export class MyApp {
       this.fcm.getToken().then(token => {
         this.deviceTokenService.deleteToken(token, this.account.id).subscribe(
           res1 => {
-            console.log(res1, 'delete token success');
 
             this.menu.close().then(
               res => {
                 if (this.internal != null) {
-                  console.log("unsubscribe");
 
                   this.internal.unsubscribe();
                   this.backgroundMode.disable();
@@ -572,12 +545,10 @@ export class MyApp {
             );
 
           }, err => {
-            console.log("deleting error ", err);
 
             this.menu.close().then(
               res => {
                 if (this.internal != null) {
-                  console.log("unsubscribe");
 
                   this.internal.unsubscribe();
 
@@ -609,7 +580,6 @@ export class MyApp {
       this.menu.close().then(
         res => {
           if (this.internal != null) {
-            console.log("unsubscribe");
 
             this.internal.unsubscribe();
             this.backgroundMode.disable();
@@ -645,18 +615,15 @@ export class MyApp {
 
 
     if (this.platform.is("cordova") && (this.platform.is("android") || this.platform.is("ios"))) {
-      console.log("---------------------------");
 
       // this.locationAccuracy.canRequest().then((canRequest: any) => {
 
-      //   console.log('canRequest' , canRequest);
 
 
       // if(canRequest == 0) {
       // the accuracy option will be ignored by iOS
       this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
         () => {
-          console.log("success");
 
           this.getLocation(classIn)
         }
@@ -669,7 +636,6 @@ export class MyApp {
 
       // }).catch(
       //   err =>{
-      //     console.log('error' , err);
 
       //   }
       // );
@@ -694,36 +660,28 @@ export class MyApp {
         lng: position.coords.longitude + '',
         captainId: classIn.captain.id
       }
-      console.log(location);
 
-      console.log("******************");
 
 
       classIn.captainService.updateLocation(location).subscribe(
         res => {
-          console.log(res, 'sssssssssss');
 
         }, err => {
-          console.log(err, 'errrrrrpr');
 
         }
       )
 
 
     }, err => {
-      console.log(err, 'error sssssssssssss');
 
     })
   }
 
   updateAssign(classIn) {
 
-    console.log('ssssssssssssssssssssssssssssssssssssssssssssssssssssssss');
-
 
     classIn.captainService.updateAssign(classIn.captain.id).subscribe(
       res => {
-        console.log(res, 'sssssssssss');
 
       }, err => {
         console.log(err, 'errrrrrpr');
@@ -735,25 +693,18 @@ export class MyApp {
   }
 
   updateLocationTimer(classIn) {
-    console.log("updateLocationTimer");
 
     if (this.platform.is('android') && this.platform.is('cordova')) {
-      console.log("android");
-      console.log("device version ", this.device.version);
-      console.log("pltform ", this.device.platform.toLowerCase());
       
       if (this.device.platform.toLowerCase() == 'android' && parseInt(this.device.version, 10) < 8) {
-        console.log("if");
 
         this.backgroundMode.enable();
       }
     } else {
-      console.log("else");
 
       this.backgroundMode.enable();
     }
     this.internal = Observable.interval(1000 * 60 * 5).subscribe(x => {
-      console.log(x, 'eeeeeeeeeeeeeeee');
 
       classIn.updateLocation(classIn);
       classIn.updateAssign(classIn);
@@ -764,19 +715,16 @@ export class MyApp {
 
   autoAssignRedunduncy() {
     this.autoAssignInternal = Observable.interval(1000 * 60 * 60).subscribe(x => {
-      console.log(x, 'eeeeeeeeeeeeeeee');
       this.autoUnAssign();
 
     });
   }
   translateMenu() {
 
-    console.log('translateeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
 
 
     this.translate.get(['AGENCY', 'ADMIN', 'USER', 'CAPTAIN' , 'PLEASE_WAIT']).subscribe((values) => {
 
-      console.log(values);
       if (this.userType == 'Admin') {
         this.userTypeText = values.ADMIN;
       } else if (this.userType == 'Agency') {
@@ -786,7 +734,6 @@ export class MyApp {
       } else if (this.userType == 'Captain') {
         this.userTypeText = values.CAPTAIN;
       }
-      console.log(this.userTypeText, 'user type text');
       this.pleaseWait = values.PLEASE_WAIT
 
     })

@@ -146,7 +146,6 @@ export class AddCaptainPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AddCaptainPage');
   }
   showDialog() {
     let alert = this._alert.create({
@@ -172,7 +171,6 @@ export class AddCaptainPage {
 
   // openImagePicker() {
 
-  //   //console.log(this.device.version , parseInt(this.device.version, 10) , this.device.platform.toLowerCase());
 
 
   //   // if (this.device.platform.toLowerCase() == 'android' && parseInt(this.device.version, 10) < 8) {
@@ -250,7 +248,6 @@ export class AddCaptainPage {
       targetWidth: 600,
       targetHeight: 600
     }
-    console.log(options);
 
     //this.backgroundMode.enable();
 
@@ -297,12 +294,10 @@ export class AddCaptainPage {
     // Attempt to login in through our User service
     this.accountService.registerCaptain(this.account).subscribe(
       res1 => {
-        console.log(res1, 'sssssssssssss');
         this.captain.userId = res1.id;
 
 
         this.captainService.save(this.captain).subscribe((res) => {
-          console.log(res, 'res');
 
           let toast = this.toastCtrl.create({
             message: this.addAdressSuccessString,
@@ -342,7 +337,6 @@ export class AddCaptainPage {
           displayError = this.invalidPasswordError;
         }
         load.dismiss();
-        console.log(displayError, 'ssssssssssssss');
 
         let toast1 = this.toastCtrl.create({
           message: displayError,
@@ -350,7 +344,6 @@ export class AddCaptainPage {
           position: 'top'
         });
         toast1.present();
-        console.log("8888888888888888888888888888");
 
       });
     }
@@ -370,19 +363,16 @@ export class AddCaptainPage {
   }
 
   uploadBrowserImage(event: any) {
-    //console.log('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb');
 
     this.readThis(event.target);
     //let files = event.target.files;
 
-    // console.log('files' , files);
     // files[0]
 
 
   }
 
   openFileSelector() {
-    // console.log("rrrrrrrrrrrrrrrrrrrrrrrrrrr");
 
     //this.myInput.nativeElement.click();
 
@@ -390,26 +380,22 @@ export class AddCaptainPage {
     element.click()
   }
   readThis(inputValue: any): void {
-    console.log("**************************");
     this.isloadinImage = true;
     if (inputValue != null && inputValue != undefined) {
       var file: File = inputValue.files[0];
       if (file != null && file != undefined) {
         this.ng2ImgMaxService.resize([file], 300, 300).subscribe((result) => {
-          console.log("result", result);
 
 
           var myReader: FileReader = new FileReader();
 
           myReader.onloadend = (e) => {
-            console.log("--------------------");
 
             this.isloadinImage = false;
             this.captain.image = myReader.result.substr(myReader.result.indexOf(',') + 1)
 
 
             //this..imageContentType = 'fromBrowser'
-            console.log(myReader);
 
           }
           myReader.readAsDataURL(result);

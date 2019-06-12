@@ -84,7 +84,6 @@ export class ChangePasswordPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ChangePasswordPage');
   }
 
   notMathces(){
@@ -101,7 +100,6 @@ export class ChangePasswordPage {
     load.present()
     this.accountService.changePassword(this.passwordModel).subscribe(
       res =>{
-        console.log(res);
         // var id = res;
   
         let toast = this.toastCtrl.create({

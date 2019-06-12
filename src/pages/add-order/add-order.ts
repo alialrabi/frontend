@@ -106,29 +106,24 @@ export class AddOrderPage {
     , public translateService: TranslateService, private loading: LoadingController, public platform: Platform,public _alert: AlertController,
     private builder: FormBuilder, public windowRef:WindowRef  ,public user: User, private app: App, private principal: Principal, public orderService: OrderService) {
 
-    console.log('con');
     this.address = this.navParams.get("address");
 
     if (this.platform.is("cordova") && this.platform.is("android")) {
       this.isCordova = true;
     }
 
-    console.log(this.platform.is('cordova') , this.platform.is("android"));
     
     if(this.platform.is('cordova') || this.platform.is("android")){
-      console.log("cordova");
       
       this.platfromType = 'cordova'
     }else{
       this.platfromType = 'not-cordova'
-      console.log("not cordova");
       
     }
 
 
     this.translateService.get(["SELECTION_CANCEL" , "SELECTION_OK" , 'ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS', 'ALEX', 'CAIRO', 'TANTA', 'DAMNHOR', 'SHIPIN_ELKOM', 'BANHA', 'PLEASE_WAIT' , 'YES' ,
     'CANCEL' , 'VERIFY_PHONE_TILTLE' , 'VERIFY_PHONE_MESSAGE' , 'QUESTION_MARK' ]).subscribe((values) => {
-      console.log(values);
 
       this.addORDERError = values.ADD_ORDER_ERROR;
       this.addORDERSuccessString = values.ADD_ORDER_SUCCESS;
@@ -167,7 +162,6 @@ export class AddOrderPage {
     this.myForm.get('city').markAsDirty();
     this.myForm.get('city').markAsTouched();
     this.myForm.get('city').markAsPristine();
-    console.log(this.myForm.get('city').dirty);
 
 
     this.platform.registerBackButtonAction(() => {
@@ -200,7 +194,6 @@ export class AddOrderPage {
     load.present()
 
     this.principal.identity().then((account) => {
-      console.log(account);
       load.dismiss();
       if (account === null || (account.authorities[0] != 'ROLE_AGENCY' && account.authorities[0] != 'ROLE_USER')) {
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
@@ -257,13 +250,11 @@ export class AddOrderPage {
 
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AddOrderPage');
   }
   getAllUsers() {
     this.user.findAll().subscribe(
       res => {
 
-        console.log(res, "res");
         this.userList = res;
 
 
@@ -295,7 +286,6 @@ export class AddOrderPage {
         }
       });
       if (dataReturned !== null) {
-        console.log('Modal Sent Data :', dataReturned);
 
         this.orderString += dataReturned.name;
         this.orderString += ' - ';
@@ -379,8 +369,6 @@ export class AddOrderPage {
     this.order1.secondPhone = orderObject.secondPhone;
 
     if (this.userType == 'User') {
-
-      console.log("userrr");
       
 
       orderObject.userId = this.account.id;
@@ -416,10 +404,8 @@ export class AddOrderPage {
 
     }else{
 
-    console.log(orderObject, 'ssssssssssss');
 
     this.orderService.save(orderObject).subscribe((res) => {
-      console.log(res, 'res');
 
       let obj = res;
       load.dismiss();
@@ -604,10 +590,8 @@ export class AddOrderPage {
     }else{
 
 
-    console.log(orderObject, 'ssssssssssss');
 
     this.orderService.save(orderObject).subscribe((res) => {
-      console.log(res, 'res');
 
       let obj = res;
       load.dismiss();
@@ -673,16 +657,13 @@ export class AddOrderPage {
 
   }
   check(item) {
-    console.log(item, this.myForm.get("city").value, 'ssssssss');
 
     let flag = false;
 
     if (item == this.myForm.get("city").value) {
-      console.log('************');
 
       flag = true;
     }
-    console.log(flag);
 
     return flag;
   }
@@ -692,7 +673,6 @@ export class AddOrderPage {
   }
 
   getCity(cityValue) {
-    console.log(cityValue, 'ssssssssssss');
 
 
     let city = ''

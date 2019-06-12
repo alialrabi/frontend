@@ -62,7 +62,6 @@ export class AgencyCaptainsPage {
       this.isCordova = true;
     }
 
-    console.log('agency 3', this.agency);
 
 
     this.translateService.get(['UN_ASSIGN_CAPTAIN_ERROR', 'UN_ASSIGN_CAPTAIN_SUCCESS', 'PLEASE_WAIT', 'MORE_DATA'
@@ -98,7 +97,6 @@ export class AgencyCaptainsPage {
     // load.present()
 
     this.principal.identity().then((account) => {
-      console.log(account);
       //      load.dismiss();
 
       if (account === null) {
@@ -116,11 +114,9 @@ export class AgencyCaptainsPage {
 
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AgencyCaptainsPage');
   }
 
   doInfinite(infiniteScroll) {
-    console.log('Begin async operation');
 
     setTimeout(() => {
 
@@ -128,7 +124,6 @@ export class AgencyCaptainsPage {
       this.getAgencyCaptains(this.pageNum);
 
 
-      console.log('Async operation has ended');
       infiniteScroll.complete();
     }, 1000);
   }
@@ -155,7 +150,6 @@ export class AgencyCaptainsPage {
         agencyId = this.agency.id;
       }
       this.captainService.getByAgencyId(agencyId, pageNum).subscribe(res => {
-        console.log(res);
 
         if (pageNum == 0) {
           this.captainsList = res;
@@ -196,7 +190,6 @@ export class AgencyCaptainsPage {
     }
     this.pageNum = 1;
     this.captainService.getByAgencyId(agencyId, pageNum).subscribe(res => {
-      console.log(res);
 
       this.captainsList = res;
 

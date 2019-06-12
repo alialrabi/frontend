@@ -103,14 +103,12 @@ export class NewAddressComponent {
     public navParams: NavParams, public locationAccuracy: LocationAccuracy, public addressService: AddressService, public toastCtrl: ToastController,
     public translateService: TranslateService, private app: App, public platform: Platform, private principal: Principal, private builder: FormBuilder) {
     this.user = this.navParams.get("user");
-    console.log(this.user);
 
     if (this.platform.is("cordova") && this.platform.is("android")) {
       this.isCordova = true;
     }
 
     this.platform.registerBackButtonAction(() => {
-      console.log("back button");
 
       this.back()
     });
@@ -194,23 +192,19 @@ export class NewAddressComponent {
 
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AddAddressPage');
 
     if (this.platform.is("cordova") && (this.platform.is("android") || this.platform.is("ios"))) {
-      console.log("---------------------------");
       // this.locationAccuracy.canRequest().then((canRequest: any) => {
 
       // //this.diagnostic.isLocationEnabled().then((isEnabled) =>{
 
 
-      //   console.log('canRequest' , canRequest);
 
 
       // if(canRequest == 0) {
       // the accuracy option will be ignored by iOS
       this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
         () => {
-          console.log("success");
 
           this.loadMap(this)
         }
@@ -226,7 +220,6 @@ export class NewAddressComponent {
 
       // }).catch(
       //   err =>{
-      //     console.log('error' , err);
 
       //   }
       // );
@@ -240,7 +233,6 @@ export class NewAddressComponent {
 
     if (this.myForm.valid && !this.checkSpaces()) {
 
-      console.log(this.locationDisable);
 
 
       if (this.map == null || this.map == undefined) {
@@ -296,8 +288,7 @@ export class NewAddressComponent {
       } else {
         mainClass.loadWithOutLocation = true;
       }
-      //  console.log(this.map , 'map');
-      //  console.log(this.mainMarker , "marker");
+     
 
       var superclass = mainClass;
       google.maps.event.addListener(mainClass.map, 'click', function (event) {
@@ -347,7 +338,6 @@ export class NewAddressComponent {
 
   }
   loadMapWithOutLocation(mainClass) {
-    console.log("************************");
 
     mainClass.loadWithOutLocation = true;
 
@@ -359,12 +349,10 @@ export class NewAddressComponent {
       center: latLng,
       zoom: 15
     }
-    console.log("2222222222222222222222");
 
 
 
     mainClass.map = new google.maps.Map(mainClass.elementRef.nativeElement, mapOptions);
-    console.log("333333333333333333333");
 
 
 
@@ -418,10 +406,8 @@ export class NewAddressComponent {
     this.address.city = this.alexValue;
     this.address.livingType = this.getLivingType(this.myForm.get("livingType").value)
     this.address.country = this.egyptText;
-    console.log(this.address, 'sssssssssssssssss');
 
     this.addressService.save(this.address).subscribe((res) => {
-      console.log(res, 'res');
 
       let toast = this.toastCtrl.create({
         message: this.addAdressSuccessString,
@@ -434,7 +420,6 @@ export class NewAddressComponent {
       this.chooseAddress(res);
 
     }, (err) => {
-      console.log('error', err);
 
 
       // Unable to add address
@@ -453,7 +438,6 @@ export class NewAddressComponent {
   }
 
   getCity(cityValue) {
-    console.log(cityValue, 'ssssssssssss');
 
 
     let city = ''
@@ -489,7 +473,6 @@ export class NewAddressComponent {
     } else if (livingTypeValue == 'Office') {
       livingType = this.officeValue
     }
-    console.log(livingType);
     return livingType;
   }
 
@@ -515,10 +498,8 @@ export class NewAddressComponent {
     this.address.city = this.alexValue;
     this.address.livingType = this.getLivingType(this.myForm.get("livingType").value)
     this.address.country = this.egyptText;
-    console.log(this.address, 'sssssssssssssssss');
 
     this.addressService.save(this.address).subscribe((res) => {
-      console.log(res, 'res');
 
       let toast = this.toastCtrl.create({
         message: this.addAdressSuccessString,
@@ -532,7 +513,6 @@ export class NewAddressComponent {
 
 
     }, (err) => {
-      console.log('error', err);
 
 
       // Unable to add address
@@ -608,8 +588,6 @@ export class NewAddressComponent {
       this.mapStyle1.height = "0%";
       this.mapStyle1.width = "0%";
 
-      console.log(this.myForm.get("livingType").value, 'ssssssssssssss');
-
       this.flatValue2 = this.getLivingType(this.myForm.get("livingType").value)
 
       this.openMap = false;
@@ -625,7 +603,6 @@ export class NewAddressComponent {
     }
   }
   check() {
-    console.log("22");
     return false;
 
   }

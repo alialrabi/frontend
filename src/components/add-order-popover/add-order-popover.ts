@@ -32,8 +32,8 @@ export class AddOrderPopoverComponent {
     });
 
     this.platform.registerBackButtonAction(() => {
-      console.log("back button selector");
-       this.back()
+
+      this.back()
     });
 
    

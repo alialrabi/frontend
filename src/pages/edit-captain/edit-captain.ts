@@ -172,7 +172,6 @@ export class EditCaptainPage {
 
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad EditCaptainPage');
   }
 
   showDialog() {
@@ -291,7 +290,6 @@ export class EditCaptainPage {
       res1 => {
 
         this.captainService.updateCaptainInformation(this.captain).subscribe((res) => {
-          console.log(res, 'res');
 
           let toast = this.toastCtrl.create({
             message: this.addAdressSuccessString,
@@ -331,7 +329,6 @@ export class EditCaptainPage {
           displayError = this.invalidPasswordError;
         }
         load.dismiss();
-        console.log(displayError, 'ssssssssssssss');
 
         let toast1 = this.toastCtrl.create({
           message: displayError,
@@ -339,7 +336,6 @@ export class EditCaptainPage {
           position: 'top'
         });
         toast1.present();
-        console.log("8888888888888888888888888888");
 
       });
     }
@@ -372,7 +368,6 @@ export class EditCaptainPage {
   }
   passwordChange() {
 
-    console.log('password change');
 
     if (this.myForm.get("password").value != '' && this.myForm.get("password").value != null) {
       this.myForm.get("passwordConfirm").clearValidators();
@@ -389,19 +384,16 @@ export class EditCaptainPage {
   }
 
   uploadBrowserImage(event: any) {
-    //console.log('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb');
 
     this.readThis(event.target);
     //let files = event.target.files;
 
-    // console.log('files' , files);
     // files[0]
 
 
   }
 
   openFileSelector() {
-    // console.log("rrrrrrrrrrrrrrrrrrrrrrrrrrr");
 
     //this.myInput.nativeElement.click();
 
@@ -409,7 +401,6 @@ export class EditCaptainPage {
     element.click()
   }
   readThis(inputValue: any): void {
-    console.log("**************************");
 
     this.isloadinImage = true;
 
@@ -419,20 +410,17 @@ export class EditCaptainPage {
       if (file != null && file != undefined) {
 
         this.ng2ImgMaxService.resize([file], 300, 300).subscribe((result) => {
-          console.log("result", result);
 
 
           var myReader: FileReader = new FileReader();
 
           myReader.onloadend = (e) => {
-            console.log("--------------------");
 
             this.isloadinImage = false;
 
             this.captain.image = myReader.result.substr(myReader.result.indexOf(',') + 1)
 
             //this..imageContentType = 'fromBrowser'
-            console.log(myReader);
 
           }
           myReader.readAsDataURL(result);

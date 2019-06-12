@@ -118,7 +118,6 @@ export class AssignOrderPage {
     load.present()
 
     this.principal.identity().then((account) => {
-      console.log(account);
       this.account = account;
 //      load.dismiss()
       
@@ -145,7 +144,6 @@ export class AssignOrderPage {
   
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AssignOrderPage');
   }
 
   getAllCaptains(id , load){
@@ -158,13 +156,11 @@ export class AssignOrderPage {
     this.captainService.captainsPickListByAgencyId(id).subscribe(
       res =>{
 
-        console.log(res , "res");
         this.captainList = res;
         load.dismiss();
 
       }, err =>{
 
-        console.log(err , "err");
         load.dismiss();
         
 
@@ -189,7 +185,6 @@ export class AssignOrderPage {
         //if (this.platform.is('cordova')) {
           this.deviceTokenService.getUserTokens(this.myForm.get('captainId').value.userId).subscribe(
             res1 => {
-              console.log("res1", res1);
 
               res1.forEach(element => {
 
@@ -225,7 +220,6 @@ export class AssignOrderPage {
 
           this.deviceTokenService.getUserTokens(this.order.userId).subscribe(
             res1 => {
-              console.log("res1", res1);
 
               res1.forEach(element => {
 

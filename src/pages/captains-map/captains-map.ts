@@ -89,7 +89,6 @@ export class CaptainsMapPage {
 
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad CaptainsMapPage');
 
     // let load = this.loading.create({
     //   content: this.pleaseWait
@@ -99,7 +98,6 @@ export class CaptainsMapPage {
     // load.present()
 
     this.principal.identity().then((account) => {
-      console.log(account);
       this.account = account;
 
  //     load.dismiss();
@@ -116,7 +114,6 @@ export class CaptainsMapPage {
         this.loadmap();
 
       }
-      console.log(this.userType);
 
     }).catch((err) =>{
  //     load.dismiss();
@@ -135,9 +132,6 @@ export class CaptainsMapPage {
     }
 
     this.map = new google.maps.Map(this.elementRef.nativeElement, mapOptions);
-    console.log('----------');
-
-    console.log(this.account, this.userType);
 
     if (this.userType == 'admin') {
 
@@ -148,7 +142,6 @@ export class CaptainsMapPage {
   }
 
   getAllCaptains() {
-    console.log('****');
 
     let load = this.loading.create({
       content: this.pleaseWait
@@ -160,7 +153,6 @@ export class CaptainsMapPage {
 
     this.deletemarkers();
     this.captainService.captainsPickListByAgencyId(0).subscribe(res => {
-      console.log(res, 'res');
       res.forEach(element => {
 
         let latLng = new google.maps.LatLng(element.latitude, element.longitude);
@@ -222,7 +214,6 @@ export class CaptainsMapPage {
   }
 
   getAllAgencyCaptains() {
-    console.log('****');
 
     let load = this.loading.create({
       content: this.pleaseWait
@@ -233,7 +224,6 @@ export class CaptainsMapPage {
 
     this.deletemarkers();
     this.captainService.captainsPickListByAgencyId(this.account.id).subscribe(res => {
-      console.log(res, 'res');
       res.forEach(element => {
 
         let latLng = new google.maps.LatLng(Number.parseFloat(element.latitude), Number.parseFloat(element.longitude));

@@ -75,7 +75,6 @@ export class ChooseAddressPage {
     load.present()
 
     this.principal.identity().then((account) => {
-      console.log(account);
       this.account = account;
       load.dismiss()
       
@@ -123,7 +122,6 @@ export class ChooseAddressPage {
     this.navCtrl.setRoot(AddAddressPage , {address:"to add order"})
   }
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ChooseAddressPage');
   }
 
   hasError(field: string, error: string) {

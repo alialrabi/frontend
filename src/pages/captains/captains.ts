@@ -66,7 +66,6 @@ export class CaptainsPage {
     // load.present()
 
     this.principal.identity().then((account) => {
-      console.log(account);
       this.account = account;
 
  //     load.dismiss()
@@ -84,7 +83,6 @@ export class CaptainsPage {
         this.getAllCaptains(0);
 
       }
-      console.log(this.userType);
 
     }).catch((err) => {
  //     load.dismiss()
@@ -93,7 +91,6 @@ export class CaptainsPage {
 
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad CaptainsPage');
   }
 
   getAllCaptains(pageNum) {
@@ -113,7 +110,6 @@ export class CaptainsPage {
 
       //this.captainsList = [];
       this.captainService.getAllToAdmin(pageNum).subscribe(res => {
-        console.log(res);
 
 
         if (pageNum == 0) {
@@ -157,7 +153,6 @@ export class CaptainsPage {
 
     //this.captainsList = [];
     this.captainService.getByAgencyId(this.account.id, pageNum).subscribe(res => {
-      console.log(res);
 
       if (pageNum == 0) {
         this.captainsList = res;
@@ -184,7 +179,6 @@ export class CaptainsPage {
   }
 
   doInfinite(infiniteScroll) {
-    console.log('Begin async operation');
 
     setTimeout(() => {
 
@@ -200,7 +194,6 @@ export class CaptainsPage {
       }
 
 
-      console.log('Async operation has ended');
       infiniteScroll.complete();
     }, 1000);
   }

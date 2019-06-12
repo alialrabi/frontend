@@ -81,7 +81,6 @@ export class DaysDetailsPage {
     })
 
     this.platform.registerBackButtonAction(() => {
-      console.log(this.from);
 
       if (this.from != 'CaptainDetailsPage') {
         this.navCtrl.setRoot(AgencyDetailsPage, { item: this.agency });
@@ -99,7 +98,6 @@ export class DaysDetailsPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad DaysDetailsPage');
   }
   getSubAssign() {
 
@@ -113,7 +111,6 @@ export class DaysDetailsPage {
 
     this.captainService.getSubAssignesToCaptainWithAgency(this.captainId, this.agencyId).subscribe(
       res => {
-        console.log(res);
 
         this.assingCaptains = res;
         load.dismiss();
@@ -133,7 +130,6 @@ export class DaysDetailsPage {
 
     this.captainService.getSubAssignesToCaptainWithAgency(this.captainId, this.agencyId).subscribe(
       res => {
-        console.log(res);
 
         this.assingCaptains = res;
         load.dismiss();
@@ -148,7 +144,6 @@ export class DaysDetailsPage {
 
   }
   back() {
-    console.log(this.from);
 
     if (this.from != 'CaptainDetailsPage') {
       this.navCtrl.setRoot(AgencyDetailsPage, { item: this.agency });

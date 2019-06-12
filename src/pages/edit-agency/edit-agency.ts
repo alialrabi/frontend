@@ -122,7 +122,6 @@ export class EditAgencyPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad EditAgencyPage');
   }
 
   EditAgency() {
@@ -144,7 +143,6 @@ export class EditAgencyPage {
       emailChanged:this.email != this.myForm.get("email").value,
       phone : this.myForm.get("phone").value
     } 
-    console.log(this.myForm.get("password").value != this.password , this.password);
     
     if(this.myForm.get("password").value != this.password && this.myForm.get("password").value != '' && this.myForm.get("password").value != null){
       editAccount.password = this.myForm.get("password").value;
@@ -152,7 +150,6 @@ export class EditAgencyPage {
       editAccount.password = null;
     }
     this.accountService.updateUserInformation(editAccount).subscribe((res) => {
-      console.log(res);
       // var id = res;
 
       let toast = this.toastCtrl.create({
@@ -218,7 +215,6 @@ export class EditAgencyPage {
     return flag;
   }
   passwordChange(){
-    console.log('password change');
     
 
     if(this.myForm.get("password").value != '' && this.myForm.get("password").value != null){
