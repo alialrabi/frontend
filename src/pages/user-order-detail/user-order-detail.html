@@ -108,7 +108,8 @@
     <ion-item class="item-background" *ngIf="order.userOrder.isBuing">
       <p>
         {{ 'PRICE_RANGE' | translate }} :
-        <strong text-wrap>{{order.userOrder.priceRange}}</strong>
+        <strong text-wrap *ngIf="order.userOrder.priceRange != 'Other'">{{order.userOrder.priceRange}}</strong>
+        <strong text-wrap *ngIf="order.userOrder.priceRange == 'Other'">{{ 'OTHER' | translate }}</strong>
       </p>
     </ion-item>
     <ion-item class="item-background">
