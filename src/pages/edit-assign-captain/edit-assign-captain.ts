@@ -75,7 +75,6 @@ export class EditAssignCaptainPage {
     //this.lastAssign = this.navParams.get("item");
     let dateString = this.assign.date+"T00:00:00";
     this.date = new Date(dateString);
-    console.log(this.date);
     
     this.endDateValue = this.assign.date;
 
@@ -93,8 +92,6 @@ export class EditAssignCaptainPage {
     this.captain = this.navParams.get("captain");
     this.from = this.navParams.get("from");
     this.suberAssign = this.navParams.get("suberAssign");
-
-    console.log('edit agency ', this.agency);
 
 
     // var CurrentYear = new Date().getFullYear()
@@ -128,7 +125,6 @@ export class EditAssignCaptainPage {
 
   ngOnInit() {
     this.principal.identity().then((account) => {
-      console.log(account);
 
       if (account === null) {
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
@@ -152,8 +148,6 @@ export class EditAssignCaptainPage {
       strDate += "0"
     }
     strDate += date.getDate();
-
-    console.log(strDate , "strDate");
     
 
     return strDate;
@@ -162,12 +156,10 @@ export class EditAssignCaptainPage {
   dateSelected(event) {
     this.selectedDate = event;
     this.formatedDate = this.formatDate(this.selectedDate);
-    console.log(this.formatedDate);
     
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad EditAssignCaptainPage');
   }
   editAssignCaptain() {
 
@@ -245,12 +237,10 @@ export class EditAssignCaptainPage {
         androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
     }).then(
         date => {
-          console.log(date);
           this.assign.startTime = '';
           this.assign.startTime += date.getHours() > 9 ? date.getHours() : '0'+date.getHours()
           this.assign.startTime += ":";
           this.assign.startTime += date.getMinutes() > 9 ? date.getMinutes() : '0'+date.getMinutes()
-          console.log( this.assign.startTime);
           
           
            //event.target.value = date 
@@ -267,12 +257,10 @@ export class EditAssignCaptainPage {
         androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
     }).then(
         date => {
-          console.log(date);
           this.assign.endTime = '';
             this.assign.endTime += date.getHours() > 9 ? date.getHours() : '0'+date.getHours()
             this.assign.endTime += ":";
             this.assign.endTime += date.getMinutes() > 9 ? date.getMinutes() : '0'+date.getMinutes()
-          console.log(this.assign.endTime);
           
           
            //event.target.value = date 

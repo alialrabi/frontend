@@ -99,7 +99,6 @@ export class UserOrdersPage {
 
             setTimeout(() => { this.counter = 0 }, 3000)
           } else {
-            // console.log("exitapp");
             this.platform.exitApp();
           }
         }
@@ -110,14 +109,12 @@ export class UserOrdersPage {
   }
 
   doInfinite(infiniteScroll) {
-    console.log('Begin async operation');
 
     setTimeout(() => {
 
       this.getUserOrders(this.myVar, this.pageNum);
 
 
-      console.log('Async operation has ended');
       infiniteScroll.complete();
     }, 1000);
   }
@@ -131,7 +128,6 @@ export class UserOrdersPage {
     load.present()
 
     this.principal.identity().then((account) => {
-      console.log(account);
 
       if (account === null) {
         load.dismiss();
@@ -165,7 +161,6 @@ export class UserOrdersPage {
 
             this.captain = data;
             this.captainId = data.id;
-            console.log(data, this.captain);
 
             //            load.dismiss();
             this.getUserOrdersAfterFinish(this.myVar, 0, load);
@@ -249,7 +244,6 @@ export class UserOrdersPage {
       this.pageNum = 1;
 
       this.orderService.getUserOrders(this.userId, this.captainId, status, pageNum).subscribe(res => {
-        console.log(res);
         this.ordersList = res;
         load.dismiss();
 
@@ -277,7 +271,6 @@ export class UserOrdersPage {
           this.pageNum = 1;
         }
         this.orderService.getUserOrders(this.userId, this.captainId, status, pageNum).subscribe(res => {
-          console.log(res);
           if (pageNum == 0) {
             this.ordersList = res;
             load.dismiss();
@@ -311,7 +304,6 @@ export class UserOrdersPage {
     this.pageNum = 1;
 
     this.orderService.getUserOrders(this.userId, this.captainId, status, pageNum).subscribe(res => {
-      console.log(res);
       this.ordersList = res;
       load.dismiss();
 
@@ -356,16 +348,11 @@ export class UserOrdersPage {
 
     while (flag) {
       let index = orders.indexOf('-');
-      // console.log(index, 'vvvv');
 
       if (index != -1) {
 
         // for (let index = 0; index < orders.length; index++) {  
-        // console.log(orders, orders.length, 'sssssssssssss');
-        // console.log(index, 'index');
-
-
-        // console.log(orders.charAt(index));
+        
         if (orders.charAt(index) === '-' && orders.charAt(index - 1) === ' ' && orders.charAt(index + 1) === ' ') {
           let subOrder = {
             name: orders.substring(0, index - 1),
@@ -380,7 +367,6 @@ export class UserOrdersPage {
         flag = false;
       }
     }
-    // console.log(items);
 
     let subOrder1 = {
       name: orders,
@@ -389,7 +375,6 @@ export class UserOrdersPage {
 
     items.push(subOrder1)
 
-    //console.log(items, 'mmmmmmmmmmmmmmm');
 
     return items;
   }
@@ -417,7 +402,6 @@ export class UserOrdersPage {
         // if (this.platform.is('cordova')) {
         this.deviceTokenService.getAdminTokens().subscribe(
           res1 => {
-            console.log("res1", res1);
 
             res1.forEach(element => {
               let body = {
@@ -450,7 +434,6 @@ export class UserOrdersPage {
 
         this.deviceTokenService.getUserTokens(item.userOrder.userId).subscribe(
           res1 => {
-            console.log("res1", res1);
 
             res1.forEach(element => {
               let body = {
@@ -489,7 +472,6 @@ export class UserOrdersPage {
           position: 'top'
         });
         toast.present();
-        console.log("success");
 
         //        load.dismiss();
         this.getUserOrdersAfterFinish(this.myVar, 0, load);
@@ -528,7 +510,6 @@ export class UserOrdersPage {
         // if (this.platform.is('cordova')) {
         this.deviceTokenService.getAdminTokens().subscribe(
           res1 => {
-            console.log("res1", res1);
 
             res1.forEach(element => {
               let body = {
@@ -561,7 +542,6 @@ export class UserOrdersPage {
 
         this.deviceTokenService.getUserTokens(item.userOrder.userId).subscribe(
           res1 => {
-            console.log("res1", res1);
 
             res1.forEach(element => {
               let body = {
@@ -600,7 +580,6 @@ export class UserOrdersPage {
           position: 'top'
         });
         toast.present();
-        console.log("success");
 
         //        load.dismiss();
         this.getUserOrdersAfterFinish(this.myVar, 0, load);
@@ -640,7 +619,6 @@ export class UserOrdersPage {
 
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad UserOrdersPage');
   }
   viewLocation(order) {
 

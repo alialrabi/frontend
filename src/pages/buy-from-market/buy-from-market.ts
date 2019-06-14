@@ -127,8 +127,8 @@ export class BuyFromMarketPage {
 
     this.myForm1 = builder.group({
       'marketName': ['', [Validators.required, Validators.maxLength(45)]],
-      'marketAddress': ['', [Validators.required, Validators.maxLength(250)]],
-      'marketPhone': ['', [Validators.pattern("(01)[0-9]{9}") , Validators.required]],
+      'marketAddress': ['', [Validators.maxLength(250)]],
+      'marketPhone': ['', [Validators.pattern("(01)[0-9]{9}")]],
       'priceRange': ['', [Validators.required]],
       'description': ['', [Validators.required, Validators.maxLength(999)]],
       'address': ['', [Validators.required]],
@@ -160,7 +160,6 @@ export class BuyFromMarketPage {
     load.present()
 
     this.principal.identity().then((account) => {
-      console.log(account);
       this.account = account;
 //      load.dismiss()
 
@@ -178,6 +177,21 @@ export class BuyFromMarketPage {
     }).catch((err) => {
       load.dismiss();
     });
+
+    this.myForm1.valueChanges
+      .map((value) => {
+        // Here you can manipulate your value
+        value.marketName = value.marketName.trim();
+        this.order.marketName = value.marketName
+        value.marketAddress = value.marketAddress.trim();
+        this.order.marketAddress = value.marketAddress
+        value.description = value.description.trim();
+        this.order.description = value.description
+       
+        return value;
+      }).filter((value) => this.myForm1.valid)
+      .subscribe((value) => {
+      });
   }
 
   getAddresses(load) {
@@ -280,7 +294,6 @@ export class BuyFromMarketPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad BuyFromMarketPage');
   }
 
   hasError(field: string, error: string, form) {
@@ -298,19 +311,16 @@ export class BuyFromMarketPage {
   }
 
   uploadBrowserImage(event: any) {
-    //console.log('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb');
 
     this.readThis(event.target);
     //let files = event.target.files;
 
-    // console.log('files' , files);
     // files[0]
 
 
   }
 
   openFileSelector() {
-    // console.log("rrrrrrrrrrrrrrrrrrrrrrrrrrr");
 
     //this.myInput.nativeElement.click();
 
@@ -325,7 +335,6 @@ export class BuyFromMarketPage {
 
       this.order.reciverImage = myReader.result.substr(myReader.result.indexOf(',') + 1);
       //this.captain.imageContentType = 'fromBrowser'
-      console.log(myReader);
 
     }
     myReader.readAsDataURL(file);
@@ -350,10 +359,8 @@ export class BuyFromMarketPage {
     
         });
         if (dataReturned !== null) {
-          console.log('Modal Sent Data :', dataReturned);
 
           this.addressList = dataReturned.addresses;
-          console.log(this.addressList);
           this.modelReciverOpen = false;
 
           this.myForm1.get("address").clearValidators();
@@ -362,7 +369,6 @@ export class BuyFromMarketPage {
           this.address = dataReturned.address.region + ' , ' + dataReturned.address.street + ' , ' + this.towerText + '/' + dataReturned.address.building + ' , ' + this.floorText + '/' + dataReturned.address.floor + ' , ' + this.flatText + '/' + dataReturned.address.flatNumber + ' , ' + dataReturned.address.city
           this.order.reciverAddressId = dataReturned.address.id
         } else {
-          console.log("else");
           this.modelReciverOpen = false;
         }
       });
@@ -378,10 +384,8 @@ export class BuyFromMarketPage {
 
   //   modal.onDidDismiss((dataReturned) => {
   //     if (dataReturned !== null) {
-  //       console.log('Modal Sent Data :', dataReturned);
 
   //       this.addressList.push(dataReturned.address);
-  //       console.log(this.addressList);
 
 
   //       this.address = dataReturned.address.region + ' , ' + dataReturned.address.street + ' , ' + this.towerText + '/' + dataReturned.address.building + ' , ' + this.floorText + '/' + dataReturned.address.floor + ' , ' + this.flatText + '/' + dataReturned.address.flatNumber + ' , ' + dataReturned.address.city
@@ -396,12 +400,11 @@ export class BuyFromMarketPage {
 
   next() {
     this.reciverData = true;
-    console.log(this.reciverData);
 
   }
   addOrder() {
 
-    if(this.myForm1.valid){
+    if(this.myForm1.valid  && !this.checkSpaces()){
 
     let load = this.loading.create({
       content: this.pleaseWait
@@ -416,13 +419,11 @@ export class BuyFromMarketPage {
     }
     this.userOrderService.save(this.order).subscribe(
       res => {
-        console.log("order res " + res);
         if (this.platformType == 'cordova') {
           this.launchInterstitial();
         }
         this.deviceTokenService.getAdminTokens().subscribe(
           res1 => {
-            console.log("res1", res1);
 
             res1.forEach(element => {
               let body = {
@@ -489,9 +490,20 @@ export class BuyFromMarketPage {
 
     this.admobFree.interstitial.prepare().then(() => {
       // success
-      console.log("success ads");
 
     });
+
+  }
+  checkSpaces() {
+    if (this.order.marketName == '' || this.order.description == '') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  checkSpaceTofields(string, field) {
+    const ctrl = this.myForm1.get(field);
+    return ctrl.dirty && string == '';
 
   }
 

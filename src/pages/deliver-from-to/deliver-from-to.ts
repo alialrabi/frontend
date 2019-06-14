@@ -135,7 +135,7 @@ export class DeliverFromToPage {
     this.myForm = builder.group({
       'weight': ['', [Validators.required , Validators.maxLength(8)]],
       'senderAddress': ['', [Validators.required]],
-      'senderPhone': ['', [Validators.pattern("(01)[0-9]{9}") , Validators.required]],
+      'senderPhone': ['', [Validators.pattern("(01)[0-9]{9}")]] ,
       'reciverName': ['', [Validators.required, Validators.maxLength(50)]],
       'address': ['', [Validators.required]],
       'reciverPhone': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
@@ -158,7 +158,6 @@ export class DeliverFromToPage {
     load.present()
 
     this.principal.identity().then((account) => {
-      console.log(account);
       this.account = account;
   //    load.dismiss()
 
@@ -176,6 +175,19 @@ export class DeliverFromToPage {
     }).catch((err) => {
       load.dismiss();
     });
+
+    this.myForm.valueChanges
+      .map((value) => {
+        // Here you can manipulate your value
+        value.reciverName = value.reciverName.trim();
+        this.order.reciverName = value.reciverName
+        value.description = value.description.trim();
+        this.order.description = value.description
+       
+        return value;
+      }).filter((value) => this.myForm.valid)
+      .subscribe((value) => {
+      });
   }
 
   getAddresses(load) {
@@ -202,7 +214,6 @@ export class DeliverFromToPage {
 
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad DeliverFromToPage');
   }
 
   hasError(field: string, error: string) {
@@ -217,7 +228,6 @@ export class DeliverFromToPage {
   async openAddressesSelector(event) {
     if (!this.modelReciverOpen) {
       this.modelReciverOpen = true;
-      console.log("11111111111111111111111111111");
 
       const modal = await this.modalController.create(AddressesSelectorComponent, { addresses: this.addressList, user: this.account });
 
@@ -226,9 +236,7 @@ export class DeliverFromToPage {
           this.navCtrl.setRoot(OrderKindPage);
         });
         if (dataReturned !== null) {
-          console.log('Modal Sent Data :', dataReturned);
           this.addressList = dataReturned.addresses;
-          console.log(this.addressList);
 
           this.modelReciverOpen = false;
           if (this.order.senderAddressId != dataReturned.address.id) {
@@ -254,7 +262,6 @@ export class DeliverFromToPage {
           }
 
         } else {
-          console.log("else");
 
           this.modelReciverOpen = false;
         }
@@ -271,10 +278,8 @@ export class DeliverFromToPage {
 
   //   modal.onDidDismiss((dataReturned) => {
   //     if (dataReturned !== null) {
-  //       console.log('Modal Sent Data :', dataReturned);
 
   //       this.addressList.push(dataReturned);
-  //       console.log(this.addressList);
 
 
   //       this.address = dataReturned.region + ' , ' + dataReturned.street + ' , ' + this.towerText + '/' + dataReturned.building + ' , ' + this.floorText + '/' + dataReturned.floor + ' , ' + this.flatText + '/' + dataReturned.flatNumber + ' , ' + dataReturned.city
@@ -289,7 +294,6 @@ export class DeliverFromToPage {
   async openAddressesSelectorSender(event) {
     if (!this.modelSenderOpen) {
       this.modelSenderOpen = true;
-      console.log("222222222222222222222222");
 
       const modal = await this.modalController.create(AddressesSelectorComponent, { addresses: this.addressList, user: this.account });
 
@@ -298,9 +302,7 @@ export class DeliverFromToPage {
           this.navCtrl.setRoot(OrderKindPage);
         });
         if (dataReturned !== null) {
-          console.log('Modal Sent Data :', dataReturned);
           this.addressList = dataReturned.addresses;
-          console.log(this.addressList);
 
           this.modelSenderOpen = false;
 
@@ -327,7 +329,6 @@ export class DeliverFromToPage {
             alert.present();
           }
         } else {
-          console.log("else");
 
           this.modelSenderOpen = false;
         }
@@ -344,10 +345,8 @@ export class DeliverFromToPage {
 
   //   modal.onDidDismiss((dataReturned) => {
   //     if (dataReturned !== null) {
-  //       console.log('Modal Sent Data :', dataReturned);
 
   //       this.addressList.push(dataReturned);
-  //       console.log(this.addressList);
 
 
   //       this.senderAddress = dataReturned.region + ' , ' + dataReturned.street + ' , ' + this.towerText + '/' + dataReturned.building + ' , ' + this.floorText + '/' + dataReturned.floor + ' , ' + this.flatText + '/' + dataReturned.flatNumber + ' , ' + dataReturned.city
@@ -361,7 +360,7 @@ export class DeliverFromToPage {
   // }
   addOrder() {
 
-    if(this.myForm.valid && !this.validateweight()){
+    if(this.myForm.valid && !this.validateweight() && !this.checkSpaces()){
 
     let load = this.loading.create({
       content: this.pleaseWait
@@ -374,14 +373,12 @@ export class DeliverFromToPage {
 
     this.userOrderService.save(this.order).subscribe(
       res => {
-        console.log("order res " + res);
 
         if (this.platformType == 'cordova') {
           this.launchInterstitial();
         }
         this.deviceTokenService.getAdminTokens().subscribe(
           res1 => {
-            console.log("res1", res1);
 
             res1.forEach(element => {
               let body = {
@@ -447,7 +444,6 @@ export class DeliverFromToPage {
 
     this.admobFree.interstitial.prepare().then(() => {
       // success
-      console.log("success ads");
 
     });
 
@@ -457,6 +453,19 @@ export class DeliverFromToPage {
   validateweight(){
     const ctrl = this.myForm.get("weight");
     return ctrl.dirty && (ctrl.value <= 0 || ctrl.value >20000); 
+  }
+
+  checkSpaces() {
+    if (this.order.reciverName == '' || this.order.description == '') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  checkSpaceTofields(string, field) {
+    const ctrl = this.myForm.get(field);
+    return ctrl.dirty && string == '';
+
   }
 
 }

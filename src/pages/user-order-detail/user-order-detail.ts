@@ -107,7 +107,6 @@ export class UserOrderDetailPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad UserOrderDetailPage');
   }
   back() {
     this.navCtrl.setRoot(UserOrdersPage, { myVar: this.myVar });
@@ -138,7 +137,6 @@ export class UserOrderDetailPage {
         if (this.platform.is('cordova')) {
           this.deviceTokenService.getAdminTokens().subscribe(
             res1 => {
-              console.log("res1", res1);
 
               res1.forEach(element => {
                 let body = {
@@ -175,7 +173,6 @@ export class UserOrderDetailPage {
 
           this.deviceTokenService.getUserTokens(this.order.userOrder.userId).subscribe(
             res1 => {
-              console.log("res1", res1);
 
               res1.forEach(element => {
                 let body = {
@@ -214,7 +211,6 @@ export class UserOrderDetailPage {
           position: 'top'
         });
         toast.present();
-        console.log("success");
 
         load.dismiss();
         this.order.userOrder.status = 'delivered';
@@ -301,7 +297,6 @@ export class UserOrderDetailPage {
         // if (this.platform.is('cordova')) {
         this.deviceTokenService.getAdminTokens().subscribe(
           res1 => {
-            console.log("res1", res1);
 
             res1.forEach(element => {
               let body = {
@@ -334,7 +329,6 @@ export class UserOrderDetailPage {
 
         this.deviceTokenService.getUserTokens(item.userOrder.userId).subscribe(
           res1 => {
-            console.log("res1", res1);
 
             res1.forEach(element => {
               let body = {
@@ -373,7 +367,6 @@ export class UserOrderDetailPage {
           position: 'top'
         });
         toast.present();
-        console.log("success");
 
         load.dismiss();
         this.order.userOrder.isTaken = true;

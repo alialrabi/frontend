@@ -52,7 +52,6 @@ export class AgenciesPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AgenciesPage');
   }
 
   getAllAgincies(pageNum) {
@@ -70,7 +69,6 @@ export class AgenciesPage {
       }
       //this.agenciesList = [];
       this.accountService.getAllAgencyWithPagination(pageNum).subscribe(res => {
-        console.log(res);
 
         if (pageNum == 0) {
           this.agenciesList = res;
@@ -86,7 +84,6 @@ export class AgenciesPage {
         }
         this.isLoading = false;
       }, err => {
-        console.log(err);
         if (pageNum == 0) {
           load.dismiss();
         }
@@ -96,13 +93,11 @@ export class AgenciesPage {
   }
 
   doInfinite(infiniteScroll) {
-    console.log('Begin async operation');
 
     setTimeout(() => {
 
       this.getAllAgincies(this.pageNum);
 
-      console.log('Async operation has ended');
       infiniteScroll.complete();
     }, 1000);
   }

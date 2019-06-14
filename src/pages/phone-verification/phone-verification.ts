@@ -41,7 +41,6 @@ export class PhoneVerificationPage {
     this.order = navParams.get('order');
 
     this.translateService.get(['ADD_PHONE_NUMBER_ERROR', 'ADD_PHONE_NUMBER_SUCCESS', 'PLEASE_WAIT', 'PHONE_NUMBER_USED']).subscribe((values) => {
-      console.log(values);
 
       this.addORDERError = values.ADD_PHONE_NUMBER_ERROR;
       this.addORDERSuccessString = values.ADD_PHONE_NUMBER_SUCCESS;
@@ -57,7 +56,6 @@ export class PhoneVerificationPage {
 
   }
   verifyCode() {
-    console.log(this.code, (this.myForm.get('code').value + ''));
 
     if (this.code == (this.myForm.get('code').value + '')) {
       this.addOrder();
@@ -77,7 +75,6 @@ export class PhoneVerificationPage {
       res => {
 
         this.code = res.Key
-        console.log(this.code);
         let toast = this.toastCtrl.create({
           message: this.addORDERSuccessString,
           duration: 3000,
@@ -109,7 +106,6 @@ export class PhoneVerificationPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad PhoneVerificationPage');
   }
 
   addOrder() {
@@ -123,7 +119,6 @@ export class PhoneVerificationPage {
 
 
     this.orderService.save(this.order).subscribe((res) => {
-      console.log(res, 'res');
 
       let obj = res;
       load.dismiss();

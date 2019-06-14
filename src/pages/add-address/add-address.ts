@@ -110,7 +110,6 @@ export class AddAddressPage {
     public translateService: TranslateService, private app: App, public platform: Platform, private principal: Principal, private builder: FormBuilder) {
     this.to = this.navParams.get("address");
 
-    console.log(this.language , this.direction);
     
 
     if (this.platform.is("cordova") && this.platform.is("android")) {
@@ -165,11 +164,9 @@ export class AddAddressPage {
     // this.myForm.get('city').markAsDirty();
     // this.myForm.get('city').markAsTouched();
     // this.myForm.get('city').markAsPristine();
-    console.log(this.to , 'to');
     
 
     if (this.to != null && this.to != undefined) {
-      console.log("/*/*/*/*/*/*");
       
 
       this.platform.registerBackButtonAction(() => {
@@ -214,8 +211,33 @@ export class AddAddressPage {
   }
 
   ngOnInit() {
+
+    this.myForm.valueChanges
+            .map((value) => {
+                // Here you can manipulate your value
+                value.name = value.name.trim();
+                this.address.name = value.name
+                value.region = value.region.trim();
+                this.address.region = value.region
+                value.street = value.street.trim();
+                this.address.street = value.street
+                value.building = value.building.trim();
+                this.address.building = value.building
+                value.floor = value.floor.trim();
+                this.address.floor = value.floor
+                value.flatNumber = value.flatNumber.trim();
+                this.address.flatNumber = value.flatNumber
+                value.otherDetails = value.otherDetails.trim();
+                this.address.otherDetails = value.otherDetails
+                
+                return value;
+            }).filter((value) => this.myForm.valid)
+            .subscribe((value) => {
+            });
+
+
+
     this.principal.identity().then((account) => {
-      console.log(account);
 
       if (account === null) {
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
@@ -228,23 +250,19 @@ export class AddAddressPage {
 
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AddAddressPage');
 
     if (this.platform.is("cordova") && (this.platform.is("android") || this.platform.is("ios"))) {
-      console.log("---------------------------");
       // this.locationAccuracy.canRequest().then((canRequest: any) => {
 
       // //this.diagnostic.isLocationEnabled().then((isEnabled) =>{
 
 
-      //   console.log('canRequest' , canRequest);
 
 
       // if(canRequest == 0) {
       // the accuracy option will be ignored by iOS
       this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
         () => {
-          console.log("success");
 
           this.loadMap(this)
         }
@@ -260,7 +278,6 @@ export class AddAddressPage {
 
       // }).catch(
       //   err =>{
-      //     console.log('error' , err);
 
       //   }
       // );
@@ -271,15 +288,13 @@ export class AddAddressPage {
 
   }
   save() {
-    if(this.myForm.valid){
+    if(this.myForm.valid && !this.checkSpaces()){
 
-    // console.log(this.locationDisable);
 
 
     // if (this.locationDisable) {
     //   this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
     //     () => {
-    //       console.log("success");
 
     //       this.loadMap()
     //     }
@@ -307,7 +322,6 @@ export class AddAddressPage {
 
   loadMap(mainClass) {
 
-    console.log("load map");
     
 
     //var mainClass = this;
@@ -342,9 +356,7 @@ export class AddAddressPage {
       }else{
         mainClass.loadWithOutLocation = true;
       }
-      //  console.log(this.map , 'map');
-      //  console.log(this.mainMarker , "marker");
-
+      
       var superclass = mainClass;
       google.maps.event.addListener(mainClass.map, 'click', function (event) {
 
@@ -366,7 +378,6 @@ export class AddAddressPage {
           
           superclass.chooseLocationelementRef._elementRef.nativeElement.disabled = false
           if (flag) {
-            console.log("set action load map");
             
             superclass.renderer.listen(superclass.chooseLocationelementRef._elementRef.nativeElement, 'click', (event) => {
               superclass.chooseLocation()
@@ -380,7 +391,7 @@ export class AddAddressPage {
 
 
     }, function (err) {
-      console.log(err, 'errrrrrrrrrrrrrrrrrrrrrrrrrrror');
+
       mainClass.loadMapWithOutLocation(mainClass);
 
       // let toast = mainClass.toastCtrl.create({
@@ -395,8 +406,7 @@ export class AddAddressPage {
 
   }
   loadMapWithOutLocation(mainClass) {
-    console.log("************************");
-    console.log("load without location");
+   
     
 
     mainClass.loadWithOutLocation = true;
@@ -409,12 +419,10 @@ export class AddAddressPage {
       center: latLng,
       zoom: 15
     }
-    console.log("2222222222222222222222");
 
 
 
     mainClass.map = new google.maps.Map(mainClass.elementRef.nativeElement, mapOptions);
-    console.log("333333333333333333333");
 
 
 
@@ -438,7 +446,6 @@ export class AddAddressPage {
 
         superclass.chooseLocationelementRef._elementRef.nativeElement.disabled = false
         if (flag) {
-          console.log("add action load without location");
           
           superclass.renderer.listen(superclass.chooseLocationelementRef._elementRef.nativeElement, 'click', (event) => {
             superclass.chooseLocation()
@@ -470,10 +477,8 @@ export class AddAddressPage {
     this.address.city = this.alexValue;
     this.address.livingType = this.getLivingType(this.myForm.get("livingType").value)
     this.address.country = this.egyptText;
-    console.log(this.address, 'sssssssssssssssss');
 
     this.addressService.save(this.address).subscribe((res) => {
-      console.log(res, 'res');
 
       let toast = this.toastCtrl.create({
         message: this.addAdressSuccessString,
@@ -510,7 +515,6 @@ export class AddAddressPage {
   }
 
   getCity(cityValue) {
-    console.log(cityValue, 'ssssssssssss');
 
 
     let city = ''
@@ -589,10 +593,8 @@ export class AddAddressPage {
     this.address.city = this.alexValue;
     this.address.livingType = this.getLivingType(this.myForm.get("livingType").value)
     this.address.country = this.egyptText;
-    console.log(this.address, 'sssssssssssssssss');
 
     this.addressService.save(this.address).subscribe((res) => {
-      console.log(res, 'res');
 
       let toast = this.toastCtrl.create({
         message: this.addAdressSuccessString,
@@ -679,5 +681,17 @@ export class AddAddressPage {
     } else {
       return false;
     }
+  }
+  checkSpaces(){
+    if(this.address.building == '' || this.address.flatNumber == '' || this.address.floor == '' || this.address.region == '' || this.address.street == ''){
+      return true;
+    }else{
+      return false;
+    }
+  }
+  checkSpaceTofields(string , field){
+    const ctrl = this.myForm.get(field);
+    return ctrl.dirty && string == '';
+
   }
 }

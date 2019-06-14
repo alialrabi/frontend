@@ -84,7 +84,7 @@ export class EditRatingPage {
         })
     
         this.myForm = builder.group({
-          'ratingComment': ['', [ Validators.maxLength(45)]],
+          'ratingComment': ['', [ Validators.maxLength(950)]],
           
         });
 
@@ -92,8 +92,22 @@ export class EditRatingPage {
   
     }
 
+    ngOnInit() {
+
+    this.myForm.valueChanges
+    .map((value) => {
+      // Here you can manipulate your value
+      value.ratingComment = value.ratingComment.trim();
+      this.editOrder.ratingComment = value.ratingComment
+     
+      return value;
+    }).filter((value) => this.myForm.valid)
+    .subscribe((value) => {
+    });
+
+  }
+
   ionViewDidLoad() {
-    console.log('ionViewDidLoad EditRatingPage');
   }
   back(){
     if(this.from == 'UserOrderDetailPage'){

@@ -44,30 +44,28 @@
         </ion-label>
         <ion-input type="text" [(ngModel)]="order.marketName" formControlName="marketName" name="marketName" [lang]="language" [dir]="direction"></ion-input>
       </ion-item>
-      <p class="validationHint" *ngIf="hasError('marketName', 'required' , myForm1)">{{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('marketName', 'required' , myForm1) || checkSpaceTofields(order.marketName , 'marketName')">{{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('marketName', 'maxlength' , myForm1)">{{ 'MAX_LENGTH' | translate }} </p>
 
       <ion-item>
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
-          {{ 'MARKET_ADDRESS' | translate }}
+          {{ 'MARKET_ADDRESS' | translate }} <span class="optional-text"> {{ 'OPTIONAL_TEXT' | translate }}</span>
         </ion-label>
         <ion-input type="text" [(ngModel)]="order.marketAddress" formControlName="marketAddress" name="marketAddress" [lang]="language"
           [dir]="direction"></ion-input>
       </ion-item>
-      <p class="validationHint" *ngIf="hasError('marketAddress', 'required' , myForm1)">{{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('marketAddress', 'maxlength' , myForm1)">{{ 'MAX_LENGTH' | translate }} </p>
 
 
       <ion-item>
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="call" item-start class="text-primary"></ion-icon>
-          {{ 'MARKET_PHONE' | translate }}
+          {{ 'MARKET_PHONE' | translate }} <span class="optional-text"> {{ 'OPTIONAL_TEXT' | translate }}</span>
         </ion-label>
         <ion-input type="number" [(ngModel)]="order.marketPhone" formControlName="marketPhone" name="marketPhone" [lang]="language"
           [dir]="direction"></ion-input>
       </ion-item>
-      <p class="validationHint" *ngIf="hasError('marketPhone', 'required' , myForm1)"> {{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('marketPhone', 'pattern' , myForm1)">{{ 'PHONE_NUMBER' | translate }} </p>
       <ion-item>
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
@@ -93,7 +91,7 @@
           [dir]="direction"></ion-textarea>
       </ion-item>
 
-      <p class="validationHint" *ngIf="hasError('description', 'required' , myForm1)">{{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('description', 'required' , myForm1) || checkSpaceTofields(order.description , 'description')">{{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('description', 'maxlength' , myForm1)">{{ 'MAX_LENGTH' | translate }} </p>
 
       <p style="width: 100%" text-center>
@@ -156,7 +154,7 @@
     </form>
 
     <div margin-top style="margin-bottom: 40px;">
-      <button ion-button block class="myButton" tappable (click)="addOrder()" [disabled]="!myForm1.valid">
+      <button ion-button block class="myButton" tappable (click)="addOrder()" [disabled]="!myForm1.valid || checkSpaces()">
         {{ 'ADD_ORDER_BUTTON' | translate }}
       </button>
     </div>

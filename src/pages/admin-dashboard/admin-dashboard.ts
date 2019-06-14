@@ -79,7 +79,6 @@ export class AdminDashboardPage {
 
           setTimeout(() => { this.counter = 0 }, 3000)
         } else {
-          // console.log("exitapp");
           this.platform.exitApp();
         }
 
@@ -100,7 +99,6 @@ export class AdminDashboardPage {
     // load.present()
 
     this.principal.identity().then((account) => {
-      console.log(account);
    //   load.dismiss();
       if (account === null) {
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
@@ -128,7 +126,6 @@ export class AdminDashboardPage {
     this.captainService.captainsPickList().subscribe(
       res => {
 
-        console.log(res, "res");
         this.captainList = res;
   //      load.dismiss();
 
@@ -166,12 +163,10 @@ export class AdminDashboardPage {
     } else {
       this.seaarchFilter.captainId = null;
     }
-    console.log(this.seaarchFilter, 'filter');
 
 
     this.orderServic.getAdminStatistics(this.seaarchFilter).subscribe(
       res => {
-        console.log(res, 'res');
 
         this.statistic = res;
         load.dismiss();
@@ -197,7 +192,6 @@ export class AdminDashboardPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AdminDashboardPage');
   }
 
 }

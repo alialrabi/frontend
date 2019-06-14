@@ -74,7 +74,6 @@ export class CaptainEvaluationPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad CaptainEvaluationPage');
   }
 
   getEvaluation(captainId){
@@ -112,7 +111,6 @@ export class CaptainEvaluationPage {
     load.present()
 
     this.captainService.updateEvaluation(this.evaluation).subscribe((res) => {
-      console.log(res , 'res');
       
       let toast = this.toastCtrl.create({
         message: this.editEvaluationSuccess,

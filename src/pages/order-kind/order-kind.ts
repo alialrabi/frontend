@@ -36,7 +36,6 @@ export class OrderKindPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad OrderKindPage');
   }
   buyFromMarket(){
     this.navCtrl.setRoot(BuyFromMarketPage);

@@ -61,7 +61,6 @@ export class AddCheckOrderPage {
 
 
     this.translateService.get(['ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS', 'PLEASE_WAIT', 'CHOOSE_PHOTO', 'CHOOSE_FROM_GALARY', 'TAKE_A_PHOTO']).subscribe((values) => {
-      console.log(values);
 
       this.addORDERError = values.ADD_ORDER_ERROR;
       this.addORDERSuccessString = values.ADD_ORDER_SUCCESS;
@@ -89,7 +88,6 @@ export class AddCheckOrderPage {
     load.present()
 
     this.principal.identity().then((account) => {
-      console.log(account);
       load.dismiss();
       if (account === null || account.authorities[0] != 'ROLE_AGENCY') {
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
@@ -105,7 +103,6 @@ export class AddCheckOrderPage {
 
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AddCheckOrderPage');
   }
 
   addOrder() {
@@ -119,7 +116,6 @@ export class AddCheckOrderPage {
     this.order.agencyId = this.account.id;
 
     this.orderService.save(this.order).subscribe((res) => {
-      console.log(res, 'res');
 
       let obj = res;
       load.dismiss();
@@ -221,7 +217,6 @@ export class AddCheckOrderPage {
         this.order.check = data;
 
       }, function (error) {
-        console.log(error);
 
         //   let toast = this.toastCtrl.create({
         //     message: error,
@@ -234,19 +229,16 @@ export class AddCheckOrderPage {
 
   }
   uploadBrowserImage(event: any) {
-    //console.log('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb');
 
     this.readThis(event.target);
     //let files = event.target.files;
 
-    // console.log('files' , files);
     // files[0]
 
 
   }
 
   openFileSelector() {
-    // console.log("rrrrrrrrrrrrrrrrrrrrrrrrrrr");
 
     //this.myInput.nativeElement.click();
 
@@ -254,7 +246,6 @@ export class AddCheckOrderPage {
     element.click()
   }
   readThis(inputValue: any): void {
-    console.log("**************************");
 
     this.isloadinImage = true;
 
@@ -264,20 +255,17 @@ export class AddCheckOrderPage {
 
 
         this.ng2ImgMaxService.resize([file], 300, 300).subscribe((result) => {
-          console.log("result", result);
 
 
           var myReader: FileReader = new FileReader();
 
           myReader.onloadend = (e) => {
-            console.log("--------------------");
 
             this.isloadinImage = false;
 
             this.order.check = myReader.result.substr(myReader.result.indexOf(',') + 1)
 
             //this..imageContentType = 'fromBrowser'
-            console.log(myReader);
 
           }
           myReader.readAsDataURL(result);

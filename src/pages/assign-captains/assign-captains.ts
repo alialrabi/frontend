@@ -79,7 +79,6 @@ export class AssignCaptainsPage {
     }
 
     this.isCordova = this.platform.is("cordova");
-    console.log(this.isCordova);
 
 
     this.agency = this.navParams.get("item");
@@ -87,7 +86,6 @@ export class AssignCaptainsPage {
     this.today = new Date();
     this.yesterday = new Date(this.today);
     this.yesterday.setDate(this.today.getDate() - 1);
-    console.log(this.yesterday, 'yesterDay date');
 
     var CurrentYear = new Date().getFullYear()
     this.maxDate = CurrentYear + 1;
@@ -144,7 +142,6 @@ export class AssignCaptainsPage {
     }
     strDate += date.getDate();
 
-    console.log(strDate, "strDate");
 
 
     return strDate;
@@ -177,7 +174,6 @@ export class AssignCaptainsPage {
 
     this.captainService.checkAssignCaptains(assignCaptains).subscribe(
       res => {
-        console.log("res ", res);
 
         load.dismiss();
 
@@ -188,7 +184,6 @@ export class AssignCaptainsPage {
         this.startTime = '00:00'
         this.endTime = '00:00'
         this.timeValue = '2002-09-23T00:00:00.000';
-        console.log(this.dates, 'dartes');
 
       }, err => {
         load.dismiss();
@@ -215,7 +210,6 @@ export class AssignCaptainsPage {
         this.startTime = '00:00'
         this.endTime = '00:00'
         this.timeValue = '2002-09-23T00:00:00.000';
-        console.log(this.dates, 'dartes');
       }
     )
 
@@ -264,18 +258,15 @@ export class AssignCaptainsPage {
 
     // }
 
-    console.log(event);
 
     this.selectedDate = event;
 
     //this.selectedDate.setDate(event.getDate());
-    console.log(this.selectedDate);
 
   }
 
   ngOnInit() {
     this.principal.identity().then((account) => {
-      console.log(account);
 
       if (account === null) {
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
@@ -287,7 +278,6 @@ export class AssignCaptainsPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AssignCaptainsPage');
   }
 
   getAllCaptains() {
@@ -302,7 +292,6 @@ export class AssignCaptainsPage {
     this.captainService.captainsPickList().subscribe(
       res => {
 
-        console.log(res, "res");
         this.captainList = res;
         load.dismiss()
 
@@ -328,7 +317,6 @@ export class AssignCaptainsPage {
 
 
     let ids = this.myForm.get("captainIds").value;
-    console.log(ids, 'ids');
 
     if (this.myForm.get("startTime").value != null && this.myForm.get("startTime").value != '' && !this.checkEqualTimes()) {
       let date = {
@@ -359,7 +347,6 @@ export class AssignCaptainsPage {
           this.startTime = '00:00'
           this.endTime = '00:00'
           this.timeValue = '2002-09-23T00:00:00.000';
-          console.log(this.dates, 'dartes');
 
           this.doAssignCaptains(load);
 
@@ -385,7 +372,6 @@ export class AssignCaptainsPage {
           this.startTime = '00:00'
           this.endTime = '00:00'
           this.timeValue = '2002-09-23T00:00:00.000';
-          console.log(this.dates, 'dartes');
         }
       )
 
@@ -504,9 +490,7 @@ export class AssignCaptainsPage {
   }
 
   showDateTimePicker(event) {
-    console.log("222222888888");
     if (!this.startTimePickerDialogOpen && !this.endTimePickerDialogOpen) {
-      console.log('6666666666');
       this.startTimePickerDialogOpen = true;
 
       this.datePicker.show({
@@ -518,12 +502,10 @@ export class AssignCaptainsPage {
         androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
       }).then(
         date => {
-          console.log(date);
           this.startDate = '';
           this.startDate += date.getHours() > 9 ? date.getHours() : '0' + date.getHours()
           this.startDate += ":";
           this.startDate += date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes()
-          console.log(this.startDate);
           this.startTimePickerDialogOpen = false;
 
           //event.target.value = date 
@@ -537,10 +519,8 @@ export class AssignCaptainsPage {
     }
   }
   showDateTimePickerEnd(event) {
-    console.log("222222888888");
     
     if (!this.endTimePickerDialogOpen && !this.startTimePickerDialogOpen) {
-      console.log('5555555555555');
       
       this.endTimePickerDialogOpen = true;
 
@@ -554,12 +534,10 @@ export class AssignCaptainsPage {
         androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
       }).then(
         date => {
-          console.log(date);
           this.endDate = '';
           this.endDate += date.getHours() > 9 ? date.getHours() : '0' + date.getHours()
           this.endDate += ":";
           this.endDate += date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes()
-          console.log(this.endDate);
 
           this.endTimePickerDialogOpen = false;
 

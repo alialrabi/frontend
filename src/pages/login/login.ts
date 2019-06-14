@@ -109,12 +109,16 @@ export class LoginPage {
 
           setTimeout(() => { this.counter = 0 }, 3000)
         } else {
-          // console.log("exitapp");
           this.platform.exitApp();
         }
 
       });
     }
+  }
+
+  ngOnInit() {
+
+
   }
 
   userData = {
@@ -134,7 +138,6 @@ export class LoginPage {
       load.present()
 
       this.account.username = this.account.username.toLowerCase();
-      console.log(this.account.username.toLowerCase(), 'lower case');
 
 
       this.loginService.login(this.account).then((response) => {
@@ -179,14 +182,12 @@ export class LoginPage {
       if (!flag) {
         load.dismiss();
       }
-      console.log(account);
 
       if (account === null) {
         //this.app.getRootNavs()[0].setRoot(FirstRunPage);
       } else {
         this.account = account;
 
-        console.log(this.account, '555555555555');
         if (flag) {
           if (account.authorities[0] === 'ROLE_CAPTAIN') {
             this.addToken('Captain', account)
@@ -234,7 +235,6 @@ export class LoginPage {
   addToken(userType, account) {
     if (this.platform.is("cordova")) {
       this.fcm.getToken().then(token => {
-        console.log(token);
         let deviceToken = {
           token: token,
           userType: userType,
@@ -243,7 +243,6 @@ export class LoginPage {
         }
         this.deviceTokenService.save(deviceToken).subscribe(
           res => {
-            console.log("added successfully in login ");
           }, err => {
             console.log("error in add token in login ", err);
 
@@ -315,7 +314,6 @@ export class LoginPage {
         .then(
           (res: FacebookLoginResponse) => {
 
-            console.log('Logged into Facebook!', res)
             // let toast1 = classlIn.toastCtrl.create({
             //   message: '----------------------------',
             //   duration: 5000,
@@ -406,7 +404,6 @@ export class LoginPage {
     if (this.userData.email == null || this.userData.email == '') {
       account.username = this.userData.id + 't@facebook.com';
 
-      console.log('nullllllllllllllllll', account.username);
 
     } else {
       this.userData.email.toLowerCase();
@@ -424,7 +421,6 @@ export class LoginPage {
     }, (err) => {
       // Unable to log in
       this.account.password = '';
-      console.log(err);
 
 
       if (err.error.status == 400 && err.error.title == "Incorrect password") {
@@ -460,13 +456,11 @@ export class LoginPage {
       signUpAccount.login = this.userData.id + 't@facebook.com';
       signUpAccount.email = this.userData.id + 't@facebook.com';
 
-      console.log('nullllllllllllllllll', signUpAccount.login);
 
     }
 
     // Attempt to login in through our User service
     this.user.signup(signUpAccount).subscribe((res) => {
-      console.log(res);
       // var id = res;
 
 
@@ -517,7 +511,6 @@ export class LoginPage {
     this.tw.login()
       .then(res => {
 
-        console.log(res, '1111111111111');
 
         this.userData.email = res.userName + '@twitter.com';
         // Get user data
@@ -525,7 +518,6 @@ export class LoginPage {
         // The issue is reported in https://github.com/chroa/twitter-connect-plugin/issues/23
         this.tw.showUser()
           .then(user => {
-            console.log(user, 'useeeeeeeeeeeeeeeeer');
             let name = user.name
             let spaceIndex = name.indexOf(' ');
             if (spaceIndex == 0 || spaceIndex == -1) {

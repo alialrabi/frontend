@@ -1,4 +1,6 @@
 {
+    "INVALID_PASSWORD":"كلمه المرور غير مناسبه",
+    "OPTIONAL_TEXT":"(إختيارى)",
     "CAPTAIN_PHONE":"هاتف الطيار",
     "SHIPPING_ORDERS_COUNT":"عدد طلبات الشحن",
     "ORDER_DETAIL_RECIVER_LIVING_TYPE":"نوع السكن لعنوان المستلم",

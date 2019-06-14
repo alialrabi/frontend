@@ -67,7 +67,6 @@ export class AgencyDetailsPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AgencyDetailsPage');
   }
   getAgency() {
     let load = this.loading.create({
@@ -76,7 +75,6 @@ export class AgencyDetailsPage {
     load.present()
 
     this.accountService.getAgencyDetails(this.item.id).subscribe(res => {
-      console.log(res);
       this.agencyDetail = res
       load.dismiss();
     }, err => {

@@ -78,7 +78,6 @@ export class SubAssignDetailsPage {
   }
 
   doInfinite(infiniteScroll) {
-    console.log('Begin async operation');
 
     setTimeout(() => {
 
@@ -86,7 +85,6 @@ export class SubAssignDetailsPage {
       this.getSubAssign(this.pageNum);
 
 
-      console.log('Async operation has ended');
       infiniteScroll.complete();
     }, 1000);
   }
@@ -105,7 +103,6 @@ export class SubAssignDetailsPage {
     }
     this.captainService.getSubAssignes(this.id, pageNum).subscribe(
       res => {
-        console.log(res);
         
         if (pageNum == 0) {
           this.assingCaptains = res;
@@ -142,7 +139,6 @@ export class SubAssignDetailsPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad SubAssignDetailsPage');
   }
   convertToTime(time) {
     let timeInt = parseInt(time);

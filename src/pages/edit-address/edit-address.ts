@@ -118,7 +118,6 @@ export class EditAddressPage {
     public translateService: TranslateService, private app: App, public platform: Platform, private principal: Principal, private builder: FormBuilder) {
     this.address = this.navParams.get("item");
     this.alex = this.getCity(this.address.city);
-    console.log(this.alex, 'ssssssss');
 
     if (this.platform.is("cordova") && this.platform.is("android")) {
       this.isCordova = true;
@@ -170,13 +169,13 @@ export class EditAddressPage {
       //'country': ['', [Validators.required, Validators.maxLength(45)]],
       //'city': ['Alexandria', []],
       'livingType': ['Flat', []],
-      'name': ['', [Validators.maxLength(45)]],
-      'region': ['', [Validators.required, Validators.maxLength(45)]],
-      'street': ['', [Validators.required, Validators.maxLength(45)]],
-      'building': ['', [Validators.required, Validators.maxLength(45)]],
-      'floor': ['', [Validators.required, Validators.maxLength(45)]],
-      'flatNumber': ['', [Validators.required, Validators.maxLength(45)]],
-      'otherDetails': ['', [Validators.maxLength(45)]],
+      'name': [this.address.name, [Validators.maxLength(45)]],
+      'region': [this.address.region, [Validators.required, Validators.maxLength(45)]],
+      'street': [this.address.street, [Validators.required, Validators.maxLength(45)]],
+      'building': [this.address.building, [Validators.required, Validators.maxLength(45)]],
+      'floor': [this.address.floor, [Validators.required, Validators.maxLength(45)]],
+      'flatNumber': [this.address.flatNumber, [Validators.required, Validators.maxLength(45)]],
+      'otherDetails': [this.address.otherDetails, [Validators.maxLength(45)]],
       // 'mobilePhoneNumber': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
       // 'homePhoneNumber': ['', [Validators.pattern("(0)[0-9]{9}")]],
     });
@@ -204,18 +203,40 @@ export class EditAddressPage {
       });
   }
 
+  ngOnInit() {
+
+    this.myForm.valueChanges
+      .map((value) => {
+        // Here you can manipulate your value
+        value.name = value.name.trim();
+        this.address.name = value.name
+        value.region = value.region.trim();
+        this.address.region = value.region
+        value.street = value.street.trim();
+        this.address.street = value.street
+        value.building = value.building.trim();
+        this.address.building = value.building
+        value.floor = value.floor.trim();
+        this.address.floor = value.floor
+        value.flatNumber = value.flatNumber.trim();
+        this.address.flatNumber = value.flatNumber
+        value.otherDetails = value.otherDetails.trim();
+        this.address.otherDetails = value.otherDetails
+
+        return value;
+      }).filter((value) => this.myForm.valid)
+      .subscribe((value) => {
+      });
+  }
+
+
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad EditAddressPage');
-    console.log(this.address.latitude, '');
+
     if (this.platform.is("cordova") && (this.platform.is("android") || this.platform.is("ios"))) {
-      console.log("---------------------------");
       // this.locationAccuracy.canRequest().then((canRequest: any) => {
 
       // //this.diagnostic.isLocationEnabled().then((isEnabled) =>{
-
-
-      //   console.log('canRequest' , canRequest);
 
 
       // if(canRequest == 0) {
@@ -225,7 +246,6 @@ export class EditAddressPage {
       if (this.address.latitude == '0') {
         this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
           () => {
-            console.log("success");
 
             this.loadMap(this)
           }
@@ -255,14 +275,12 @@ export class EditAddressPage {
   }
   next() {
 
-    if(this.myForm.valid){
-    // console.log(this.locationDisable);
+    if(this.myForm.valid && !this.checkSpaces()){
 
 
     // if (this.locationDisable) {
     //   this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
     //     () => {
-    //       console.log("success");
 
     //       this.loadMap()
     //     }
@@ -312,9 +330,6 @@ export class EditAddressPage {
       mainClass.mainMarker = marker;
 
 
-      //  console.log(this.map , 'map');
-      //  console.log(this.mainMarker , "marker");
-
       var superclass = mainClass;
       google.maps.event.addListener(mainClass.map, 'click', function (event) {
         if (superclass.checkLocation(event.latLng.lat(), event.latLng.lng(), false)) {
@@ -330,11 +345,9 @@ export class EditAddressPage {
           superclass.address.latitude = event.latLng.lat();
           superclass.address.longitude = event.latLng.lng();
         }
-        console.log(superclass.address);
       });
 
       mainClass.locationDisable = false;
-      console.log(mainClass.locationDisable);
 
     } else {
 
@@ -369,9 +382,7 @@ export class EditAddressPage {
         // }else{
         //   mainClass.loadWithOutLocation = true;
         // }
-        //  console.log(this.map , 'map');
-        //  console.log(this.mainMarker , "marker");
-
+        
         mainClass.loadWithOutLocation = true;  
 
         var superclass = mainClass;
@@ -424,7 +435,6 @@ export class EditAddressPage {
   }
 
   loadMapWithOutLocation(mainClass) {
-    console.log("************************");
 
     mainClass.loadWithOutLocation = true;
 
@@ -436,12 +446,10 @@ export class EditAddressPage {
       center: latLng,
       zoom: 15
     }
-    console.log("2222222222222222222222");
 
 
 
     mainClass.map = new google.maps.Map(mainClass.elementRef.nativeElement, mapOptions);
-    console.log("333333333333333333333");
 
 
 
@@ -630,10 +638,8 @@ export class EditAddressPage {
 
     this.address.city = this.alexValue;
     this.address.livingType = this.getLivingTypeValue(this.myForm.get("livingType").value)
-    console.log(this.address, 'sssssssssssssssss');
 
     this.addressService.edit(this.address).subscribe((res) => {
-      console.log(res, 'res');
 
       let toast = this.toastCtrl.create({
         message: this.addAdressSuccessString,
@@ -666,7 +672,6 @@ export class EditAddressPage {
   }
 
   getCityValue(cityValue) {
-    console.log(cityValue, 'ssssssssssss');
 
 
     let city = ''
@@ -703,8 +708,6 @@ export class EditAddressPage {
     return livingType;
   }
   skip() {
-
-    console.log("****** skip");
     
 
     let load = this.loading.create({
@@ -719,10 +722,8 @@ export class EditAddressPage {
 
     this.address.city = this.alexValue;
     this.address.livingType = this.getLivingTypeValue(this.myForm.get("livingType").value)
-    console.log(this.address, 'sssssssssssssssss');
 
     this.addressService.edit(this.address).subscribe((res) => {
-      console.log(res, 'res');
 
       let toast = this.toastCtrl.create({
         message: this.addAdressSuccessString,
@@ -768,6 +769,18 @@ export class EditAddressPage {
     } else {
       return false;
     }
+  }
+  checkSpaces(){
+    if(this.address.building == '' || this.address.flatNumber == '' || this.address.floor == '' || this.address.region == '' || this.address.street == ''){
+      return true;
+    }else{
+      return false;
+    }
+  }
+  checkSpaceTofields(string , field){
+    const ctrl = this.myForm.get(field);
+    return ctrl.dirty && string == '';
+
   }
 
 }

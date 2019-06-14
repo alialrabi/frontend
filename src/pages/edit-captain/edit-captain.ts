@@ -140,11 +140,11 @@ export class EditCaptainPage {
     })
 
     this.myForm = builder.group({
-      'code': ['', [Validators.required , Validators.pattern("[0-9]{1,8}")]],
-      'name': ['', [Validators.required, Validators.maxLength(45)]],
-      'phone': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
-      'email': ['', [Validators.required, Validators.email , Validators.maxLength(49)]],
-      'password': ['', [Validators.minLength(6) , Validators.maxLength(50)]],
+      'code': [this.captain.code, [Validators.required , Validators.pattern("[0-9]{1,8}")]],
+      'name': [this.captain.name, [Validators.required, Validators.maxLength(45)]],
+      'phone': [this.captain.phone, [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
+      'email': [this.account.email, [Validators.required, Validators.email , Validators.maxLength(49)]],
+      'password': ['', [Validators.minLength(6) , Validators.maxLength(50) , Validators.pattern("^[A-Za-z0-9?!@#$%^&*_-]*$")]],
       'passwordConfirm': ['', []]
     });
 
@@ -156,9 +156,22 @@ export class EditCaptainPage {
 
   }
 
+  ngOnInit() {
+
+    this.myForm.valueChanges
+      .map((value) => {
+        // Here you can manipulate your value
+        value.name = value.name.trim();
+        this.captain.name = value.name
+       
+        return value;
+      }).filter((value) => this.myForm.valid)
+      .subscribe((value) => {
+      });
+  }
+
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad EditCaptainPage');
   }
 
   showDialog() {
@@ -245,7 +258,7 @@ export class EditCaptainPage {
 
   editCaptain() {
 
-    if(this.myForm.valid && !this.notMathces() && this.valuesChanges() && !this.isloadinImage && !this.validatePasswordChange()){
+    if(this.myForm.valid && !this.notMathces() && this.valuesChanges() && !this.isloadinImage && !this.validatePasswordChange() && !this.checkSpaces()){
 
     let load = this.loading.create({
       content: this.pleaseWait
@@ -277,7 +290,6 @@ export class EditCaptainPage {
       res1 => {
 
         this.captainService.updateCaptainInformation(this.captain).subscribe((res) => {
-          console.log(res, 'res');
 
           let toast = this.toastCtrl.create({
             message: this.addAdressSuccessString,
@@ -317,7 +329,6 @@ export class EditCaptainPage {
           displayError = this.invalidPasswordError;
         }
         load.dismiss();
-        console.log(displayError, 'ssssssssssssss');
 
         let toast1 = this.toastCtrl.create({
           message: displayError,
@@ -325,7 +336,6 @@ export class EditCaptainPage {
           position: 'top'
         });
         toast1.present();
-        console.log("8888888888888888888888888888");
 
       });
     }
@@ -358,7 +368,6 @@ export class EditCaptainPage {
   }
   passwordChange() {
 
-    console.log('password change');
 
     if (this.myForm.get("password").value != '' && this.myForm.get("password").value != null) {
       this.myForm.get("passwordConfirm").clearValidators();
@@ -375,19 +384,16 @@ export class EditCaptainPage {
   }
 
   uploadBrowserImage(event: any) {
-    //console.log('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb');
 
     this.readThis(event.target);
     //let files = event.target.files;
 
-    // console.log('files' , files);
     // files[0]
 
 
   }
 
   openFileSelector() {
-    // console.log("rrrrrrrrrrrrrrrrrrrrrrrrrrr");
 
     //this.myInput.nativeElement.click();
 
@@ -395,7 +401,6 @@ export class EditCaptainPage {
     element.click()
   }
   readThis(inputValue: any): void {
-    console.log("**************************");
 
     this.isloadinImage = true;
 
@@ -405,20 +410,17 @@ export class EditCaptainPage {
       if (file != null && file != undefined) {
 
         this.ng2ImgMaxService.resize([file], 300, 300).subscribe((result) => {
-          console.log("result", result);
 
 
           var myReader: FileReader = new FileReader();
 
           myReader.onloadend = (e) => {
-            console.log("--------------------");
 
             this.isloadinImage = false;
 
             this.captain.image = myReader.result.substr(myReader.result.indexOf(',') + 1)
 
             //this..imageContentType = 'fromBrowser'
-            console.log(myReader);
 
           }
           myReader.readAsDataURL(result);
@@ -437,6 +439,19 @@ export class EditCaptainPage {
   hideShowPassword() {    
     this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
     this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
+  }
+
+  checkSpaces() {
+    if (this.captain.name == '') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  checkSpaceTofields(string, field) {
+    const ctrl = this.myForm.get(field);
+    return ctrl.dirty && string == '';
+
   }
 
 }

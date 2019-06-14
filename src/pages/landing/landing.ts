@@ -56,7 +56,6 @@ export class LandingPage {
 
           setTimeout(() => { this.counter = 0 }, 3000)
         } else {
-          // console.log("exitapp");
           this.platform.exitApp();
         }
 
@@ -66,10 +65,8 @@ export class LandingPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LandingPage');
   }
   start() {
-    //console.log("****");
 
     //this.app.getRootNavs()[0].setRoot(LoginPage);
 
@@ -97,20 +94,16 @@ export class LandingPage {
   }
 
   validateUser(){
-    console.log('validate user landing');
  
     this.principal.identity().then((account) => {
 
         
-
-      console.log(account);
 
       if (account === null) {
         //this.app.getRootNavs()[0].setRoot(FirstRunPage);
       } else {
         //this.account = account;
 
-       // console.log(this.account, '555555555555');
 
 
         if (account.authorities[0] === 'ROLE_CAPTAIN') {
