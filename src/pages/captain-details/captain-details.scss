@@ -17,7 +17,7 @@ page-captain-details {
         max-width: 80px;
     }
     .info-div{
-        margin-left: 20px;
+//        margin-left: 20px;
         margin-top: 15px;
        
     }
@@ -36,7 +36,7 @@ page-captain-details {
         }
     }
     .item-background {
-        background-color: #fff;
+        background-color: transparent;
     }
     .btn-style {
         padding: 5px;
@@ -50,4 +50,7 @@ page-captain-details {
         background-size: 100%;
       }
 
+      .item-md{
+        padding-left: 0px;
+      }
     }

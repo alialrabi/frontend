@@ -28,8 +28,11 @@ page-orders {
        
     }
     .item-background2 {
-        background-color: #fff;
+        background-color: transparent;
         border-bottom: 1px solid rgba(86, 61, 124, 1.0);
+    }
+    .list-md ion-item-sliding {
+        background-color: transparent;
     }
     .auth-page-captain {
         background-color: #fff;
@@ -53,7 +56,7 @@ page-orders {
     }
 
     .tap-selected {
-        background: #4cc2f9;
+        background: #f3c221;
         color: white;
         
     }

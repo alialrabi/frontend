@@ -20,8 +20,11 @@ page-captain-orders {
        
     }
     .item-background2 {
-        background-color: #fff;
+        background-color: transparent;
         border-bottom: 1px solid rgba(86, 61, 124, 1.0);
+    }
+    .list-md ion-item-sliding {
+        background-color: transparent;
     }
     .img-col{
         width: 60px;
@@ -53,7 +56,7 @@ page-captain-orders {
         padding: 5px;
     }
     .tap-selected {
-        background: #4cc2f9;
+        background: #f3c221;
         color: white;
         
     }

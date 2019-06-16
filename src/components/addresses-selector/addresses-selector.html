@@ -50,18 +50,19 @@
           <ion-col class="btn-col" col-12>
 
             <div class="account-info info-div">
-              <p style="margin-top: 13px" *ngIf="address.name != null && address.name != ''">
+              <!-- <p style="margin-top: 13px" *ngIf="address.name != null && address.name != ''">
                 {{'ADDRESS_NAME' | translate}} :
                 <strong text-wrap> {{address.name}}</strong>
-              </p>
+              </p> -->
               <!-- <p style="margin-top: 13px">
                   {{'CITY' | translate}} : <strong text-wrap> {{address.city}}</strong>
               </p> -->
 
               <p style="margin-top: 10px">
                 {{'ADDRESS' | translate}} :
-                <strong text-wrap>{{address.region}} , {{address.street}} , {{'TOWER' | translate}}/{{address.building}} , {{'FLOOR' | translate}}/{{address.floor}}
-                  , {{'FLAT' | translate}}/{{address.flatNumber}} , {{address.city}}</strong>
+                <!-- <strong text-wrap>{{address.region}} , {{address.street}} , {{'TOWER' | translate}}/{{address.building}} , {{'FLOOR' | translate}}/{{address.floor}}
+                  , {{'FLAT' | translate}}/{{address.flatNumber}} , {{address.city}}</strong> -->
+                  <strong text-wrap>{{address.region}} , {{address.street}} , {{address.city}}</strong>
               </p>
               <p style="margin-top: 13px" *ngIf="address.otherDetails != null && address.otherDetails != ''">
                 {{'OTHER_DETAILS' | translate}} :

@@ -32,15 +32,15 @@
     <form class="list-form" [formGroup]="myForm">
 
         <ion-item class="item-background" margin-top>
-            <p style="color: rgb(87, 76, 233);font-size: 1.2em;">
+            <p style="color: black;font-size: 1.2em;">
               {{'RATING' | translate}} </p>
               <p text-center>
               
-                <ion-icon [style.margin-right]="language == 'en' ? '0px' : '10px'" [style.margin-left]="language == 'en' ? '10px' : '0px'" style="color: rgb(87, 76, 233);font-size: 2.0em;" [name]="editOrder.rating < 1 ? 'star-outline' : 'star'" (click)="changeRating(1)"></ion-icon>
-                <ion-icon style="color: rgb(87, 76, 233);font-size: 2.0em;" [name]="editOrder.rating < 2 ? 'star-outline' : 'star'" (click)="changeRating(2)"></ion-icon>
-                <ion-icon style="color: rgb(87, 76, 233);font-size: 2.0em;" [name]="editOrder.rating < 3 ? 'star-outline' : 'star'" (click)="changeRating(3)"></ion-icon>
-                <ion-icon style="color: rgb(87, 76, 233);font-size: 2.0em;" [name]="editOrder.rating < 4 ? 'star-outline' : 'star'" (click)="changeRating(4)"></ion-icon>
-                <ion-icon style="color: rgb(87, 76, 233);font-size: 2.0em;" [name]="editOrder.rating < 5 ? 'star-outline' : 'star'" (click)="changeRating(5)"></ion-icon>
+                <ion-icon [style.margin-right]="language == 'en' ? '0px' : '10px'" [style.margin-left]="language == 'en' ? '10px' : '0px'" style="color: darkorange;font-size: 2.0em;" [name]="editOrder.rating < 1 ? 'star-outline' : 'star'" (click)="changeRating(1)"></ion-icon>
+                <ion-icon style="color: darkorange;font-size: 2.0em;" [name]="editOrder.rating < 2 ? 'star-outline' : 'star'" (click)="changeRating(2)"></ion-icon>
+                <ion-icon style="color: darkorange;font-size: 2.0em;" [name]="editOrder.rating < 3 ? 'star-outline' : 'star'" (click)="changeRating(3)"></ion-icon>
+                <ion-icon style="color: darkorange;font-size: 2.0em;" [name]="editOrder.rating < 4 ? 'star-outline' : 'star'" (click)="changeRating(4)"></ion-icon>
+                <ion-icon style="color: darkorange;font-size: 2.0em;" [name]="editOrder.rating < 5 ? 'star-outline' : 'star'" (click)="changeRating(5)"></ion-icon>
             
               </p>
           </ion-item>

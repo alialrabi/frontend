@@ -65,7 +65,7 @@
         <ion-input type="text" [(ngModel)]="address.city" formControlName="city" name="city"></ion-input>
       </ion-item> -->
 
-      <ion-item>
+      <!-- <ion-item>
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
           {{ 'ADDRESS_NAME' | translate }} <span class="optional-text"> {{ 'OPTIONAL_TEXT' | translate }}</span>
@@ -73,7 +73,7 @@
         <ion-input type="text" [(ngModel)]="address.name" formControlName="name" name="name" [dir]="direction"></ion-input>
       </ion-item>
       <p class="validationHint" *ngIf="hasError('name', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
-
+ -->
 
       <!-- <ion-item>
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
@@ -95,7 +95,7 @@
       <p class="validationHint" *ngIf="hasError('city', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
  -->
 
-      <ion-item>
+      <!-- <ion-item>
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
           {{ 'LIVINF_TYPE' | translate }}
@@ -108,7 +108,7 @@
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('livingType', 'required')">{{ 'REQURIED' | translate }} </p>
-      <p class="validationHint" *ngIf="hasError('livingType', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('livingType', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p> -->
 
 
       <ion-item>
@@ -126,15 +126,15 @@
       <ion-item>
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
-          {{ 'STREET' | translate }}
+          {{ 'ADDRESS_DETAIL' | translate }}
         </ion-label>
-        <ion-input type="text" [(ngModel)]="address.street" formControlName="street" name="street" [dir]="direction"></ion-input>
+        <ion-textarea type="text" [(ngModel)]="address.street" formControlName="street" name="street" [dir]="direction"></ion-textarea>
       </ion-item>
 
       <p class="validationHint" *ngIf="hasError('street', 'required') || checkSpaceTofields(address.street , 'street')">{{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('street', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
 
-      <ion-item>
+      <!-- <ion-item>
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
           <ion-icon name="pin" item-start class="text-primary"></ion-icon>
           {{ 'BUILDING' | translate }}
@@ -167,7 +167,7 @@
 
       <p class="validationHint" *ngIf="hasError('flatNumber', 'required') || checkSpaceTofields(address.flatNumber , 'flatNumber')">{{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="hasError('flatNumber', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
-
+ -->
 
       <ion-item>
         <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">

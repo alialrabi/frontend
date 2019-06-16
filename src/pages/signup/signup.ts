@@ -15,6 +15,7 @@ import { AuthService, FacebookLoginProvider } from 'angular4-social-login';
 import { DeviceTockenService } from '../../providers/auth/deviceToken.service';
 import { FCM } from '@ionic-native/fcm';
 import { AddUserPhonePage } from '../add-user-phone/add-user-phone';
+import { UserOrdersPage } from '../user-orders/user-orders';
 
 @IonicPage()
 @Component({
@@ -153,7 +154,7 @@ export class SignupPage {
         });
         toast.present();
         loading.dismiss();
-        this.navCtrl.setRoot(AddAddressPage);
+        this.navCtrl.setRoot(UserOrdersPage);
       });
 
     }, (err) => {
