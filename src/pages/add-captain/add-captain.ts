@@ -81,6 +81,13 @@ export class AddCaptainPage {
   passwordType: string = 'password';
   passwordIcon: string = 'eye-off';
 
+  AddCaptainTitle = '';
+  captainIsNOtActiveMessage = ''
+  activateText = ''
+  cancel = ''
+  editCaptainSuccess = ''
+  editCaptainError = ''
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private ng2ImgMaxService: Ng2ImgMaxService, public _alert: AlertController
     , public imagePicker: ImagePicker, public camera: Camera, public toastCtrl: ToastController,
     public captainService: CaptainService,
@@ -101,7 +108,7 @@ export class AddCaptainPage {
       this.platformType = "notCordova"
     }
 
-    this.translateService.get(['ADD_CAPTAIN_ERROR', 'ADD_CAPTAIN_SUCCESS', 'CHOOSE_PHOTO', 'CHOOSE_FROM_GALARY', 'TAKE_A_PHOTO', 'PLEASE_WAIT', 'EXISTING_USER_ERROR', 'INVALID_PASSWORD_ERROR', 'SIGNUP_ERROR']).subscribe((values) => {
+    this.translateService.get(['ADD_CAPTAIN_ERROR', 'ADD_CAPTAIN_SUCCESS', 'EDIT_CAPTAIN_ERROR', 'EDIT_CAPTAIN_SUCCESS' , 'ADD_CAPTAIN_TITLE' , 'CAPTAIN_NOT_ACTIVE_MESSAGE' , 'ACTIVATE' , 'CANCEL' , 'CHOOSE_PHOTO', 'CHOOSE_FROM_GALARY', 'TAKE_A_PHOTO', 'PLEASE_WAIT', 'EXISTING_USER_ERROR', 'INVALID_PASSWORD_ERROR', 'SIGNUP_ERROR']).subscribe((values) => {
       this.addAddressError = values.ADD_CAPTAIN_ERROR;
       this.addAdressSuccessString = values.ADD_CAPTAIN_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
@@ -111,14 +118,21 @@ export class AddCaptainPage {
       this.invalidPasswordError = values.INVALID_PASSWORD_ERROR;
       this.choosePhoto = values.CHOOSE_PHOTO
       this.signupErrorString = values.SIGNUP_ERROR
+
+      this.AddCaptainTitle = values.ADD_CAPTAIN_TITLE;
+      this.captainIsNOtActiveMessage = values.CAPTAIN_NOT_ACTIVE_MESSAGE
+      this.activateText = values.ACTIVATE
+      this.cancel = values.CANCEL
+      this.editCaptainSuccess = values.EDIT_CAPTAIN_SUCCESS
+      this.editCaptainError = values.EDIT_CAPTAIN_ERROR
     })
 
     this.myForm = builder.group({
-      'code': ['', [Validators.required , Validators.pattern("[0-9]{1,8}")]],
+      'code': ['', [Validators.required, Validators.pattern("[0-9]{1,8}")]],
       'name': ['', [Validators.required, Validators.maxLength(45)]],
       'phone': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
-      'email': ['', [Validators.required, Validators.email , Validators.maxLength(49)]],
-      'password': ['', [Validators.required, Validators.minLength(6) , Validators.maxLength(50) , Validators.pattern("^[A-Za-z0-9?!@#$%^&*_-]*$")]],
+      'email': ['', [Validators.required, Validators.email, Validators.maxLength(49)]],
+      'password': ['', [Validators.required, Validators.minLength(6), Validators.maxLength(50), Validators.pattern("^[A-Za-z0-9?!@#$%^&*_-]*$")]],
       'passwordConfirm': ['', [Validators.required]]
     });
 
@@ -138,7 +152,7 @@ export class AddCaptainPage {
         // Here you can manipulate your value
         value.name = value.name.trim();
         this.captain.name = value.name
-       
+
         return value;
       }).filter((value) => this.myForm.valid)
       .subscribe((value) => {
@@ -225,9 +239,9 @@ export class AddCaptainPage {
 
     }
 
-    this.imagePicker.getPictures(options).then((results) => {      
+    this.imagePicker.getPictures(options).then((results) => {
       if (results[0] != null && results[0] != undefined && results[0] != 'O' && results[0] != '') {
-      this.captain.image = results[0];
+        this.captain.image = results[0];
       }
     }, (err) => {
       alert(err);
@@ -274,7 +288,124 @@ export class AddCaptainPage {
 
   addCaptain() {
 
-    if(this.myForm.valid && !this.notMathces() && !this.isloadinImage && !this.checkSpaces()){
+    if (this.myForm.valid && !this.notMathces() && !this.isloadinImage && !this.checkSpaces()) {
+
+      let load = this.loading.create({
+        content: this.pleaseWait
+
+
+      })
+      load.present()
+
+      this.account.login = this.account.email;
+      this.account.activated = true;
+      this.account.firstName = this.captain.name;
+      this.account.lastName = this.captain.name;
+
+      if (this.captain.image == 'O') {
+        this.captain.image = null;
+      }
+      // Attempt to login in through our User service
+      this.accountService.registerCaptain(this.account).subscribe(
+        res1 => {
+          this.captain.userId = res1.id;
+
+
+          this.captainService.save(this.captain).subscribe((res) => {
+
+            let toast = this.toastCtrl.create({
+              message: this.addAdressSuccessString,
+              duration: 3000,
+              position: 'top'
+            });
+            toast.present();
+            load.dismiss();
+            //this.navCtrl.push(CaptainsPage);
+            this.app.getRootNavs()[0].setRoot(CaptainsPage);
+          }, (err1) => {
+            console.log('error', err1);
+
+            // Unable to add address
+            // const error = JSON.parse(err.error);
+            let displayError = this.addAddressError;
+
+            let toast = this.toastCtrl.create({
+              message: displayError,
+              duration: 3000,
+              position: 'middle'
+            });
+            toast.present();
+            load.dismiss();
+          });
+
+
+        }, err => {
+          // Unable to sign up
+          console.log(err);
+
+          let displayError = this.signupErrorString;
+          if (err.status === 400 && (err.error.errorKey == 'userexists' || err.error.message == 'error.userexists' || err.error.title == 'Login name already used!')) {
+            displayError = this.existingUserError;
+
+            let toast1 = this.toastCtrl.create({
+              message: displayError,
+              duration: 3000,
+              position: 'top'
+            });
+            toast1.present();
+          } else if (err.status === 400 && (err.error.errorKey == 'emailnotActive' || err.error.message == 'error.emailnotActive' || err.error.title == 'Email is already in use but not active!')) {
+
+            this.viewEditDialog();
+          }
+          else if (err.status === 400 && err.error.message === 'error.validation'
+            && err.error.fieldErrors[0].field === 'password' && err.error.fieldErrors[0].message === 'Size') {
+            displayError = this.invalidPasswordError;
+
+            let toast1 = this.toastCtrl.create({
+              message: displayError,
+              duration: 3000,
+              position: 'top'
+            });
+            toast1.present();
+          } else {
+            let toast1 = this.toastCtrl.create({
+              message: displayError,
+              duration: 3000,
+              position: 'top'
+            });
+            toast1.present();
+          }
+          load.dismiss();
+
+
+
+        });
+    }
+  }
+
+  viewEditDialog() {
+
+    let alert = this._alert.create({
+      title: this.AddCaptainTitle,
+      message: this.captainIsNOtActiveMessage,
+      buttons: [
+        {
+          text: this.activateText,
+          handler: () => {
+            this.activate()
+          }
+        },
+        {
+          text: this.cancel,
+          handler: () => {
+
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+  activate() {
 
     let load = this.loading.create({
       content: this.pleaseWait
@@ -283,24 +414,15 @@ export class AddCaptainPage {
     })
     load.present()
 
-    this.account.login = this.account.email;
-    this.account.activated = true;
-    this.account.firstName = this.captain.name;
-    this.account.lastName = this.captain.name;
-
-    if (this.captain.image == 'O') {
-      this.captain.image = null;
-    }
-    // Attempt to login in through our User service
-    this.accountService.registerCaptain(this.account).subscribe(
+    this.accountService.updateUserInformationByEmail(this.account).subscribe(
       res1 => {
         this.captain.userId = res1.id;
 
 
-        this.captainService.save(this.captain).subscribe((res) => {
+        this.captainService.updateCaptainInformationByUserId(this.captain).subscribe((res) => {
 
           let toast = this.toastCtrl.create({
-            message: this.addAdressSuccessString,
+            message: this.editCaptainSuccess,
             duration: 3000,
             position: 'top'
           });
@@ -313,7 +435,7 @@ export class AddCaptainPage {
 
           // Unable to add address
           // const error = JSON.parse(err.error);
-          let displayError = this.addAddressError;
+          let displayError = this.editCaptainError;
 
           let toast = this.toastCtrl.create({
             message: displayError,
@@ -330,14 +452,6 @@ export class AddCaptainPage {
         console.log(err);
 
         let displayError = this.signupErrorString;
-        if (err.status === 400 && (err.error.errorKey == 'userexists' || err.error.message == 'error.userexists' || err.error.title == 'Login name already used!')) {
-          displayError = this.existingUserError;
-        } else if (err.status === 400 && err.error.message === 'error.validation'
-          && err.error.fieldErrors[0].field === 'password' && err.error.fieldErrors[0].message === 'Size') {
-          displayError = this.invalidPasswordError;
-        }
-        load.dismiss();
-
         let toast1 = this.toastCtrl.create({
           message: displayError,
           duration: 3000,
@@ -345,8 +459,12 @@ export class AddCaptainPage {
         });
         toast1.present();
 
+        load.dismiss();
+
+
+
       });
-    }
+
   }
 
   hasError(field: string, error: string) {
@@ -409,7 +527,7 @@ export class AddCaptainPage {
     }
   }
 
-  hideShowPassword() {    
+  hideShowPassword() {
     this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
     this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
   }

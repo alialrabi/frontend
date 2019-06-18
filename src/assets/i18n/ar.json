@@ -1,4 +1,13 @@
 {
+  "ACTIVATE":"استرجاع",
+  "CAPTAIN_NOT_ACTIVE_MESSAGE":"لقد كان  يوجد طيار بنفس البريد الالكترونى من قبل هل تريد فى استرجاعه و تعديل بياناته",
+  "ADD_CAPTAIN_TITLE":"اضافه طيار",
+  "DELETE_ANY_WHERE":"نعم احذف",
+  "CONFIRM_CAPTAIN_DELETE_MESSAGE":"هذا الطيار ملحق به طلبات الان اذا قمت بمسحه سوف يتم الغاء هذا الالحاق",
+  "CAPTAIN_DELETE_ERROR":"خطأ فى حذف العنوان",
+  "CAPTAIN_DELETE_SUCCESS":"تم حذف الطيار بنجاح",
+  "CAPTAIN_DELETE_MESSAGE":"هل تريد حقا حذف هذا الطيار ؟",
+  "CAPTAIN_DELETE_TITLE":"حذف طيار",
   "ADDRESS_DETAIL":"العنوان بالتفصيل",
     "INVALID_PASSWORD":"كلمه المرور غير مناسبه",
     "OPTIONAL_TEXT":"(إختيارى)",

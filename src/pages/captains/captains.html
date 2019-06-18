@@ -97,6 +97,17 @@
   
             </ion-col>
           </ion-row>
+          <ion-row *ngIf="userType == 'admin'">
+            <ion-col col-12 style="padding-top: 0px;">
+              <ion-buttons class="btn-style" style="width: 100%;">
+                <button ion-button text-wrap style="background: linear-gradient(to bottom, #fc1200 5%, #ff2e02 100%);background-color: rgba(0, 0, 0, 0);background-color: rgba(0, 0, 0, 0);border: 1px solid #f71400;box-shadow: 0px 0px 0px 2px #a24949;width: 100%" class="myButton" (click)="DeleteCaptain(captain)">
+                  {{ 'DELETE' | translate }}
+                  <ion-icon name="ios-trash" [style.margin-right]="language == 'en' ? '0px' : '10px'" [style.margin-left]="language == 'en' ? '10px' : '0px'" ></ion-icon>
+                </button>
+              </ion-buttons>
+  
+            </ion-col>
+          </ion-row>
         </ion-grid>
 
 
