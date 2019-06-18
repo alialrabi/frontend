@@ -1,8 +1,8 @@
 {
-    "ACTIVATE":"Retrieve",
-    "CAPTAIN_NOT_ACTIVE_MESSAGE":"There was an captain with this email before , do you want to retrieve his account and edit his information",
+    "ACTIVATE":"Recovery",
+    "CAPTAIN_NOT_ACTIVE_MESSAGE":"There was an captain with this email before , do you want to recover his account and edit his information",
     "ADD_CAPTAIN_TITLE":"Add Captain",
-    "DELETE_ANY_WHERE":"YES DELETE",
+    "DELETE_ANY_WHERE":"YES, DELETE",
     "CONFIRM_CAPTAIN_DELETE_MESSAGE":"There is some orders assigned to this captain if you deleted him this assigned will be canceled",
     "CAPTAIN_DELETE_ERROR":"Error in deleting captain",
     "CAPTAIN_DELETE_SUCCESS":"Captain Deleted Successfully",
