@@ -28,9 +28,12 @@ page-captain-assign-details {
          
       }
       .item-background2 {
-          background-color: #fff;
+          background-color: transparent;
           border-bottom: 1px solid rgba(86, 61, 124, 1.0);
       }
+      .list-md ion-item-sliding {
+        background-color: transparent;
+    }
         .auth-page-captain {
             background-color: #fff;
             &::after {
@@ -107,11 +110,11 @@ page-captain-assign-details {
       
                 ion-label {
                   font-size: 1em;
-                  color: color($colors, primary);
+                  color: black;
                 }
       
                 input {
-                  color: color($colors, primary);
+                  color: black;
                 }
               }
             }

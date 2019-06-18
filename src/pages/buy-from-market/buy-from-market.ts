@@ -105,7 +105,7 @@ export class BuyFromMarketPage {
       this.platformType = "notCordova"
     }
 
-    this.translateService.get(["SELECTION_CANCEL" , "SELECTION_OK" ,'TOWER', 'FLOOR', 'FLAT', 'ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS', 'CHOOSE_PHOTO', 'CHOOSE_FROM_GALARY', 'TAKE_A_PHOTO', 'PLEASE_WAIT', 'OTHER', 'CHOOSE_ADDRESS_CLICK']).subscribe((values) => {
+    this.translateService.get(["SELECTION_CANCEL", "SELECTION_OK", 'TOWER', 'FLOOR', 'FLAT', 'ADD_ORDER_ERROR', 'ADD_ORDER_SUCCESS', 'CHOOSE_PHOTO', 'CHOOSE_FROM_GALARY', 'TAKE_A_PHOTO', 'PLEASE_WAIT', 'OTHER', 'CHOOSE_ADDRESS_CLICK']).subscribe((values) => {
 
       this.orderError = values.ADD_ORDER_ERROR;
       this.orderSuccess = values.ADD_ORDER_SUCCESS;
@@ -161,7 +161,7 @@ export class BuyFromMarketPage {
 
     this.principal.identity().then((account) => {
       this.account = account;
-//      load.dismiss()
+      //      load.dismiss()
 
       if (account === null) {
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
@@ -187,7 +187,7 @@ export class BuyFromMarketPage {
         this.order.marketAddress = value.marketAddress
         value.description = value.description.trim();
         this.order.description = value.description
-       
+
         return value;
       }).filter((value) => this.myForm1.valid)
       .subscribe((value) => {
@@ -352,11 +352,11 @@ export class BuyFromMarketPage {
         this.platform.registerBackButtonAction(() => {
           if (this.reciverData) {
             this.reciverData = false;
-    
+
           } else {
             this.navCtrl.setRoot(OrderKindPage);
           }
-    
+
         });
         if (dataReturned !== null) {
 
@@ -365,8 +365,11 @@ export class BuyFromMarketPage {
 
           this.myForm1.get("address").clearValidators();
           this.myForm1.get("address").updateValueAndValidity();
+          
 
-          this.address = dataReturned.address.region + ' , ' + dataReturned.address.street + ' , ' + this.towerText + '/' + dataReturned.address.building + ' , ' + this.floorText + '/' + dataReturned.address.floor + ' , ' + this.flatText + '/' + dataReturned.address.flatNumber + ' , ' + dataReturned.address.city
+          //          this.address = dataReturned.address.region + ' , ' + dataReturned.address.street + ' , ' + this.towerText + '/' + dataReturned.address.building + ' , ' + this.floorText + '/' + dataReturned.address.floor + ' , ' + this.flatText + '/' + dataReturned.address.flatNumber + ' , ' + dataReturned.address.city
+          this.address = dataReturned.address.region + ' , ' + dataReturned.address.street + ' , ' + dataReturned.address.city
+
           this.order.reciverAddressId = dataReturned.address.id
         } else {
           this.modelReciverOpen = false;
@@ -404,79 +407,79 @@ export class BuyFromMarketPage {
   }
   addOrder() {
 
-    if(this.myForm1.valid  && !this.checkSpaces()){
+    if (this.myForm1.valid && !this.checkSpaces()) {
 
-    let load = this.loading.create({
-      content: this.pleaseWait
+      let load = this.loading.create({
+        content: this.pleaseWait
 
 
-    })
-    load.present()
+      })
+      load.present()
 
-    this.order.userId = this.account.id
-    if (this.order.priceRange == 'Other') {
-      this.order.priceRange = this.otherText;
-    }
-    this.userOrderService.save(this.order).subscribe(
-      res => {
-        if (this.platformType == 'cordova') {
-          this.launchInterstitial();
-        }
-        this.deviceTokenService.getAdminTokens().subscribe(
-          res1 => {
-
-            res1.forEach(element => {
-              let body = {
-                "notification": {
-                  "title": "طلب جديد",
-                  "body": "لقد تم اضافه طلب جديد برقم تعريفى " + " " + res.identifyNumber,
-                  "sound": "default",
-                  "click_action": "FCM_PLUGIN_ACTIVITY",
-                  "icon": "fcm_push_icon"
-                },
-                "data": {
-                  "title": "طلب جديد",
-                  "body": "لقد تم اضافه طلب جديد برقم تعريفى " + " " + res.identifyNumber
-                },
-                "to": element,
-                "priority": "high",
-                "restricted_package_name": ""
-              }
-
-              this.deviceTokenService.sendNotification(body);
-
-            });
-
-          }, err1 => {
-            console.log("errrrr  11111", err1);
-
-          }
-        )
-        // }
-
-        let toast = this.toastCtrl.create({
-          message: this.orderSuccess,
-          duration: 3000,
-          position: 'top'
-        });
-        toast.present();
-        load.dismiss();
-        this.navCtrl.setRoot(UserOrdersPage);
-      }, err => {
-        console.log(err, 'errrrrrrrrrrrrrror');
-        load.dismiss();
-        let displayError = this.orderError;
-
-        let toast = this.toastCtrl.create({
-          message: displayError,
-          duration: 3000,
-          position: 'middle'
-        });
-        toast.present();
-
+      this.order.userId = this.account.id
+      if (this.order.priceRange == 'Other') {
+        this.order.priceRange = this.otherText;
       }
-    )
-  }
+      this.userOrderService.save(this.order).subscribe(
+        res => {
+          if (this.platformType == 'cordova') {
+            this.launchInterstitial();
+          }
+          this.deviceTokenService.getAdminTokens().subscribe(
+            res1 => {
+
+              res1.forEach(element => {
+                let body = {
+                  "notification": {
+                    "title": "طلب جديد",
+                    "body": "لقد تم اضافه طلب جديد برقم تعريفى " + " " + res.identifyNumber,
+                    "sound": "default",
+                    "click_action": "FCM_PLUGIN_ACTIVITY",
+                    "icon": "fcm_push_icon"
+                  },
+                  "data": {
+                    "title": "طلب جديد",
+                    "body": "لقد تم اضافه طلب جديد برقم تعريفى " + " " + res.identifyNumber
+                  },
+                  "to": element,
+                  "priority": "high",
+                  "restricted_package_name": ""
+                }
+
+                this.deviceTokenService.sendNotification(body);
+
+              });
+
+            }, err1 => {
+              console.log("errrrr  11111", err1);
+
+            }
+          )
+          // }
+
+          let toast = this.toastCtrl.create({
+            message: this.orderSuccess,
+            duration: 3000,
+            position: 'top'
+          });
+          toast.present();
+          load.dismiss();
+          this.navCtrl.setRoot(UserOrdersPage);
+        }, err => {
+          console.log(err, 'errrrrrrrrrrrrrror');
+          load.dismiss();
+          let displayError = this.orderError;
+
+          let toast = this.toastCtrl.create({
+            message: displayError,
+            duration: 3000,
+            position: 'middle'
+          });
+          toast.present();
+
+        }
+      )
+    }
   }
   launchInterstitial() {
 

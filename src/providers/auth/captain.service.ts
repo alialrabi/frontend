@@ -37,6 +37,10 @@ export class CaptainService  {
 
         return this.http.put(Api.API_URL_login + '/tlabatac/api/captains?access_token=' +this.authservice.getToken() ,updateLocation);
     }
+    updateCaptainInformationByUserId(updateLocation: any): Observable<Object> {
+
+        return this.http.put(Api.API_URL_login + '/tlabatac/api/updateCaptainByUserId?access_token=' +this.authservice.getToken() ,updateLocation);
+    }
     updateWorking(updateWorking: any): Observable<Object> {
 
         return this.http.put(Api.API_URL_login + '/tlabatac/api/updateWorking?access_token=' +this.authservice.getToken() ,updateWorking);
@@ -110,6 +114,10 @@ export class CaptainService  {
     deleteSubAssign(subAssignId): Observable<Object> {
 
         return this.http.delete(Api.API_URL_login + '/tlabatac/api/sub-assigns/'+subAssignId+'?access_token=' +this.authservice.getToken());
+    }
+    delete(id: any  , flag): Observable<any> {
+        
+        return this.http.delete(Api.API_URL_login + '/tlabatac/api/captains/'+id+'/'+flag+'?access_token=' +this.authservice.getToken());
     }
 
 }

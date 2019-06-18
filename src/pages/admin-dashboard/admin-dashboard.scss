@@ -3,6 +3,10 @@ page-admin-dashboard {
     .ion-icon2 {
         font-size: 5em;
 }
+.content-md {
+  color: darkorange;
+  background-color: #fff;
+}
 .auth-page2 {
     background-color: #fff;
     &::after {
@@ -53,11 +57,11 @@ page-admin-dashboard {
   
             ion-label {
               font-size: 1em;
-              color: color($colors, primary);
+              color: black;
             }
   
             input {
-              color: color($colors, primary);
+              color: black;
             }
           }
         }

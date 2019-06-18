@@ -51,7 +51,7 @@
     <!-- <ion-item-sliding  class="item-background" *ngFor="let address of addresses" [lang]="language" [dir]="direction"> -->
     <ion-item class="item-background" *ngFor="let address of addresses">
       <ion-grid>
-        <ion-row>
+        <ion-row justify-content-center align-items-center>
           <ion-col class="img-col" col-3>
             <img class="circle-pic" src="../../assets/img/home.png" />
           </ion-col>
@@ -59,10 +59,10 @@
           <ion-col class="btn-col" col-9>
 
             <div class="account-info info-div">
-              <p style="margin-top: 13px" *ngIf="address.name != null && address.name != ''">
+              <!-- <p style="margin-top: 13px" *ngIf="address.name != null && address.name != ''">
                 {{'ADDRESS_NAME' | translate}} :
                 <strong text-wrap> {{address.name}}</strong>
-              </p>
+              </p> -->
               <!-- <p style="margin-top: 13px">
                   {{'CITY' | translate}} : <strong text-wrap> {{address.city}}</strong>
               </p> -->
@@ -70,12 +70,13 @@
               <p style="margin-top: 10px">
 
                 {{'ADDRESS' | translate}} :
-               <strong text-wrap> {{address.region}} , {{address.street}} , {{'TOWER' | translate}}/{{address.building}} , {{'FLOOR' | translate}}/{{address.floor}} , {{'FLAT' | translate}}/{{address.flatNumber}} , {{address.city}}</strong>
+               <!-- <strong text-wrap> {{address.region}} , {{address.street}} , {{'TOWER' | translate}}/{{address.building}} , {{'FLOOR' | translate}}/{{address.floor}} , {{'FLAT' | translate}}/{{address.flatNumber}} , {{address.city}}</strong> -->
+               <strong text-wrap> {{address.region}} , {{address.street}} , {{address.city}}</strong>
               </p>
-              <p style="margin-top: 13px" *ngIf="address.livingType != null && address.livingType != ''">
+              <!-- <p style="margin-top: 13px" *ngIf="address.livingType != null && address.livingType != ''">
                 {{'LIVINF_TYPE' | translate}} :
                 <strong text-wrap> {{getLivingType(address.livingType)}}</strong>
-              </p>
+              </p> -->
               <p style="margin-top: 13px" *ngIf="address.otherDetails != null && address.otherDetails != ''">
                 {{'OTHER_DETAILS' | translate}} :
                 <strong text-wrap> {{address.otherDetails}}</strong>
@@ -93,7 +94,7 @@
             </button>
           </ion-col>
           <ion-col col-6>
-            <button style="background: linear-gradient(to bottom, #fc1200 5%, #ff2e02 100%);background-color: rgba(0, 0, 0, 0);background-color: rgba(0, 0, 0, 0);width: 100%" ion-button class="circul" class="myButton" (click)="DeleteAddress(address)">
+            <button style="background: linear-gradient(to bottom, #fc1200 5%, #ff2e02 100%);background-color: rgba(0, 0, 0, 0);background-color: rgba(0, 0, 0, 0);border: 1px solid #f71400;box-shadow: 0px 0px 0px 2px #a24949;width: 100%" ion-button class="circul" class="myButton" (click)="DeleteAddress(address)">
               {{'DELETE' | translate}}
               <ion-icon name="ios-trash" [style.margin-right]="language == 'en' ? '0px' : '10px'" [style.margin-left]="language == 'en' ? '10px' : '0px'" ></ion-icon>
             </button>

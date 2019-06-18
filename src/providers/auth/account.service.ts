@@ -69,6 +69,12 @@ export class AccountService  {
         return this.http.put(Api.API_URL_login + '/uaa/api/updateUserInformation?access_token=' +this.authservice.getToken(), accountInfo);
  
       }
+      updateUserInformationByEmail(accountInfo: any) : Observable<any>{
+
+        //return  this.http.post(Api.API_URL +'/api/registerCaptainUser' , accountInfo );       
+        return this.http.put(Api.API_URL_login + '/uaa/api/updateUserInformationByLogin?access_token=' +this.authservice.getToken(), accountInfo);
+ 
+      }
       updateLanguage(updateLanguageModel: any) : Observable<any>{
 
         //return  this.http.post(Api.API_URL +'/api/registerCaptainUser' , accountInfo );       
@@ -89,6 +95,14 @@ export class AccountService  {
       }
       addUserPhone(phoneModel){
         return this.http.post(Api.API_URL_login + '/uaa/api/users/addUserPhone?access_token=' +this.authservice.getToken(), phoneModel);
+
+      }
+      deactivate(id){
+        return this.http.delete(Api.API_URL_login + '/uaa/api/users/deactivate/'+id+'?access_token=' +this.authservice.getToken());
+
+      }
+      delete(id){
+        return this.http.delete(Api.API_URL_login + '/uaa/api/users/delete/'+id+'?access_token=' +this.authservice.getToken());
 
       }
 }

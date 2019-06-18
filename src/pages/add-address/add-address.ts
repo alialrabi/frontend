@@ -105,18 +105,18 @@ export class AddAddressPage {
   cancelText = ''
 
 
-  constructor(public navCtrl: NavController, private loading: LoadingController, public renderer: Renderer , public _alert: AlertController,
+  constructor(public navCtrl: NavController, private loading: LoadingController, public renderer: Renderer, public _alert: AlertController,
     public navParams: NavParams, public locationAccuracy: LocationAccuracy, public addressService: AddressService, public toastCtrl: ToastController,
     public translateService: TranslateService, private app: App, public platform: Platform, private principal: Principal, private builder: FormBuilder) {
     this.to = this.navParams.get("address");
 
-    
+
 
     if (this.platform.is("cordova") && this.platform.is("android")) {
       this.isCordova = true;
     }
-    
-    this.translateService.get(["SELECTION_CANCEL" , "SELECTION_OK" , 'ADD_ADDRESS_ERROR', 'ADD_ADDRESS_SUCCESS',
+
+    this.translateService.get(["SELECTION_CANCEL", "SELECTION_OK", 'ADD_ADDRESS_ERROR', 'ADD_ADDRESS_SUCCESS',
       'EGYPT', 'ALEX', 'CAIRO', 'TANTA', 'DAMNHOR', 'SHIPIN_ELKOM',
       'BANHA', 'PLEASE_WAIT',
       'OFFICE', 'HOME', 'FLAT', 'LOCATION_ALERT_TITLE', 'LOCATION_ALERT_MESSAGE', 'OK']).subscribe((values) => {
@@ -125,7 +125,7 @@ export class AddAddressPage {
         this.pleaseWait = values.PLEASE_WAIT
 
         this.okText = values.SELECTION_OK
-      this.cancelText = values.SELECTION_CANCEL
+        this.cancelText = values.SELECTION_CANCEL
 
         this.alexValue = values.ALEX;
         this.cairoValue = values.CAIRO;
@@ -147,13 +147,13 @@ export class AddAddressPage {
     this.myForm = builder.group({
       //'country': ['', [Validators.required, Validators.maxLength(45)]],
       //'city': ['Alexandria', []],
-      'livingType': ['Flat', []],
-      'name': ['', [Validators.maxLength(45)]],
+      //    'livingType': ['Flat', []],
+      //   'name': ['', [Validators.maxLength(45)]],
       'region': ['', [Validators.required, Validators.maxLength(45)]],
-      'street': ['', [Validators.required, Validators.maxLength(45)]],
-      'building': ['', [Validators.required, Validators.maxLength(45)]],
-      'floor': ['', [Validators.required, Validators.maxLength(45)]],
-      'flatNumber': ['', [Validators.required, Validators.maxLength(45)]],
+      'street': ['', [Validators.required, Validators.maxLength(255)]],
+      // 'building': ['', [Validators.required, Validators.maxLength(45)]],
+      // 'floor': ['', [Validators.required, Validators.maxLength(45)]],
+      // 'flatNumber': ['', [Validators.required, Validators.maxLength(45)]],
       'otherDetails': ['', [Validators.maxLength(45)]],
       //'mobilePhoneNumber': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
       // 'homePhoneNumber': ['', []],
@@ -164,10 +164,10 @@ export class AddAddressPage {
     // this.myForm.get('city').markAsDirty();
     // this.myForm.get('city').markAsTouched();
     // this.myForm.get('city').markAsPristine();
-    
+
 
     if (this.to != null && this.to != undefined) {
-      
+
 
       this.platform.registerBackButtonAction(() => {
         if (this.openMap) {
@@ -177,7 +177,7 @@ export class AddAddressPage {
           this.mapStyle1.height = "0%";
           this.mapStyle1.width = "0%";
 
-          this.flatValue2 = this.getLivingType(this.myForm.get("livingType").value)
+//          this.flatValue2 = this.getLivingType(this.myForm.get("livingType").value)
 
           this.openMap = false;
 
@@ -189,7 +189,7 @@ export class AddAddressPage {
           }
         }
       });
-    }else{
+    } else {
       this.platform.registerBackButtonAction(() => {
         if (this.openMap) {
           this.mapStyle.height = "0%";
@@ -197,13 +197,13 @@ export class AddAddressPage {
 
           this.mapStyle1.height = "0%";
           this.mapStyle1.width = "0%";
-          this.flatValue2 = this.getLivingType(this.myForm.get("livingType").value)
+//          this.flatValue2 = this.getLivingType(this.myForm.get("livingType").value)
 
           this.openMap = false;
 
         }
         else {
-            this.navCtrl.setRoot(UserOrdersPage);
+          this.navCtrl.setRoot(UserOrdersPage);
         }
       });
     }
@@ -213,27 +213,27 @@ export class AddAddressPage {
   ngOnInit() {
 
     this.myForm.valueChanges
-            .map((value) => {
-                // Here you can manipulate your value
-                value.name = value.name.trim();
-                this.address.name = value.name
-                value.region = value.region.trim();
-                this.address.region = value.region
-                value.street = value.street.trim();
-                this.address.street = value.street
-                value.building = value.building.trim();
-                this.address.building = value.building
-                value.floor = value.floor.trim();
-                this.address.floor = value.floor
-                value.flatNumber = value.flatNumber.trim();
-                this.address.flatNumber = value.flatNumber
-                value.otherDetails = value.otherDetails.trim();
-                this.address.otherDetails = value.otherDetails
-                
-                return value;
-            }).filter((value) => this.myForm.valid)
-            .subscribe((value) => {
-            });
+      .map((value) => {
+        // Here you can manipulate your value
+        // value.name = value.name.trim();
+        // this.address.name = value.name
+        value.region = value.region.trim();
+        this.address.region = value.region
+        value.street = value.street.trim();
+        this.address.street = value.street
+        // value.building = value.building.trim();
+        // this.address.building = value.building
+        // value.floor = value.floor.trim();
+        // this.address.floor = value.floor
+        // value.flatNumber = value.flatNumber.trim();
+        // this.address.flatNumber = value.flatNumber
+        value.otherDetails = value.otherDetails.trim();
+        this.address.otherDetails = value.otherDetails
+
+        return value;
+      }).filter((value) => this.myForm.valid)
+      .subscribe((value) => {
+      });
 
 
 
@@ -288,41 +288,41 @@ export class AddAddressPage {
 
   }
   save() {
-    if(this.myForm.valid && !this.checkSpaces()){
+    if (this.myForm.valid && !this.checkSpaces()) {
 
 
 
-    // if (this.locationDisable) {
-    //   this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
-    //     () => {
+      // if (this.locationDisable) {
+      //   this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
+      //     () => {
 
-    //       this.loadMap()
-    //     }
-    //     ,
-    //     error => console.log('Error requesting location permissions', error)
-    //   );
-    // }
+      //       this.loadMap()
+      //     }
+      //     ,
+      //     error => console.log('Error requesting location permissions', error)
+      //   );
+      // }
 
-    if (this.map == null || this.map == undefined) {
-      this.loadMapWithOutLocation(this);
+      if (this.map == null || this.map == undefined) {
+        this.loadMapWithOutLocation(this);
+      }
+
+      this.mapStyle.height = "100%";
+      this.mapStyle.width = "100%";
+
+      this.mapStyle1.height = "95%";
+      this.mapStyle1.width = "100%";
+
+      this.openMap = true;
+
     }
-
-    this.mapStyle.height = "100%";
-    this.mapStyle.width = "100%";
-
-    this.mapStyle1.height = "95%";
-    this.mapStyle1.width = "100%";
-
-    this.openMap = true;
-
-  }
 
   }
 
 
   loadMap(mainClass) {
 
-    
+
 
     //var mainClass = this;
     let options = { timeout: 30000, enableHighAccuracy: true };
@@ -353,10 +353,10 @@ export class AddAddressPage {
         mainClass.mainMarker = marker;
         mainClass.haveMarkerToLocation = true;
 
-      }else{
+      } else {
         mainClass.loadWithOutLocation = true;
       }
-      
+
       var superclass = mainClass;
       google.maps.event.addListener(mainClass.map, 'click', function (event) {
 
@@ -375,10 +375,10 @@ export class AddAddressPage {
           superclass.haveMarkerToLocation = true;
           superclass.address.latitude = event.latLng.lat();
           superclass.address.longitude = event.latLng.lng();
-          
+
           superclass.chooseLocationelementRef._elementRef.nativeElement.disabled = false
           if (flag) {
-            
+
             superclass.renderer.listen(superclass.chooseLocationelementRef._elementRef.nativeElement, 'click', (event) => {
               superclass.chooseLocation()
             })
@@ -406,8 +406,8 @@ export class AddAddressPage {
 
   }
   loadMapWithOutLocation(mainClass) {
-   
-    
+
+
 
     mainClass.loadWithOutLocation = true;
 
@@ -446,11 +446,11 @@ export class AddAddressPage {
 
         superclass.chooseLocationelementRef._elementRef.nativeElement.disabled = false
         if (flag) {
-          
+
           superclass.renderer.listen(superclass.chooseLocationelementRef._elementRef.nativeElement, 'click', (event) => {
             superclass.chooseLocation()
           })
-       }
+        }
 
         superclass.address.latitude = event.latLng.lat();
         superclass.address.longitude = event.latLng.lng();
@@ -475,7 +475,7 @@ export class AddAddressPage {
 
     this.address.userId = this.user.id;
     this.address.city = this.alexValue;
-    this.address.livingType = this.getLivingType(this.myForm.get("livingType").value)
+//    this.address.livingType = this.getLivingType(this.myForm.get("livingType").value)
     this.address.country = this.egyptText;
 
     this.addressService.save(this.address).subscribe((res) => {
@@ -565,7 +565,7 @@ export class AddAddressPage {
       this.mapStyle1.height = "0%";
       this.mapStyle1.width = "0%";
 
-      this.flatValue2 = this.getLivingType(this.myForm.get("livingType").value)
+//      this.flatValue2 = this.getLivingType(this.myForm.get("livingType").value)
 
       this.openMap = false;
 
@@ -591,7 +591,7 @@ export class AddAddressPage {
 
     this.address.userId = this.user.id;
     this.address.city = this.alexValue;
-    this.address.livingType = this.getLivingType(this.myForm.get("livingType").value)
+//    this.address.livingType = this.getLivingType(this.myForm.get("livingType").value)
     this.address.country = this.egyptText;
 
     this.addressService.save(this.address).subscribe((res) => {
@@ -682,14 +682,16 @@ export class AddAddressPage {
       return false;
     }
   }
-  checkSpaces(){
-    if(this.address.building == '' || this.address.flatNumber == '' || this.address.floor == '' || this.address.region == '' || this.address.street == ''){
+  checkSpaces() {
+    //    if(this.address.building == '' || this.address.flatNumber == '' || this.address.floor == '' || this.address.region == '' || this.address.street == ''){
+    if (this.address.region == '' || this.address.street == '') {
+
       return true;
-    }else{
+    } else {
       return false;
     }
   }
-  checkSpaceTofields(string , field){
+  checkSpaceTofields(string, field) {
     const ctrl = this.myForm.get(field);
     return ctrl.dirty && string == '';
 

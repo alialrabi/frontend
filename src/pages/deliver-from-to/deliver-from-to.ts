@@ -99,9 +99,9 @@ export class DeliverFromToPage {
     public deviceTokenService: DeviceTockenService,
     public translateService: TranslateService, private app: App, private builder: FormBuilder) {
 
-      if (this.platform.is("cordova") && this.platform.is("android")) {
-        this.isCordova = true;
-      }
+    if (this.platform.is("cordova") && this.platform.is("android")) {
+      this.isCordova = true;
+    }
 
     if (platform.is("cordova")) {
       this.platformType = "cordova";
@@ -133,9 +133,9 @@ export class DeliverFromToPage {
     })
 
     this.myForm = builder.group({
-      'weight': ['', [Validators.required , Validators.maxLength(8)]],
+      'weight': ['', [Validators.required, Validators.maxLength(8)]],
       'senderAddress': ['', [Validators.required]],
-      'senderPhone': ['', [Validators.pattern("(01)[0-9]{9}")]] ,
+  //    'senderPhone': ['', [Validators.pattern("(01)[0-9]{9}")]],
       'reciverName': ['', [Validators.required, Validators.maxLength(50)]],
       'address': ['', [Validators.required]],
       'reciverPhone': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
@@ -159,7 +159,7 @@ export class DeliverFromToPage {
 
     this.principal.identity().then((account) => {
       this.account = account;
-  //    load.dismiss()
+      //    load.dismiss()
 
       if (account === null) {
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
@@ -183,7 +183,7 @@ export class DeliverFromToPage {
         this.order.reciverName = value.reciverName
         value.description = value.description.trim();
         this.order.description = value.description
-       
+
         return value;
       }).filter((value) => this.myForm.valid)
       .subscribe((value) => {
@@ -241,7 +241,8 @@ export class DeliverFromToPage {
           this.modelReciverOpen = false;
           if (this.order.senderAddressId != dataReturned.address.id) {
 
-            this.address = dataReturned.address.region + ' , ' + dataReturned.address.street + ' , ' + this.towerText + '/' + dataReturned.address.building + ' , ' + this.floorText + '/' + dataReturned.address.floor + ' , ' + this.flatText + '/' + dataReturned.address.flatNumber + ' , ' + dataReturned.address.city
+            //            this.address = dataReturned.address.region + ' , ' + dataReturned.address.street + ' , ' + this.towerText + '/' + dataReturned.address.building + ' , ' + this.floorText + '/' + dataReturned.address.floor + ' , ' + this.flatText + '/' + dataReturned.address.flatNumber + ' , ' + dataReturned.address.city
+            this.address = dataReturned.address.region + ' , ' + dataReturned.address.street + ' , ' + dataReturned.address.city
             this.myForm.get("address").clearValidators();
             this.myForm.get("address").updateValueAndValidity();
             this.order.reciverAddressId = dataReturned.address.id
@@ -307,7 +308,8 @@ export class DeliverFromToPage {
           this.modelSenderOpen = false;
 
           if (this.order.reciverAddressId != dataReturned.address.id) {
-            this.senderAddress = dataReturned.address.region + ' , ' + dataReturned.address.street + ' , ' + this.towerText + '/' + dataReturned.address.building + ' , ' + this.floorText + '/' + dataReturned.address.floor + ' , ' + this.flatText + '/' + dataReturned.address.flatNumber + ' , ' + dataReturned.address.city
+            // this.senderAddress = dataReturned.address.region + ' , ' + dataReturned.address.street + ' , ' + this.towerText + '/' + dataReturned.address.building + ' , ' + this.floorText + '/' + dataReturned.address.floor + ' , ' + this.flatText + '/' + dataReturned.address.flatNumber + ' , ' + dataReturned.address.city
+            this.senderAddress = dataReturned.address.region + ' , ' + dataReturned.address.street + ' , ' + dataReturned.address.city
 
             this.myForm.get("senderAddress").clearValidators()
             this.myForm.get("senderAddress").updateValueAndValidity();
@@ -360,77 +362,77 @@ export class DeliverFromToPage {
   // }
   addOrder() {
 
-    if(this.myForm.valid && !this.validateweight() && !this.checkSpaces()){
+    if (this.myForm.valid && !this.validateweight() && !this.checkSpaces()) {
 
-    let load = this.loading.create({
-      content: this.pleaseWait
+      let load = this.loading.create({
+        content: this.pleaseWait
 
 
-    })
-    load.present()
+      })
+      load.present()
 
-    this.order.userId = this.account.id
+      this.order.userId = this.account.id
 
-    this.userOrderService.save(this.order).subscribe(
-      res => {
+      this.userOrderService.save(this.order).subscribe(
+        res => {
 
-        if (this.platformType == 'cordova') {
-          this.launchInterstitial();
-        }
-        this.deviceTokenService.getAdminTokens().subscribe(
-          res1 => {
-
-            res1.forEach(element => {
-              let body = {
-                "notification": {
-                  "title": "طلب جديد",
-                  "body": "لقد تم اضافه طلب جديد برقم تعريفى " + " " + res.identifyNumber,
-                  "sound": "default",
-                  "click_action": "FCM_PLUGIN_ACTIVITY",
-                  "icon": "fcm_push_icon"
-                },
-                "data": {
-                  "title": "طلب جديد",
-                  "body": "لقد تم اضافه طلب جديد برقم تعريفى " + " " + res.identifyNumber
-                },
-                "to": element,
-                "priority": "high",
-                "restricted_package_name": ""
-              }
-
-              this.deviceTokenService.sendNotification(body);
-
-            });
-
-          }, err1 => {
-            console.log("errrrr  11111", err1);
-
+          if (this.platformType == 'cordova') {
+            this.launchInterstitial();
           }
-        )
-        //}
-        let toast = this.toastCtrl.create({
-          message: this.orderSuccess,
-          duration: 3000,
-          position: 'top'
-        });
-        toast.present();
-        load.dismiss();
-        this.navCtrl.setRoot(UserOrdersPage);
-      }, err => {
-        console.log(err, 'errrrrrrrrrrrrrror');
-        load.dismiss();
-        let displayError = this.orderError;
+          this.deviceTokenService.getAdminTokens().subscribe(
+            res1 => {
 
-        let toast = this.toastCtrl.create({
-          message: displayError,
-          duration: 3000,
-          position: 'middle'
-        });
-        toast.present();
+              res1.forEach(element => {
+                let body = {
+                  "notification": {
+                    "title": "طلب جديد",
+                    "body": "لقد تم اضافه طلب جديد برقم تعريفى " + " " + res.identifyNumber,
+                    "sound": "default",
+                    "click_action": "FCM_PLUGIN_ACTIVITY",
+                    "icon": "fcm_push_icon"
+                  },
+                  "data": {
+                    "title": "طلب جديد",
+                    "body": "لقد تم اضافه طلب جديد برقم تعريفى " + " " + res.identifyNumber
+                  },
+                  "to": element,
+                  "priority": "high",
+                  "restricted_package_name": ""
+                }
 
-      }
-    )
-  }
+                this.deviceTokenService.sendNotification(body);
+
+              });
+
+            }, err1 => {
+              console.log("errrrr  11111", err1);
+
+            }
+          )
+          //}
+          let toast = this.toastCtrl.create({
+            message: this.orderSuccess,
+            duration: 3000,
+            position: 'top'
+          });
+          toast.present();
+          load.dismiss();
+          this.navCtrl.setRoot(UserOrdersPage);
+        }, err => {
+          console.log(err, 'errrrrrrrrrrrrrror');
+          load.dismiss();
+          let displayError = this.orderError;
+
+          let toast = this.toastCtrl.create({
+            message: displayError,
+            duration: 3000,
+            position: 'middle'
+          });
+          toast.present();
+
+        }
+      )
+    }
   }
   launchInterstitial() {
 
@@ -449,10 +451,10 @@ export class DeliverFromToPage {
 
   }
 
-  
-  validateweight(){
+
+  validateweight() {
     const ctrl = this.myForm.get("weight");
-    return ctrl.dirty && (ctrl.value <= 0 || ctrl.value >20000); 
+    return ctrl.dirty && (ctrl.value <= 0 || ctrl.value > 20000);
   }
 
   checkSpaces() {

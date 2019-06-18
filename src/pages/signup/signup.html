@@ -102,9 +102,9 @@
       <p class="validationHint" *ngIf="hasError('passwordConfirm', 'required')"> {{ 'REQURIED' | translate }} </p>
       <p class="validationHint" *ngIf="notMathces()">{{ 'CONFIRM_PASSWORD_VALIDATE' | translate }} </p>
 
-      <ion-list radio-group style="background-color: hsl" formControlName="langKey" [(ngModel)]="account.langKey">
+      <ion-list radio-group style="background-color: transparent" formControlName="langKey" [(ngModel)]="account.langKey">
 
-          <ion-list-header style="background-color: hsl;color: #4c6df9">
+          <ion-list-header style="background-color: transparent;color: black">
               {{'LANGUAGE' | translate}}
           </ion-list-header>
     
@@ -138,7 +138,7 @@
       
         <p text-center ion-text color="secondary">{{ 'SOCIAL_SIGN_UP' | translate }}</p>
 
-        <button ion-button icon-only block class="btn-facebook" (click)="fbSignUp()">
+        <button ion-button icon-only block class="btn-facebook" style="background: #3B5999;" (click)="fbSignUp()">
               <ion-icon name="logo-facebook"></ion-icon>
               {{ 'LOGIN_FACEBOOK' | translate }}
             </button>

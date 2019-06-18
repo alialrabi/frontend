@@ -33,7 +33,7 @@
 <ion-content class="auth-page-captain">
 
 
-  <div class="account-info info-div" style="margin-top: 30px;padding-right: 10px;margin-bottom: 60px;">
+  <div class="account-info info-div" style="margin-top: 30px;padding-right: 20px;padding-left: 20px;margin-bottom: 60px;">
 
     <ion-item class="item-background">
       <p>
@@ -127,20 +127,28 @@
     <ion-item class="item-background" *ngIf="!order.userOrder.isBuing && order.senderAddress != null">
       <ion-grid style="padding: 0px;
       margin: 0px;">
-        <ion-row style="padding: 0px;
+        <ion-row justify-content-center align-items-center style="padding: 0px;
         margin: 0px;">
-          <ion-col col-11 style="padding: 0px;
+          <ion-col col-10 style="padding: 0px;
           margin: 0px;">
-            <p>
+            <!-- <p>
               {{ 'SENDER_ADDRESS' | translate }} :
               <strong text-wrap>{{order.senderAddress.region}} , {{order.senderAddress.street}} , {{'TOWER' | translate}}/{{order.senderAddress.building}}
                 , {{'FLOOR' | translate}}/{{order.senderAddress.floor}} , {{'FLAT' | translate}}/{{order.senderAddress.flatNumber}}
                 , {{order.senderAddress.city}}</strong>
+            </p> -->
+            <p>
+              {{ 'SENDER_ADDRESS' | translate }} :
+              <strong text-wrap>{{order.senderAddress.region}} , {{order.senderAddress.street}} , {{order.senderAddress.city}}  </strong>
             </p>
           </ion-col>
-          <ion-col col-1 style="padding: 0px;
+          <!-- <ion-col  col-1 style="padding: 0px;
           margin: 0px;">
             <ion-icon name="map" style="color: black" (click)="viewLocation(order.senderAddress)" *ngIf="order.senderAddress.latitude != '0'"></ion-icon>
+          </ion-col> -->
+
+          <ion-col text-center col-2 >
+          <img src="../../assets/img/map.ico" style="max-width: 30px;margin-left: 5px;margin-right: 5px;" (click)="viewLocation(order.senderAddress)" *ngIf="order.senderAddress.latitude != '0'" />
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -172,21 +180,29 @@
     <ion-item class="item-background" *ngIf="order.reciverAddress != null">
       <ion-grid style="padding: 0px;
       margin: 0px;">
-        <ion-row style="padding: 0px;
+        <ion-row justify-content-center align-items-center style="padding: 0px;
         margin: 0px;">
-          <ion-col col-11 style="padding: 0px;
+          <ion-col col-10 style="padding: 0px;
           margin: 0px;">
-            <p>
+            <!-- <p>
               {{ 'RECIVER_ADDRESS' | translate }} :
               <strong text-wrap>{{order.reciverAddress.region}} , {{order.reciverAddress.street}} , {{'TOWER' | translate}}/{{order.reciverAddress.building}}
                 , {{'FLOOR' | translate}}/{{order.reciverAddress.floor}} , {{'FLAT' | translate}}/{{order.reciverAddress.flatNumber}}
                 , {{order.reciverAddress.city}} </strong>
+            </p> -->
+            <p>
+              {{ 'RECIVER_ADDRESS' | translate }} :
+              <strong text-wrap>{{order.reciverAddress.region}} , {{order.reciverAddress.street}} , {{order.reciverAddress.city}} </strong>
             </p>
           </ion-col>
-          <ion-col col-1 style="padding: 0px;
+          <!-- <ion-col col-1 style="padding: 0px;
           margin: 0px;">
             <ion-icon name="map" style="color: black" (click)="viewLocation(order.reciverAddress)" *ngIf="order.reciverAddress.latitude != '0'"></ion-icon>
-          </ion-col>
+          </ion-col> -->
+
+          <ion-col text-center col-2 >
+            <img src="../../assets/img/map.ico" style="max-width: 30px;margin-left: 5px;margin-right: 5px;"  (click)="viewLocation(order.reciverAddress)" *ngIf="order.reciverAddress.latitude != '0'" />
+            </ion-col>
         </ion-row>
       </ion-grid>
     </ion-item>
@@ -212,11 +228,11 @@
       <p>
         {{ 'RATING' | translate }} :
         <ion-icon [style.margin-right]="language == 'en' ? '0px' : '10px'" [style.margin-left]="language == 'en' ? '10px' : '0px'"
-          style="color: rgb(87, 76, 233);font-size: 1.5em;" [name]="order.userOrder.rating < 1 ? 'star-outline' : 'star'"></ion-icon>
-        <ion-icon style="color: rgb(87, 76, 233);font-size: 1.5em;" [name]="order.userOrder.rating < 2 ? 'star-outline' : 'star'"></ion-icon>
-        <ion-icon style="color: rgb(87, 76, 233);font-size: 1.5em;" [name]="order.userOrder.rating < 3 ? 'star-outline' : 'star'"></ion-icon>
-        <ion-icon style="color: rgb(87, 76, 233);font-size: 1.5em;" [name]="order.userOrder.rating < 4 ? 'star-outline' : 'star'"></ion-icon>
-        <ion-icon style="color: rgb(87, 76, 233);font-size: 1.5em;" [name]="order.userOrder.rating < 5 ? 'star-outline' : 'star'"></ion-icon>
+          style="color: darkorange;font-size: 1.5em;" [name]="order.userOrder.rating < 1 ? 'star-outline' : 'star'"></ion-icon>
+        <ion-icon style="color: darkorange;font-size: 1.5em;" [name]="order.userOrder.rating < 2 ? 'star-outline' : 'star'"></ion-icon>
+        <ion-icon style="color: darkorange;font-size: 1.5em;" [name]="order.userOrder.rating < 3 ? 'star-outline' : 'star'"></ion-icon>
+        <ion-icon style="color: darkorange;font-size: 1.5em;" [name]="order.userOrder.rating < 4 ? 'star-outline' : 'star'"></ion-icon>
+        <ion-icon style="color: darkorange;font-size: 1.5em;" [name]="order.userOrder.rating < 5 ? 'star-outline' : 'star'"></ion-icon>
 
       </p>
     </ion-item>

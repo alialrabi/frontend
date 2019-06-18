@@ -142,13 +142,13 @@ export class NewAddressComponent {
     this.myForm = builder.group({
       //'country': ['', [Validators.required, Validators.maxLength(45)]],
       //'city': ['Alexandria', []],
-      'livingType': ['Flat', []],
-      'name': ['', [Validators.maxLength(45)]],
+      // 'livingType': ['Flat', []],
+      // 'name': ['', [Validators.maxLength(45)]],
       'region': ['', [Validators.required, Validators.maxLength(45)]],
-      'street': ['', [Validators.required, Validators.maxLength(45)]],
-      'building': ['', [Validators.required, Validators.maxLength(45)]],
-      'floor': ['', [Validators.required, Validators.maxLength(45)]],
-      'flatNumber': ['', [Validators.required, Validators.maxLength(45)]],
+      'street': ['', [Validators.required, Validators.maxLength(255)]],
+      // 'building': ['', [Validators.required, Validators.maxLength(45)]],
+      // 'floor': ['', [Validators.required, Validators.maxLength(45)]],
+      // 'flatNumber': ['', [Validators.required, Validators.maxLength(45)]],
       'otherDetails': ['', [Validators.maxLength(45)]],
       // 'mobilePhoneNumber': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
       // 'homePhoneNumber': ['', []],
@@ -169,18 +169,18 @@ export class NewAddressComponent {
     this.myForm.valueChanges
       .map((value) => {
         // Here you can manipulate your value
-        value.name = value.name.trim();
-        this.address.name = value.name
+        // value.name = value.name.trim();
+        // this.address.name = value.name
         value.region = value.region.trim();
         this.address.region = value.region
         value.street = value.street.trim();
         this.address.street = value.street
-        value.building = value.building.trim();
-        this.address.building = value.building
-        value.floor = value.floor.trim();
-        this.address.floor = value.floor
-        value.flatNumber = value.flatNumber.trim();
-        this.address.flatNumber = value.flatNumber
+        // value.building = value.building.trim();
+        // this.address.building = value.building
+        // value.floor = value.floor.trim();
+        // this.address.floor = value.floor
+        // value.flatNumber = value.flatNumber.trim();
+        // this.address.flatNumber = value.flatNumber
         value.otherDetails = value.otherDetails.trim();
         this.address.otherDetails = value.otherDetails
 
@@ -288,7 +288,7 @@ export class NewAddressComponent {
       } else {
         mainClass.loadWithOutLocation = true;
       }
-     
+
 
       var superclass = mainClass;
       google.maps.event.addListener(mainClass.map, 'click', function (event) {
@@ -404,7 +404,7 @@ export class NewAddressComponent {
 
     this.address.userId = this.user.id;
     this.address.city = this.alexValue;
-    this.address.livingType = this.getLivingType(this.myForm.get("livingType").value)
+//    this.address.livingType = this.getLivingType(this.myForm.get("livingType").value)
     this.address.country = this.egyptText;
 
     this.addressService.save(this.address).subscribe((res) => {
@@ -496,7 +496,7 @@ export class NewAddressComponent {
 
     this.address.userId = this.user.id;
     this.address.city = this.alexValue;
-    this.address.livingType = this.getLivingType(this.myForm.get("livingType").value)
+ //   this.address.livingType = this.getLivingType(this.myForm.get("livingType").value)
     this.address.country = this.egyptText;
 
     this.addressService.save(this.address).subscribe((res) => {
@@ -588,7 +588,7 @@ export class NewAddressComponent {
       this.mapStyle1.height = "0%";
       this.mapStyle1.width = "0%";
 
-      this.flatValue2 = this.getLivingType(this.myForm.get("livingType").value)
+      // this.flatValue2 = this.getLivingType(this.myForm.get("livingType").value)
 
       this.openMap = false;
     } else {
@@ -607,14 +607,15 @@ export class NewAddressComponent {
 
   }
 
-  checkSpaces(){
-    if(this.address.building == '' || this.address.flatNumber == '' || this.address.floor == '' || this.address.region == '' || this.address.street == ''){
+  checkSpaces() {
+    //    if(this.address.building == '' || this.address.flatNumber == '' || this.address.floor == '' || this.address.region == '' || this.address.street == ''){
+    if (this.address.region == '' || this.address.street == '') {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
-  checkSpaceTofields(string , field){
+  checkSpaceTofields(string, field) {
     const ctrl = this.myForm.get(field);
     return ctrl.dirty && string == '';
 

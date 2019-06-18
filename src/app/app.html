@@ -3,7 +3,7 @@
     <ion-toolbar class="user-profile">
 
       <ion-grid>
-        <ion-row> 
+        <ion-row justify-content-center align-items-center> 
           <ion-col col-4>
               <div class="user-avatar" *ngIf = "userType == 'Admin' || userType == 'User' || userType == 'Agency' || (userType == 'Captain' && !captain)  || (userType == 'Captain' && captain && !captain.image)">
                 <img src="../assets/img/person.png"  style="height: 62px;width: 62px">
@@ -13,23 +13,23 @@
               </div>
 
           </ion-col>
-          <ion-col padding-top col-8 *ngIf = "(userType != 'Captain' || !captain) && userType != 'User'">
+          <ion-col col-8 *ngIf = "(userType != 'Captain' || !captain) && userType != 'User'">
             <h2 ion-text class="no-margin bold text-white">
               {{account?.firstName}} {{account?.lastName}}
             </h2>
-            <span ion-text color="light">{{userTypeText}}</span>
+            <!-- <span ion-text color="light">{{userTypeText}}</span> -->
           </ion-col>
-          <ion-col padding-top col-8 *ngIf = "userType == 'User'">
+          <ion-col col-8 *ngIf = "userType == 'User'">
               <h2 ion-text class="no-margin bold text-white">
                 {{account?.firstName}}
               </h2>
-              <span ion-text color="light">{{userTypeText}}</span>
+              <!-- <span ion-text color="light">{{userTypeText}}</span> -->
             </ion-col>
-          <ion-col padding-top col-8 *ngIf = "(userType == 'Captain' && captain)">
+          <ion-col col-8 *ngIf = "(userType == 'Captain' && captain)">
             <h2 ion-text class="no-margin bold text-white">
               {{captain?.name}}
             </h2>
-            <span ion-text color="light">{{userTypeText}}</span>
+            <!-- <span ion-text color="light">{{userTypeText}}</span> -->
           </ion-col>
         </ion-row>
 
@@ -106,11 +106,11 @@
           <ion-icon [name]="getSettingIcon()"  item-right ></ion-icon>
         </button>
         <button ion-item menuClose class="text-1x" style="background-color: #9c9c9c4d;" (click)="openPage('SettingsPage')" *ngIf="userSettingToggleFlag">
-            <ion-icon item-left name="paper" style="color: black;font-size: 1.7rem"></ion-icon>
+            <ion-icon item-left name="paper" style="color: orange;font-size: 1.7rem"></ion-icon>
             <span ion-text style="color: black">{{'LANGUAGE' | translate}}</span>
           </button>
           <button ion-item menuClose class="text-1x" style="background-color: #9c9c9c4d;" (click)="openPage('ChangePasswordPage')" *ngIf="userSettingToggleFlag">
-              <ion-icon item-left name="unlock" style="color: black;font-size: 1.7rem"></ion-icon>
+              <ion-icon item-left name="unlock" style="color: orange;font-size: 1.7rem"></ion-icon>
               <span ion-text style="color: black">{{'CHANNGE_PASSWORD' | translate}}</span>
             </button>
       

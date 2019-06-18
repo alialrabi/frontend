@@ -113,7 +113,7 @@ export class EditAddressPage {
   cancelText = ''
 
 
-  constructor(public navCtrl: NavController, private loading: LoadingController, public renderer: Renderer , public _alert: AlertController,
+  constructor(public navCtrl: NavController, private loading: LoadingController, public renderer: Renderer, public _alert: AlertController,
     public navParams: NavParams, public locationAccuracy: LocationAccuracy, public addressService: AddressService, public toastCtrl: ToastController,
     public translateService: TranslateService, private app: App, public platform: Platform, private principal: Principal, private builder: FormBuilder) {
     this.address = this.navParams.get("item");
@@ -123,14 +123,14 @@ export class EditAddressPage {
       this.isCordova = true;
     }
 
-    this.flat = this.getLivingType(this.address.livingType)
+//    this.flat = this.getLivingType(this.address.livingType)
 
     this.cityValue = this.getCity(this.address.city);
     this.streetValue = this.address.street
     this.latitudeValue = this.address.latitude
     this.longitudeValue = this.address.longitude
     this.regionValue = this.address.region
-    this.livingTypeValue = this.getLivingType(this.address.livingType)
+//    this.livingTypeValue = this.getLivingType(this.address.livingType)
     this.buildingValue = this.address.building
     this.floorValue = this.address.floor
     this.flatNumberValue = this.address.flatNumber
@@ -140,7 +140,7 @@ export class EditAddressPage {
     this.nameValue = this.address.name
 
 
-    this.translateService.get(["SELECTION_CANCEL" , "SELECTION_OK" , 'EDIT_ADDRESS_ERROR', 'EDIT_ADDRESS_SUCCESS', 'LOCATION_ALERT_TITLE', 'LOCATION_ALERT_MESSAGE', 'OK', 'ALEX', 'CAIRO', 'TANTA', 'DAMNHOR', 'SHIPIN_ELKOM', 'BANHA', 'PLEASE_WAIT', 'OFFICE', 'HOME', 'FLAT']).subscribe((values) => {
+    this.translateService.get(["SELECTION_CANCEL", "SELECTION_OK", 'EDIT_ADDRESS_ERROR', 'EDIT_ADDRESS_SUCCESS', 'LOCATION_ALERT_TITLE', 'LOCATION_ALERT_MESSAGE', 'OK', 'ALEX', 'CAIRO', 'TANTA', 'DAMNHOR', 'SHIPIN_ELKOM', 'BANHA', 'PLEASE_WAIT', 'OFFICE', 'HOME', 'FLAT']).subscribe((values) => {
       this.addAddressError = values.EDIT_ADDRESS_ERROR;
       this.addAdressSuccessString = values.EDIT_ADDRESS_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
@@ -168,13 +168,13 @@ export class EditAddressPage {
     this.myForm = builder.group({
       //'country': ['', [Validators.required, Validators.maxLength(45)]],
       //'city': ['Alexandria', []],
-      'livingType': ['Flat', []],
-      'name': [this.address.name, [Validators.maxLength(45)]],
+      //      'livingType': ['Flat', []],
+      //      'name': [this.address.name, [Validators.maxLength(45)]],
       'region': [this.address.region, [Validators.required, Validators.maxLength(45)]],
-      'street': [this.address.street, [Validators.required, Validators.maxLength(45)]],
-      'building': [this.address.building, [Validators.required, Validators.maxLength(45)]],
-      'floor': [this.address.floor, [Validators.required, Validators.maxLength(45)]],
-      'flatNumber': [this.address.flatNumber, [Validators.required, Validators.maxLength(45)]],
+      'street': [this.address.street, [Validators.required, Validators.maxLength(255)]],
+      // 'building': [this.address.building, [Validators.required, Validators.maxLength(45)]],
+      // 'floor': [this.address.floor, [Validators.required, Validators.maxLength(45)]],
+      // 'flatNumber': [this.address.flatNumber, [Validators.required, Validators.maxLength(45)]],
       'otherDetails': [this.address.otherDetails, [Validators.maxLength(45)]],
       // 'mobilePhoneNumber': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
       // 'homePhoneNumber': ['', [Validators.pattern("(0)[0-9]{9}")]],
@@ -186,21 +186,21 @@ export class EditAddressPage {
     // this.myForm.get('city').markAsTouched();
     // this.myForm.get('city').markAsPristine();
 
-      this.platform.registerBackButtonAction(() => {
-        if (this.openMap) {
-          this.mapStyle.height = "0%";
-          this.mapStyle.width = "0%";
-          this.mapStyle1.height = "0%";
-          this.mapStyle1.width = "0%";
-          this.flat = this.getLivingType(this.myForm.get("livingType").value)
+    this.platform.registerBackButtonAction(() => {
+      if (this.openMap) {
+        this.mapStyle.height = "0%";
+        this.mapStyle.width = "0%";
+        this.mapStyle1.height = "0%";
+        this.mapStyle1.width = "0%";
+    //    this.flat = this.getLivingType(this.myForm.get("livingType").value)
 
-          this.openMap = false;
+        this.openMap = false;
 
-        } else {
-          this.navCtrl.setRoot(UserAddressesPage);
-        }
+      } else {
+        this.navCtrl.setRoot(UserAddressesPage);
+      }
 
-      });
+    });
   }
 
   ngOnInit() {
@@ -208,18 +208,18 @@ export class EditAddressPage {
     this.myForm.valueChanges
       .map((value) => {
         // Here you can manipulate your value
-        value.name = value.name.trim();
-        this.address.name = value.name
+        // value.name = value.name.trim();
+        // this.address.name = value.name
         value.region = value.region.trim();
         this.address.region = value.region
         value.street = value.street.trim();
         this.address.street = value.street
-        value.building = value.building.trim();
-        this.address.building = value.building
-        value.floor = value.floor.trim();
-        this.address.floor = value.floor
-        value.flatNumber = value.flatNumber.trim();
-        this.address.flatNumber = value.flatNumber
+        // value.building = value.building.trim();
+        // this.address.building = value.building
+        // value.floor = value.floor.trim();
+        // this.address.floor = value.floor
+        // value.flatNumber = value.flatNumber.trim();
+        // this.address.flatNumber = value.flatNumber
         value.otherDetails = value.otherDetails.trim();
         this.address.otherDetails = value.otherDetails
 
@@ -275,40 +275,40 @@ export class EditAddressPage {
   }
   next() {
 
-    if(this.myForm.valid && !this.checkSpaces()){
+    if (this.myForm.valid && !this.checkSpaces()) {
 
 
-    // if (this.locationDisable) {
-    //   this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
-    //     () => {
+      // if (this.locationDisable) {
+      //   this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
+      //     () => {
 
-    //       this.loadMap()
-    //     }
-    //     ,
-    //     error => console.log('Error requesting location permissions', error)
-    //   );
-    // }
+      //       this.loadMap()
+      //     }
+      //     ,
+      //     error => console.log('Error requesting location permissions', error)
+      //   );
+      // }
 
-    if (this.map == null || this.map == undefined) {
-      this.loadMapWithOutLocation(this);
+      if (this.map == null || this.map == undefined) {
+        this.loadMapWithOutLocation(this);
+      }
+
+      this.mapStyle.height = "100%";
+      this.mapStyle.width = "100%";
+
+      this.mapStyle1.height = "95%";
+      this.mapStyle1.width = "100%";
+
+      this.openMap = true;
+
     }
-
-    this.mapStyle.height = "100%";
-    this.mapStyle.width = "100%";
-
-    this.mapStyle1.height = "95%";
-    this.mapStyle1.width = "100%";
-
-    this.openMap = true;
-
-  }
 
   }
 
   loadMap(mainClass) {
 
     if (this.address.latitude != '0') {
-     // var mainClass = this;
+      // var mainClass = this;
 
       let latLng = new google.maps.LatLng(Number.parseFloat(this.address.latitude), Number.parseFloat(this.address.longitude));
 
@@ -354,42 +354,42 @@ export class EditAddressPage {
       let options = { timeout: 30000, enableHighAccuracy: true };
 
       navigator.geolocation.getCurrentPosition(function (position) {
-  
-  
+
+
         let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         // mainClass.address.latitude = position.coords.latitude + '';
         // mainClass.address.longitude = position.coords.longitude + '';
-  
+
         let mapOptions = {
           center: latLng,
           zoom: 15
         }
-  
-  
+
+
         mainClass.map = new google.maps.Map(mainClass.elementRef.nativeElement, mapOptions);
-  
+
         // if (mainClass.checkLocation(position.coords.latitude, position.coords.longitude, true)) {
-  
+
         //   let marker = new google.maps.Marker({
         //     map: mainClass.map,
         //     animation: google.maps.Animation.DROP,
         //     position: mainClass.map.getCenter()
         //   });
-  
+
         //   mainClass.mainMarker = marker;
         //   mainClass.haveMarkerToLocation = true;
-  
+
         // }else{
         //   mainClass.loadWithOutLocation = true;
         // }
-        
-        mainClass.loadWithOutLocation = true;  
+
+        mainClass.loadWithOutLocation = true;
 
         var superclass = mainClass;
         google.maps.event.addListener(mainClass.map, 'click', function (event) {
-  
+
           if (superclass.checkLocation(event.latLng.lat(), event.latLng.lng(), false)) {
-  
+
             let flag = true;
             if (superclass.mainMarker != null) {
               flag = false;
@@ -403,7 +403,7 @@ export class EditAddressPage {
             superclass.haveMarkerToLocation = true;
             superclass.address.latitude = event.latLng.lat();
             superclass.address.longitude = event.latLng.lng();
-            
+
             superclass.chooseLocationelementRef._elementRef.nativeElement.disabled = false
             if (flag) {
               superclass.renderer.listen(superclass.chooseLocationelementRef._elementRef.nativeElement, 'click', (event) => {
@@ -412,25 +412,25 @@ export class EditAddressPage {
             }
           }
         });
-  
+
         mainClass.locationDisable = false;
-  
-  
-  
+
+
+
       }, function (err) {
         console.log(err, 'errrrrrrrrrrrrrrrrrrrrrrrrrrror');
         mainClass.loadMapWithOutLocation(mainClass);
-  
+
         // let toast = mainClass.toastCtrl.create({
         //   message: "error " + err.message,
         //   duration: 10000,
         //   position: 'top'
         // });
         // toast.present();
-  
+
       }
       );
-      }
+    }
 
   }
 
@@ -608,7 +608,7 @@ export class EditAddressPage {
       this.mapStyle.width = "0%";
       this.mapStyle1.height = "0%";
       this.mapStyle1.width = "0%";
-      this.flat = this.getLivingType(this.myForm.get("livingType").value)
+      //      this.flat = this.getLivingType(this.myForm.get("livingType").value)
       this.openMap = false;
 
     } else {
@@ -617,7 +617,8 @@ export class EditAddressPage {
   }
   notChanges() {
 
-    if (this.address.name != this.nameValue || this.address.building != this.buildingValue || this.address.flatNumber != this.flatNumberValue || this.address.floor != this.floorValue || this.address.latitude != this.latitudeValue || this.address.longitude != this.longitudeValue || this.myForm.get("livingType").value != this.livingTypeValue || this.address.otherDetails != this.otherDetailsValue || this.address.region != this.regionValue || this.address.street != this.streetValue) {
+ //  if (this.address.name != this.nameValue || this.address.building != this.buildingValue || this.address.flatNumber != this.flatNumberValue || this.address.floor != this.floorValue || this.address.latitude != this.latitudeValue || this.address.longitude != this.longitudeValue || this.myForm.get("livingType").value != this.livingTypeValue || this.address.otherDetails != this.otherDetailsValue || this.address.region != this.regionValue || this.address.street != this.streetValue) {
+      if (this.address.latitude != this.latitudeValue || this.address.longitude != this.longitudeValue || this.address.otherDetails != this.otherDetailsValue || this.address.region != this.regionValue || this.address.street != this.streetValue) {
 
       return false;
     } else {
@@ -637,7 +638,7 @@ export class EditAddressPage {
     load.present()
 
     this.address.city = this.alexValue;
-    this.address.livingType = this.getLivingTypeValue(this.myForm.get("livingType").value)
+    //    this.address.livingType = this.getLivingTypeValue(this.myForm.get("livingType").value)
 
     this.addressService.edit(this.address).subscribe((res) => {
 
@@ -708,7 +709,7 @@ export class EditAddressPage {
     return livingType;
   }
   skip() {
-    
+
 
     let load = this.loading.create({
       content: this.pleaseWait
@@ -721,7 +722,7 @@ export class EditAddressPage {
     this.address.longitude = '0'
 
     this.address.city = this.alexValue;
-    this.address.livingType = this.getLivingTypeValue(this.myForm.get("livingType").value)
+    //    this.address.livingType = this.getLivingTypeValue(this.myForm.get("livingType").value)
 
     this.addressService.edit(this.address).subscribe((res) => {
 
@@ -755,9 +756,9 @@ export class EditAddressPage {
 
 
   }
-  notChangesSkip(){
-    if (this.address.name != this.nameValue || this.address.building != this.buildingValue || this.address.flatNumber != this.flatNumberValue || this.address.floor != this.floorValue || this.myForm.get("livingType").value != this.livingTypeValue || this.address.otherDetails != this.otherDetailsValue || this.address.region != this.regionValue || this.address.street != this.streetValue) {
-
+  notChangesSkip() {
+    //   if (this.address.name != this.nameValue || this.address.building != this.buildingValue || this.address.flatNumber != this.flatNumberValue || this.address.floor != this.floorValue || this.myForm.get("livingType").value != this.livingTypeValue || this.address.otherDetails != this.otherDetailsValue || this.address.region != this.regionValue || this.address.street != this.streetValue) {
+    if (this.address.otherDetails != this.otherDetailsValue || this.address.region != this.regionValue || this.address.street != this.streetValue) {
       return false;
     } else {
       return true;
@@ -770,14 +771,15 @@ export class EditAddressPage {
       return false;
     }
   }
-  checkSpaces(){
-    if(this.address.building == '' || this.address.flatNumber == '' || this.address.floor == '' || this.address.region == '' || this.address.street == ''){
+  checkSpaces() {
+    //   if(this.address.building == '' || this.address.flatNumber == '' || this.address.floor == '' || this.address.region == '' || this.address.street == ''){
+    if (this.address.region == '' || this.address.street == '') {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
-  checkSpaceTofields(string , field){
+  checkSpaceTofields(string, field) {
     const ctrl = this.myForm.get(field);
     return ctrl.dirty && string == '';
 
