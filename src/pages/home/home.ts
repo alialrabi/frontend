@@ -26,7 +26,7 @@ export class HomePage implements OnInit {
     this.principal.identity().then((account) => {
       console.log(account);
       
-      if (account === null) {
+      if (account === null || (account.id == null && account.firstName == null && account.login == null && account.authorities.length == 0)) {
          this.app.getRootNavs()[0].setRoot(FirstRunPage);
       } else {
         this.account = account;

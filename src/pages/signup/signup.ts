@@ -70,7 +70,7 @@ export class SignupPage {
     private tw: TwitterConnect,
     private fb: Facebook,
     public platform: Platform,
-    private authService: AuthService,
+//    private authService: AuthService,
     private loading: LoadingController,
     public translateService: TranslateService,
     public loginService: LoginService,
@@ -385,13 +385,13 @@ export class SignupPage {
         });
     } else {
 
-      this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then(data => {
-        this.userData = { id: data.id, email: data.email, first_name: data.firstName, last_name: data.lastName }
-        this.faceBookSignUp();
-      }).catch(err => {
-        console.log(err, 'errr 222222222222');
+      // this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then(data => {
+      //   this.userData = { id: data.id, email: data.email, first_name: data.firstName, last_name: data.lastName }
+      //   this.faceBookSignUp();
+      // }).catch(err => {
+      //   console.log(err, 'errr 222222222222');
 
-      })
+      // })
     }
 
   }

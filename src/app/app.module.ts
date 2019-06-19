@@ -126,12 +126,12 @@ export function provideSettings(storage: Storage) {
   });
 }
 
-let config = new AuthServiceConfig([
-  {
-    id: FacebookLoginProvider.PROVIDER_ID,
-    provider: new FacebookLoginProvider("340338943258185")
-  }
-]);
+// let config = new AuthServiceConfig([
+//   {
+//     id: FacebookLoginProvider.PROVIDER_ID,
+//     provider: new FacebookLoginProvider("340338943258185")
+//   }
+// ]);
 
 @NgModule({
   declarations: [
@@ -141,7 +141,7 @@ let config = new AuthServiceConfig([
     NewAddressComponent
   ],
   imports: [
-    SocialLoginModule.initialize(config),
+//    SocialLoginModule.initialize(config),
     BrowserModule,
     HttpModule,
     HttpClientModule,

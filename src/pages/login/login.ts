@@ -73,7 +73,7 @@ export class LoginPage {
     public translateService: TranslateService,
     private builder: FormBuilder,
     private principal: Principal,
-    private authService: AuthService,
+//    private authService: AuthService,
     private fb: Facebook,
     public platform: Platform,
     public fcm: FCM,
@@ -183,8 +183,12 @@ export class LoginPage {
         load.dismiss();
       }
 
-      if (account === null) {
+      console.log("account" , account);
+      
+      if (account === null || (account.id == null && account.firstName == null && account.login == null && account.authorities.length == 0)) {
         //this.app.getRootNavs()[0].setRoot(FirstRunPage);
+        console.log("*********************");
+        
       } else {
         this.account = account;
 
@@ -364,13 +368,13 @@ export class LoginPage {
 
 
 
-      this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then(data => {
-        this.userData = { id: data.id, email: data.email, first_name: data.firstName, last_name: data.lastName }
-        this.doLoginToFacebook(true);
-      }).catch(err => {
-        console.log(err, 'errr 222222222222');
+      // this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then(data => {
+      //   this.userData = { id: data.id, email: data.email, first_name: data.firstName, last_name: data.lastName }
+      //   this.doLoginToFacebook(true);
+      // }).catch(err => {
+      //   console.log(err, 'errr 222222222222');
 
-      })
+      // })
     }
   }
   doLoginToFacebook(first) {

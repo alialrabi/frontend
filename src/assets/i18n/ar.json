@@ -1,4 +1,7 @@
 {
+  "CAPTAIN_DELETED_MESSAGE__AGENCY":"لقد قام المسؤول بحذف بيانات هذا الطيار , يمكنك اختيار طيار اخر",
+  "CAPTAIN_DELETED_MESSAGE":"لقد قام المسؤول بحذف بياناتك يمكنك التواصل معه و استرجاع الحساب",
+  "CAPTAIN_DELETED_WARNINIG":"تحذير",
   "ACTIVATE":"استرجاع",
   "CAPTAIN_NOT_ACTIVE_MESSAGE":"لقد كان  يوجد طيار بنفس البريد الالكترونى من قبل هل تريد فى استرجاعه و تعديل بياناته",
   "ADD_CAPTAIN_TITLE":"اضافه طيار",
