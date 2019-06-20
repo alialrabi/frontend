@@ -198,7 +198,6 @@ export class MyApp {
 
     this.principal.identity().then((account) => {
 
-      console.log(account);
 
       if (account == null) {
 
@@ -340,7 +339,6 @@ export class MyApp {
   checkAccessToSignUp() {
     this.principal.identity().then((account) => {
 
-      console.log(account);
 
 
       if (account == null) {

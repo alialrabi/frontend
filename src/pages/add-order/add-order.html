@@ -178,12 +178,12 @@
     </ion-grid>
 
     <div class="account-info info-div" *ngIf="!print">
-      <ion-item class="item-background" *ngIf="ordersArray.length == 0">
+      <ion-item *ngIf="ordersArray.length == 0">
         <p text-center>
           <strong text-wrap>{{'NO_ITEMS_YET' | translate}}</strong>
         </p>
       </ion-item>
-      <ion-item class="item-background" *ngFor="let or of ordersArray">
+      <ion-item *ngFor="let or of ordersArray">
         <p>
           {{'NAME' | translate}} :
           <strong text-wrap>{{or.name}}</strong>

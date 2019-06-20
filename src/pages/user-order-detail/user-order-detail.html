@@ -18,7 +18,8 @@
           </ion-buttons>
         </ion-col>
         <ion-col col-11 [style.margin-top]="language == 'en' ? '5px' : '0px'">
-          <ion-title [style.margin-top]="!isCordova && language != 'en' ? '5px' : '0px'">{{ 'USER_ORDER_DETAILS' | translate }}</ion-title>
+          <ion-title [style.margin-top]="!isCordova && language != 'en' ? '5px' : '0px'">
+            {{ 'USER_ORDER_DETAILS' | translate }}</ion-title>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -33,7 +34,8 @@
 <ion-content class="auth-page-captain">
 
 
-  <div class="account-info info-div" style="margin-top: 30px;padding-right: 20px;padding-left: 20px;margin-bottom: 60px;">
+  <div class="account-info info-div"
+    style="margin-top: 30px;padding-right: 20px;padding-left: 20px;margin-bottom: 60px;">
 
     <ion-item class="item-background">
       <p>
@@ -44,13 +46,17 @@
     <ion-item class="item-background">
       <p>
         {{ 'STATUS' | translate }} :
-        <strong text-wrap *ngIf="order.userOrder.status == 'not assigned'"> {{ 'USER_ORDER_NOT_ASSIGNED' | translate }}</strong>
-        <strong text-wrap *ngIf="order.userOrder.status == 'assigned' && !order.userOrder.isTaken">{{ 'ASSIGNED' | translate }}</strong>
-        <strong text-wrap *ngIf="order.userOrder.status == 'assigned' && order.userOrder.isTaken">{{ 'RECIVED_FROM_SENDER' | translate }}</strong>
+        <strong text-wrap *ngIf="order.userOrder.status == 'not assigned'">
+          {{ 'USER_ORDER_NOT_ASSIGNED' | translate }}</strong>
+        <strong text-wrap
+          *ngIf="order.userOrder.status == 'assigned' && !order.userOrder.isTaken">{{ 'ASSIGNED' | translate }}</strong>
+        <strong text-wrap
+          *ngIf="order.userOrder.status == 'assigned' && order.userOrder.isTaken">{{ 'RECIVED_FROM_SENDER' | translate }}</strong>
         <strong text-wrap *ngIf="order.userOrder.status == 'delivered'"> {{ 'DELIVERED' | translate }}</strong>
       </p>
     </ion-item>
-    <ion-item class="item-background" *ngIf="order.captain != null && userType == 'Admin'" (click)="viewCaptainDetails()">
+    <ion-item class="item-background" *ngIf="order.captain != null && userType == 'Admin'"
+      (click)="viewCaptainDetails()">
       <p>
         {{ 'CAPTAIN_NAME' | translate }} :
         <strong text-wrap>{{order.captain.name}}</strong>
@@ -60,6 +66,12 @@
       <p>
         {{ 'CAPTAIN_NAME' | translate }} :
         <strong text-wrap>{{order.captain.name}}</strong>
+      </p>
+    </ion-item>
+    <ion-item class="item-background" *ngIf="userType != 'User'">
+      <p>
+        {{'USER_PHONE' | translate}} :
+        <strong text-wrap>{{order.user.phone}}</strong>
       </p>
     </ion-item>
     <ion-item class="item-background" *ngIf="order.captain != null && userType == 'User'">
@@ -92,13 +104,15 @@
         <strong text-wrap>{{order.userOrder.marketName}}</strong>
       </p>
     </ion-item>
-    <ion-item class="item-background" *ngIf="order.userOrder.isBuing && order.userOrder.marketAddress != null && order.userOrder.marketAddress != undefined && order.userOrder.marketAddress != ''">
+    <ion-item class="item-background"
+      *ngIf="order.userOrder.isBuing && order.userOrder.marketAddress != null && order.userOrder.marketAddress != undefined && order.userOrder.marketAddress != ''">
       <p>
         {{ 'MARKET_ADDRESS' | translate }} :
         <strong text-wrap>{{order.userOrder.marketAddress}}</strong>
       </p>
     </ion-item>
-    <ion-item class="item-background" *ngIf="order.userOrder.isBuing && order.userOrder.marketPhone != null && order.userOrder.marketPhone != undefined && order.userOrder.marketPhone != ''">
+    <ion-item class="item-background"
+      *ngIf="order.userOrder.isBuing && order.userOrder.marketPhone != null && order.userOrder.marketPhone != undefined && order.userOrder.marketPhone != ''">
       <p>
         {{ 'MARKET_PHONE' | translate }} :
         <strong text-wrap>{{order.userOrder.marketPhone}}</strong>
@@ -139,7 +153,8 @@
             </p> -->
             <p>
               {{ 'SENDER_ADDRESS' | translate }} :
-              <strong text-wrap>{{order.senderAddress.region}} , {{order.senderAddress.street}} , {{order.senderAddress.city}}  </strong>
+              <strong text-wrap>{{order.senderAddress.region}} , {{order.senderAddress.street}} ,
+                {{order.senderAddress.city}} </strong>
             </p>
           </ion-col>
           <!-- <ion-col  col-1 style="padding: 0px;
@@ -147,25 +162,29 @@
             <ion-icon name="map" style="color: black" (click)="viewLocation(order.senderAddress)" *ngIf="order.senderAddress.latitude != '0'"></ion-icon>
           </ion-col> -->
 
-          <ion-col text-center col-2 >
-          <img src="../../assets/img/map.ico" style="max-width: 30px;margin-left: 5px;margin-right: 5px;" (click)="viewLocation(order.senderAddress)" *ngIf="order.senderAddress.latitude != '0'" />
+          <ion-col text-center col-2>
+            <img src="../../assets/img/map.ico" style="max-width: 30px;margin-left: 5px;margin-right: 5px;"
+              (click)="viewLocation(order.senderAddress)" *ngIf="order.senderAddress.latitude != '0'" />
           </ion-col>
         </ion-row>
       </ion-grid>
     </ion-item>
-    <ion-item class="item-background" *ngIf="!order.userOrder.isBuing && order.senderAddress != null && order.senderAddress.livingType != null && order.senderAddress.livingType != ''">
+    <ion-item class="item-background"
+      *ngIf="!order.userOrder.isBuing && order.senderAddress != null && order.senderAddress.livingType != null && order.senderAddress.livingType != ''">
       <p>
         {{ 'ORDER_DETAIL_SENDER_LIVING_TYPE' | translate }} :
         <strong text-wrap>{{getLivingType(order.senderAddress.livingType)}}</strong>
       </p>
     </ion-item>
-    <ion-item class="item-background" *ngIf="!order.userOrder.isBuing && order.senderAddress != null && order.senderAddress.otherDetails != null && order.senderAddress.otherDetails != ''">
+    <ion-item class="item-background"
+      *ngIf="!order.userOrder.isBuing && order.senderAddress != null && order.senderAddress.otherDetails != null && order.senderAddress.otherDetails != ''">
       <p>
         {{ 'ORDER_DETAIL_SENDER_SPECIAL_MARQE' | translate }} :
         <strong text-wrap>{{order.senderAddress.otherDetails}}</strong>
       </p>
     </ion-item>
-    <ion-item class="item-background" *ngIf="order.userOrder.senderPhone != null && order.userOrder.senderPhone != undefined && order.userOrder.senderPhone != ''">
+    <ion-item class="item-background"
+      *ngIf="order.userOrder.senderPhone != null && order.userOrder.senderPhone != undefined && order.userOrder.senderPhone != ''">
       <p>
         {{ 'SENDER_PHONE' | translate }} :
         <strong text-wrap>{{order.userOrder.senderPhone}}</strong>
@@ -192,7 +211,8 @@
             </p> -->
             <p>
               {{ 'RECIVER_ADDRESS' | translate }} :
-              <strong text-wrap>{{order.reciverAddress.region}} , {{order.reciverAddress.street}} , {{order.reciverAddress.city}} </strong>
+              <strong text-wrap>{{order.reciverAddress.region}} , {{order.reciverAddress.street}} ,
+                {{order.reciverAddress.city}} </strong>
             </p>
           </ion-col>
           <!-- <ion-col col-1 style="padding: 0px;
@@ -200,19 +220,22 @@
             <ion-icon name="map" style="color: black" (click)="viewLocation(order.reciverAddress)" *ngIf="order.reciverAddress.latitude != '0'"></ion-icon>
           </ion-col> -->
 
-          <ion-col text-center col-2 >
-            <img src="../../assets/img/map.ico" style="max-width: 30px;margin-left: 5px;margin-right: 5px;"  (click)="viewLocation(order.reciverAddress)" *ngIf="order.reciverAddress.latitude != '0'" />
-            </ion-col>
+          <ion-col text-center col-2>
+            <img src="../../assets/img/map.ico" style="max-width: 30px;margin-left: 5px;margin-right: 5px;"
+              (click)="viewLocation(order.reciverAddress)" *ngIf="order.reciverAddress.latitude != '0'" />
+          </ion-col>
         </ion-row>
       </ion-grid>
     </ion-item>
-    <ion-item class="item-background" *ngIf="order.reciverAddress != null && order.reciverAddress.livingType != null && order.reciverAddress.livingType != ''">
+    <ion-item class="item-background"
+      *ngIf="order.reciverAddress != null && order.reciverAddress.livingType != null && order.reciverAddress.livingType != ''">
       <p>
         {{ 'ORDER_DETAIL_RECIVER_LIVING_TYPE' | translate }} :
         <strong text-wrap>{{getLivingType(order.reciverAddress.livingType)}}</strong>
       </p>
     </ion-item>
-    <ion-item class="item-background" *ngIf="order.reciverAddress != null && order.reciverAddress.otherDetails != null && order.reciverAddress.otherDetails != ''">
+    <ion-item class="item-background"
+      *ngIf="order.reciverAddress != null && order.reciverAddress.otherDetails != null && order.reciverAddress.otherDetails != ''">
       <p>
         {{ 'ORDER_DETAIL_RECIVER_SPECIAL_MARQE' | translate }} :
         <strong text-wrap>{{order.reciverAddress.otherDetails}}</strong>
@@ -227,62 +250,73 @@
     <ion-item class="item-background" *ngIf="order.userOrder.rating != 0">
       <p>
         {{ 'RATING' | translate }} :
-        <ion-icon [style.margin-right]="language == 'en' ? '0px' : '10px'" [style.margin-left]="language == 'en' ? '10px' : '0px'"
-          style="color: darkorange;font-size: 1.5em;" [name]="order.userOrder.rating < 1 ? 'star-outline' : 'star'"></ion-icon>
-        <ion-icon style="color: darkorange;font-size: 1.5em;" [name]="order.userOrder.rating < 2 ? 'star-outline' : 'star'"></ion-icon>
-        <ion-icon style="color: darkorange;font-size: 1.5em;" [name]="order.userOrder.rating < 3 ? 'star-outline' : 'star'"></ion-icon>
-        <ion-icon style="color: darkorange;font-size: 1.5em;" [name]="order.userOrder.rating < 4 ? 'star-outline' : 'star'"></ion-icon>
-        <ion-icon style="color: darkorange;font-size: 1.5em;" [name]="order.userOrder.rating < 5 ? 'star-outline' : 'star'"></ion-icon>
+        <ion-icon [style.margin-right]="language == 'en' ? '0px' : '10px'"
+          [style.margin-left]="language == 'en' ? '10px' : '0px'" style="color: darkorange;font-size: 1.5em;"
+          [name]="order.userOrder.rating < 1 ? 'star-outline' : 'star'"></ion-icon>
+        <ion-icon style="color: darkorange;font-size: 1.5em;"
+          [name]="order.userOrder.rating < 2 ? 'star-outline' : 'star'"></ion-icon>
+        <ion-icon style="color: darkorange;font-size: 1.5em;"
+          [name]="order.userOrder.rating < 3 ? 'star-outline' : 'star'"></ion-icon>
+        <ion-icon style="color: darkorange;font-size: 1.5em;"
+          [name]="order.userOrder.rating < 4 ? 'star-outline' : 'star'"></ion-icon>
+        <ion-icon style="color: darkorange;font-size: 1.5em;"
+          [name]="order.userOrder.rating < 5 ? 'star-outline' : 'star'"></ion-icon>
 
       </p>
     </ion-item>
-    <ion-item class="item-background" *ngIf="order.userOrder.ratingComment != null && order.userOrder.ratingComment != ''">
+    <ion-item class="item-background"
+      *ngIf="order.userOrder.ratingComment != null && order.userOrder.ratingComment != ''">
       <p>
         {{ 'RATING_COMMENT' | translate }} :
         <strong text-wrap>{{order.userOrder.ratingComment}}</strong>
       </p>
     </ion-item>
-    <ion-grid>
-      <ion-row *ngIf="userType!='Captain'">
-        <ion-col>
-          <ion-buttons end class="btn-style" style="width: 100%" *ngIf="order.userOrder.status != 'delivered' && userType=='Admin'">
-            <button class="myButton" ion-button style="width: 100%" (click)="assingCaptain()">
+    <ion-grid style="padding: 0px">
+      <ion-row *ngIf="userType!='Captain'" style="padding: 0px">
+        <ion-col style="padding: 0px">
+          <ion-buttons  style="width: 100%;padding-top: 15px;padding-left: 5px;padding-right: 5px"
+            *ngIf="order.userOrder.status != 'delivered' && userType=='Admin'">
+            <button class="myButton" ion-button style="width: 98%" (click)="assingCaptain()">
               {{ 'ASSIGN_CAPTAIN' | translate }}
             </button>
           </ion-buttons>
 
-          <ion-buttons end class="btn-style" style="width: 100%" *ngIf="order.userOrder.status == 'assigned' && userType=='Captain'">
-            <button class="myButton" ion-button style="width: 100%" (click)="finish()">
+          <ion-buttons style="width: 100%;padding-top: 15px;padding-left: 5px;padding-right: 5px"
+            *ngIf="order.userOrder.status == 'assigned' && userType=='Captain'">
+            <button class="myButton" ion-button style="width: 98%" (click)="finish()">
               {{ 'DELIVER' | translate }}
             </button>
           </ion-buttons>
 
 
-          <ion-buttons end class="btn-style" style="width: 100%" *ngIf="userType=='User'">
-            <button class="myButton" ion-button style="width: 100%" (click)="editRating()">
+          <ion-buttons style="width: 100%;padding-top: 15px;padding-left: 5px;padding-right: 5px" *ngIf="userType=='User'">
+            <button class="myButton" ion-button style="width: 98%" (click)="editRating()">
               {{ 'EDIT_RATING_BUTTON' | translate }}
             </button>
           </ion-buttons>
         </ion-col>
       </ion-row>
-      <ion-row *ngIf=" userType =='Captain' && !order.userOrder.isTaken && !order.userOrder.isBuing && order.userOrder.status == 'assigned'">
+      <ion-row style="padding: 0px;"
+        *ngIf=" userType =='Captain' && !order.userOrder.isTaken && !order.userOrder.isBuing && order.userOrder.status == 'assigned'">
 
-        <ion-col col-12 style="padding-bottom: 0px;">
+        <ion-col col-12 style="padding: 0px;">
 
-          <ion-buttons end class="btn-style" style="width: 100%" *ngIf="myVar == 'assigned' && userType=='Captain' && !order.userOrder.isTaken">
-            <button ion-button class="myButton" style="width: 100%" (click)="takeOrder(order)">
+          <ion-buttons style="width: 100%;padding-top: 15px;padding-left: 5px;padding-right: 5px"
+            *ngIf="myVar == 'assigned' && userType=='Captain' && !order.userOrder.isTaken">
+            <button ion-button class="myButton" style="width: 98%" (click)="takeOrder(order)">
               {{ 'TAKE_ORDER_FROM_SENDER' | translate }}
             </button>
           </ion-buttons>
 
         </ion-col>
       </ion-row>
-      <ion-row *ngIf=" userType =='Captain' && !order.userOrder.isTaken && !order.userOrder.isBuing && order.userOrder.status == 'assigned'">
+      <ion-row style="padding: 0px;"
+        *ngIf=" userType =='Captain' && !order.userOrder.isTaken && !order.userOrder.isBuing && order.userOrder.status == 'assigned'">
 
-        <ion-col col-12 style="padding-top: 0px;">
+        <ion-col col-12 style="padding: 0px;">
 
-          <ion-buttons end class="btn-style" style="width: 100%" *ngIf="myVar == 'assigned' && userType=='Captain'">
-            <button ion-button class="myButton" style="width: 100%" (click)="finish(order)">
+          <ion-buttons style="width: 100%;padding-top: 15px;padding-left: 5px;padding-right: 5px" *ngIf="myVar == 'assigned' && userType=='Captain'">
+            <button ion-button class="myButton" style="width: 98%" (click)="finish(order)">
               {{ 'DELIVER' | translate }}
             </button>
           </ion-buttons>
@@ -290,11 +324,12 @@
         </ion-col>
 
       </ion-row>
-      <ion-row *ngIf=" userType =='Captain' && (order.userOrder.isTaken || order.userOrder.isBuing) && order.userOrder.status == 'assigned'">
+      <ion-row style="padding: 0px;"
+        *ngIf=" userType =='Captain' && (order.userOrder.isTaken || order.userOrder.isBuing) && order.userOrder.status == 'assigned'">
         <ion-col col-12>
 
-          <ion-buttons end class="btn-style" style="width: 100%" *ngIf="myVar == 'assigned' && userType=='Captain'">
-            <button ion-button class="myButton" style="width: 100%" (click)="finish(order)">
+          <ion-buttons style="width: 100%;padding-top: 15px;padding-left: 5px;padding-right: 5px" *ngIf="myVar == 'assigned' && userType=='Captain'">
+            <button ion-button class="myButton" style="width: 98%" (click)="finish(order)">
               {{ 'DELIVER' | translate }}
             </button>
           </ion-buttons>

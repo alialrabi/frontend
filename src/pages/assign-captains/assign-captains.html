@@ -42,7 +42,7 @@
           <ion-icon name="bicycle" item-start class="text-primary"></ion-icon>
           {{ 'CAPTAIN' | translate }}
         </ion-label>
-        <ion-select [okText]="okText" [cancelText]="cancelText" formControlName="captainIds" multiple [lang]="language" [dir]="direction">
+        <ion-select [okText]="okText" [cancelText]="cancelText" formControlName="captainIds" multiple [lang]="language" [dir]="direction" [disabled] = "dates.length > 0">
           <ion-option *ngFor="let item of captainList" [selected]="item.name ==item.name" [value]="item.id" [dir]="direction">{{item.name}} </ion-option>
 
         </ion-select>
