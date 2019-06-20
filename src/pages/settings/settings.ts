@@ -78,6 +78,11 @@ export class SettingsPage {
 
   public captain;
 
+  deleteTilte = ''
+  deleteMessage = ''
+  ok = ''
+  error500404 = false;
+
   constructor(public navCtrl: NavController,
     public settings: Settings,
     public formBuilder: FormBuilder,
@@ -92,7 +97,8 @@ export class SettingsPage {
     public navParams: NavParams,
     public translate: TranslateService) {
 
-    this.translate.get(['AUTO_ASSIGN_ERROR', 'AUTO_ASSIGN_SUCCESS',
+    this.translate.get(['CAPTAIN_DELETED_WARNINIG', 'CAPTAIN_DELETED_MESSAGE', 'OK',
+      'AUTO_ASSIGN_ERROR', 'AUTO_ASSIGN_SUCCESS',
       'AUTO_ASSIGN_CONFIRM_MESSAGE', 'AUTO_ASSIGN_CONFIRM_TITLE', 'WORKING_ERROR', 'WORKING_SUCCESS',
       'WORKING_CONFIRM_MESSAGE', 'WORKING_CONFIRM_TITLE', 'CHANGE_LANGUAGE_ERROR', 'CHANGE_LANGUAGE_SUCCESS',
       'CHANGE_LANGUAGE_MESSAGE', 'CHANGE_LANGUAGE_CONFIRM_TITLE', 'DONE', 'CANCEL', 'PLEASE_WAIT', 'CHANGE_AT_MARKET_TITLE', 'CHANGE_AT_MARKET_SUCCESS', 'CHANGE_AT_MARKET_MESSAGE', 'CHANGE_AT_MARKET_ERROR']).subscribe((values) => {
@@ -121,6 +127,9 @@ export class SettingsPage {
         this.changeAtMarketSuccess = values.CHANGE_AT_MARKET_SUCCESS
         this.changeAtMarketError = values.CHANGE_AT_MARKET_ERROR
 
+        this.deleteTilte = values.CAPTAIN_DELETED_WARNINIG
+        this.deleteMessage = values.CAPTAIN_DELETED_MESSAGE
+        this.ok = values.OK
 
       })
 
@@ -138,9 +147,9 @@ export class SettingsPage {
           this.navCtrl.setRoot(AdminDashboardPage);
         } else if (this.userType == 'Agency') {
           this.navCtrl.setRoot(OrdersPage);
-        }else if (this.userType == 'Captain') {
+        } else if (this.userType == 'Captain') {
           this.navCtrl.setRoot(CaptainOrdersPage);
-        }else if(this.userType == 'User'){
+        } else if (this.userType == 'User') {
           this.navCtrl.setRoot(UserOrdersPage);
         }
       });
@@ -163,8 +172,8 @@ export class SettingsPage {
 
 
     this.principal.identity().then((account) => {
-      
-      if (account === null) {
+
+      if (account === null || (account.id == null && account.firstName == null && account.login == null && account.authorities.length == 0)) {
         load.dismiss();
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
 
@@ -184,7 +193,7 @@ export class SettingsPage {
 
         this.userType = 'Captain'
 
-        this.getCaptain(this.account.id , load);
+        this.getCaptain(this.account.id, load);
 
       } else if (account.authorities[0] == 'ROLE_USER' && account.authorities.length == 1) {
         load.dismiss();
@@ -205,7 +214,7 @@ export class SettingsPage {
     });
   }
 
-  getCaptain(captainId , load) {
+  getCaptain(captainId, load) {
 
     // let load = this.loading.create({
     //   content: this.pleaseWait
@@ -216,18 +225,29 @@ export class SettingsPage {
 
     this.captainService.getByUserId(captainId).subscribe(
       data => {
+
+        this.error500404 = false;
         this.captain = data;
 
 
         load.dismiss();
+        if (this.captain != null && this.captain.active) {
 
-        this.myForm.get("working").setValue(!this.captain.working)
-        this.myForm.get("atMarket").setValue(this.captain.atMarket)
+          this.myForm.get("working").setValue(!this.captain.working)
+          this.myForm.get("atMarket").setValue(this.captain.atMarket)
+        } else {
 
+          window.location.reload();
+
+          // this.app.getRootNavs()[0].setRoot(FirstRunPage);
+        }
 
 
       }, err => {
         console.log(err, 'errror');
+        if (err.status != 400) {
+          this.error500404 = true;
+        }
         load.dismiss();
 
       }
@@ -236,7 +256,7 @@ export class SettingsPage {
   }
 
   changeAssign() {
-    
+
 
     let alert = this.alertCtrl.create({
       title: this.confirmAutoAssignTitle,
@@ -300,34 +320,87 @@ export class SettingsPage {
 
   updateAtMarket() {
 
+    if (this.captain != null) {
+      let obj = {
+        captainId: this.captain.id,
+        atMarket: this.myForm.get('atMarket').value
+      }
 
-    let obj = {
-      captainId: this.captain.id,
-      atMarket: this.myForm.get('atMarket').value
+      this.captainService.updateAtMarket(obj).subscribe((res) => {
+        // var id = res;
+        this.captain.atMarket = obj.atMarket;
+        // this.validateUser(false);
+        let toast = this.toastCtrl.create({
+          message: this.changeAtMarketSuccess,
+          duration: 3000,
+          position: 'top'
+        });
+        toast.present();
+
+      }, (err) => {
+        // Unable to sign up
+
+        if (err.status === 400) {
+
+          let alert = this.alertCtrl.create({
+            title: this.deleteTilte,
+            message: this.deleteMessage,
+            buttons: [
+
+              {
+                text: this.ok,
+                handler: () => {
+
+                }
+              }
+            ]
+          });
+          alert.present();
+
+
+        } else {
+
+          let displayError = this.changeAtMarketError;
+          let toast = this.toastCtrl.create({
+            message: displayError,
+            duration: 3000,
+            position: 'top'
+          });
+          toast.present();
+        }
+
+      });
+
+    } else {
+
+      if (!this.error500404) {
+
+        let alert = this.alertCtrl.create({
+          title: this.deleteTilte,
+          message: this.deleteMessage,
+          buttons: [
+
+            {
+              text: this.ok,
+              handler: () => {
+
+              }
+            }
+          ]
+        });
+        alert.present();
+
+      } else {
+        let displayError = this.changeAtMarketError;
+        let toast = this.toastCtrl.create({
+          message: displayError,
+          duration: 3000,
+          position: 'top'
+        });
+        toast.present();
+      }
+
     }
-
-    this.captainService.updateAtMarket(obj).subscribe((res) => {
-      // var id = res;
-      this.captain.atMarket = obj.atMarket;
-      // this.validateUser(false);
-      let toast = this.toastCtrl.create({
-        message: this.changeAtMarketSuccess,
-        duration: 3000,
-        position: 'top'
-      });
-      toast.present();
-
-    }, (err) => {
-      // Unable to sign up
-      let displayError = this.changeAtMarketError;
-      let toast = this.toastCtrl.create({
-        message: displayError,
-        duration: 3000,
-        position: 'top'
-      });
-      toast.present();
-    });
-
 
 
   }
@@ -363,32 +436,87 @@ export class SettingsPage {
   }
   updateWorking() {
 
-    let obj = {
-      captainId: this.captain.id,
-      working: !this.myForm.get('working').value
+    if (this.captain != null) {
+
+      let obj = {
+        captainId: this.captain.id,
+        working: !this.myForm.get('working').value
+      }
+
+      this.captainService.updateWorking(obj).subscribe((res) => {
+        // var id = res;
+        this.captain.working = obj.working;
+        // this.validateUser(false);
+        let toast = this.toastCtrl.create({
+          message: this.changeWorkingSuccessString,
+          duration: 3000,
+          position: 'top'
+        });
+        toast.present();
+
+      }, (err) => {
+        // Unable to sign up
+
+        if (err.status === 400) {
+
+          let alert = this.alertCtrl.create({
+            title: this.deleteTilte,
+            message: this.deleteMessage,
+            buttons: [
+
+              {
+                text: this.ok,
+                handler: () => {
+
+                }
+              }
+            ]
+          });
+          alert.present();
+
+
+        } else {
+
+
+          let displayError = this.changeWorkingError;
+          let toast = this.toastCtrl.create({
+            message: displayError,
+            duration: 3000,
+            position: 'top'
+          });
+          toast.present();
+        }
+
+      });
+
+    } else {
+
+      if (!this.error500404) {
+        let alert = this.alertCtrl.create({
+          title: this.deleteTilte,
+          message: this.deleteMessage,
+          buttons: [
+
+            {
+              text: this.ok,
+              handler: () => {
+
+              }
+            }
+          ]
+        });
+        alert.present();
+      } else {
+        let displayError = this.changeWorkingError;
+        let toast = this.toastCtrl.create({
+          message: displayError,
+          duration: 3000,
+          position: 'top'
+        });
+        toast.present();
+      }
     }
 
-    this.captainService.updateWorking(obj).subscribe((res) => {
-      // var id = res;
-      this.captain.working = obj.working;
-      // this.validateUser(false);
-      let toast = this.toastCtrl.create({
-        message: this.changeWorkingSuccessString,
-        duration: 3000,
-        position: 'top'
-      });
-      toast.present();
-
-    }, (err) => {
-      // Unable to sign up
-      let displayError = this.changeWorkingError;
-      let toast = this.toastCtrl.create({
-        message: displayError,
-        duration: 3000,
-        position: 'top'
-      });
-      toast.present();
-    });
 
 
   }
@@ -482,13 +610,35 @@ export class SettingsPage {
 
       }, (err) => {
         // Unable to sign up
-        let displayError = this.changeChaneLanguageError;
-        let toast = this.toastCtrl.create({
-          message: displayError,
-          duration: 3000,
-          position: 'top'
-        });
-        toast.present();
+
+        if (err.status === 400) {
+
+          let alert = this.alertCtrl.create({
+            title: this.deleteTilte,
+            message: this.deleteMessage,
+            buttons: [
+
+              {
+                text: this.ok,
+                handler: () => {
+
+                }
+              }
+            ]
+          });
+          alert.present();
+
+
+        } else {
+
+          let displayError = this.changeChaneLanguageError;
+          let toast = this.toastCtrl.create({
+            message: displayError,
+            duration: 3000,
+            position: 'top'
+          });
+          toast.present();
+        }
       });
 
 

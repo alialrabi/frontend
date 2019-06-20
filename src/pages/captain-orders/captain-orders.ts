@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ItemDivider, ToastController, App, LoadingController, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ItemDivider, ToastController, App, LoadingController, Platform, AlertController } from 'ionic-angular';
 import { OrderService } from '../../providers/auth/order.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Principal } from '../../providers/auth/principal.service';
@@ -52,12 +52,15 @@ export class CaptainOrdersPage {
   exitMessage
   counter = 0
 
+  deleteTilte = ''
+  deleteMessage = ''
+  ok = ''
 
-  constructor(public navCtrl: NavController, private loginService: LoginService, public platform: Platform, private loading: LoadingController, public accountService: AccountService, private captainService: CaptainService, private app: App, private principal: Principal, public navParams: NavParams, public orderService: OrderService, public translateService: TranslateService, public toastCtrl: ToastController) {
+  constructor(public navCtrl: NavController, private loginService: LoginService, public _alert : AlertController , public platform: Platform, private loading: LoadingController, public accountService: AccountService, private captainService: CaptainService, private app: App, private principal: Principal, public navParams: NavParams, public orderService: OrderService, public translateService: TranslateService, public toastCtrl: ToastController) {
 
     // this.captain = this.navParams.get("item");
 
-    this.translateService.get(['EXIT_MESSAGE', 'DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'ASSIGN_ORDER_ERROR', 'ASSIGN_ORDER_SUCCESS', 'PLEASE_WAIT', 'MORE_DATA']).subscribe((values) => {
+    this.translateService.get([ 'CAPTAIN_DELETED_WARNINIG' , 'CAPTAIN_DELETED_MESSAGE' , 'OK' , 'EXIT_MESSAGE', 'DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'ASSIGN_ORDER_ERROR', 'ASSIGN_ORDER_SUCCESS', 'PLEASE_WAIT', 'MORE_DATA']).subscribe((values) => {
       this.deliverOrderError = values.DELIVER_ORDER_ERROR;
       this.deliverOrderSuccess = values.DELIVER_ORDER_SUCCESS;
       this.assignOrderError = values.ASSIGN_ORDER_ERROR;
@@ -65,6 +68,9 @@ export class CaptainOrdersPage {
       this.pleaseWait = values.PLEASE_WAIT
       this.moreData = values.MORE_DATA
       this.exitMessage = values.EXIT_MESSAGE
+      this.deleteTilte = values.CAPTAIN_DELETED_WARNINIG
+      this.deleteMessage = values.CAPTAIN_DELETED_MESSAGE
+      this.ok = values.OK
     })
 
     if (this.platform.is('cordova') && this.platform.is("android")) {
@@ -119,7 +125,7 @@ export class CaptainOrdersPage {
         lng: position.coords.longitude + '',
         captainId: classIn.captain.id
       }
-     
+
       classIn.captainService.updateLocation(location).subscribe(
         res => {
 
@@ -151,7 +157,9 @@ export class CaptainOrdersPage {
     let classIn = this;
     this.principal.identity().then((account) => {
 
-      if (account === null || account.authorities[0] != 'ROLE_CAPTAIN') {
+      console.log(account);
+
+      if (account === null || (account.id == null && account.firstName == null && account.login == null && account.authorities.length == 0) || account.authorities[0] != 'ROLE_CAPTAIN') {
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
         load.dismiss()
       } else {
@@ -164,26 +172,30 @@ export class CaptainOrdersPage {
 
             this.myVar = 'assigned';
             //           load.dismiss();
-
-            this.getAllOrdersAfterFinish(this.myVar, 0 , load);
-            if (this.captain.agencyId != 0) {
-              this.getCaptainAgency();
+            if (this.captain != null && this.captain.active) {
+              this.getAllOrdersAfterFinish(this.myVar, 0, load);
+              if (this.captain.agencyId != 0) {
+                this.getCaptainAgency();
+              }
+            } else {
+              load.dismiss();
+            //  this.app.getRootNavs()[0].setRoot(FirstRunPage);
+            window.location.reload();
             }
-
             //classIn.updateLocationTimer(classIn);
 
 
 
           }, err => {
             console.log(err, 'errror');
-                       load.dismiss();
+            load.dismiss();
 
           }
         )
 
       }
     }).catch((err) => {
-          load.dismiss()
+      load.dismiss()
     });
 
 
@@ -198,48 +210,121 @@ export class CaptainOrdersPage {
   }
 
   getCaptainAgency() {
-    // let load = this.loading.create({
-    //   content: this.pleaseWait
+
+    if (this.captain != null) {
+
+      // let load = this.loading.create({
+      //   content: this.pleaseWait
 
 
-    // })
-    // load.present()
-    this.accountService.getById(this.captain.agencyId).subscribe(
-      res => {
-        this.agency = res;
-        this.autoAssign = res.autoAssign
-        //     load.dismiss();
+      // })
+      // load.present()
+      this.accountService.getById(this.captain.agencyId).subscribe(
+        res => {
+          this.agency = res;
+          this.autoAssign = res.autoAssign
+          //     load.dismiss();
 
 
-      }, err => {
-        //      load.dismiss();
+        }, err => {
+          //      load.dismiss();
 
-        console.log(err, 'errrrrrrror');
+          console.log(err, 'errrrrrrror');
 
 
-      }
-    )
+        }
+      )
+    }
   }
 
 
   getNotAssigned(status, pageNum) {
 
-    if (pageNum == 0) {
+    if (this.captain != null) {
 
+      if (pageNum == 0) {
+
+        this.myVar = status;
+
+        let load = this.loading.create({
+          content: this.pleaseWait
+
+
+        })
+        load.present()
+
+        this.ordersList = [];
+        this.pageNum = 1;
+
+        this.orderService.getAllByStatus(status, this.captain.agencyId, false, pageNum).subscribe(res => {
+
+          this.ordersList = res;
+          load.dismiss();
+        }, err => {
+          console.log(err);
+          load.dismiss();
+
+        })
+
+
+
+      } else {
+
+
+
+        if (!this.isLoading) {
+          this.isLoading = true;
+
+          this.myVar = status;
+          let load;
+          if (pageNum == 0) {
+            load = this.loading.create({
+              content: this.pleaseWait
+
+
+            })
+            load.present()
+            this.ordersList = [];
+            this.pageNum = 1;
+          }
+
+
+          this.orderService.getAllByStatus(status, this.captain.agencyId, false, pageNum).subscribe(res => {
+
+            if (pageNum == 0) {
+              this.ordersList = res;
+              load.dismiss();
+            } else {
+              if (res.length > 0) {
+                this.pageNum++;
+              }
+              res.forEach(element => {
+                this.ordersList.push(element);
+
+              });
+            }
+            this.isLoading = false;
+          }, err => {
+            console.log(err);
+            if (pageNum == 0) {
+              load.dismiss();
+            }
+          })
+        }
+      }
+    }
+  }
+
+  getNotAssignedAfterTake(status, pageNum, load) {
+
+    if (this.captain != null) {
       this.myVar = status;
-
-      let load = this.loading.create({
-        content: this.pleaseWait
-
-
-      })
-      load.present()
 
       this.ordersList = [];
       this.pageNum = 1;
 
       this.orderService.getAllByStatus(status, this.captain.agencyId, false, pageNum).subscribe(res => {
-        
+
         this.ordersList = res;
         load.dismiss();
       }, err => {
@@ -248,85 +333,88 @@ export class CaptainOrdersPage {
 
       })
 
-
-
-    } else {
-
-
-
-      if (!this.isLoading) {
-        this.isLoading = true;
-
-        this.myVar = status;
-        let load;
-        if (pageNum == 0) {
-          load = this.loading.create({
-            content: this.pleaseWait
-
-
-          })
-          load.present()
-          this.ordersList = [];
-          this.pageNum = 1;
-        }
-
-
-        this.orderService.getAllByStatus(status, this.captain.agencyId, false, pageNum).subscribe(res => {
-         
-          if (pageNum == 0) {
-            this.ordersList = res;
-            load.dismiss();
-          } else {
-            if (res.length > 0) {
-              this.pageNum++;
-            }
-            res.forEach(element => {
-              this.ordersList.push(element);
-
-            });
-          }
-          this.isLoading = false;
-        }, err => {
-          console.log(err);
-          if (pageNum == 0) {
-            load.dismiss();
-          }
-        })
-      }
     }
-  }
-
-  getNotAssignedAfterTake(status, pageNum, load) {
-
-
-    this.myVar = status;
-
-    this.ordersList = [];
-    this.pageNum = 1;
-
-    this.orderService.getAllByStatus(status, this.captain.agencyId, false, pageNum).subscribe(res => {
-     
-      this.ordersList = res;
-      load.dismiss();
-    }, err => {
-      console.log(err);
-      load.dismiss();
-
-    })
 
   }
 
   getAllOrders(status, pageNum) {
 
-    if (pageNum == 0) {
+    if (this.captain != null) {
+
+      if (pageNum == 0) {
+
+        this.myVar = status;
+        let load = this.loading.create({
+          content: this.pleaseWait
+
+
+        })
+        load.present()
+        this.ordersList = [];
+        this.pageNum = 1;
+
+        this.orderService.getCaptainOrders(this.captain.id, status, pageNum).subscribe(res => {
+          this.ordersList = res;
+
+          load.dismiss();
+
+        }, err => {
+          console.log(err);
+          load.dismiss();
+
+
+        })
+
+
+      } else {
+
+        if (!this.isLoading) {
+          this.isLoading = true;
+          this.myVar = status;
+          let load;
+          if (pageNum == 0) {
+            load = this.loading.create({
+              content: this.pleaseWait
+
+
+            })
+            load.present()
+            this.ordersList = [];
+            this.pageNum = 1;
+          }
+          this.orderService.getCaptainOrders(this.captain.id, status, pageNum).subscribe(res => {
+            if (pageNum == 0) {
+              this.ordersList = res;
+            } else {
+              if (res.length > 0) {
+                this.pageNum++;
+              }
+              res.forEach(element => {
+                this.ordersList.push(element);
+
+              });
+            }
+            if (pageNum == 0) {
+              load.dismiss();
+            }
+            this.isLoading = false;
+          }, err => {
+            console.log(err);
+            if (pageNum == 0) {
+              load.dismiss();
+            }
+
+          })
+        }
+      }
+    }
+  }
+  getAllOrdersAfterFinish(status, pageNum, load) {
+
+    if (this.captain != null) {
 
       this.myVar = status;
-      let load = this.loading.create({
-        content: this.pleaseWait
 
-
-      })
-      load.present()
       this.ordersList = [];
       this.pageNum = 1;
 
@@ -342,67 +430,7 @@ export class CaptainOrdersPage {
 
       })
 
-
-    } else {
-
-      if (!this.isLoading) {
-        this.isLoading = true;
-        this.myVar = status;
-        let load;
-        if (pageNum == 0) {
-          load = this.loading.create({
-            content: this.pleaseWait
-
-
-          })
-          load.present()
-          this.ordersList = [];
-          this.pageNum = 1;
-        }
-        this.orderService.getCaptainOrders(this.captain.id, status, pageNum).subscribe(res => {
-          if (pageNum == 0) {
-            this.ordersList = res;
-          } else {
-            if (res.length > 0) {
-              this.pageNum++;
-            }
-            res.forEach(element => {
-              this.ordersList.push(element);
-
-            });
-          }
-          if (pageNum == 0) {
-            load.dismiss();
-          }
-          this.isLoading = false;
-        }, err => {
-          console.log(err);
-          if (pageNum == 0) {
-            load.dismiss();
-          }
-
-        })
-      }
     }
-  }
-  getAllOrdersAfterFinish(status, pageNum, load) {
-
-    this.myVar = status;
-
-    this.ordersList = [];
-    this.pageNum = 1;
-
-    this.orderService.getCaptainOrders(this.captain.id, status, pageNum).subscribe(res => {
-      this.ordersList = res;
-
-      load.dismiss();
-
-    }, err => {
-      console.log(err);
-      load.dismiss();
-
-
-    })
 
   }
 
@@ -418,7 +446,7 @@ export class CaptainOrdersPage {
       if (index != -1) {
 
         // for (let index = 0; index < orders.length; index++) {  
-        
+
 
 
         if (orders.charAt(index) === '-' && orders.charAt(index - 1) === ' ' && orders.charAt(index + 1) === ' ') {
@@ -448,79 +476,127 @@ export class CaptainOrdersPage {
 
   finish(item) {
 
-    let load = this.loading.create({
-      content: this.pleaseWait
+    if (this.captain != null) {
+
+      let load = this.loading.create({
+        content: this.pleaseWait
 
 
-    })
-    load.present()
+      })
+      load.present()
 
 
-    this.orderService.finishOrder(item.id).subscribe(
-      res => {
-        let toast = this.toastCtrl.create({
-          message: this.deliverOrderSuccess,
-          duration: 3000,
-          position: 'top'
-        });
-        toast.present();
+      this.orderService.finishOrder(item.id).subscribe(
+        res => {
+          let toast = this.toastCtrl.create({
+            message: this.deliverOrderSuccess,
+            duration: 3000,
+            position: 'top'
+          });
+          toast.present();
 
-        //        load.dismiss();
-        this.getAllOrdersAfterFinish(this.myVar, 0, load);
+          //        load.dismiss();
+          this.getAllOrdersAfterFinish(this.myVar, 0, load);
 
-      }, err => {
-        console.log(err);
+        }, err => {
+          console.log(err);
+
+          if(err.status === 400){
+
+            let alert = this._alert.create({
+              title: this.deleteTilte,
+              message: this.deleteMessage,
+              buttons: [
+                
+                {
+                  text: this.ok,
+                  handler: () => {
+        
+                  }
+                }
+              ]
+            });
+            alert.present();
 
 
-        let displayError = this.deliverOrderError;
+          }else{
 
-        let toast = this.toastCtrl.create({
-          message: displayError,
-          duration: 3000,
-          position: 'middle'
-        });
-        toast.present();
-        load.dismiss();
-      }
-    )
 
+          let displayError = this.deliverOrderError;
+
+          let toast = this.toastCtrl.create({
+            message: displayError,
+            duration: 3000,
+            position: 'middle'
+          });
+          toast.present();
+
+        }
+          load.dismiss();
+        }
+      )
+    }
   }
   assignOrder(order) {
 
-    let load = this.loading.create({
-      content: this.pleaseWait
+    if (this.captain != null) {
+
+      let load = this.loading.create({
+        content: this.pleaseWait
 
 
-    })
-    load.present()
+      })
+      load.present()
 
-    this.orderService.assign(this.captain.id, order.id).subscribe(
-      res => {
-        let toast = this.toastCtrl.create({
-          message: this.assingOrderSuccess,
-          duration: 3000,
-          position: 'top'
-        });
-        toast.present();
-        //        load.dismiss();
-        this.getNotAssignedAfterTake(this.myVar, 0, load);
+      this.orderService.assign(this.captain.id, order.id).subscribe(
+        res => {
+          let toast = this.toastCtrl.create({
+            message: this.assingOrderSuccess,
+            duration: 3000,
+            position: 'top'
+          });
+          toast.present();
+          //        load.dismiss();
+          this.getNotAssignedAfterTake(this.myVar, 0, load);
 
-      }, err => {
-        console.log(err);
+        }, err => {
+          console.log(err);
+
+          if(err.status === 400){
+
+            let alert = this._alert.create({
+              title: this.deleteTilte,
+              message: this.deleteMessage,
+              buttons: [
+                
+                {
+                  text: this.ok,
+                  handler: () => {
+        
+                  }
+                }
+              ]
+            });
+            alert.present();
 
 
-        let displayError = this.assignOrderError;
+          }else{
 
-        let toast = this.toastCtrl.create({
-          message: displayError,
-          duration: 3000,
-          position: 'middle'
-        });
-        toast.present();
-        load.dismiss();
+          let displayError = this.assignOrderError;
 
-      }
-    )
+          let toast = this.toastCtrl.create({
+            message: displayError,
+            duration: 3000,
+            position: 'middle'
+          });
+          toast.present();
+        }
+          load.dismiss();
+
+        }
+      )
+
+    }
 
   }
 

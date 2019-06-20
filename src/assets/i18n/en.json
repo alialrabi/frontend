@@ -1,4 +1,7 @@
 {
+    "CAPTAIN_DELETED_MESSAGE__AGENCY":"The administrator has deleted this captain's data , you can choose another captain",
+    "CAPTAIN_DELETED_MESSAGE":"The administrator has deleted your data and you can contact him and retrieve the account",
+    "CAPTAIN_DELETED_WARNINIG":"Warning",
     "ACTIVATE":"Recovery",
     "CAPTAIN_NOT_ACTIVE_MESSAGE":"There was an captain with this email before , do you want to recover his account and edit his information",
     "ADD_CAPTAIN_TITLE":"Add Captain",

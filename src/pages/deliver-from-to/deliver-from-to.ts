@@ -161,7 +161,7 @@ export class DeliverFromToPage {
       this.account = account;
       //    load.dismiss()
 
-      if (account === null) {
+      if (account === null || (account.id == null && account.firstName == null && account.login == null && account.authorities.length == 0)) {
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
         load.dismiss()
       } else {

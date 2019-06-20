@@ -82,15 +82,15 @@ export class MyApp {
   public autoAssignInternal = null;
 
 
-  constructor(private translate: TranslateService , private loading: LoadingController, private manup: ManUpService, private fcm: FCM, public _alert: AlertController, private deviceTokenService: DeviceTockenService, private device: Device, public admobFree: AdMobFree, private backgroundMode: BackgroundMode, public menu: MenuController, public platform: Platform, settings: Settings, private config: Config,
+  constructor(private translate: TranslateService, private loading: LoadingController, private manup: ManUpService, private fcm: FCM, public _alert: AlertController, private deviceTokenService: DeviceTockenService, private device: Device, public admobFree: AdMobFree, private backgroundMode: BackgroundMode, public menu: MenuController, public platform: Platform, settings: Settings, private config: Config,
     private statusBar: StatusBar, public locationAccuracy: LocationAccuracy, public toastCtrl: ToastController, private loginService: LoginService, private captainService: CaptainService, private app: App, private principal: Principal, private splashScreen: SplashScreen, private keyboard: Keyboard) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      if(this.platform.is('android')) {
+      if (this.platform.is('android')) {
         this.statusBar.styleLightContent();
-      }else{
-      this.statusBar.styleDefault();
+      } else {
+        this.statusBar.styleDefault();
       }
       this.keyboard.disableScroll(false);
       if (this.platform.is("android") && this.platform.is("cordova")) {
@@ -195,8 +195,10 @@ export class MyApp {
   }
 
   checkAccess() {
-    
+
     this.principal.identity().then((account) => {
+
+      console.log(account);
 
       if (account == null) {
 
@@ -205,7 +207,16 @@ export class MyApp {
 
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
 
-      } else if (account.authorities[0] == 'ROLE_AGENCY') {
+      } else if (account.id == null && account.firstName == null && account.login == null && account.authorities.length == 0) {
+        this.account = null;
+        this.userType = '';
+
+        this.app.getRootNavs()[0].setRoot(FirstRunPage);
+
+        this.captainLogOut();
+      }
+
+      else if (account.authorities[0] == 'ROLE_AGENCY') {
 
         MyApp.language = account.langKey;
         this.translate.use(MyApp.language);
@@ -319,7 +330,7 @@ export class MyApp {
         //   { title: this.userOrdersText, component: UserOrdersPage, icon: 'basket' }
 
         // ];
-        
+
         this.nav.setRoot("AdminDashboardPage")
       }
 
@@ -328,6 +339,9 @@ export class MyApp {
   }
   checkAccessToSignUp() {
     this.principal.identity().then((account) => {
+
+      console.log(account);
+
 
       if (account == null) {
 
@@ -444,7 +458,7 @@ export class MyApp {
 
         // ];
 
-        
+
         this.nav.setRoot("AdminDashboardPage")
       }
 
@@ -465,12 +479,15 @@ export class MyApp {
     this.captainService.getByUserId(captainId).subscribe(
       data => {
         this.captain = data;
+
+        if(this.captain != null){
+
         this.updateLocation(this);
 
         this.updateLocationTimer(this);
 
         this.updateAssign(this)
-
+        }
 
       }, err => {
 
@@ -531,7 +548,7 @@ export class MyApp {
                 }
 
                 this.loginService.logout();
-                
+
                 //this.userType = '';
                 //this.account = null;
 
@@ -604,6 +621,23 @@ export class MyApp {
       );
     }
 
+  }
+
+  captainLogOut() {
+    if (this.internal != null) {
+
+      this.internal.unsubscribe();
+      this.backgroundMode.disable();
+
+      this.internal = null;
+    }
+    if (this.autoAssignInternal != null) {
+      this.autoAssignInternal.unsubscribe();
+      this.autoAssignInternal = null;
+    }
+    this.loginService.logout();
+    
+    this.isLogOut = true;
   }
 
   openMenu() {
@@ -695,7 +729,7 @@ export class MyApp {
   updateLocationTimer(classIn) {
 
     if (this.platform.is('android') && this.platform.is('cordova')) {
-      
+
       if (this.device.platform.toLowerCase() == 'android' && parseInt(this.device.version, 10) < 8) {
 
         this.backgroundMode.enable();
@@ -723,7 +757,7 @@ export class MyApp {
 
 
 
-    this.translate.get(['AGENCY', 'ADMIN', 'USER', 'CAPTAIN' , 'PLEASE_WAIT']).subscribe((values) => {
+    this.translate.get(['AGENCY', 'ADMIN', 'USER', 'CAPTAIN', 'PLEASE_WAIT']).subscribe((values) => {
 
       if (this.userType == 'Admin') {
         this.userTypeText = values.ADMIN;

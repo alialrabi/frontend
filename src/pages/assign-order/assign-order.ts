@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, App, LoadingController, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, App, LoadingController, Platform, AlertController } from 'ionic-angular';
 import { CaptainService } from '../../providers/auth/captain.service';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
@@ -58,8 +58,12 @@ export class AssignOrderPage {
   okText = ''
   cancelText = ''
 
+  deleteTilte = ''
+  deleteMessage = ''
+  ok = ''
 
-  constructor(public navCtrl: NavController, public navParams: NavParams , private deviceTokenService:DeviceTockenService , public platform:Platform , public userOrderService:UserOrderService,
+
+  constructor(public navCtrl: NavController, public navParams: NavParams , public _alert:AlertController , private deviceTokenService:DeviceTockenService , public platform:Platform , public userOrderService:UserOrderService,
     private builder: FormBuilder , public captainService:CaptainService  ,private loading: LoadingController , private app: App, private principal: Principal, public toastCtrl: ToastController , public translateService: TranslateService , public orderService:OrderService ) {
 
       this.order = this.navParams.get("item");
@@ -73,7 +77,7 @@ export class AssignOrderPage {
         this.isCordova = true;
       }
 
-    this.translateService.get(["SELECTION_CANCEL" , "SELECTION_OK" ,'ASSIGN_ORDER_ERROR', 'ASSIGN_ORDER_SUCCESS' , 'PLEASE_WAIT' , 'NOT_WORKING' , 'ON_BACK_WAY' , 'AT_MARKET' , 'BUSY']).subscribe((values) => {
+    this.translateService.get(['CAPTAIN_DELETED_WARNINIG' , 'CAPTAIN_DELETED_MESSAGE__AGENCY' , 'OK' , "SELECTION_CANCEL" , "SELECTION_OK" ,'ASSIGN_ORDER_ERROR', 'ASSIGN_ORDER_SUCCESS' , 'PLEASE_WAIT' , 'NOT_WORKING' , 'ON_BACK_WAY' , 'AT_MARKET' , 'BUSY']).subscribe((values) => {
       this.assignOrderError = values.ASSIGN_ORDER_ERROR;
       this.assingOrderSuccess = values.ASSIGN_ORDER_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT
@@ -84,6 +88,10 @@ export class AssignOrderPage {
 
       this.okText = values.SELECTION_OK
       this.cancelText = values.SELECTION_CANCEL
+
+      this.deleteTilte = values.CAPTAIN_DELETED_WARNINIG
+      this.deleteMessage = values.CAPTAIN_DELETED_MESSAGE__AGENCY
+      this.ok = values.OK
     })
 
 
@@ -121,7 +129,7 @@ export class AssignOrderPage {
       this.account = account;
 //      load.dismiss()
       
-      if (account === null ) {
+      if (account === null || (account.id == null && account.firstName == null && account.login == null && account.authorities.length == 0)) {
          this.app.getRootNavs()[0].setRoot(FirstRunPage);
          load.dismiss();
       }else if(account.authorities[0]== 'ROLE_AGENCY'){
@@ -274,6 +282,25 @@ export class AssignOrderPage {
       }, err =>{
         console.log(err);
         
+        if(err.status === 400){
+
+          let alert = this._alert.create({
+            title: this.deleteTilte,
+            message: this.deleteMessage,
+            buttons: [
+              
+              {
+                text: this.ok,
+                handler: () => {
+      
+                }
+              }
+            ]
+          });
+          alert.present();
+
+
+        }else{
 
         let displayError = this.assignOrderError;
       
@@ -283,6 +310,7 @@ export class AssignOrderPage {
           position: 'middle'
       });
       toast.present();
+    }
       load.dismiss();
 
       }
@@ -312,6 +340,26 @@ export class AssignOrderPage {
       }, err =>{
         console.log(err);
         
+        if(err.status === 400){
+
+          let alert = this._alert.create({
+            title: this.deleteTilte,
+            message: this.deleteMessage,
+            buttons: [
+              
+              {
+                text: this.ok,
+                handler: () => {
+      
+                }
+              }
+            ]
+          });
+          alert.present();
+
+
+        }else{
+
 
         let displayError = this.assignOrderError;
       
@@ -321,6 +369,7 @@ export class AssignOrderPage {
           position: 'middle'
       });
       toast.present();
+    }
       load.dismiss();
 
       }

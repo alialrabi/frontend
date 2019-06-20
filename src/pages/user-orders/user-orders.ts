@@ -61,11 +61,15 @@ export class UserOrdersPage {
   counter = 0;
   exitMessage
 
+  deleteTilte = ''
+  deleteMessage = ''
+  ok = ''
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public platform: Platform, private deviceTokenService: DeviceTockenService, public _alert: AlertController, public toastCtrl: ToastController, private captainService: CaptainService, private loading: LoadingController, public translateService: TranslateService, private app: App, private principal: Principal, public orderService: UserOrderService) {
 
     this.myVar = navParams.get("myVar");
 
-    this.translateService.get(['EXIT_MESSAGE', 'TAKE_ORDER_ERROR', 'TAKE_ORDER_SUCCESS', 'DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT', 'MORE_DATA', 'ADD_ORDER_TITLE', 'ORDER_KIND_MESSAGE', 'BUY_FROM_MARKET', 'DELIVER_FROM_LOCATION_TO_LOCATION']).subscribe((values) => {
+    this.translateService.get(['CAPTAIN_DELETED_WARNINIG' , 'CAPTAIN_DELETED_MESSAGE' , 'OK' , 'EXIT_MESSAGE', 'TAKE_ORDER_ERROR', 'TAKE_ORDER_SUCCESS', 'DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT', 'MORE_DATA', 'ADD_ORDER_TITLE', 'ORDER_KIND_MESSAGE', 'BUY_FROM_MARKET', 'DELIVER_FROM_LOCATION_TO_LOCATION']).subscribe((values) => {
 
       this.deliverOrderError = values.DELIVER_ORDER_ERROR;
       this.deliverOrderSuccess = values.DELIVER_ORDER_SUCCESS;
@@ -79,6 +83,10 @@ export class UserOrdersPage {
       this.takeOrderSuccess = values.TAKE_ORDER_SUCCESS
       this.takeOrderErroe = values.TAKE_ORDER_ERROR
       this.exitMessage = values.EXIT_MESSAGE
+
+      this.deleteTilte = values.CAPTAIN_DELETED_WARNINIG
+      this.deleteMessage = values.CAPTAIN_DELETED_MESSAGE
+      this.ok = values.OK
     })
     if (this.platform.is('cordova') && this.platform.is("android")) {
       this.platform.registerBackButtonAction(() => {
@@ -129,7 +137,7 @@ export class UserOrdersPage {
 
     this.principal.identity().then((account) => {
 
-      if (account === null) {
+      if (account === null || (account.id == null && account.firstName == null && account.login == null && account.authorities.length == 0)) {
         load.dismiss();
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
       } else if (account.authorities[0] == 'ROLE_USER' && account.authorities.length == 1) {
@@ -160,10 +168,22 @@ export class UserOrdersPage {
 
 
             this.captain = data;
+
+            if(this.captain != null && this.captain.active){
+
             this.captainId = data.id;
+
 
             //            load.dismiss();
             this.getUserOrdersAfterFinish(this.myVar, 0, load);
+
+            }else{
+              load.dismiss()
+              
+              window.location.reload();
+
+              //this.app.getRootNavs()[0].setRoot(FirstRunPage);
+            }
           },
           err => {
             console.log(err, 'errrrror');
@@ -479,6 +499,27 @@ export class UserOrdersPage {
       }, err => {
         console.log(err);
 
+        if(err.status === 400){
+
+          let alert = this._alert.create({
+            title: this.deleteTilte,
+            message: this.deleteMessage,
+            buttons: [
+              
+              {
+                text: this.ok,
+                handler: () => {
+      
+                }
+              }
+            ]
+          });
+          alert.present();
+
+
+        }else{
+
+
 
         let displayError = this.deliverOrderError;
 
@@ -488,6 +529,7 @@ export class UserOrdersPage {
           position: 'middle'
         });
         toast.present();
+      }
         load.dismiss();
       }
     )
@@ -587,6 +629,27 @@ export class UserOrdersPage {
       }, err => {
         console.log(err);
 
+        if(err.status === 400){
+
+          let alert = this._alert.create({
+            title: this.deleteTilte,
+            message: this.deleteMessage,
+            buttons: [
+              
+              {
+                text: this.ok,
+                handler: () => {
+      
+                }
+              }
+            ]
+          });
+          alert.present();
+
+
+        }else{
+
+
 
         let displayError = this.takeOrderErroe;
 
@@ -596,6 +659,7 @@ export class UserOrdersPage {
           position: 'middle'
         });
         toast.present();
+      }
         load.dismiss();
       }
     )
