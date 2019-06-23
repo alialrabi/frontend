@@ -272,7 +272,7 @@ export class UserOrderDetailPage {
   }
   getLivingType(type) {
     let typeValue = '';
-    if (type == 'Flat' || type == 'شقه') {
+    if (type == 'Flat' || type == 'شقه' || type == 'شقة') {
       typeValue = this.flatValue
     } else if (type == 'منزل' || type == 'Home') {
       typeValue = this.homeValue

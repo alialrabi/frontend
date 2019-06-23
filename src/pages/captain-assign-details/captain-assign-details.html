@@ -232,8 +232,8 @@
             </ion-item>
         <ion-item class="item-background2" *ngIf="assign.subAssigns.length != 0">
           <ion-grid style="padding: 0px">
-            <ion-row style="padding: 0px">
-              <ion-col col-4>
+            <ion-row justify-content-center align-items-center style="padding: 0px">
+              <ion-col style="padding: 0px;" col-4>
                 <p>
                   {{'DATE' | translate}}
                 </p>
@@ -264,7 +264,7 @@
         <ion-item-sliding  *ngFor="let sub of assign.subAssigns" [lang]="language" [dir]="direction">
         <ion-item class="item-background2" >
           <ion-grid style="padding: 0px">
-            <ion-row style="padding: 0px">
+            <ion-row justify-content-center align-items-center style="padding: 0px">
               <ion-col col-4 style="padding: 0px">
                 <p>
                   <strong text-wrap>{{sub.date}}</strong>

@@ -534,9 +534,9 @@ export class EditAddressPage {
 
   getCity(city) {
     let cityValue = '';
-    if (city == 'اسكندريه' || city == 'Alexandria') {
+    if (city == 'اسكندريه' || city == 'Alexandria' || city == 'إسكندرية') {
       cityValue = 'Alexandria'
-    } else if (city == 'القاهره' || city == 'Cairo') {
+    } else if (city == 'القاهره' || city == 'Cairo' || city == 'القاهرة') {
       cityValue = 'Cairo'
     } else if (city == 'طنطا' || city == 'Tanta') {
       cityValue = 'Tanta'
@@ -588,7 +588,7 @@ export class EditAddressPage {
   }
   getLivingType(type) {
     let typeValue = '';
-    if (type == 'Flat' || type == 'شقه') {
+    if (type == 'Flat' || type == 'شقه' || type == 'شقة') {
       typeValue = 'Flat'
     } else if (type == 'منزل' || type == 'Home') {
       typeValue = 'Home'
