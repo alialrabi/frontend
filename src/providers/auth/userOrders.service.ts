@@ -13,6 +13,14 @@ export class UserOrderService {
 
         return this.http.post(Api.API_URL_login + '/tlabatac/api/user-orders?access_token=' + this.authservice.getToken(), captain);
     }
+    update(captain: any): Observable<any> {
+
+        return this.http.put(Api.API_URL_login + '/tlabatac/api/user-orders?access_token=' + this.authservice.getToken(), captain);
+    }
+    delete(id: any): Observable<any> {
+
+        return this.http.delete(Api.API_URL_login + '/tlabatac/api/user-orders/'+id+'?access_token=' + this.authservice.getToken());
+    }
 
     getUserOrders(userId:any , captainId , status:any , pageNum) : Observable<any>{
         

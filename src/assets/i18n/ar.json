@@ -1,4 +1,12 @@
 {
+  "DELETE_ORDER_TITLE":"حذف الطلب",
+  "DELETE_ORDER_MESSAGE":" هل تريد حقا حذف هذا الطلب ؟",
+  "DELETE_ORDER_SUCCESS":" تم حذف الطلب بنجاح",
+  "DELETE_ORDER_ERROR":"خطأ فى حذف الطلب",
+  "EDIT_ORDER_ERROR":"خطأ فى تعديل الطلب",
+  "EDIT_ORDER_SUCCESS":"تم تعديل الطلب بنجاح",
+  "EDIT_ORDER_BUTTON":"تعديل الطلب",
+  "EDIT_ORDER":"تعديل الطلب",
   "CAPTAIN_DELETED_MESSAGE__AGENCY":"لقد قام المسؤول بحذف بيانات هذا الطيار , يمكنك إختيار طيار أخر",
   "CAPTAIN_DELETED_MESSAGE":"لقد قام المسؤول بحذف بياناتك يمكنك التواصل معه و إسترجاع الحساب",
   "CAPTAIN_DELETED_WARNINIG":"تحذير",
