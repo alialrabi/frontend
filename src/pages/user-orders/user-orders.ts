@@ -761,7 +761,7 @@ export class UserOrdersPage {
       res => {
         if (order.captain != null) {
 
-          this.deviceTokenService.getUserTokens(order.userOrder.userId).subscribe(
+          this.deviceTokenService.getUserTokens(order.captain.userId).subscribe(
             res1 => {
 
               res1.forEach(element => {
