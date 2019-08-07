@@ -182,12 +182,9 @@ export class LoginPage {
       if (!flag) {
         load.dismiss();
       }
-
-      console.log("account" , account);
       
       if (account === null || (account.id == null && account.firstName == null && account.login == null && account.authorities.length == 0)) {
         //this.app.getRootNavs()[0].setRoot(FirstRunPage);
-        console.log("*********************");
         
       } else {
         this.account = account;

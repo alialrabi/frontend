@@ -14,6 +14,9 @@ import { UserOrderDetailPage } from '../user-order-detail/user-order-detail';
 import { AdminDashboardPage } from '../admin-dashboard/admin-dashboard';
 import { CaptainOrdersPage } from '../captain-orders/captain-orders';
 import { CaptainDetailsPage } from '../captain-details/captain-details';
+import { EditBuyFromMarketPage } from '../edit-buy-from-market/edit-buy-from-market';
+import { EditDeliverFromToPage } from '../edit-deliver-from-to/edit-deliver-from-to';
+import { MyApp } from '../../app/app.component';
 
 /**
  * Generated class for the UserOrdersPage page.
@@ -65,11 +68,32 @@ export class UserOrdersPage {
   deleteMessage = ''
   ok = ''
 
+  deleteOrderSucess = ''
+  deleteOrderError = ''
+
+  language = MyApp.language
+  direction = MyApp.direction
+
+  deleteOrderTitle = ''
+  deleteOrderMessage = ''
+
+  yes = '';
+  cancel = ''
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public platform: Platform, private deviceTokenService: DeviceTockenService, public _alert: AlertController, public toastCtrl: ToastController, private captainService: CaptainService, private loading: LoadingController, public translateService: TranslateService, private app: App, private principal: Principal, public orderService: UserOrderService) {
 
     this.myVar = navParams.get("myVar");
 
-    this.translateService.get(['CAPTAIN_DELETED_WARNINIG' , 'CAPTAIN_DELETED_MESSAGE' , 'OK' , 'EXIT_MESSAGE', 'TAKE_ORDER_ERROR', 'TAKE_ORDER_SUCCESS', 'DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT', 'MORE_DATA', 'ADD_ORDER_TITLE', 'ORDER_KIND_MESSAGE', 'BUY_FROM_MARKET', 'DELIVER_FROM_LOCATION_TO_LOCATION']).subscribe((values) => {
+    this.translateService.get([ 'DELETE_ORDER_TITLE' , 'DONE' , 'CANCEL' , 'DELETE_ORDER_MESSAGE' ,'DELETE_ORDER_ERROR' , 'DELETE_ORDER_SUCCESS' ,'CAPTAIN_DELETED_WARNINIG', 'CAPTAIN_DELETED_MESSAGE', 'OK', 'EXIT_MESSAGE', 'TAKE_ORDER_ERROR', 'TAKE_ORDER_SUCCESS', 'DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT', 'MORE_DATA', 'ADD_ORDER_TITLE', 'ORDER_KIND_MESSAGE', 'BUY_FROM_MARKET', 'DELIVER_FROM_LOCATION_TO_LOCATION']).subscribe((values) => {
+
+      this.deleteOrderTitle = values.DELETE_ORDER_TITLE
+      this.deleteOrderMessage = values.DELETE_ORDER_MESSAGE
+
+      this.yes = values.DONE
+      this.cancel = values.CANCEL
+
+      this.deleteOrderError = values.DELETE_ORDER_ERROR
+      this.deleteOrderSucess = values.DELETE_ORDER_SUCCESS
 
       this.deliverOrderError = values.DELIVER_ORDER_ERROR;
       this.deliverOrderSuccess = values.DELIVER_ORDER_SUCCESS;
@@ -169,17 +193,17 @@ export class UserOrdersPage {
 
             this.captain = data;
 
-            if(this.captain != null && this.captain.active){
+            if (this.captain != null && this.captain.active) {
 
-            this.captainId = data.id;
+              this.captainId = data.id;
 
 
-            //            load.dismiss();
-            this.getUserOrdersAfterFinish(this.myVar, 0, load);
+              //            load.dismiss();
+              this.getUserOrdersAfterFinish(this.myVar, 0, load);
 
-            }else{
+            } else {
               load.dismiss()
-              
+
               window.location.reload();
 
               //this.app.getRootNavs()[0].setRoot(FirstRunPage);
@@ -372,7 +396,7 @@ export class UserOrdersPage {
       if (index != -1) {
 
         // for (let index = 0; index < orders.length; index++) {  
-        
+
         if (orders.charAt(index) === '-' && orders.charAt(index - 1) === ' ' && orders.charAt(index + 1) === ' ') {
           let subOrder = {
             name: orders.substring(0, index - 1),
@@ -499,17 +523,17 @@ export class UserOrdersPage {
       }, err => {
         console.log(err);
 
-        if(err.status === 400){
+        if (err.status === 400) {
 
           let alert = this._alert.create({
             title: this.deleteTilte,
             message: this.deleteMessage,
             buttons: [
-              
+
               {
                 text: this.ok,
                 handler: () => {
-      
+
                 }
               }
             ]
@@ -517,19 +541,19 @@ export class UserOrdersPage {
           alert.present();
 
 
-        }else{
+        } else {
 
 
 
-        let displayError = this.deliverOrderError;
+          let displayError = this.deliverOrderError;
 
-        let toast = this.toastCtrl.create({
-          message: displayError,
-          duration: 3000,
-          position: 'middle'
-        });
-        toast.present();
-      }
+          let toast = this.toastCtrl.create({
+            message: displayError,
+            duration: 3000,
+            position: 'middle'
+          });
+          toast.present();
+        }
         load.dismiss();
       }
     )
@@ -629,17 +653,17 @@ export class UserOrdersPage {
       }, err => {
         console.log(err);
 
-        if(err.status === 400){
+        if (err.status === 400) {
 
           let alert = this._alert.create({
             title: this.deleteTilte,
             message: this.deleteMessage,
             buttons: [
-              
+
               {
                 text: this.ok,
                 handler: () => {
-      
+
                 }
               }
             ]
@@ -647,19 +671,19 @@ export class UserOrdersPage {
           alert.present();
 
 
-        }else{
+        } else {
 
 
 
-        let displayError = this.takeOrderErroe;
+          let displayError = this.takeOrderErroe;
 
-        let toast = this.toastCtrl.create({
-          message: displayError,
-          duration: 3000,
-          position: 'middle'
-        });
-        toast.present();
-      }
+          let toast = this.toastCtrl.create({
+            message: displayError,
+            duration: 3000,
+            position: 'middle'
+          });
+          toast.present();
+        }
         load.dismiss();
       }
     )
@@ -691,8 +715,182 @@ export class UserOrdersPage {
   viewDetails(order) {
     this.navCtrl.setRoot(UserOrderDetailPage, { item: order, userType: this.userType, myVar: this.myVar });
   }
-  viewCaptainDetails(captain){
-    this.navCtrl.setRoot(CaptainDetailsPage, {item: captain , from: "UserOrdersPage" , myVar: this.myVar });
+  viewCaptainDetails(captain) {
+    this.navCtrl.setRoot(CaptainDetailsPage, { item: captain, from: "UserOrdersPage", myVar: this.myVar });
+  }
+  EditOrder(order1) {
+    if (order1.userOrder.isBuing) {
+      this.navCtrl.setRoot(EditBuyFromMarketPage, { order: order1 })
+    } else {
+      this.navCtrl.setRoot(EditDeliverFromToPage, { order: order1 })
+    }
+  }
+  DeleteOrder(order){
+  let alert = this._alert.create({
+    title: this.deleteOrderTitle,
+    message: this.deleteOrderMessage,
+    buttons: [
+      {
+        text: this.yes,
+        handler: () => {
+          this.confirmDeleteOrder(order)
+        }
+      },
+      {
+        text: this.cancel,
+        handler: () => {
+          
+        }
+      }
+    ]
+  });
+  alert.present();
+
+
+}
+  confirmDeleteOrder(order) {
+
+    let load = this.loading.create({
+      content: this.pleaseWait
+
+
+    })
+    load.present()
+
+    this.orderService.delete(order.userOrder.id).subscribe(
+      res => {
+        if (order.captain != null) {
+
+          this.deviceTokenService.getUserTokens(order.userOrder.userId).subscribe(
+            res1 => {
+
+              res1.forEach(element => {
+                let body = {
+                  "notification": {
+                    "title": "طلبك",
+                    "body": " لقد تم حذف الطلب صاحب الرقم التعريفى " + " " + order.userOrder.identifyNumber,
+                    "sound": "default",
+                    "click_action": "FCM_PLUGIN_ACTIVITY",
+                    "icon": "fcm_push_icon"
+                  },
+                  "data": {
+                    "title": "طلبك",
+                    "body": " لقد تم حذف الطلب صاحب الرقم التعريفى  " + " " + order.userOrder.identifyNumber
+                  },
+                  "to": element,
+                  "priority": "high",
+                  "restricted_package_name": ""
+                }
+
+                this.deviceTokenService.sendNotification(body);
+
+
+              });
+            }, err1 => {
+              console.log(err1, 'errrrrrrrrrrrrrrrrrrrrrrrrrror');
+
+            }
+          )
+
+
+
+        }
+
+        if (this.userType == 'User') {
+
+          this.deviceTokenService.getAdminTokens().subscribe(
+            res1 => {
+
+              res1.forEach(element => {
+                let body = {
+                  "notification": {
+                    "title": "طلبك",
+                    "body": " لقد قام العميل بحذف الطلب صاحب الرقم التعريفى " + " " + order.userOrder.identifyNumber,
+                    "sound": "default",
+                    "click_action": "FCM_PLUGIN_ACTIVITY",
+                    "icon": "fcm_push_icon"
+                  },
+                  "data": {
+                    "title": "طلبك",
+                    "body": " لقد قام العميل بحذف الطلب صاحب الرقم التعريفى  " + " " + order.userOrder.identifyNumber
+                  },
+                  "to": element,
+                  "priority": "high",
+                  "restricted_package_name": ""
+                }
+
+                this.deviceTokenService.sendNotification(body);
+
+
+              });
+            }, err1 => {
+              console.log(err1, 'errrrrrrrrrrrrrrrrrrrrrrrrrror');
+
+            }
+          )
+
+
+        } else if (this.userType == 'Admin') {
+          this.deviceTokenService.getUserTokens(order.userOrder.userId).subscribe(
+            res1 => {
+
+              res1.forEach(element => {
+                let body = {
+                  "notification": {
+                    "title": "طلبك",
+                    "body": " لقد قام المسئول بحذف طلبك صاحب الرقم التعريفى " + " " + order.userOrder.identifyNumber,
+                    "sound": "default",
+                    "click_action": "FCM_PLUGIN_ACTIVITY",
+                    "icon": "fcm_push_icon"
+                  },
+                  "data": {
+                    "title": "طلبك",
+                    "body": " لقد قام المسئول بحذف طلبك صاحب الرقم التعريفى  " + " " + order.userOrder.identifyNumber
+                  },
+                  "to": element,
+                  "priority": "high",
+                  "restricted_package_name": ""
+                }
+
+                this.deviceTokenService.sendNotification(body);
+
+
+              });
+            }, err1 => {
+              console.log(err1, 'errrrrrrrrrrrrrrrrrrrrrrrrrror');
+
+            }
+          )
+
+        }
+
+        let toast = this.toastCtrl.create({
+          message: this.deleteOrderSucess,
+          duration: 3000,
+          position: 'top'
+        });
+        toast.present();
+
+        //        load.dismiss();
+        this.getUserOrdersAfterFinish(this.myVar, 0, load);
+
+
+      }, err => {
+
+        let displayError = this.deleteOrderError;
+
+        let toast = this.toastCtrl.create({
+          message: displayError,
+          duration: 3000,
+          position: 'middle'
+        });
+        toast.present();
+
+        load.dismiss();
+
+      }
+    )
+
   }
 
 }

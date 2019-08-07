@@ -47,6 +47,7 @@ export class MyApp {
 
   public static language = "ar";
   public static direction = "rtl";
+  public static disableStart = true;
   menuSide = "right";
 
   appMenuItems: Array<MenuItem>;
@@ -83,7 +84,7 @@ export class MyApp {
 
 
   constructor(private translate: TranslateService, private loading: LoadingController, private manup: ManUpService, private fcm: FCM, public _alert: AlertController, private deviceTokenService: DeviceTockenService, private device: Device, public admobFree: AdMobFree, private backgroundMode: BackgroundMode, public menu: MenuController, public platform: Platform, settings: Settings, private config: Config,
-    private statusBar: StatusBar, public locationAccuracy: LocationAccuracy, public toastCtrl: ToastController, private loginService: LoginService, private captainService: CaptainService, private app: App, private principal: Principal, private splashScreen: SplashScreen, private keyboard: Keyboard) {
+    private statusBar: StatusBar ,public locationAccuracy: LocationAccuracy, public toastCtrl: ToastController, private loginService: LoginService, private captainService: CaptainService, private app: App, private principal: Principal, private splashScreen: SplashScreen, private keyboard: Keyboard) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -198,10 +199,10 @@ export class MyApp {
 
     this.principal.identity().then((account) => {
 
-      console.log(account);
 
       if (account == null) {
-
+        MyApp.disableStart = false;
+        
         this.account = account;
         this.userType = '';
 
@@ -214,6 +215,8 @@ export class MyApp {
         this.app.getRootNavs()[0].setRoot(FirstRunPage);
 
         this.captainLogOut();
+        MyApp.disableStart = false;
+
       }
 
       else if (account.authorities[0] == 'ROLE_AGENCY') {
@@ -242,7 +245,7 @@ export class MyApp {
         //   { title: this.settingText, component: SettingsPage, icon: 'construct' }
         // ];
         this.nav.setRoot("OrdersPage")
-
+        MyApp.disableStart = true;
       } else if (account.authorities[0] == 'ROLE_USER' && account.authorities.length == 1) {
 
         MyApp.language = account.langKey;
@@ -271,7 +274,7 @@ export class MyApp {
         } else {
           this.nav.setRoot("UserOrdersPage")
         }
-
+        MyApp.disableStart = true;
       } else if (account.authorities[0] == 'ROLE_CAPTAIN') {
 
         MyApp.language = account.langKey;
@@ -299,6 +302,7 @@ export class MyApp {
         this.nav.setRoot("CaptainOrdersPage")
         this.getCaptain(account.id);
 
+        MyApp.disableStart = true;
       } else {
 
         MyApp.language = account.langKey;
@@ -332,6 +336,8 @@ export class MyApp {
         // ];
 
         this.nav.setRoot("AdminDashboardPage")
+
+        MyApp.disableStart = true;
       }
 
     });
@@ -340,7 +346,6 @@ export class MyApp {
   checkAccessToSignUp() {
     this.principal.identity().then((account) => {
 
-      console.log(account);
 
 
       if (account == null) {

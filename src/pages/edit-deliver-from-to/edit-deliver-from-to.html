@@ -1,0 +1,142 @@
+<!--
+  Generated template for the EditDeliverFromToPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+<ion-grid style="width: 100%">
+      <ion-row>
+        <ion-col col-1 style="max-width: 25px;" (click)="back()">
+          <ion-buttons style="margin-block-start: 2px" class="btn-style">
+            <button ion-button >
+              <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
+            </button>
+          </ion-buttons>
+        </ion-col>
+        <ion-col col-11  [style.margin-top] ="language == 'en' ? '5px' : '2px'">
+            <ion-title [style.margin-top]="!isCordova && language != 'en' ? '3px' : '0px'">{{ 'EDIT_ORDER' | translate }}</ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>   
+  </ion-navbar>
+
+</ion-header>
+
+
+
+<ion-content class="auth-page">
+  <div class="login-content">
+
+    <form class="list-form" (submit)="editOrder()" [formGroup]="myForm">
+        <button type="submit" class="button" hidden></button>
+      <p style="width: 100%" text-center>
+        <strong>{{ 'PRODUCT_DATA' | translate }}</strong>
+      </p>
+
+      <ion-item>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+          <ion-icon name="paper" item-start class="text-primary"></ion-icon>
+          {{ 'PRODUCT_DESCRIPTION' | translate }}
+        </ion-label>
+        <ion-textarea type="text" [(ngModel)]="order.description" formControlName="description" name="description" [lang]="language"
+          [dir]="direction"></ion-textarea>
+      </ion-item>
+
+      <p class="validationHint" *ngIf="hasError('description', 'required') || checkSpaceTofields(order.description , 'description')">{{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('description', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
+
+
+      <ion-grid style="padding: 0px;">
+        <ion-row style="padding: 0px">
+          <ion-col col-10 style="padding: 0px">
+            <ion-item>
+              <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+                <ion-icon name="basket" item-start class="text-primary"></ion-icon>
+                {{ 'APPROXIMATE_WEIGHT' | translate }}
+              </ion-label>
+              <ion-input type="number" [(ngModel)]="order.weight" formControlName="weight" name="weight" [lang]="language" [dir]="direction"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col col-2 style="padding: 0px">
+            <ion-label style="margin-bottom: 0px;margin-top: 65px;text-align: end;" item-end>
+              {{kg}}
+            </ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <p class="validationHint" *ngIf="hasError('weight', 'required')"> {{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="validateweight()">{{ 'WEIGHT_NOT_ACCEPTABLE' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('weight', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
+
+
+
+      <p style="width: 100%" text-center>
+        <strong>{{ 'SENDER_DATA' | translate }}</strong>
+      </p>
+
+
+      <ion-item>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+          <ion-icon name="pin" item-start class="text-primary"></ion-icon>
+          {{ 'SENDER_ADDRESS' | translate }}
+        </ion-label>
+        <ion-input type="text" [(ngModel)]="senderAddress" (ionFocus)="openAddressesSelectorSender()" formControlName="senderAddress"
+          name="senderAddress" [lang]="language" [dir]="direction" readonly></ion-input>
+      </ion-item>
+
+      <p class="validationHint" *ngIf="hasError('senderAddress', 'required')"> {{ 'REQURIED' | translate }} </p>
+      
+      <p style="width: 100%" text-center>
+        <strong>{{ 'RECIVER_DATA' | translate }}</strong>
+      </p>
+      <ion-item>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+          <ion-icon name="person" item-start class="text-primary"></ion-icon>
+          {{ 'RECIVER_NAME' | translate }}
+        </ion-label>
+        <ion-input type="text" [(ngModel)]="order.reciverName" formControlName="reciverName" name="reciverName" [lang]="language"
+          [dir]="direction"></ion-input>
+      </ion-item>
+
+      <p class="validationHint" *ngIf="hasError('reciverName', 'required') || checkSpaceTofields(order.reciverName , 'reciverName')"> {{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('reciverName', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
+
+      <ion-item>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+          <ion-icon name="pin" item-start class="text-primary"></ion-icon>
+          {{ 'RECIVER_ADDRESS' | translate }}
+        </ion-label>
+        <ion-input type="text" [(ngModel)]="address" (ionFocus)="openAddressesSelector()" formControlName="address" name="address"
+          [lang]="language" [dir]="direction" readonly></ion-input>
+      </ion-item>
+
+      <p class="validationHint" *ngIf="hasError('address', 'required')"> {{ 'REQURIED' | translate }} </p>
+      
+      <ion-item>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+          <ion-icon name="call" item-start class="text-primary"></ion-icon>
+          {{ 'RECIVER_PHONE' | translate }}
+        </ion-label>
+        <ion-input type="number" [(ngModel)]="order.reciverPhone" formControlName="reciverPhone" name="reciverPhone" [lang]="language"
+          [dir]="direction"></ion-input>
+      </ion-item>
+
+      <p class="validationHint" *ngIf="hasError('reciverPhone', 'required')"> {{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('reciverPhone', 'pattern')">{{ 'PHONE_NUMBER' | translate }} </p>
+
+    </form>
+
+    <div margin-top style="margin-bottom: 40px;">
+      <button ion-button block class="myButton" tappable (click)="editOrder()" [disabled]="!myForm.valid || validateweight() || checkSpaces() || !validateChanges()">
+        {{ 'EDIT_ORDER_BUTTON' | translate }}
+      </button>
+    </div>
+
+
+
+  </div>
+
+</ion-content>

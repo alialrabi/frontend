@@ -8,6 +8,7 @@ import { LoginPage } from '../login/login';
 import { AdminDashboardPage } from '../admin-dashboard/admin-dashboard';
 import { UserOrdersPage } from '../user-orders/user-orders';
 import { TranslateService } from '@ngx-translate/core';
+import { MyApp } from '../../app/app.component';
 
 /**
  * Generated class for the LandingPage page.
@@ -23,6 +24,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class LandingPage {
 
+  //public static startDisable = true;
   ok = ''
   dialogTitle = ''
   dialogMesaage = ''
@@ -92,6 +94,9 @@ export class LandingPage {
         this.navCtrl.setRoot('LoginPage');
       }   
   }
+  getDisable(){    
+    return MyApp.disableStart;
+  }
 
   validateUser(){
  
@@ -103,8 +108,6 @@ export class LandingPage {
         //this.app.getRootNavs()[0].setRoot(FirstRunPage);
       } else {
         //this.account = account;
-
-
 
         if (account.authorities[0] === 'ROLE_CAPTAIN') {
 

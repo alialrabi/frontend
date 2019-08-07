@@ -1,0 +1,125 @@
+<!--
+  Generated template for the EditBuyFromMarketPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+<ion-grid style="width: 100%">
+      <ion-row>
+        <ion-col col-1 style="max-width: 25px;" (click)="back()">
+          <ion-buttons style="margin-block-start: 2px" class="btn-style">
+            <button ion-button >
+              <ion-icon [name]="language != 'en' ? 'arrow-round-forward' : 'arrow-round-back'"></ion-icon>
+            </button>
+          </ion-buttons>
+        </ion-col>
+        <ion-col col-11  [style.margin-top] ="language == 'en' ? '5px' : '2px'">
+            <ion-title [style.margin-top]="!isCordova && language != 'en' ? '3px' : '0px'">{{ 'EDIT_ORDER' | translate }}</ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-grid>   
+  </ion-navbar>
+
+</ion-header>
+
+
+
+<ion-content class="auth-page">
+  <div class="login-content">
+
+    <form class="list-form" (submit)="editOrder()" [formGroup]="myForm1">
+        <button type="submit" class="button" hidden></button>
+      <p style="width: 100%" text-center>
+        <strong>{{ 'PRODUCT_DATA' | translate }}</strong>
+      </p>
+
+      <ion-item>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+          <ion-icon name="person" item-start class="text-primary"></ion-icon>
+          {{ 'MARKET_NAME' | translate }}
+        </ion-label>
+        <ion-input type="text" [(ngModel)]="order.marketName" formControlName="marketName" name="marketName" [lang]="language" [dir]="direction"></ion-input>
+      </ion-item>
+      <p class="validationHint" *ngIf="hasError('marketName', 'required' , myForm1) || checkSpaceTofields(order.marketName , 'marketName')">{{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('marketName', 'maxlength' , myForm1)">{{ 'MAX_LENGTH' | translate }} </p>
+
+      <ion-item>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+          <ion-icon name="pin" item-start class="text-primary"></ion-icon>
+          {{ 'MARKET_ADDRESS' | translate }} <span class="optional-text"> {{ 'OPTIONAL_TEXT' | translate }}</span>
+        </ion-label>
+        <ion-input type="text" [(ngModel)]="order.marketAddress" formControlName="marketAddress" name="marketAddress" [lang]="language"
+          [dir]="direction"></ion-input>
+      </ion-item>
+      <p class="validationHint" *ngIf="hasError('marketAddress', 'maxlength' , myForm1)">{{ 'MAX_LENGTH' | translate }} </p>
+
+
+      <ion-item>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+          <ion-icon name="call" item-start class="text-primary"></ion-icon>
+          {{ 'MARKET_PHONE' | translate }} <span class="optional-text"> {{ 'OPTIONAL_TEXT' | translate }}</span>
+        </ion-label>
+        <ion-input type="number" [(ngModel)]="order.marketPhone" formControlName="marketPhone" name="marketPhone" [lang]="language"
+          [dir]="direction"></ion-input>
+      </ion-item>
+      <p class="validationHint" *ngIf="hasError('marketPhone', 'pattern' , myForm1)">{{ 'PHONE_NUMBER' | translate }} </p>
+      <ion-item>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+          <ion-icon name="cash" item-start class="text-primary"></ion-icon>
+          {{ 'PRICE_RANGE' | translate }}
+        </ion-label>
+        <ion-select [okText]="okText" [cancelText]="cancelText" formControlName="priceRange" [(ngModel)]="order.priceRange" [lang]="language" [dir]="direction">
+          <ion-option [selected]="order.priceRange == item" [value]="'1 : 500'" [dir]="direction"> 1 : 500 </ion-option>
+          <ion-option [selected]="order.priceRange == item" [value]="'501 : 1000'" [dir]="direction"> 501 : 1000 </ion-option>
+          <ion-option [selected]="order.priceRange == item" [value]="'1001 : 3000'" [dir]="direction"> 1001 : 3000 </ion-option>
+          <ion-option [selected]="order.priceRange == item" [value]="'3001 : 5000'" [dir]="direction"> 3001 : 5000 </ion-option>
+          <ion-option *ngIf="lastPriceRange == 'Other'" [selected]="order.priceRange == item" [value]="'Other'" [dir]="direction"> Other </ion-option>
+          <ion-option *ngIf="lastPriceRange == 'أخرى'" [selected]="order.priceRange == item" [value]="'أخرى'" [dir]="direction"> أخرى </ion-option>
+          <ion-option *ngIf="lastPriceRange != 'Other' && lastPriceRange != 'أخرى'" [selected]="order.priceRange == item" [value]="'Other'" [dir]="direction"> {{'OTHER' | translate}} </ion-option>
+        </ion-select>
+      </ion-item>
+      <p class="validationHint" *ngIf="hasError('priceRange', 'required' , myForm1 )">{{ 'REQURIED' | translate }} </p>
+
+      <ion-item>
+        <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+          <ion-icon name="paper" item-start class="text-primary"></ion-icon>
+          {{ 'PRODUCT_DESCRIPTION' | translate }}
+        </ion-label>
+        <ion-textarea type="text" [(ngModel)]="order.description" formControlName="description" name="description" [lang]="language"
+          [dir]="direction"></ion-textarea>
+      </ion-item>
+
+      <p class="validationHint" *ngIf="hasError('description', 'required' , myForm1) || checkSpaceTofields(order.description , 'description')">{{ 'REQURIED' | translate }} </p>
+      <p class="validationHint" *ngIf="hasError('description', 'maxlength' , myForm1)">{{ 'MAX_LENGTH' | translate }} </p>
+
+      <p style="width: 100%" text-center>
+        <strong>{{ 'RECIVER_DATA' | translate }}</strong>
+      </p>
+      
+      <ion-item >
+          <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'">
+              <ion-icon name="pin" item-start class="text-primary"></ion-icon>
+              {{ 'RECIVER_ADDRESS' | translate }}
+            </ion-label>
+        <ion-input type="text" [(ngModel)]="address" (ionFocus)="openAddressesSelector()" formControlName="address" name="address" [lang]="language"
+          [dir]="direction" readonly></ion-input>
+      </ion-item>
+
+      <p class="validationHint" *ngIf="hasError('address', 'required' , myForm1)"> {{ 'REQURIED' | translate }} </p>
+      
+    </form>
+
+    <div margin-top style="margin-bottom: 40px;">
+      <button ion-button block class="myButton" tappable (click)="editOrder()" [disabled]="!myForm1.valid || checkSpaces() || !validateChanges()">
+        {{ 'EDIT_ORDER_BUTTON' | translate }}
+      </button>
+    </div>
+
+
+
+  </div>
+
+</ion-content>

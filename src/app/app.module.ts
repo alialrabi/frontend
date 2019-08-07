@@ -104,6 +104,9 @@ import { AppVersion } from '@ionic-native/app-version';
 import { AddUserPhonePageModule } from '../pages/add-user-phone/add-user-phone.module';
 
 import { Ng2ImgMaxModule } from 'ng2-img-max'; 
+import { EditBuyFromMarketPageModule } from '../pages/edit-buy-from-market/edit-buy-from-market.module';
+import { EditDeliverFromToPage } from '../pages/edit-deliver-from-to/edit-deliver-from-to';
+import { EditDeliverFromToPageModule } from '../pages/edit-deliver-from-to/edit-deliver-from-to.module';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -205,7 +208,9 @@ let config = new AuthServiceConfig([
     ChangePasswordPageModule,
     ForgetPasswordPageModule,
     AddCheckOrderPageModule,
-    AddUserPhonePageModule
+    AddUserPhonePageModule,
+    EditBuyFromMarketPageModule,
+    EditDeliverFromToPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
