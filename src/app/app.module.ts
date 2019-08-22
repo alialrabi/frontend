@@ -107,6 +107,9 @@ import { Ng2ImgMaxModule } from 'ng2-img-max';
 import { EditBuyFromMarketPageModule } from '../pages/edit-buy-from-market/edit-buy-from-market.module';
 import { EditDeliverFromToPage } from '../pages/edit-deliver-from-to/edit-deliver-from-to';
 import { EditDeliverFromToPageModule } from '../pages/edit-deliver-from-to/edit-deliver-from-to.module';
+import { AddJobPage } from '../pages/add-job/add-job';
+import { AddJobPageModule } from '../pages/add-job/add-job.module';
+import { JobsPageModule } from '../pages/jobs/jobs.module';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -210,7 +213,9 @@ let config = new AuthServiceConfig([
     AddCheckOrderPageModule,
     AddUserPhonePageModule,
     EditBuyFromMarketPageModule,
-    EditDeliverFromToPageModule
+    EditDeliverFromToPageModule,
+    AddJobPageModule,
+    JobsPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
