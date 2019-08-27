@@ -1,7 +1,8 @@
 {
+    "ADD_JOB_BUTTON":"Add Request",
     "AGE_NOT_ACCEPTABLE":"Age is not Acceptable",
     "JOBS":"Job Requests",
-    "ADD_JOB":"Job Request",
+    "ADD_JOB":"Jobs",
     "NO_JOBS":"No Job Requests yet",
     "JOB_REQUESTS":"Job Requests",
     "JOB_SUCCESS":"Job Request Added Successfully",
@@ -10,7 +11,7 @@
     "GOVERNMENT":"Government",
     "AGE":"Age",
     "FULL_NAME":"Full Name",
-    "ADD_JOB_TITLE":"Job Request",
+    "ADD_JOB_TITLE":"Jobs",
     "DELETE_ORDER_TITLE":"Delete Order",
     "DELETE_ORDER_MESSAGE":"Do you really want to delete this order ?",
     "DELETE_ORDER_SUCCESS":"Order Deleted Successfully",

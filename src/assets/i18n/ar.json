@@ -1,7 +1,8 @@
 {
+  "ADD_JOB_BUTTON":"إضافه الطلب",
   "AGE_NOT_ACCEPTABLE":"السن غير مناسب",
   "JOBS":"طلبات العمل",
-  "ADD_JOB":"طلب عمل",
+  "ADD_JOB":"وظائف",
   "NO_JOBS":"لا يوجد طلبات عمل حتى الأن",
   "JOB_REQUESTS":"طلبات العمل",
   "JOB_SUCCESS":"تم إضافه طلب العمل بنجاح",
@@ -10,7 +11,7 @@
   "GOVERNMENT":"المحافظه",
   "AGE":"السن",
   "FULL_NAME":"الإسم بالكامل",
-  "ADD_JOB_TITLE":"طلب عمل",
+  "ADD_JOB_TITLE":"وظائف",
   "DELETE_ORDER_TITLE":"حذف الطلب",
   "DELETE_ORDER_MESSAGE":" هل تريد حقا حذف هذا الطلب ؟",
   "DELETE_ORDER_SUCCESS":" تم حذف الطلب بنجاح",
