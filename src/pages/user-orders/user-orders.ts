@@ -17,6 +17,7 @@ import { CaptainDetailsPage } from '../captain-details/captain-details';
 import { EditBuyFromMarketPage } from '../edit-buy-from-market/edit-buy-from-market';
 import { EditDeliverFromToPage } from '../edit-deliver-from-to/edit-deliver-from-to';
 import { MyApp } from '../../app/app.component';
+//import { CallNumber } from '@ionic-native/call-number';
 
 /**
  * Generated class for the UserOrdersPage page.
@@ -80,38 +81,53 @@ export class UserOrdersPage {
   yes = '';
   cancel = ''
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public platform: Platform, private deviceTokenService: DeviceTockenService, public _alert: AlertController, public toastCtrl: ToastController, private captainService: CaptainService, private loading: LoadingController, public translateService: TranslateService, private app: App, private principal: Principal, public orderService: UserOrderService) {
+  makeCallTitle = ''
+  makeCallMessage = ''
+  call = ''
+
+  constructor(public navCtrl: NavController
+   // , public callNumber: CallNumber
+    , public navParams: NavParams, public platform: Platform, private deviceTokenService: DeviceTockenService, public _alert: AlertController, public toastCtrl: ToastController, private captainService: CaptainService, private loading: LoadingController, public translateService: TranslateService, private app: App, private principal: Principal, public orderService: UserOrderService) {
 
     this.myVar = navParams.get("myVar");
 
-    this.translateService.get([ 'DELETE_ORDER_TITLE' , 'DONE' , 'CANCEL' , 'DELETE_ORDER_MESSAGE' ,'DELETE_ORDER_ERROR' , 'DELETE_ORDER_SUCCESS' ,'CAPTAIN_DELETED_WARNINIG', 'CAPTAIN_DELETED_MESSAGE', 'OK', 'EXIT_MESSAGE', 'TAKE_ORDER_ERROR', 'TAKE_ORDER_SUCCESS', 'DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT', 'MORE_DATA', 'ADD_ORDER_TITLE', 'ORDER_KIND_MESSAGE', 'BUY_FROM_MARKET', 'DELIVER_FROM_LOCATION_TO_LOCATION']).subscribe((values) => {
+    this.translateService.get(['DELETE_ORDER_TITLE', 'DONE', 'CANCEL', 'DELETE_ORDER_MESSAGE'
+      , 'DELETE_ORDER_ERROR', 'DELETE_ORDER_SUCCESS', 'CAPTAIN_DELETED_WARNINIG'
+      , 'CAPTAIN_DELETED_MESSAGE', 'OK', 'EXIT_MESSAGE', 'TAKE_ORDER_ERROR', 'TAKE_ORDER_SUCCESS'
+      , 'DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT', 'MORE_DATA', 'ADD_ORDER_TITLE'
+      , 'ORDER_KIND_MESSAGE', 'BUY_FROM_MARKET', 'DELIVER_FROM_LOCATION_TO_LOCATION'
+      , 'MAKE_CALL_TITLE', 'MAKE_CALL_MESSAGE', 'CALL']).subscribe((values) => {
 
-      this.deleteOrderTitle = values.DELETE_ORDER_TITLE
-      this.deleteOrderMessage = values.DELETE_ORDER_MESSAGE
+        this.makeCallTitle = values.MAKE_CALL_TITLE
+        this.makeCallMessage = values.MAKE_CALL_MESSAGE
+        this.call = values.CALL
 
-      this.yes = values.DONE
-      this.cancel = values.CANCEL
+        this.deleteOrderTitle = values.DELETE_ORDER_TITLE
+        this.deleteOrderMessage = values.DELETE_ORDER_MESSAGE
 
-      this.deleteOrderError = values.DELETE_ORDER_ERROR
-      this.deleteOrderSucess = values.DELETE_ORDER_SUCCESS
+        this.yes = values.DONE
+        this.cancel = values.CANCEL
 
-      this.deliverOrderError = values.DELIVER_ORDER_ERROR;
-      this.deliverOrderSuccess = values.DELIVER_ORDER_SUCCESS;
+        this.deleteOrderError = values.DELETE_ORDER_ERROR
+        this.deleteOrderSucess = values.DELETE_ORDER_SUCCESS
 
-      this.pleaseWait = values.PLEASE_WAIT
-      this.moreData = values.MORE_DATA
-      this.addOrderMessage = values.ORDER_KIND_MESSAGE;
-      this.addOrderTitle = values.ADD_ORDER_TITLE;
-      this.deliverFromTo = values.DELIVER_FROM_LOCATION_TO_LOCATION;
-      this.buyFromMarket = values.BUY_FROM_MARKET;
-      this.takeOrderSuccess = values.TAKE_ORDER_SUCCESS
-      this.takeOrderErroe = values.TAKE_ORDER_ERROR
-      this.exitMessage = values.EXIT_MESSAGE
+        this.deliverOrderError = values.DELIVER_ORDER_ERROR;
+        this.deliverOrderSuccess = values.DELIVER_ORDER_SUCCESS;
 
-      this.deleteTilte = values.CAPTAIN_DELETED_WARNINIG
-      this.deleteMessage = values.CAPTAIN_DELETED_MESSAGE
-      this.ok = values.OK
-    })
+        this.pleaseWait = values.PLEASE_WAIT
+        this.moreData = values.MORE_DATA
+        this.addOrderMessage = values.ORDER_KIND_MESSAGE;
+        this.addOrderTitle = values.ADD_ORDER_TITLE;
+        this.deliverFromTo = values.DELIVER_FROM_LOCATION_TO_LOCATION;
+        this.buyFromMarket = values.BUY_FROM_MARKET;
+        this.takeOrderSuccess = values.TAKE_ORDER_SUCCESS
+        this.takeOrderErroe = values.TAKE_ORDER_ERROR
+        this.exitMessage = values.EXIT_MESSAGE
+
+        this.deleteTilte = values.CAPTAIN_DELETED_WARNINIG
+        this.deleteMessage = values.CAPTAIN_DELETED_MESSAGE
+        this.ok = values.OK
+      })
     if (this.platform.is('cordova') && this.platform.is("android")) {
       this.platform.registerBackButtonAction(() => {
         if (this.userType == 'Admin') {
@@ -725,29 +741,29 @@ export class UserOrdersPage {
       this.navCtrl.setRoot(EditDeliverFromToPage, { order: order1 })
     }
   }
-  DeleteOrder(order){
-  let alert = this._alert.create({
-    title: this.deleteOrderTitle,
-    message: this.deleteOrderMessage,
-    buttons: [
-      {
-        text: this.yes,
-        handler: () => {
-          this.confirmDeleteOrder(order)
+  DeleteOrder(order) {
+    let alert = this._alert.create({
+      title: this.deleteOrderTitle,
+      message: this.deleteOrderMessage,
+      buttons: [
+        {
+          text: this.yes,
+          handler: () => {
+            this.confirmDeleteOrder(order)
+          }
+        },
+        {
+          text: this.cancel,
+          handler: () => {
+
+          }
         }
-      },
-      {
-        text: this.cancel,
-        handler: () => {
-          
-        }
-      }
-    ]
-  });
-  alert.present();
+      ]
+    });
+    alert.present();
 
 
-}
+  }
   confirmDeleteOrder(order) {
 
     let load = this.loading.create({
@@ -892,5 +908,38 @@ export class UserOrdersPage {
     )
 
   }
+  makeCall(number) {
+
+    if (this.platform.is('cordova') && this.platform.is('android')) {
+
+      let alert = this._alert.create({
+        title: this.makeCallTitle,
+        message: this.makeCallMessage + '   ' + number,
+        buttons: [
+
+          {
+            text: this.call,
+            handler: () => {
+              //this.CallNumber(number)
+              document.location.href = "tel:"+number;
+            }
+          }, {
+            text: this.cancel,
+            handler: () => {
+
+            }
+          }
+        ]
+      });
+      alert.present();
+
+    }
+
+  }
+  // CallNumber(number) {
+  //   this.callNumber.callNumber(number, false)
+  //     .then(res => console.log('Launched dialer!', res))
+  //     .catch(err => console.log('Error launching dialer', err));
+  // }
 
 }

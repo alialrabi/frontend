@@ -7,6 +7,7 @@ import { OrderService } from '../../providers/auth/order.service';
 import { UserOrderService } from '../../providers/auth/userOrders.service';
 import { MyApp } from '../../app/app.component';
 import { CaptainDetailsPage } from '../captain-details/captain-details';
+//import { CallNumber } from '@ionic-native/call-number';
 
 /**
  * Generated class for the UserOrderDetailPage page.
@@ -71,7 +72,14 @@ export class UserOrderDetailPage {
   homeValue = ''
   officeValue = ''
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private _alert: AlertController, private orderService: UserOrderService, public toastCtrl: ToastController, private deviceTokenService: DeviceTockenService, private loading: LoadingController, private platform: Platform, private translateService: TranslateService) {
+  makeCallTitle = ''
+  makeCallMessage = ''
+  call = ''
+  cancel = ''
+
+  constructor(public navCtrl: NavController
+   // , public callNumber: CallNumber
+    , public navParams: NavParams, private _alert: AlertController, private orderService: UserOrderService, public toastCtrl: ToastController, private deviceTokenService: DeviceTockenService, private loading: LoadingController, private platform: Platform, private translateService: TranslateService) {
     this.order = navParams.get('item');
     this.userType = navParams.get('userType');
     this.myVar = navParams.get("myVar");
@@ -84,7 +92,12 @@ export class UserOrderDetailPage {
       this.navCtrl.setRoot(UserOrdersPage, { myVar: this.myVar });
     });
 
-    this.translateService.get([ 'TAKE_ORDER_ERROR', 'TAKE_ORDER_SUCCESS', 'DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT', 'OK', 'NOT_SUPPORTED', 'NO_LOCATION_AVILABLE', 'OFFICE', 'HOME', 'FLAT']).subscribe((values) => {
+    this.translateService.get(['TAKE_ORDER_ERROR', 'TAKE_ORDER_SUCCESS', 'DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT', 'OK', 'NOT_SUPPORTED', 'NO_LOCATION_AVILABLE', 'OFFICE', 'HOME', 'FLAT', 'CANCEL', 'MAKE_CALL_TITLE', 'MAKE_CALL_MESSAGE', 'CALL']).subscribe((values) => {
+
+      this.makeCallTitle = values.MAKE_CALL_TITLE
+      this.makeCallMessage = values.MAKE_CALL_MESSAGE
+      this.call = values.CALL
+      this.cancel = values.CANCEL
 
       this.deliverOrderError = values.DELIVER_ORDER_ERROR;
       this.deliverOrderSuccess = values.DELIVER_ORDER_SUCCESS;
@@ -387,6 +400,41 @@ export class UserOrderDetailPage {
     )
 
   }
+
+  makeCall(number) {
+
+    if (this.platform.is('cordova') && this.platform.is('android')) {
+
+    let alert = this._alert.create({
+      title: this.makeCallTitle,
+      message: this.makeCallMessage + '   ' + number,
+      buttons: [
+
+        {
+          text: this.call,
+          handler: () => {
+            //this.CallNumber(number)
+            document.location.href = "tel:"+number;
+          }
+        }, {
+          text: this.cancel,
+          handler: () => {
+
+          }
+        }
+      ]
+    });
+    alert.present();
+
+  }
+
+  }
+  // CallNumber(number) {
+  //   this.callNumber.callNumber(number, true)
+  //     .then(res => console.log('Launched dialer!', res))
+  //     .catch(err => console.log('Error launching dialer', err));
+  // }
+
 
 
 }

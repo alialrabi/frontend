@@ -272,7 +272,7 @@ export class MyApp {
         if (account.phone == null || account.phone == '') {
           this.nav.setRoot("AddUserPhonePage")
         } else {
-          this.nav.setRoot("UserOrdersPage")
+          this.nav.setRoot("OfferPage")
         }
         MyApp.disableStart = true;
       } else if (account.authorities[0] == 'ROLE_CAPTAIN') {

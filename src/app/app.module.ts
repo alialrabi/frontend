@@ -101,6 +101,7 @@ import { ManUpModule, TRANSLATE_SERVICE, ManUpService } from 'ionic-manup';
 import { AddCheckOrderPageModule } from '../pages/add-check-order/add-check-order.module';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { AppVersion } from '@ionic-native/app-version';
+//import { CallNumber  } from '@ionic-native/call-number';
 import { AddUserPhonePageModule } from '../pages/add-user-phone/add-user-phone.module';
 
 import { Ng2ImgMaxModule } from 'ng2-img-max'; 
@@ -110,6 +111,7 @@ import { EditDeliverFromToPageModule } from '../pages/edit-deliver-from-to/edit-
 import { AddJobPage } from '../pages/add-job/add-job';
 import { AddJobPageModule } from '../pages/add-job/add-job.module';
 import { JobsPageModule } from '../pages/jobs/jobs.module';
+import { OfferPageModule } from '../pages/offer/offer.module';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -215,7 +217,8 @@ let config = new AuthServiceConfig([
     EditBuyFromMarketPageModule,
     EditDeliverFromToPageModule,
     AddJobPageModule,
-    JobsPageModule
+    JobsPageModule,
+    OfferPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -252,6 +255,7 @@ let config = new AuthServiceConfig([
     DatePicker,
     InAppBrowser,
     AppVersion,
+ //   CallNumber,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler },

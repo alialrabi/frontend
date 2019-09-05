@@ -1,4 +1,11 @@
 {
+  "CAR_TYPE":"نوع المركبه",
+  "ORDER_NOW":"إطلب الأن",
+  "OFFER_TEXT":"إطلب دلوقتى و إحصل على خصم 10%",
+  "OFFER":"عرض",
+  "MAKE_CALL_TITLE":"إجراء مكالمة",
+  "MAKE_CALL_MESSAGE":"هل تريد حقا الاتصال بهذا الرقم",
+  "CALL":"إتصال",
   "ADD_JOB_BUTTON":"إضافه الطلب",
   "AGE_NOT_ACCEPTABLE":"السن غير مناسب",
   "JOBS":"طلبات العمل",

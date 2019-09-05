@@ -16,6 +16,7 @@ import { DeviceTockenService } from '../../providers/auth/deviceToken.service';
 import { FCM } from '@ionic-native/fcm';
 import { AddUserPhonePage } from '../add-user-phone/add-user-phone';
 import { UserOrdersPage } from '../user-orders/user-orders';
+import { OfferPage } from '../offer/offer';
 
 @IonicPage()
 @Component({
@@ -154,7 +155,7 @@ export class SignupPage {
         });
         toast.present();
         loading.dismiss();
-        this.navCtrl.setRoot(UserOrdersPage);
+        this.navCtrl.setRoot(OfferPage);
       });
 
     }, (err) => {
