@@ -68,13 +68,13 @@
         <strong text-wrap>{{order.captain.name}}</strong>
       </p>
     </ion-item>
-    <ion-item class="item-background" *ngIf="userType != 'User'">
+    <ion-item class="item-background" *ngIf="userType != 'User'" (click) = "makeCall(order.user.phone)">
       <p>
         {{'USER_PHONE' | translate}} :
         <strong text-wrap>{{order.user.phone}}</strong>
       </p>
     </ion-item>
-    <ion-item class="item-background" *ngIf="order.captain != null && userType == 'User'">
+    <ion-item class="item-background" *ngIf="order.captain != null && userType == 'User'" (click) = "makeCall(order.captain.phone)">
       <p>
         {{ 'CAPTAIN_PHONE' | translate }} :
         <strong text-wrap>{{order.captain.phone}}</strong>

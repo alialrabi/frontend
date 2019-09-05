@@ -115,11 +115,11 @@
                 {{ 'ADDRESS' | translate }} 2 :
                 <strong text-wrap>{{order.secondAddress}}</strong>
               </p>
-              <p>
+              <p (click) = "makeCall(order.firstPhone)">
                 {{ 'PHONE_NUMBER_PHONE' | translate }} 1 :
                 <strong text-wrap>{{order.firstPhone}}</strong>
               </p>
-              <p *ngIf="order.secondPhone != null && order.secondPhone != ''">
+              <p *ngIf="order.secondPhone != null && order.secondPhone != ''" (click) = "makeCall(order.secondPhone)">
                 {{ 'PHONE_NUMBER_PHONE' | translate }} 2 :
                 <strong text-wrap>{{order.secondPhone}}</strong>
               </p>

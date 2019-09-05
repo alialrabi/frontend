@@ -1,0 +1,31 @@
+<ion-header>
+
+  <ion-navbar style="text-align: right;">
+    <ion-title>عروضنا</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="auth-page" lang="ar" dir="rtl">
+  <div class="login-content" lang="ar" dir="rtl">
+
+    <!-- Login form -->
+        
+      <p *ngIf = "platform.is('cordova') && platform.is('android')" style="margin-top: 50%;width: 100%;text-align: center;" lang="ar" dir="rtl"> <strong text-wrap style="font-size: xx-large;"> إطلب دلوقتى و إحصل على خصم</strong><strong text-wrap style="font-size: xx-large;"> 10%</strong></p>
+      <p *ngIf = "!platform.is('cordova') && !platform.is('android')" style="margin-top: 20%;width: 100%;text-align: center;" lang="ar" dir="rtl"> <strong text-wrap style="font-size: xx-large;"> إطلب دلوقتى و إحصل على خصم</strong><strong text-wrap style="font-size: xx-large;"> 10%</strong></p>
+      
+
+    <ion-grid margin-top style="margin-bottom: 40px;">
+      <ion-row>
+        <ion-col col-12>
+          <button ion-button block class="myButton" tappable (click)="orderNow()">
+            إطلب الأن
+
+          </button>
+        </ion-col>
+        
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

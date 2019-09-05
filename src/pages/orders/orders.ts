@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, App, MenuController, LoadingController, Platform, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, App, MenuController, LoadingController, Platform, ToastController, AlertController } from 'ionic-angular';
 import { AddOrderPage } from '../add-order/add-order';
 import { OrderService } from '../../providers/auth/order.service';
 import { Principal } from '../../providers/auth/principal.service';
 import { FirstRunPage } from '../pages';
 import { TranslateService } from '@ngx-translate/core';
 import { AddCheckOrderPage } from '../add-check-order/add-check-order';
+//import { CallNumber } from '@ionic-native/call-number';
 
 /**
  * Generated class for the OrdersPage page.
@@ -38,10 +39,22 @@ export class OrdersPage {
   exitMessage = ''
   counter = 0;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController , public platform:Platform , private loading: LoadingController, public translateService: TranslateService, private app: App, private principal: Principal, public orderService: OrderService) {
+  makeCallTitle = ''
+  makeCallMessage = ''
+  call = ''
+  cancel = ''
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public _alert:AlertController
+   // , public callNumber: CallNumber
+    , public toastCtrl: ToastController , public platform:Platform , private loading: LoadingController, public translateService: TranslateService, private app: App, private principal: Principal, public orderService: OrderService) {
 
     this.myVar = navParams.get("myVar");
-    this.translateService.get(['EXIT_MESSAGE', 'PLEASE_WAIT', 'MORE_DATA']).subscribe((values) => {
+    this.translateService.get(['EXIT_MESSAGE', 'PLEASE_WAIT', 'MORE_DATA' , 'CANCEL', 'MAKE_CALL_TITLE', 'MAKE_CALL_MESSAGE', 'CALL']).subscribe((values) => {
+
+      this.makeCallTitle = values.MAKE_CALL_TITLE
+      this.makeCallMessage = values.MAKE_CALL_MESSAGE
+      this.call = values.CALL
+      this.cancel = values.CANCEL
 
       this.pleaseWait = values.PLEASE_WAIT
       this.moreData = values.MORE_DATA
@@ -249,5 +262,39 @@ export class OrdersPage {
   // openMenu(){
   //   this.menu.open("authenticated");
   //  }
+
+  makeCall(number) {
+
+    if (this.platform.is('cordova') && this.platform.is('android')) {
+
+    let alert = this._alert.create({
+      title: this.makeCallTitle,
+      message: this.makeCallMessage + '   ' + number,
+      buttons: [
+
+        {
+          text: this.call,
+          handler: () => {
+            //this.CallNumber(number)
+            document.location.href = "tel:"+number;
+          }
+        }, {
+          text: this.cancel,
+          handler: () => {
+
+          }
+        }
+      ]
+    });
+    alert.present();
+
+  }
+
+  }
+  // CallNumber(number) {
+  //   this.callNumber.callNumber(number, true)
+  //     .then(res => console.log('Launched dialer!', res))
+  //     .catch(err => console.log('Error launching dialer', err));
+  // }
 
 }

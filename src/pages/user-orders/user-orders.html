@@ -144,10 +144,10 @@
                 {{'CREATION_DATE' | translate}} :
                 <strong text-wrap>{{getFormattedDate(order.userOrder.creationDate)}}</strong>
               </p>
-              <p style="padding-top: 5px" *ngIf="userType != 'User'">
+              <!-- <p style="padding-top: 5px" *ngIf="userType != 'User'">
                 {{'USER_PHONE' | translate}} :
                 <strong text-wrap>{{order.user.phone}}</strong>
-              </p>
+              </p> -->
 
               <!-- <p *ngIf="order.userOrder.isBuing">
                 {{ 'MARKET_NAME' | translate }} :
@@ -195,6 +195,12 @@
                 {{ 'RECIVER_PHONE' | translate }} :
                 <strong text-wrap>{{order.userOrder.reciverPhone}}</strong>
               </p> -->
+            </div>
+            <div *ngIf="userType != 'User'" class="account-info info-div">
+              <p style="padding-top: 5px" (click) = "makeCall(order.user.phone)">
+                {{'USER_PHONE' | translate}} :
+                <strong text-wrap>{{order.user.phone}}</strong>
+              </p>
             </div>
             <div *ngIf="order.captain != null && userType == 'Admin'" class="account-info info-div">
               <p (click)="viewCaptainDetails(order.captain)">

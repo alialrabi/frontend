@@ -70,6 +70,9 @@
               <p style="margin-top: 10px">
                 {{'EDUCATION_DEGREE' | translate}} : <strong text-wrap>{{job.educationDegree}}</strong>
               </p>
+              <p style="margin-top: 10px" *ngIf="job.carType != null && job.carType != '' && job.carType != undefined">
+                {{'CAR_TYPE' | translate}} : <strong text-wrap>{{job.carType}}</strong>
+              </p>
 
             </div>
           </ion-col>

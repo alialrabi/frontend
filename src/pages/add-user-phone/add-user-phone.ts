@@ -7,6 +7,7 @@ import { AccountService } from '../../providers/auth/account.service';
 import { FirstRunPage } from '../pages';
 import { Principal } from '../../providers/auth/principal.service';
 import { UserOrdersPage } from '../user-orders/user-orders';
+import { OfferPage } from '../offer/offer';
 
 /**
  * Generated class for the AddUserPhonePage page.
@@ -102,7 +103,7 @@ export class AddUserPhonePage {
           position: 'top'
         });
         toast.present();
-        this.navCtrl.setRoot(UserOrdersPage);
+        this.navCtrl.setRoot(OfferPage);
 
       }, err =>{
         console.log(err , 'errrrror');

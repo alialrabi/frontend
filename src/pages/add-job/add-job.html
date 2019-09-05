@@ -84,12 +84,28 @@
             {{ 'REQURIED' | translate }} </p>
           <p class="validationHint" *ngIf="hasError('educationDegree', 'maxlength')">{{ 'MAX_LENGTH' | translate }} </p>
     
+          
 
     </form>
 
+    <ion-item>
+      <ion-label floating [style.transform-origin]="language == 'en' ? 'left top' : 'right top'" style="color: black;">
+        <ion-icon name="car" item-start class="text-primary"></ion-icon>
+        {{ 'CAR_TYPE' | translate }}
+      </ion-label>
+      <ion-select [okText]="okText" [cancelText]="cancelText" (click)="carClick()" [(ngModel)]="job.carType" [lang]="language" [dir]="direction">
+        <ion-option [selected]="job.carType == item" [value]="'دراجة'" [dir]="direction"> دراجة </ion-option>
+        <ion-option [selected]="job.carType == item" [value]="'دراجة بخارية'" [dir]="direction"> دراجة بخارية </ion-option>
+        <ion-option [selected]="job.carType == item" [value]="'سيارة'" [dir]="direction"> سيارة </ion-option>
+        <ion-option [selected]="job.carType == item" [value]="'مواصلات'" [dir]="direction"> مواصلات </ion-option>
+      </ion-select>
+    </ion-item>
+    <p class="validationHint" *ngIf="(job.carType == '' || job.carType == null || job.carType == undefined) && carFlag">{{ 'REQURIED' | translate }} </p>
+
+
     <div margin-top style="margin-bottom: 40px;">
       <button ion-button block class="myButton" tappable (click)="addJob()"
-        [disabled]="!myForm.valid || checkSpaces() || checkAge()">
+        [disabled]="job.carType == '' || job.carType == null || job.carType == undefined || checkSpaces() || checkAge() || hasError('phone', 'pattern')">
         {{ 'ADD_JOB_BUTTON' | translate }}
       </button>
 

@@ -29,7 +29,8 @@ export class AddJobPage {
     phone: '',
     government: '',
     educationDegree: '',
-    userId: 0
+    userId: 0,
+    carType: ''
   };
 
   // Our translated text strings
@@ -51,6 +52,10 @@ export class AddJobPage {
 
   account = null;
 
+  okText = ''
+  cancelText = ''
+  carFlag = false;
+
   constructor(public navCtrl: NavController,
     public toastCtrl: ToastController,
     public translateService: TranslateService,
@@ -65,10 +70,13 @@ export class AddJobPage {
       this.isCordova = true;
     }
 
-    this.translateService.get(['JOB_ERROR', 'JOB_SUCCESS', 'PLEASE_WAIT']).subscribe((values) => {
+    this.translateService.get(['JOB_ERROR', 'JOB_SUCCESS', 'PLEASE_WAIT',"SELECTION_CANCEL", "SELECTION_OK"]).subscribe((values) => {
       this.jobErrorString = values.JOB_ERROR;
       this.jobSuccessString = values.JOB_SUCCESS;
       this.pleaseWait = values.PLEASE_WAIT;
+
+      this.okText = values.SELECTION_OK
+      this.cancelText = values.SELECTION_CANCEL
     })
 
     this.myForm = builder.group({
@@ -77,6 +85,7 @@ export class AddJobPage {
       'phone': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
       'government': ['', [Validators.required, Validators.maxLength(100)]],
       'educationDegree': ['', [Validators.required, Validators.maxLength(250)]],
+      //'carType': ['' , [Validators.required]]
     });
 
     this.platform.registerBackButtonAction(() => {
@@ -130,10 +139,12 @@ export class AddJobPage {
     console.log('ionViewDidLoad AddJobPage');
   }
 
+  carClick(){
+    this.carFlag = true;
+  }
   addJob() {
 
-    if (this.myForm.valid && !this.checkSpaces() && !this.checkAge()) {
-
+    if ( this.job.carType != '' && this.job.carType != null && this.job.carType != undefined && !this.hasError('phone', 'pattern') && !this.checkSpaces() && !this.checkAge()) {
       let load = this.loading.create({
         content: this.pleaseWait
 
@@ -159,6 +170,7 @@ export class AddJobPage {
         this.job.phone = ''
         this.job.userId = 0
         this.job.educationDegree = ''
+        this.job.carType = ''
 
         this.myForm.reset();
 
@@ -168,7 +180,10 @@ export class AddJobPage {
           'phone': ['', [Validators.required, Validators.pattern("(01)[0-9]{9}")]],
           'government': ['', [Validators.required, Validators.maxLength(100)]],
           'educationDegree': ['', [Validators.required, Validators.maxLength(250)]],
+         // 'carType': ['' , [Validators.required]]
         });
+       // this.job.carType = ''
+       this.carFlag = false;
 
         this.myForm.valueChanges
           .map((value) => {
