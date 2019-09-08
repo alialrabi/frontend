@@ -30,28 +30,36 @@
 
   <ion-grid style="width: 100%" *ngIf="userType=='Admin'">
     <ion-row>
-      <ion-col style="padding: 0px" col-4>
-        <button ion-button block tappable
+      <ion-col style="padding: 0px" col-3>
+        <button ion-button block tappable text-wrap
           [ngClass]="{'tap-selected': myVar == 'not assigned', 'tap-notselected': myVar != 'not assigned'}"
           (click)="getUserOrders('not assigned' , 0)">
           <!-- <ion-icon name="close" item-start></ion-icon> -->
           {{ 'NOT_ASSIGNED' | translate }}
         </button>
       </ion-col>
-      <ion-col style="padding: 0px" col-4>
-        <button ion-button block tappable
+      <ion-col style="padding: 0px" col-3>
+        <button ion-button block tappable text-wrap
           [ngClass]="{'tap-selected': myVar == 'assigned', 'tap-notselected': myVar != 'assigned'}"
           (click)="getUserOrders('assigned' , 0)">
           <!-- <ion-icon name="stats" item-start></ion-icon> -->
           {{ 'ASSIGNED' | translate }}
         </button>
       </ion-col>
-      <ion-col style="padding: 0px" col-4>
-        <button ion-button block tappable
+      <ion-col style="padding: 0px" col-3>
+        <button ion-button block tappable text-wrap
           [ngClass]="{'tap-selected': myVar == 'delivered', 'tap-notselected': myVar != 'delivered'}"
           (click)="getUserOrders('delivered' , 0)">
           <!-- <ion-icon name="checkmark" item-start></ion-icon> -->
           {{ 'DELIVERED' | translate }}
+        </button>
+      </ion-col>
+      <ion-col style="padding: 0px" col-3>
+        <button ion-button block tappable text-wrap
+          [ngClass]="{'tap-selected': myVar == 'not completed', 'tap-notselected': myVar != 'not completed'}"
+          (click)="getUserOrders('not completed' , 0)">
+          <!-- <ion-icon name="checkmark" item-start></ion-icon> -->
+          {{ 'NOT_COMPLETED' | translate }}
         </button>
       </ion-col>
     </ion-row>
@@ -61,20 +69,28 @@
   <ion-grid style="width: 100%" *ngIf="userType=='Captain'">
     <ion-row>
 
-      <ion-col style="padding: 0px" col-6>
-        <button ion-button block tappable
+      <ion-col style="padding: 0px" col-4>
+        <button ion-button block tappable text-wrap
           [ngClass]="{'tap-selected': myVar == 'assigned', 'tap-notselected': myVar != 'assigned'}"
           (click)="getUserOrders('assigned' , 0)">
           <!-- <ion-icon name="stats" item-start></ion-icon> -->
           {{ 'ASSIGNED' | translate }}
         </button>
       </ion-col>
-      <ion-col style="padding: 0px" col-6>
-        <button ion-button block tappable
+      <ion-col style="padding: 0px" col-4>
+        <button ion-button block tappable text-wrap
           [ngClass]="{'tap-selected': myVar == 'delivered', 'tap-notselected': myVar != 'delivered'}"
           (click)="getUserOrders('delivered' , 0)">
           <!-- <ion-icon name="checkmark" item-start></ion-icon> -->
           {{ 'DELIVERED' | translate }}
+        </button>
+      </ion-col>
+      <ion-col style="padding: 0px" col-4>
+        <button ion-button block tappable text-wrap
+          [ngClass]="{'tap-selected': myVar == 'not completed', 'tap-notselected': myVar != 'not completed'}"
+          (click)="getUserOrders('not completed' , 0)">
+          <!-- <ion-icon name="checkmark" item-start></ion-icon> -->
+          {{ 'NOT_COMPLETED' | translate }}
         </button>
       </ion-col>
     </ion-row>
@@ -96,7 +112,9 @@
           <h3 class="not-found-text" *ngIf="userType=='User'"> {{ 'ADD__ORDER' | translate }}</h3>
           <h3 class="not-found-text" *ngIf="myVar == 'delivered' && userType=='Admin'">
             {{ 'NO_DELIVERED_ORDER' | translate }}</h3>
-          <h3 class="not-found-text" *ngIf="myVar != 'delivered' && (userType=='Captain' || userType=='Admin')">
+            <h3 class="not-found-text" *ngIf="myVar == 'not completed' && (userType=='Captain' || userType=='Admin')">
+              {{ 'NO_NO_COMPLETED_ORDER' | translate }}</h3>
+          <h3 class="not-found-text" *ngIf="myVar != 'delivered' && myVar != 'not completed'  && (userType=='Captain' || userType=='Admin')">
             {{ 'NO_NEW_ORDERS' | translate }}</h3>
           <h3 class="not-found-text" *ngIf="myVar == 'delivered' && userType=='Captain'">
             {{ 'NO_DELIVERED_ORDERS' | translate }}</h3>
@@ -139,6 +157,7 @@
                 <strong text-wrap
                   *ngIf="order.userOrder.status == 'assigned' && order.userOrder.isTaken">{{ 'RECIVED_FROM_SENDER' | translate }}</strong>
                 <strong text-wrap *ngIf="order.userOrder.status == 'delivered'"> {{ 'DELIVERED' | translate }}</strong>
+                <strong text-wrap *ngIf="order.userOrder.status == 'not completed'"> {{ 'NOT_COMPLETED' | translate }}</strong>
               </p>
               <p style="padding-top: 5px">
                 {{'CREATION_DATE' | translate}} :
@@ -214,7 +233,7 @@
       <ion-grid>
         <ion-row *ngIf="userType == 'Admin'">
           <ion-col style="padding-bottom: 0px;padding-top: 0px;">
-            <ion-buttons end class="btn-style" style="width: 100%" *ngIf="myVar != 'delivered' && userType=='Admin'">
+            <ion-buttons end class="btn-style" style="width: 100%" *ngIf="myVar != 'delivered' && myVar != 'not completed' && userType=='Admin'">
               <button class="myButton" ion-button style="width: 100%" (click)="assingCaptain(order)">
                 {{ 'ASSIGN_CAPTAIN' | translate }}
               </button>
@@ -304,7 +323,7 @@
 
             <ion-buttons end class="btn-style" style="width: 100%"
               *ngIf="myVar == 'assigned' && userType=='Captain' && !order.userOrder.isTaken">
-              <button ion-button class="myButton" style="width: 100%" (click)="takeOrder(order)">
+              <button ion-button class="myButton" style="width: 100%" (click)="takeOrderDialog(order)">
                 {{ 'TAKE_ORDER_FROM_SENDER' | translate }}
               </button>
             </ion-buttons>
@@ -317,7 +336,7 @@
           <ion-col col-12 style="padding-top: 0px;">
 
             <ion-buttons end class="btn-style" style="width: 100%" *ngIf="myVar == 'assigned' && userType=='Captain'">
-              <button ion-button class="myButton" style="width: 100%" (click)="finish(order)">
+              <button ion-button class="myButton" style="width: 100%" (click)="finishDialog(order)">
                 {{ 'DELIVER' | translate }}
               </button>
             </ion-buttons>
@@ -328,8 +347,20 @@
           <ion-col col-12>
 
             <ion-buttons end class="btn-style" style="width: 100%" *ngIf="myVar == 'assigned' && userType=='Captain'">
-              <button ion-button class="myButton" style="width: 100%" (click)="finish(order)">
+              <button ion-button class="myButton" style="width: 100%" (click)="finishDialog(order)">
                 {{ 'DELIVER' | translate }}
+              </button>
+            </ion-buttons>
+
+          </ion-col>
+
+        </ion-row>
+        <ion-row *ngIf=" userType =='Captain'">
+          <ion-col col-12 style="padding-top: 0px;">
+
+            <ion-buttons end class="btn-style" style="width: 100%;padding-top: 0px;" *ngIf="myVar == 'assigned' && userType=='Captain'">
+              <button ion-button class="myButton" style="width: 100%" (click)="notCompleted(order)">
+                {{ 'NOT_COMPLETED' | translate }}
               </button>
             </ion-buttons>
 
