@@ -34,6 +34,10 @@ export class UserOrderService {
 
         return this.http.put(Api.API_URL_login + '/tlabatac/api/user-orders/finishOrder/orderId/'+orderId+'?access_token=' +this.authservice.getToken(), null);
     }
+    notCompletedOrder( orderId:number): Observable<Object> {
+
+        return this.http.put(Api.API_URL_login + '/tlabatac/api/user-orders/NotCompletedOrder/orderId/'+orderId+'?access_token=' +this.authservice.getToken(), null);
+    }
     takeOrder( orderId:number): Observable<Object> {
 
         return this.http.put(Api.API_URL_login + '/tlabatac/api/user-orders/takeOrder/orderId/'+orderId+'?access_token=' +this.authservice.getToken(), null);

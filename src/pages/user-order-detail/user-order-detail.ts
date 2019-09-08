@@ -77,8 +77,19 @@ export class UserOrderDetailPage {
   call = ''
   cancel = ''
 
+  deliverTitle = ''
+  deliverMessage = ''
+
+  takeTitle = ''
+  takeMessage = ''
+
+  notCompletedTitle = ''
+  notCompletedMessage = ''
+  notCompletedSuccess = ''
+  notCompletedError = ''
+
   constructor(public navCtrl: NavController
-   // , public callNumber: CallNumber
+    // , public callNumber: CallNumber
     , public navParams: NavParams, private _alert: AlertController, private orderService: UserOrderService, public toastCtrl: ToastController, private deviceTokenService: DeviceTockenService, private loading: LoadingController, private platform: Platform, private translateService: TranslateService) {
     this.order = navParams.get('item');
     this.userType = navParams.get('userType');
@@ -92,7 +103,19 @@ export class UserOrderDetailPage {
       this.navCtrl.setRoot(UserOrdersPage, { myVar: this.myVar });
     });
 
-    this.translateService.get(['TAKE_ORDER_ERROR', 'TAKE_ORDER_SUCCESS', 'DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT', 'OK', 'NOT_SUPPORTED', 'NO_LOCATION_AVILABLE', 'OFFICE', 'HOME', 'FLAT', 'CANCEL', 'MAKE_CALL_TITLE', 'MAKE_CALL_MESSAGE', 'CALL']).subscribe((values) => {
+    this.translateService.get(['TAKE_ORDER_ERROR', 'TAKE_ORDER_SUCCESS', 'DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT', 'OK', 'NOT_SUPPORTED', 'NO_LOCATION_AVILABLE', 'OFFICE', 'HOME', 'FLAT', 'CANCEL', 'MAKE_CALL_TITLE', 'MAKE_CALL_MESSAGE', 'CALL', 'NOT_COMPLETED_TITLE', 'NOT_COMPLETED_MESSAGE', 'DELIVER_MESSAGE', 'DELIVER_TITLE', 'TAKE_ORDER_MESSAGE', 'TAKE_ORDER_TITLE', 'NOT_COMPLETED_SUCESS', 'NOT_COMPLETED_ERROR']).subscribe((values) => {
+
+      this.deliverTitle = values.DELIVER_TITLE
+      this.deliverMessage = values.DELIVER_MESSAGE
+
+      this.takeMessage = values.TAKE_ORDER_MESSAGE
+      this.takeTitle = values.TAKE_ORDER_TITLE
+
+      this.notCompletedTitle = values.NOT_COMPLETED_TITLE
+      this.notCompletedMessage = values.NOT_COMPLETED_MESSAGE
+      this.notCompletedError = values.NOT_COMPLETED_ERROR
+      this.notCompletedSuccess = values.NOT_COMPLETED_SUCESS
+
 
       this.makeCallTitle = values.MAKE_CALL_TITLE
       this.makeCallMessage = values.MAKE_CALL_MESSAGE
@@ -134,6 +157,30 @@ export class UserOrderDetailPage {
   viewCaptainDetails() {
     this.navCtrl.setRoot(CaptainDetailsPage, { item: this.order.captain, from: "UserOrderDetailPage", myVar: this.myVar, order: this.order, userType: this.userType });
   }
+  finishDialog(){
+
+    let alert = this._alert.create({
+      title: this.deliverTitle,
+      message: this.deliverMessage,
+      buttons: [
+
+        {
+          text: this.ok,
+          handler: () => {
+            this.finish();
+          }
+        },{
+          text: this.cancel,
+          handler: () => {
+          }
+        }
+      ]
+    });
+    alert.present();
+
+
+  }
+
   finish() {
 
     let load = this.loading.create({
@@ -294,6 +341,29 @@ export class UserOrderDetailPage {
     }
     return typeValue;
   }
+  takeOrderDialog(item){
+    let alert = this._alert.create({
+      title: this.takeTitle,
+      message: this.takeMessage,
+      buttons: [
+
+        {
+          text: this.ok,
+          handler: () => {
+            this.takeOrder(item);
+          }
+        },{
+          text: this.cancel,
+          handler: () => {
+          }
+        }
+      ]
+    });
+    alert.present();
+
+
+  }
+
   takeOrder(item) {
 
     let load = this.loading.create({
@@ -405,28 +475,157 @@ export class UserOrderDetailPage {
 
     if (this.platform.is('cordova') && this.platform.is('android')) {
 
+      let alert = this._alert.create({
+        title: this.makeCallTitle,
+        message: this.makeCallMessage + '   ' + number,
+        buttons: [
+
+          {
+            text: this.call,
+            handler: () => {
+              //this.CallNumber(number)
+              document.location.href = "tel:" + number;
+            }
+          }, {
+            text: this.cancel,
+            handler: () => {
+
+            }
+          }
+        ]
+      });
+      alert.present();
+
+    }
+
+  }
+  notCompleted() {
+
     let alert = this._alert.create({
-      title: this.makeCallTitle,
-      message: this.makeCallMessage + '   ' + number,
+      title: this.notCompletedTitle,
+      message: this.notCompletedMessage,
       buttons: [
 
         {
-          text: this.call,
+          text: this.ok,
           handler: () => {
-            //this.CallNumber(number)
-            document.location.href = "tel:"+number;
+            this.notCompletedConfirm();
           }
         }, {
           text: this.cancel,
           handler: () => {
-
           }
         }
       ]
     });
     alert.present();
 
+
   }
+  notCompletedConfirm() {
+
+    let load = this.loading.create({
+      content: this.pleaseWait
+
+
+    })
+    load.present()
+
+
+    this.orderService.notCompletedOrder(this.order.userOrder.id).subscribe(
+      res => {
+
+        // if (this.platform.is('cordova')) {
+        this.deviceTokenService.getAdminTokens().subscribe(
+          res1 => {
+
+            res1.forEach(element => {
+              let body = {
+                "notification": {
+                  "title": "طلب غير مكتمل",
+                  "body": "لقد تم تغير الحاله لغير مكتمل للطلب  " + " " + this.order.userOrder.identifyNumber,
+                  "sound": "default",
+                  "click_action": "FCM_PLUGIN_ACTIVITY",
+                  "icon": "fcm_push_icon"
+                },
+                "data": {
+                  "title": "طلب غير مكتمل",
+                  "body": "لقد تم تغير الحاله لغير مكتمل للطلب  " + " " + this.order.userOrder.identifyNumber
+                },
+                "to": element,
+                "priority": "high",
+                "restricted_package_name": ""
+              }
+
+              this.deviceTokenService.sendNotification(body);
+
+
+            });
+
+          }, err1 => {
+            console.log(err1, 'errrrrrrrrrrrrrrrrrrrrrrrrrror');
+
+          }
+        )
+
+        this.deviceTokenService.getUserTokens(this.order.userOrder.userId).subscribe(
+          res1 => {
+
+            res1.forEach(element => {
+              let body = {
+                "notification": {
+                  "title": " طلبك غير مكتمل",
+                  "body": "لقد تم انهاء و تغير الحاله لغير مكتمل لطلبك  " + " " + this.order.userOrder.identifyNumber,
+                  "sound": "default",
+                  "click_action": "FCM_PLUGIN_ACTIVITY",
+                  "icon": "fcm_push_icon"
+                },
+                "data": {
+                  "title": " طلبك غير مكتمل",
+                  "body": "لقد تم انهاء و تغير الحاله لغير مكتمل لطلبك  " + " " + this.order.userOrder.identifyNumber
+                },
+                "to": element,
+                "priority": "high",
+                "restricted_package_name": ""
+              }
+
+              this.deviceTokenService.sendNotification(body);
+
+
+            });
+          }, err1 => {
+            console.log(err1, 'errrrrrrrrrrrrrrrrrrrrrrrrrror');
+
+          }
+        )
+
+        // }
+
+
+        let toast = this.toastCtrl.create({
+          message: this.notCompletedSuccess,
+          duration: 3000,
+          position: 'top'
+        });
+        toast.present();
+
+        //        load.dismiss();
+        load.dismiss();
+        this.order.userOrder.status = 'not completed';
+        this.myVar = 'not completed';
+
+      }, err => {
+        console.log(err);
+        let toast = this.toastCtrl.create({
+          message: this.notCompletedError,
+          duration: 3000,
+          position: 'middle'
+        });
+        toast.present();
+
+        load.dismiss();
+      }
+    )
 
   }
   // CallNumber(number) {

@@ -17,6 +17,7 @@ import { CaptainDetailsPage } from '../captain-details/captain-details';
 import { EditBuyFromMarketPage } from '../edit-buy-from-market/edit-buy-from-market';
 import { EditDeliverFromToPage } from '../edit-deliver-from-to/edit-deliver-from-to';
 import { MyApp } from '../../app/app.component';
+import { T } from '@angular/core/src/render3';
 //import { CallNumber } from '@ionic-native/call-number';
 
 /**
@@ -85,6 +86,17 @@ export class UserOrdersPage {
   makeCallMessage = ''
   call = ''
 
+  deliverTitle = ''
+  deliverMessage = ''
+
+  takeTitle = ''
+  takeMessage = ''
+
+  notCompletedTitle = ''
+  notCompletedMessage = ''
+  notCompletedSuccess = ''
+  notCompletedError = ''
+
   constructor(public navCtrl: NavController
    // , public callNumber: CallNumber
     , public navParams: NavParams, public platform: Platform, private deviceTokenService: DeviceTockenService, public _alert: AlertController, public toastCtrl: ToastController, private captainService: CaptainService, private loading: LoadingController, public translateService: TranslateService, private app: App, private principal: Principal, public orderService: UserOrderService) {
@@ -96,7 +108,19 @@ export class UserOrdersPage {
       , 'CAPTAIN_DELETED_MESSAGE', 'OK', 'EXIT_MESSAGE', 'TAKE_ORDER_ERROR', 'TAKE_ORDER_SUCCESS'
       , 'DELIVER_ORDER_ERROR', 'DELIVER_ORDER_SUCCESS', 'PLEASE_WAIT', 'MORE_DATA', 'ADD_ORDER_TITLE'
       , 'ORDER_KIND_MESSAGE', 'BUY_FROM_MARKET', 'DELIVER_FROM_LOCATION_TO_LOCATION'
-      , 'MAKE_CALL_TITLE', 'MAKE_CALL_MESSAGE', 'CALL']).subscribe((values) => {
+      , 'MAKE_CALL_TITLE', 'MAKE_CALL_MESSAGE', 'CALL' 
+      , 'NOT_COMPLETED_TITLE' , 'NOT_COMPLETED_MESSAGE' , 'DELIVER_MESSAGE' , 'DELIVER_TITLE' , 'TAKE_ORDER_MESSAGE' , 'TAKE_ORDER_TITLE' , 'NOT_COMPLETED_SUCESS' , 'NOT_COMPLETED_ERROR']).subscribe((values) => {
+
+        this.deliverTitle = values.DELIVER_TITLE
+        this.deliverMessage = values.DELIVER_MESSAGE
+
+        this.takeMessage = values.TAKE_ORDER_MESSAGE
+        this.takeTitle = values.TAKE_ORDER_TITLE
+
+        this.notCompletedTitle = values.NOT_COMPLETED_TITLE
+        this.notCompletedMessage = values.NOT_COMPLETED_MESSAGE
+        this.notCompletedError = values.NOT_COMPLETED_ERROR
+        this.notCompletedSuccess = values.NOT_COMPLETED_SUCESS
 
         this.makeCallTitle = values.MAKE_CALL_TITLE
         this.makeCallMessage = values.MAKE_CALL_MESSAGE
@@ -446,6 +470,30 @@ export class UserOrdersPage {
     this.navCtrl.setRoot('EditRatingPage', { item: order.userOrder, from: "userOrder" })
   }
 
+  finishDialog(item){
+
+    let alert = this._alert.create({
+      title: this.deliverTitle,
+      message: this.deliverMessage,
+      buttons: [
+
+        {
+          text: this.ok,
+          handler: () => {
+            this.finish(item);
+          }
+        },{
+          text: this.cancel,
+          handler: () => {
+          }
+        }
+      ]
+    });
+    alert.present();
+
+
+  }
+
   finish(item) {
 
     let load = this.loading.create({
@@ -573,6 +621,29 @@ export class UserOrdersPage {
         load.dismiss();
       }
     )
+
+  }
+
+  takeOrderDialog(item){
+    let alert = this._alert.create({
+      title: this.takeTitle,
+      message: this.takeMessage,
+      buttons: [
+
+        {
+          text: this.ok,
+          handler: () => {
+            this.takeOrder(item);
+          }
+        },{
+          text: this.cancel,
+          handler: () => {
+          }
+        }
+      ]
+    });
+    alert.present();
+
 
   }
 
@@ -934,6 +1005,154 @@ export class UserOrdersPage {
       alert.present();
 
     }
+
+  }
+  notCompleted(order){
+
+    let alert = this._alert.create({
+      title: this.notCompletedTitle,
+      message: this.notCompletedMessage,
+      buttons: [
+
+        {
+          text: this.ok,
+          handler: () => {
+            this.notCompletedConfirm(order);
+          }
+        },{
+          text: this.cancel,
+          handler: () => {
+          }
+        }
+      ]
+    });
+    alert.present();
+
+
+  }
+  notCompletedConfirm(item){
+
+    let load = this.loading.create({
+      content: this.pleaseWait
+
+
+    })
+    load.present()
+
+
+    this.orderService.notCompletedOrder(item.userOrder.id).subscribe(
+      res => {
+
+        // if (this.platform.is('cordova')) {
+        this.deviceTokenService.getAdminTokens().subscribe(
+          res1 => {
+
+            res1.forEach(element => {
+              let body = {
+                "notification": {
+                  "title": "طلب غير مكتمل",
+                  "body": "لقد تم تغير الحاله لغير مكتمل للطلب  " + " " + item.userOrder.identifyNumber ,
+                  "sound": "default",
+                  "click_action": "FCM_PLUGIN_ACTIVITY",
+                  "icon": "fcm_push_icon"
+                },
+                "data": {
+                  "title": "طلب غير مكتمل",
+                  "body": "لقد تم تغير الحاله لغير مكتمل للطلب  " + " " + item.userOrder.identifyNumber
+                },
+                "to": element,
+                "priority": "high",
+                "restricted_package_name": ""
+              }
+
+              this.deviceTokenService.sendNotification(body);
+
+
+            });
+
+          }, err1 => {
+            console.log(err1, 'errrrrrrrrrrrrrrrrrrrrrrrrrror');
+
+          }
+        )
+
+        this.deviceTokenService.getUserTokens(item.userOrder.userId).subscribe(
+          res1 => {
+
+            res1.forEach(element => {
+              let body = {
+                "notification": {
+                  "title": " طلبك غير مكتمل",
+                  "body": "لقد تم انهاء و تغير الحاله لغير مكتمل لطلبك  " + " " + item.userOrder.identifyNumber,
+                  "sound": "default",
+                  "click_action": "FCM_PLUGIN_ACTIVITY",
+                  "icon": "fcm_push_icon"
+                },
+                "data": {
+                  "title": " طلبك غير مكتمل",
+                  "body": "لقد تم انهاء و تغير الحاله لغير مكتمل لطلبك  " + " " + item.userOrder.identifyNumber
+                },
+                "to": element,
+                "priority": "high",
+                "restricted_package_name": ""
+              }
+
+              this.deviceTokenService.sendNotification(body);
+
+
+            });
+          }, err1 => {
+            console.log(err1, 'errrrrrrrrrrrrrrrrrrrrrrrrrror');
+
+          }
+        )
+
+        // }
+
+
+        let toast = this.toastCtrl.create({
+          message: this.notCompletedSuccess,
+          duration: 3000,
+          position: 'top'
+        });
+        toast.present();
+
+        //        load.dismiss();
+        this.getUserOrdersAfterFinish(this.myVar, 0, load);
+
+      }, err => {
+        console.log(err);
+
+        if (err.status === 400) {
+
+          let alert = this._alert.create({
+            title: this.deleteTilte,
+            message: this.deleteMessage,
+            buttons: [
+
+              {
+                text: this.ok,
+                handler: () => {
+
+                }
+              }
+            ]
+          });
+          alert.present();
+
+
+        } else {
+
+          let toast = this.toastCtrl.create({
+            message: this.notCompletedError,
+            duration: 3000,
+            position: 'middle'
+          });
+          toast.present();
+        }
+        load.dismiss();
+      }
+    )
 
   }
   // CallNumber(number) {
