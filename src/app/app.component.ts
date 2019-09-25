@@ -27,7 +27,7 @@ import { Device } from '@ionic-native/device';
 import { AddCaptainPage } from '../pages/add-captain/add-captain';
 import { LocationAccuracy } from '@ionic-native/location-accuracy';
 
-import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free';
+import { AdMobFree, AdMobFreeBannerConfig, AdMobFreeInterstitialConfig } from '@ionic-native/admob-free';
 
 import { FCM } from '@ionic-native/fcm';
 import { DeviceTockenService } from '../providers/auth/deviceToken.service';
@@ -81,10 +81,11 @@ export class MyApp {
 
   public internal = null;
   public autoAssignInternal = null;
+  public internal2 = null;
 
 
   constructor(private translate: TranslateService, private loading: LoadingController, private manup: ManUpService, private fcm: FCM, public _alert: AlertController, private deviceTokenService: DeviceTockenService, private device: Device, public admobFree: AdMobFree, private backgroundMode: BackgroundMode, public menu: MenuController, public platform: Platform, settings: Settings, private config: Config,
-    private statusBar: StatusBar ,public locationAccuracy: LocationAccuracy, public toastCtrl: ToastController, private loginService: LoginService, private captainService: CaptainService, private app: App, private principal: Principal, private splashScreen: SplashScreen, private keyboard: Keyboard) {
+    private statusBar: StatusBar, public locationAccuracy: LocationAccuracy, public toastCtrl: ToastController, private loginService: LoginService, private captainService: CaptainService, private app: App, private principal: Principal, private splashScreen: SplashScreen, private keyboard: Keyboard) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -189,6 +190,43 @@ export class MyApp {
 
     }).catch(e => console.log("baner erroooor", e));
   }
+  launchInterstitial() {
+
+    if (this.platform.is('android') && this.platform.is('cordova')) {
+
+    let interstitialConfig: AdMobFreeInterstitialConfig = {
+      //isTesting: true, // Remove in production
+      autoShow: true,
+      id: "ca-app-pub-3499153975001140/4759715666"
+    };
+
+    this.admobFree.interstitial.config(interstitialConfig);
+
+    this.admobFree.interstitial.prepare().then(() => {
+      // success
+
+    }).catch(err =>{
+      console.log(err , 'errrrrrrrrrrror');
+      
+    });
+
+  }
+
+  }
+  showInterstitial(classIn) {
+
+    if (this.platform.is('android') && this.platform.is('cordova')) {
+
+
+      this.internal2 = Observable.interval(1000 * 40).subscribe(x => {
+
+        classIn.launchInterstitial();
+
+      });
+
+    }
+
+  }
 
   ngOnInit() {
 
@@ -202,7 +240,7 @@ export class MyApp {
 
       if (account == null) {
         MyApp.disableStart = false;
-        
+
         this.account = account;
         this.userType = '';
 
@@ -269,6 +307,10 @@ export class MyApp {
         // this.appMenuItems = [
         //   { title: this.userOrdersText, component: UserOrdersPage, icon: 'basket' }
         // ];
+
+        this.launchInterstitial();
+        this.showInterstitial(this);
+
         if (account.phone == null || account.phone == '') {
           this.nav.setRoot("AddUserPhonePage")
         } else {
@@ -400,6 +442,8 @@ export class MyApp {
         this.userType = 'User'
         this.translateMenu();
         this.account = account;
+        this.launchInterstitial();
+        this.showInterstitial(this);
         // this.appMenuItems = [
         //   { title: this.userOrdersText, component: UserOrdersPage, icon: 'basket' }
         // ];
@@ -485,13 +529,13 @@ export class MyApp {
       data => {
         this.captain = data;
 
-        if(this.captain != null){
+        if (this.captain != null) {
 
-        this.updateLocation(this);
+          this.updateLocation(this);
 
-        this.updateLocationTimer(this);
+          this.updateLocationTimer(this);
 
-        this.updateAssign(this)
+          this.updateAssign(this)
         }
 
       }, err => {
@@ -551,7 +595,10 @@ export class MyApp {
                   this.autoAssignInternal.unsubscribe();
                   this.autoAssignInternal = null;
                 }
-
+                if(this.internal2 != null){
+                  this.internal2.unsubscribe();
+                  this.internal2 = null;
+                }
                 this.loginService.logout();
 
                 //this.userType = '';
@@ -581,7 +628,10 @@ export class MyApp {
                   this.autoAssignInternal.unsubscribe();
                   this.autoAssignInternal = null;
                 }
-
+                if(this.internal2 != null){
+                  this.internal2.unsubscribe();
+                  this.internal2 = null;
+                }
                 this.loginService.logout();
                 //this.userType = '';
                 //this.account = null;
@@ -612,6 +662,10 @@ export class MyApp {
             this.autoAssignInternal.unsubscribe();
             this.autoAssignInternal = null;
           }
+          if(this.internal2 != null){
+            this.internal2.unsubscribe();
+            this.internal2 = null;
+          }
           this.loginService.logout();
           //this.userType = '';
           //this.account = null;
@@ -641,7 +695,7 @@ export class MyApp {
       this.autoAssignInternal = null;
     }
     this.loginService.logout();
-    
+
     this.isLogOut = true;
   }
 
@@ -751,6 +805,7 @@ export class MyApp {
     });
 
   }
+
 
   autoAssignRedunduncy() {
     this.autoAssignInternal = Observable.interval(1000 * 60 * 60).subscribe(x => {
